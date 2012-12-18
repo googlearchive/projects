@@ -1,0 +1,68 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-feed-viewer" attributes="selected layout">
+  <link rel="stylesheet" href="css/pi-feed-viewer.css" />
+  <link rel="components" href="../../../toolkit/src/g-panels.html"/>
+  <link rel="components" href="pi-gfeeds.html"/>
+  <link rel="components" href="pi-items-view.html"/>
+  <template>
+    <g-panels id="panels" selected="{{selected}}" transition="keyframe" class="g-panels-scale-slide">
+      <pi-items-view id="topics" layout="{{layout}}" view="topics" on-select="topicSelect"></pi-items-view>
+      <pi-items-view id="items" layout="{{layout}}" on-select="itemSelect"></pi-items-view>
+      <div id="detail">
+        <div id="title">{{title}}</div>
+        <div id="content"></div>
+      </div>
+    </g-panels>
+    <div id="loading">Loading...</div>
+    <pi-gfeeds id="gfeeds" feed="{{feed}}" on-response="feedResponse"></pi-gfeeds>
+  </template>
+  <script>
+    this.component({
+      publish: {
+        topics: [],
+        feed: ''
+      },
+      ready: function() {
+        var mq = window.matchMedia('(max-width: 800px)');
+        mq.addListener(this.layoutChange.bind(this));
+        this.layoutChange(mq);
+      },
+      layoutChange: function(inQuery) {
+        this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 'g-panels-scale-slide';
+      },
+      topicsChanged: function() {
+        this.$.topics.entries = this.topics;
+      },
+      selectedChanged: function() {
+        this.fireEvent('panelchange', {selected: this.selected});
+      },
+      feedChanged: function() {
+        this.toggleLoading(true);
+      },
+      topicSelect: function(e) {
+        this.node.feed = e.detail.entry.feed;
+        this.node.selected = 'items';
+      },
+      feedResponse: function(e) {
+        this.$.items.entries = e.detail.feed.entries;
+        this.toggleLoading(false);
+      },
+      toggleLoading: function(inLoading) {
+        this.$.loading.classList.toggle('loading', inLoading);
+        this.$.items.classList.toggle('loading', inLoading);
+      },
+      itemSelect: function(e) {
+        var d = e.detail.entry;
+        this.title = d.title;
+        this.$.content.innerHTML = d.content.replace(/(<iframe.*?>.*?<\/iframe>)/g, '');
+        this.node.selected = 'detail';
+      }
+    });
+  </script>
+</element>

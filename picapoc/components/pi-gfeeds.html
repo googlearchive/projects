@@ -1,0 +1,53 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-gfeeds" attributes="feed">
+  <script>
+    var feedsAreReady = false;
+    var pendingFeeds = [];
+    
+    var feedsReady = function() {
+      feedsAreReady = true;
+      pendingFeeds.forEach(function(cb) {
+        cb();
+      });
+      pendingFeeds = null;
+    };
+    
+    var XGFeeds = {
+      require: function(inCb) {
+        if (feedsAreReady) {
+          inCb();
+        } else {
+          pendingFeeds.push(inCb);
+        }
+      }
+    };
+    
+    google.load('feeds', '1', {callback: feedsReady.bind(this)});
+    
+    this.component({
+      count: 25,
+      feedChanged: function() {
+        XGFeeds.require(this.query.bind(this));
+      },
+      query: function() {
+        var feed = new google.feeds.Feed(this.feed);
+        feed.includeHistoricalEntries(); // tell the API we want to have old entries too
+        feed.setNumEntries(this.count); // we want this maximum number of entries, if they exist
+        feed.load(this.loaded.bind(this));
+      },
+      loaded: function(inResult) {
+        if (!inResult.error) {
+          this.fireEvent('response', {feed: inResult.feed});
+        } else {
+          this.fireEvent('error', {status: inResult.status});
+        }
+      }
+    });
+  </script>
+</element>

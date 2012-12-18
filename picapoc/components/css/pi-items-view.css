@@ -1,0 +1,112 @@
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+@host {
+  display: -webkit-flex;
+}
+
+.flexbox {
+  display: -webkit-flex;
+}
+
+.flex-column {
+  -webkit-flex-flow: column;
+}
+
+.flex {
+  -webkit-flex: 1;
+}
+
+/* quilt */
+.first .entry {
+  -webkit-flex: 2;
+  width: 600px;
+}
+
+.first .entry:last-child {
+  -webkit-flex: 1;
+}
+
+.second .entry {
+  width: 300px;
+}
+
+.entry {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-top: 0;
+  border-left: 0;
+}
+
+.image {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.desc {
+  height: 70px;
+  padding: 10px 4px;
+}
+
+.topics .desc {
+  display: none;
+}
+
+.first .desc {
+  height: 30px;
+}
+
+/* grid */
+.grid.view {
+  display: block;
+}
+
+.grid .entry {
+  -webkit-flex: 1;
+  width: auto;
+  height: 300px;
+}
+
+.grid .column {
+  -webkit-flex-flow: row;
+}
+
+.grid .desc {
+  height: 70px;
+}
+
+/* small screen size e.g. phone */
+@media screen and (max-width: 800px) {
+  .flexbox {
+    display: block;
+  }
+  
+  .flex-column {
+    display: -webkit-flex;
+    -webkit-flex-flow: row;
+  }
+  
+  .first .entry, .second .entry {
+    box-sizing: border-box;
+    display: -webkit-flex;
+    -webkit-flex-flow: column;
+    -webkit-flex: 1;
+    width: auto;
+    padding: 10px;
+  }
+  
+  .entry {
+    height: 300px;
+  }
+  
+  .first .entry:last-child, .second .entry:last-child {
+    border-right: 0;
+  }
+  
+  .first .desc, .second .desc {
+    height: 70px;
+  }
+}
