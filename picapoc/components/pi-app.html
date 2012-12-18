@@ -39,7 +39,10 @@
           </div>
           <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
         </pi-toolbar>
-        <pi-feed-viewer id="feedViewer" selected="topics" layout="grid" on-panelchange="feedViewerPanelChange"></pi-feed-viewer>
+        <g-panels id="mainPanels">
+          <pi-feed-viewer id="feedViewer" selected="topics" layout="grid" on-panelchange="feedViewerPanelChange"></pi-feed-viewer>
+          <div></div>
+        </g-panels>
       </div>
       <div id="source" class="right" on-click="toggleSource"></div>
     </g-panels>
@@ -81,6 +84,7 @@
         var item = this.$.ribbon.selection;
         if (item) {
           this.$.toolbar.label = item.label;
+          this.$.mainPanels.index = this.$.ribbon.selected;
           this.toggleNav('main');
         }
       },
