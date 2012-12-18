@@ -1,0 +1,101 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-app">
+  <link rel="stylesheet" href="css/pi-app.css" />
+  <link rel="components" href="../../../toolkit/src/g-component.html">
+  <link rel="components" href="../../../toolkit/src/g-panels.html"/>
+  <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
+  <link rel="components" href="../../../toolkit/src/g-menu-item.html"/>
+  <link rel="components" href="pi-ribbon.html"/>
+  <link rel="components" href="pi-toolbar.html"/>
+  <link rel="components" href="pi-feed-viewer.html"/>
+  <link rel="components" href="pi-dropdown-button.html"/>
+  <template>
+    <g-panels id="panels" selected="main" transition="flow">
+      <pi-ribbon id="ribbon" label="Pica" selected="0" on-select="ribbonSelect">
+        <g-menu-item label="Topics" src="../images/ribbon_topics.svg"></g-menu-item>
+        <g-menu-item label="Accounts" src="../images/ribbon_accounts.svg"></g-menu-item>
+      </pi-ribbon>
+      <div id="main">
+        <pi-toolbar id="toolbar">
+          <g-icon-button id="navButton" class="left" src="../images/nav-list.svg" on-click="navButtonClick"></g-icon-button>
+          <div id="actionBar">
+            <pi-dropdown-button id="layoutMenu" src="../images/view_quilt.svg" on-click="layoutSelect">
+              <g-menu-item label="Grid" src="../images/view_modules.svg"></g-menu-item>
+              <g-menu-item label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
+            </pi-dropdown-button>
+            <pi-dropdown-button src="../images/add.svg">
+              <g-menu-item src="../images/edit_page.svg">Post a Comment</g-menu-item>
+              <g-menu-item src="../images/chat.svg">Share Link</g-menu-item>
+              <g-menu-item src="../images/email.svg">Email Link</g-menu-item>
+              <g-menu-item src="../images/favorite.svg">Add to Favorites</g-menu-item>
+            </pi-dropdown-button>
+            <g-icon-button src="../images/search_the_web.svg"></g-icon-button>
+          </div>
+          <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
+        </pi-toolbar>
+        <g-panels id="mainPanels">
+          <pi-feed-viewer id="feedViewer" selected="topics" layout="grid" on-panelchange="feedViewerPanelChange"></pi-feed-viewer>
+          <div></div>
+        </g-panels>
+      </div>
+      <div id="source" class="right" on-click="toggleSource"></div>
+    </g-panels>
+  </template>
+  <script>
+    this.component({
+      ready: function() {
+        this.ribbonSelect();
+        this.$.feedViewer.topics = [
+          {desc: 'The Verge', imgSrc: 'https://lh3.ggpht.com/NAigEH6J985CuPR2r71cJ6C5mr1JGShoyFOjKAh_vV7Chxx8zsMOIwdKyS89xsJ77w=w705', feed: 'http://www.theverge.com/rss/index.xml'},
+          {desc: 'Engadget', imgSrc: 'http://www.engadget.com/common/images/4844163528551596.jpg.39721570957757146', feed: 'http://feeds.engadget.com/weblogsinc/engadget'},
+          {desc: 'The Kitchn', imgSrc: 'http://assets.hellocotton.com/avatars/square-256-911-12b30c1b425ea51d0b6ae70c8eae8346.png', feed: 'http://feeds.thekitchn.com/apartmenttherapy/thekitchn'},
+          {desc: 'Rock Paper Shotgun', imgSrc: 'http://www.rockpapershotgun.com/images/11/june/rpsf3r.jpg', feed: 'http://feeds.feedburner.com/RockPaperShotgun'}
+        ];
+      },
+      navButtonClick: function() {
+        var fv = this.$.feedViewer;
+        if (fv.selected == 'detail') {
+          fv.selected = 'items';
+        } else if (fv.selected == 'items') {
+          fv.selected = 'topics';
+        } else {
+          this.toggleNav();
+        }
+      },
+      toggleNav: function(inSelected) {
+        if (inSelected) {
+          this.$.panels.selected = inSelected;
+        } else {
+          this.$.panels.toggleBetween('ribbon', 'main');
+        }
+        this.$.navButton.active = this.$.panels.selected == 'ribbon';
+      },
+      toggleSource: function() {
+        this.$.panels.toggleBetween('main', 'source');
+        this.$.sourceButton.active = this.$.panels.selected == 'source';
+      },
+      ribbonSelect: function() {
+        var item = this.$.ribbon.selection;
+        if (item) {
+          this.$.toolbar.label = item.label;
+          this.$.mainPanels.index = this.$.ribbon.selected;
+          this.toggleNav('main');
+        }
+      },
+      layoutSelect: function(e) {
+        this.$.feedViewer.layout = this.$.layoutMenu.selection.label.toLowerCase();
+      },
+      feedViewerPanelChange: function(e) {
+        var s = e.detail.selected;
+        this.$.navButton.src = 'images/' + (s == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
+        this.toggleNav('main');
+      }
+    });
+  </script>
+</element>
