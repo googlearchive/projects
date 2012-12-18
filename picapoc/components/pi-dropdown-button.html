@@ -33,15 +33,6 @@
         get selection() {
           return this.$.menu.selection;
         }
-      },
-      // FIXME(ffu): hack to deal with timeout in overlay
-      ready: function() {
-        var mq = window.matchMedia('(max-width: 800px)');
-        mq.addListener(this.layoutChange.bind(this));
-        this.layoutChange(mq);
-      },
-      layoutChange: function(inQuery) {
-        this.$.overlay.timeout = inQuery.matches ? 1000 : 0;
       }
     });
   </script>
