@@ -1,0 +1,26 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-ribbon" extends="g-menu" attributes="label, selected, multi" handlers="click: clickHandler">
+  <link rel="stylesheet" href="css/pi-ribbon.css" />
+  <link rel="components" href="../../../toolkit/src/g-menu.html"/>
+  <link rel="components" href="../../../toolkit/src/g-icon.html"/>
+  <template>
+    <div id="label" class="app-label">{{label}}</div>
+    <div class="body">
+      <shadow></shadow>
+    </div>
+  </template>
+  <script>
+    this.component({
+      selectedChanged: function() {
+        this.$super();
+        this.fireEvent('select');
+      }
+    });
+  </script>
+</element>
