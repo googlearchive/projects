@@ -1,0 +1,88 @@
+<element name="td-model" extends="g-model">
+  <link rel="components" href="lib/g-model.html">
+  <script>
+    var model = {
+      filter: "",
+      items: [
+        {id: 1, title: "foo", completed: true},
+        {id: 2, title: "goo", completed: false}
+      ]
+    };
+    var items = model.items;
+
+    // access g-model API
+    var gmodel = document.createElement('g-model');
+
+    var filters = {
+      active: function(inItem) {
+        return !inItem.completed;
+      },
+      completed: function(inItem) {
+        return inItem.completed;
+      }
+    };
+
+    var itemsLengthChanged = function() {
+      model.count = items.length;
+      model.completedCount = count(filters.completed);
+      model.activeCount = model.count - model.completedCount;
+      filterItems();
+    };
+
+    var filterItems = function() {
+      var fn = filters[model.filter];
+      model.filtered = fn ? items.filter(fn) : items;
+    };
+
+    var count = function(inFilter) {
+      return items.filter(inFilter).length;
+    };
+
+    // if/when model.items is replaced, we need to set a fresh watch
+    var itemsChanged = function() {
+      items = model.items;
+      itemsLengthChanged();
+      gmodel.watchObject(items, {
+        length: itemsLengthChanged
+      });
+    };
+
+    gmodel.watchObject(model, {
+      filter: filterItems,
+      items: itemsChanged
+    });
+
+    itemsChanged();
+
+    this.component({
+      created: function() {
+        this.model = model;
+        //this.promoteModel();
+      },
+      publish: {
+        itemChanged: function() {
+          itemsLengthChanged();
+        },
+        newToDo: function(inTitle) {
+          var title = String(inTitle).trim();
+          if (title) {
+            items.push({
+              id: items.length,
+              title: inTitle,
+              completed: false
+            });
+          }
+        },
+        destroyToDo: function(inToDo) {
+          var i = items.indexOf(inToDo);
+          if (i >= 0) {
+            items.splice(i, 1);
+          }
+        },
+        clearCompleted: function(inToDo) {
+          model.items = items.filter(filters.active);
+        }
+      }
+    });
+  </script>
+</element>

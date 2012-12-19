@@ -1,0 +1,30 @@
+/* base.css overrides */
+
+[showing=false] {
+  display: none;
+}
+
+h1 {
+	font-size: 70px;
+	font-weight: bold;
+	text-align: center;
+	color: #b3b3b3;
+	color: rgba(255, 255, 255, 0.3);
+	text-shadow: -1px -1px rgba(0, 0, 0, 0.2);
+	-webkit-text-rendering: optimizeLegibility;
+	-moz-text-rendering: optimizeLegibility;
+	-ms-text-rendering: optimizeLegibility;
+	-o-text-rendering: optimizeLegibility;
+	text-rendering: optimizeLegibility;
+}
+
+td-app {
+  display: block;
+  margin-top: -60px;
+}
+
+body {
+  /* anti-fouc */
+  opacity: 0;
+  -webkit-transition: opacity 0.2s;
+}

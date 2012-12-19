@@ -1,0 +1,53 @@
+<element name="td-app">
+  <template>
+    <g-director path="/(\w*)" on-route="route"></g-director>
+    
+    <td-todos items="{{filtered}}" 
+              activeCount="{{activeCount}}"
+              completedCount="{{completedCount}}"
+              filter="{{filter}}"></td-todos>
+    
+    <!-- make two, they're reusable -->
+    <td-todos items="{{filtered}}" 
+          activeCount="{{activeCount}}"
+          completedCount="{{completedCount}}"
+          filter="{{filter}}"></td-todos>
+  </template>
+  <script>
+    this.component({
+      items: [
+        {id: 1, title: "foo", completed: true},
+        {id: 2, title: "goo", completed: false}
+      ],
+      ready: function() {
+        this.itemsChanged();
+      },
+      route: function(inEvent) {
+        if (this.filter != inEvent.detail) {
+          console.log("route: setting [filter] to [%s]", inEvent.detail);
+          this.filter = inEvent.detail || "all";
+          this.filterItems();
+        }
+      },
+      itemsChanged: function() {
+        this.completedCount =
+          this.items.filter(this.filters.completed).length;
+        this.activeCount = this.items.length - this.completedCount;
+        this.filterItems();
+      },
+      filterItems: function() {
+        var fn = this.filters[this.filter];
+        this.filtered = fn ? this.items.filter(fn) : this.items;
+        console.log("set [filtered] to ", this.filtered);
+      },
+      filters: {
+        active: function(inItem) {
+          return !inItem.completed;
+        },
+        completed: function(inItem) {
+          return inItem.completed;
+        }
+      }
+    });
+  </script>
+</element>

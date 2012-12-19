@@ -1,0 +1,62 @@
+<element name="td-list" attributes="items">
+  <template>
+    <ul id="todo-list" on-inputEnter="inputEnter">
+      <template iterate="items">
+          <li completed="{{completed}}" editing="{{editing}}" on-dblclick="dblClick">
+            <div class="view">
+              <input type="checkbox" class="toggle" checked="{{completed}}">
+              <label>{{title}}</label>
+              <button class="destroy" on-click="destroyClick"></button>
+            </div>
+            <input class="edit" on-change="inputEnter" value="{{title}}"></input>
+          </li>
+      </template>
+    </ul>
+  </template>
+  <script>
+    this.component({
+      publish: {
+        editingItem: null
+      },
+      bind: {
+        // watch this data to see if this state is changed via UI
+        completed: 'completed'
+      },
+      completedInput: function() {
+        // if completed property on an item was modified via the UI
+        // then we notify ancestors
+        // solves the problem of not being able to watch sub-objects
+        // automatically via Object.observe
+        this.fireEvent('itemchanged');
+      },
+      destroyClick: function(inEvent) {
+        this.fireEvent('destroyitem', inEvent.currentTarget.model);
+      },
+      dblClick: function(inEvent) {
+        this.editingItem = inEvent.currentTarget;
+      },
+      inputEnter: function(inEvent) {
+        this.editingItem = null;
+      },
+      editingItemChanged: function(inOld) {
+        if (inOld) {
+          inOld.removeAttribute('editing');
+          if (inOld.model.title == '') {
+            this.fireEvent('destroyitem', inOld.model);
+          }
+        }
+        if (this.editingItem) {
+          this.editingItem.setAttribute('editing', true);
+          this.editingItem.querySelector('.edit').focus(true);
+        }
+      }/*,
+      itemsChanged: function() {
+        // we don't have a way to bind to references yet, so we fake it
+        // this.model is our owner's localModel
+        if (this.node.model.todos) {
+          this.items = this.node.model.todos.filtered;
+        }
+      }*/
+    });
+  </script>
+</element>

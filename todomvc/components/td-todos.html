@@ -1,0 +1,43 @@
+<element name="td-todos" attributes="filter items">
+  <link rel="components" href="../../../toolkit/src/g-selector.html">
+  <template>
+    <section id="todoapp">
+      <header id="header">
+        <input id="new-todo" placeholder="What needs to be done?" autofocus on-keypress="keypress">
+      </header>
+
+      <section id="main" showing="{{hasItems}}">
+        <input id="toggle-all" type="checkbox">
+        <label for="toggle-all">Mark all as complete</label>
+        <td-list items="{{items}}"></td-list>
+      </section>
+
+      <footer id="footer">
+        <span id="todo-count"><strong>{{activeCount}}</strong> {{countText}}</span>
+
+        <g-selector id="filters" selected="{{selected}}">
+          <li><a href="../#/">All</a></li>
+          <li><a href="../#/active">Active</a></li>
+          <li><a href="../#/completed">Completed</a></li>
+        </g-selector>
+
+        <button id="clear-completed" on-click="clearAction">Clear completed ({{completedCount}})</button>
+      </footer>
+    </section>
+  </template>
+  <script>
+    this.component({
+      publish: {
+        activeCount: 0,
+        completedCount: 0
+      },
+      activeCountChanged: function() {
+        this.countText = ' item' + (this.activeCount == 1 ? '' : 's') 
+          + ' left';
+      },
+      filterChanged: function() {
+        this.selected = ['all', 'active', 'completed'].indexOf(this.filter);
+      }
+    });
+  </script>
+</element>
