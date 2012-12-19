@@ -1,17 +1,21 @@
 <element name="td-app">
   <template>
+
     <g-director path="/(\w*)" on-route="route"></g-director>
-    
-    <td-todos items="{{filtered}}" 
+
+    <td-todos items="{{filtered}}"
               activeCount="{{activeCount}}"
               completedCount="{{completedCount}}"
-              filter="{{filter}}"></td-todos>
-    
+              filter="{{filter}}"
+              on-newitem="newItem"></td-todos>
+
     <!-- make two, they're reusable -->
-    <td-todos items="{{filtered}}" 
+    <td-todos items="{{filtered}}"
           activeCount="{{activeCount}}"
           completedCount="{{completedCount}}"
-          filter="{{filter}}"></td-todos>
+          filter="{{filter}}"
+          on-newitem="newItem"></td-todos>
+
   </template>
   <script>
     this.component({
@@ -39,6 +43,17 @@
         var fn = this.filters[this.filter];
         this.filtered = fn ? this.items.filter(fn) : this.items;
         console.log("set [filtered] to ", this.filtered);
+      },
+      newItem: function(inEvent, inTitle) {
+        var title = String(inTitle).trim();
+        if (title) {
+          this.items.push({
+            id: this.items.length,
+            title: inTitle,
+            completed: false
+          });
+          this.itemsChanged();
+        }
       },
       filters: {
         active: function(inItem) {

@@ -32,11 +32,18 @@
         completedCount: 0
       },
       activeCountChanged: function() {
-        this.countText = ' item' + (this.activeCount == 1 ? '' : 's') 
-          + ' left';
+        this.countText = ' item' + (this.activeCount == 1 ? '' : 's') + ' left';
       },
       filterChanged: function() {
         this.selected = ['all', 'active', 'completed'].indexOf(this.filter);
+      },
+      keypress: function(inEvent) {
+        var ENTER_KEY = 13;
+        if (inEvent.charCode == ENTER_KEY) {
+          var input = inEvent.currentTarget;
+          this.fireEvent("newitem", input.value);
+          input.value = '';
+        }
       }
     });
   </script>

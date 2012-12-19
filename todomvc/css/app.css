@@ -1,8 +1,6 @@
 /* base.css overrides */
 
-[showing=false] {
-  display: none;
-}
+/* in base.css this is ""#todoapp h1" */
 
 h1 {
 	font-size: 70px;
@@ -18,13 +16,13 @@ h1 {
 	text-rendering: optimizeLegibility;
 }
 
+/* these two are not overrides, should they be elsewhere? */
+
+[showing=false] {
+  display: none;
+}
+
 td-app {
   display: block;
   margin-top: -60px;
-}
-
-body {
-  /* anti-fouc */
-  opacity: 0;
-  -webkit-transition: opacity 0.2s;
 }
