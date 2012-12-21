@@ -5,15 +5,12 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-ribbon" extends="g-menu" attributes="label, selected, multi" handlers="click: clickHandler">
+<element name="pi-ribbon" extends="g-selector" attributes="label selected" handlers="click: clickHandler">
   <link rel="stylesheet" href="css/pi-ribbon.css" />
-  <link rel="components" href="../../../toolkit/src/g-menu.html"/>
-  <link rel="components" href="../../../toolkit/src/g-icon.html"/>
+  <link rel="components" href="../../../toolkit/src/g-selector.html"/>
   <template>
-    <div id="label" class="app-label">{{label}}</div>
-    <div class="body">
-      <shadow></shadow>
-    </div>
+    <div class="app-label">{{label}}</div>
+    <shadow></shadow>
   </template>
   <script>
     this.component({

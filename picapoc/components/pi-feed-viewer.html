@@ -26,7 +26,12 @@
     this.component({
       publish: {
         topics: [],
-        feed: ''
+        feed: '',
+        previous: function() {
+          this.$.panels.previous();
+          // FIXME(ffu): should be able to take this out when we have 2-ways binding
+          this.node.selected = this.$.panels.selected;
+        }
       },
       ready: function() {
         var mq = window.matchMedia('(max-width: 800px)');

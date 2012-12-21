@@ -31,7 +31,9 @@
     google.load('feeds', '1', {callback: feedsReady.bind(this)});
     
     this.component({
-      count: 25,
+      publish: {
+        count: 25
+      },
       feedChanged: function() {
         XGFeeds.require(this.query.bind(this));
       },
