@@ -30,6 +30,7 @@
         this.fireEvent('itemchanged');
       },
       destroyClick: function(inEvent) {
+        console.log("destroyClick", inEvent.currentTarget);
         this.fireEvent('destroyitem', inEvent.currentTarget.model);
       },
       dblClick: function(inEvent) {

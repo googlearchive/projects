@@ -7,14 +7,16 @@
               activeCount="{{activeCount}}"
               completedCount="{{completedCount}}"
               filter="{{filter}}"
-              on-newitem="newItem"></td-todos>
+              on-newitem="newItem"
+              on-destroyitem="destroyItem"></td-todos>
 
     <!-- make two, they're reusable -->
     <td-todos items="{{filtered}}"
           activeCount="{{activeCount}}"
           completedCount="{{completedCount}}"
           filter="{{filter}}"
-          on-newitem="newItem"></td-todos>
+          on-newitem="newItem"
+          on-destroyitem="destroyItem"></td-todos>
 
   </template>
   <script>
@@ -53,6 +55,12 @@
             completed: false
           });
           this.itemsChanged();
+        }
+      },
+      destroyItem: function(inEvent, inItem) {
+        var i = this.items.indexOf(inItem);
+        if (i >= 0) {
+          this.items.splice(i, 1);
         }
       },
       filters: {
