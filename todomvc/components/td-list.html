@@ -2,7 +2,7 @@
   <template>
     <ul id="todo-list" on-inputEnter="inputEnter">
       <template iterate="items">
-          <li completed="{{completed}}" editing="{{editing}}" on-dblclick="editingAction">
+          <li completed="{{completed}}" on-dblclick="editingAction">
             <div class="view">
               <input type="checkbox" class="toggle" checked="{{completed}}" on-click="completedAction">
               <label>{{title}}</label>
@@ -16,6 +16,9 @@
   <script>
     this.component({
       editingItem: null,
+      itemsChanged: function() {
+        console.log("td-list.itemsChanged", this.items);
+      },
       completedAction: function() {
         // if completed property on an item was modified via the UI
         // then we notify ancestors
@@ -24,11 +27,10 @@
         this.send('itemchanged');
       },
       destroyAction: function(inEvent, inDetail, inSender) {
-        console.log("destroyClick", inSender);
         this.send('destroyitem', inSender.model);
       },
-      editingAction: function(inEvent) {
-        this.editingItem = inEvent.currentTarget;
+      editingAction: function(inEvent, inDetail, inSender) {
+        this.editingItem = inSender;
       },
       inputEnter: function(inEvent) {
         this.editingItem = null;
