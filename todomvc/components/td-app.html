@@ -1,76 +1,44 @@
 <element name="td-app">
+  <link rel="components" href="../lib/components/g-director.html">
+  <link rel="components" href="td-model.html">
+  <link rel="components" href="td-todos.html">
   <template>
-
     <g-director path="/(\w*)" on-route="route"></g-director>
 
-    <td-todos items="{{filtered}}"
-              activeCount="{{activeCount}}"
-              completedCount="{{completedCount}}"
-              filter="{{filter}}"
-              on-newitem="newItem"
-              on-destroyitem="destroyItem"></td-todos>
+    <!-- make one, they're modular -->
+    <td-model id="one" filter="{{filter}}"></td-model>
+    <td-todos id="t_one" todos="{{one}}" filter="{{filter}}"
+              activeCount="{{one.activeCount}}"></td-todos>
 
     <!-- make two, they're reusable -->
-    <td-todos items="{{filtered}}"
-          activeCount="{{activeCount}}"
-          completedCount="{{completedCount}}"
-          filter="{{filter}}"
-          on-newitem="newItem"
-          on-destroyitem="destroyItem"></td-todos>
-
+    <td-model id="two" filter="{{filter}}"></td-model>
+    <td-todos id="t_two" todos="{{two}}" filter="{{filter}}"
+              activeCount="{{two.activeCount}}"></td-todos>
   </template>
   <script>
     this.component({
-      items: [
-        {id: 1, title: "foo", completed: true},
-        {id: 2, title: "goo", completed: false}
-      ],
       ready: function() {
-        this.itemsChanged();
+        this.one = this.$.one.data;
+        this.one.items = [
+          {id: 1, title: "foo", completed: true},
+          {id: 3, title: "flew", completed: false},
+          {id: 4, title: "flu", completed: false},
+          {id: 5, title: "roux", completed: false},
+          {id: 6, title: "rue", completed: false},
+          {id: 7, title: "slough", completed: false},
+          {id: 8, title: "slew", completed: false}
+        ];
+        this.two = this.$.two.data;
+        this.two.items = [
+          {id: 1, title: "wee", completed: true},
+          {id: 2, title: "see", completed: false},
+          {id: 3, title: "gee", completed: false}
+        ];
       },
       route: function(inEvent) {
-        if (this.filter != inEvent.detail) {
-          console.log("route: setting [filter] to [%s]", inEvent.detail);
-          this.filter = inEvent.detail || "all";
-          this.filterItems();
-        }
-      },
-      itemsChanged: function() {
-        this.completedCount =
-          this.items.filter(this.filters.completed).length;
-        this.activeCount = this.items.length - this.completedCount;
-        this.filterItems();
-      },
-      filterItems: function() {
-        var fn = this.filters[this.filter];
-        this.filtered = fn ? this.items.filter(fn) : this.items;
-        console.log("set [filtered] to ", this.filtered);
-      },
-      newItem: function(inEvent, inTitle) {
-        var title = String(inTitle).trim();
-        if (title) {
-          this.items.push({
-            id: this.items.length,
-            title: inTitle,
-            completed: false
-          });
-          this.itemsChanged();
-        }
-      },
-      destroyItem: function(inEvent, inItem) {
-        var i = this.items.indexOf(inItem);
-        if (i >= 0) {
-          this.items.splice(i, 1);
-        }
-      },
-      filters: {
-        active: function(inItem) {
-          return !inItem.completed;
-        },
-        completed: function(inItem) {
-          return inItem.completed;
-        }
+        console.log("route: setting [filter] to [%s]", inEvent.detail);
+        this.filter = inEvent.detail || "all";
       }
-    });
+   });
   </script>
 </element>

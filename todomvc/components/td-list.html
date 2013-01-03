@@ -2,11 +2,11 @@
   <template>
     <ul id="todo-list" on-inputEnter="inputEnter">
       <template iterate="items">
-          <li completed="{{completed}}" editing="{{editing}}" on-dblclick="dblClick">
+          <li completed="{{completed}}" editing="{{editing}}" on-dblclick="editingAction">
             <div class="view">
-              <input type="checkbox" class="toggle" checked="{{completed}}">
+              <input type="checkbox" class="toggle" checked="{{completed}}" on-click="completedAction">
               <label>{{title}}</label>
-              <button class="destroy" on-click="destroyClick"></button>
+              <button class="destroy" on-click="destroyAction"></button>
             </div>
             <input class="edit" on-change="inputEnter" value="{{title}}"></input>
           </li>
@@ -15,25 +15,19 @@
   </template>
   <script>
     this.component({
-      publish: {
-        editingItem: null
-      },
-      bind: {
-        // watch this data to see if this state is changed via UI
-        completed: 'completed'
-      },
-      completedInput: function() {
+      editingItem: null,
+      completedAction: function() {
         // if completed property on an item was modified via the UI
         // then we notify ancestors
         // solves the problem of not being able to watch sub-objects
         // automatically via Object.observe
-        this.fireEvent('itemchanged');
+        this.send('itemchanged');
       },
-      destroyClick: function(inEvent) {
-        console.log("destroyClick", inEvent.currentTarget);
-        this.fireEvent('destroyitem', inEvent.currentTarget.model);
+      destroyAction: function(inEvent, inDetail, inSender) {
+        console.log("destroyClick", inSender);
+        this.send('destroyitem', inSender.model);
       },
-      dblClick: function(inEvent) {
+      editingAction: function(inEvent) {
         this.editingItem = inEvent.currentTarget;
       },
       inputEnter: function(inEvent) {
@@ -43,21 +37,14 @@
         if (inOld) {
           inOld.removeAttribute('editing');
           if (inOld.model.title == '') {
-            this.fireEvent('destroyitem', inOld.model);
+            this.send('destroyitem', inOld.model);
           }
         }
         if (this.editingItem) {
           this.editingItem.setAttribute('editing', true);
           this.editingItem.querySelector('.edit').focus(true);
         }
-      }/*,
-      itemsChanged: function() {
-        // we don't have a way to bind to references yet, so we fake it
-        // this.model is our owner's localModel
-        if (this.node.model.todos) {
-          this.items = this.node.model.todos.filtered;
-        }
-      }*/
+      }
     });
   </script>
 </element>
