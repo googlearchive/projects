@@ -11,10 +11,10 @@
   <link rel="components" href="../../../toolkit/src/g-panels.html"/>
   <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
   <link rel="components" href="../../../toolkit/src/g-menu-item.html"/>
+  <link rel="components" href="../../../toolkit/src/g-menu-button.html"/>
+  <link rel="components" href="../../../toolkit/src/g-toolbar.html"/>
   <link rel="components" href="pi-ribbon.html"/>
-  <link rel="components" href="pi-toolbar.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
-  <link rel="components" href="pi-dropdown-button.html"/>
   <template>
     <g-panels id="panels" selected="main" transition="flow">
       <pi-ribbon id="ribbon" label="Pica" selected="0" on-select="ribbonSelect">
@@ -22,24 +22,25 @@
         <g-menu-item label="Accounts" src="../images/ribbon_accounts.svg"></g-menu-item>
       </pi-ribbon>
       <div id="main">
-        <pi-toolbar id="toolbar">
-          <g-icon-button id="navButton" class="left" src="../images/nav-list.svg" on-click="navButtonClick"></g-icon-button>
-          <div id="actionBar">
-            <pi-dropdown-button id="layoutMenu" src="../images/view_quilt.svg" on-click="layoutSelect">
+        <g-toolbar>
+          <g-icon-button id="navButton" src="../images/nav-list.svg" on-click="navButtonClick"></g-icon-button>
+          <label class="flex">{{toolbarTitle}}</label>
+          <g-toolbar class="responsive">
+            <g-menu-button src="../images/view_quilt.svg" selected="0" on-click="layoutSelect">
               <g-menu-item label="Grid" src="../images/view_modules.svg"></g-menu-item>
               <g-menu-item label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
-            </pi-dropdown-button>
-            <pi-dropdown-button src="../images/add.svg">
+            </g-menu-button>
+            <g-menu-button src="../images/add.svg">
               <g-menu-item src="../images/edit_page.svg">Post a Comment</g-menu-item>
               <g-menu-item src="../images/chat.svg">Share Link</g-menu-item>
               <g-menu-item src="../images/email.svg">Email Link</g-menu-item>
               <g-menu-item src="../images/favorite.svg">Add to Favorites</g-menu-item>
-            </pi-dropdown-button>
+            </g-menu-button>
             <g-icon-button src="../images/search_the_web.svg"></g-icon-button>
-          </div>
+          </g-toolbar>
           <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
-        </pi-toolbar>
-        <g-panels id="mainPanels">
+        </g-toolbar>
+        <g-panels id="contentPanels">
           <pi-feed-viewer id="feedViewer" selected="topics" layout="grid" on-panelchange="feedViewerPanelChange"></pi-feed-viewer>
           <div></div>
         </g-panels>
@@ -59,13 +60,10 @@
         ];
       },
       navButtonClick: function() {
-        var fv = this.$.feedViewer;
-        if (fv.selected == 'detail') {
-          fv.selected = 'items';
-        } else if (fv.selected == 'items') {
-          fv.selected = 'topics';
-        } else {
+        if (this.$.feedViewer.selected == 'topics') {
           this.toggleNav();
+        } else {
+          this.$.feedViewer.previous();
         }
       },
       toggleNav: function(inSelected) {
@@ -83,17 +81,16 @@
       ribbonSelect: function() {
         var item = this.$.ribbon.selection;
         if (item) {
-          this.$.toolbar.label = item.label;
-          this.$.mainPanels.index = this.$.ribbon.selected;
+          this.toolbarTitle = item.label;
+          this.$.contentPanels.index = this.$.ribbon.selected;
           this.toggleNav('main');
         }
       },
       layoutSelect: function(e) {
-        this.$.feedViewer.layout = this.$.layoutMenu.selection.label.toLowerCase();
+        this.$.feedViewer.layout = e.currentTarget.selection.label.toLowerCase();
       },
       feedViewerPanelChange: function(e) {
-        var s = e.detail.selected;
-        this.$.navButton.src = 'images/' + (s == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
+        this.$.navButton.src = 'images/' + (e.detail.selected == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
         this.toggleNav('main');
       }
     });

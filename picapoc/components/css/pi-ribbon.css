@@ -6,6 +6,9 @@
 @host {
   display: -webkit-flex;
   -webkit-flex-flow: column;
+  background-color: #333;
+  color: white;
+  font-size: 15px;
 }
 
 .app-label {
@@ -15,20 +18,6 @@
   padding-left: 30px;
   font-size: 21px;
   color: white;
-}
-
-.body {
-  -webkit-flex: 1;
-}
-
-g-menu {
-  background-color: #333;
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  border-color: transparent;
-  box-shadow: none;
-  width: 100%;
 }
 
 /* TODO(ffu): workaround for not having reference combinators */

@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="css/pi-items-view.css" />
   <template>
     <div class="view flexbox flex {{layout}} {{view}}">
-      <template iterate="entries">
+      <template iterate="boxes">
         <div class="box flexbox flex">
           <template iterate>
-            <div class="column flexbox flex-column flex {{col}}">
-              <template iterate="rows">
+            <div class="inner flexbox flex-column flex {{box}}">
+              <template iterate="items">
                 <div class="entry flexbox flex-column flex" on-click="entryClick">
                   <div class="image flex" style="background-image: url({{imgSrc}});"></div>
                   <div class="desc">{{desc}}</div>
@@ -31,7 +31,7 @@
         entries: []
       },
       bind: {
-        entries: null
+        boxes: ['entries']
       },
       process: function(inEntries) {
         var n = document.createElement('div');
@@ -48,16 +48,16 @@
           }
         });
       },
-      entriesOutput: function(inEntries) {
+      boxesOutput: function(inEntries) {
         this.process(inEntries);
-        var views = [];
+        var b = [];
         for (var i=0; i < inEntries.length; i += 4) {
-          views.push([
-            {col: 'first', rows: inEntries.slice(i, i+2)},
-            {col: 'second', rows: inEntries.slice(i+2, i+4)}
+          b.push([
+            {box: 'one', items: inEntries.slice(i, i+2)},
+            {box: 'two', items: inEntries.slice(i+2, i+4)}
           ]);
         }
-        return views;
+        return b;
       },
       entryClick: function(e) {
         this.fireEvent('select', {entry: e.currentTarget.model});

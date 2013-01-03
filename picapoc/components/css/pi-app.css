@@ -9,7 +9,6 @@
 
 g-panels {
   -webkit-flex: 1;
-  position: relative;
   overflow: hidden;
 }
 
@@ -27,40 +26,22 @@ g-panels {
   background: white; 
 }
 
-#main > pi-feed-viewer {
-  -webkit-flex: 1;
-}
-
 #source {
   width: 340px;
   background-color: #4D4D4D;
 }
 
-#actionBar {
+g-toolbar > label {
   display: -webkit-flex;
-  -webkit-align-items: center;
-}
-
-#actionBar g-icon-button, #actionBar pi-dropdown-button {
-  margin-right: 20px;
+  font-size: 21px;
 }
 
 @media screen and (max-width: 800px) {
-  #actionBar {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 60px;
-    z-index: 1;
-    box-sizing: border-box;
-    padding-left: 20px;
-    background-color: #ddd;
-    box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 1);
-    border-top: 1px solid rgba(0, 0, 0, 0.16);
+  g-toolbar > label {
+    -webkit-justify-content: center;
   }
-  
-  #feedViewer {
+
+  #contentPanels {
     margin-bottom: 60px;
   }
 }

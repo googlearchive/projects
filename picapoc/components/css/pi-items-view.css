@@ -20,16 +20,16 @@
 }
 
 /* quilt */
-.first .entry {
+.one .entry {
   -webkit-flex: 2;
   width: 600px;
 }
 
-.first .entry:last-child {
+.one .entry:last-child {
   -webkit-flex: 1;
 }
 
-.second .entry {
+.two .entry {
   width: 300px;
 }
 
@@ -55,7 +55,7 @@
   display: none;
 }
 
-.first .desc {
+.one .desc {
   height: 30px;
 }
 
@@ -70,7 +70,7 @@
   height: 300px;
 }
 
-.grid .column {
+.grid .inner {
   -webkit-flex-flow: row;
 }
 
@@ -89,7 +89,7 @@
     -webkit-flex-flow: row;
   }
   
-  .first .entry, .second .entry {
+  .one .entry, .two .entry {
     box-sizing: border-box;
     display: -webkit-flex;
     -webkit-flex-flow: column;
@@ -102,11 +102,11 @@
     height: 300px;
   }
   
-  .first .entry:last-child, .second .entry:last-child {
+  .one .entry:last-child, .two .entry:last-child {
     border-right: 0;
   }
   
-  .first .desc, .second .desc {
+  .one .desc, .two .desc {
     height: 70px;
   }
 }
