@@ -20,6 +20,11 @@ g-panels {
   overflow: auto;
 }
 
+#ribbon.narrow-layout, #source.narrow-layout {
+  width: -webkit-calc(100% - 60px);
+  width: calc(100% - 60px);
+}
+
 #main {
   display: -webkit-flex;
   -webkit-flex-flow: column;

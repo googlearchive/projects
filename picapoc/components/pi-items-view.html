@@ -14,7 +14,7 @@
           <template iterate>
             <div class="inner flexbox flex-column flex {{box}}">
               <template iterate="items">
-                <div class="entry flexbox flex-column flex" on-click="entryClick">
+                <div class="item flexbox flex-column flex" on-click="itemClick">
                   <div class="image flex" style="background-image: url({{imgSrc}});"></div>
                   <div class="desc">{{desc}}</div>
                 </div>
@@ -28,39 +28,39 @@
   <script>
     this.component({
       publish: {
-        entries: []
+        items: []
       },
       bind: {
-        boxes: ['entries']
+        boxes: ['items']
       },
-      process: function(inEntries) {
+      process: function(inItems) {
         var n = document.createElement('div');
-        inEntries.forEach(function(entry) {
+        inItems.forEach(function(item) {
           // scrape image url
-          if (entry.content) {
-            var m$ = entry.content.match(/src="(.*?)"/);
-            entry.imgSrc = m$ && m$[1];
+          if (item.content) {
+            var m$ = item.content.match(/src="(.*?)"/);
+            item.imgSrc = m$ && m$[1];
           }
           // unescape html content
-          if (entry.contentSnippet) {
-            n.innerHTML = entry.contentSnippet;
-            entry.desc = n.textContent;
+          if (item.contentSnippet) {
+            n.innerHTML = item.contentSnippet;
+            item.desc = n.textContent;
           }
         });
       },
-      boxesOutput: function(inEntries) {
-        this.process(inEntries);
+      boxesOutput: function(inItems) {
+        this.process(inItems);
         var b = [];
-        for (var i=0; i < inEntries.length; i += 4) {
+        for (var i=0; i < inItems.length; i += 4) {
           b.push([
-            {box: 'one', items: inEntries.slice(i, i+2)},
-            {box: 'two', items: inEntries.slice(i+2, i+4)}
+            {box: 'one', items: inItems.slice(i, i+2)},
+            {box: 'two', items: inItems.slice(i+2, i+4)}
           ]);
         }
         return b;
       },
-      entryClick: function(e) {
-        this.fireEvent('select', {entry: e.currentTarget.model});
+      itemClick: function(e) {
+        this.fireEvent('select', {item: e.currentTarget.model});
       }
     });
   </script>

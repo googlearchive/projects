@@ -15,6 +15,7 @@
   <link rel="components" href="../../../toolkit/src/g-toolbar.html"/>
   <link rel="components" href="pi-ribbon.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
+  <link rel="components" href="pi-accounts.html"/>
   <template>
     <g-panels id="panels" selected="main" transition="flow">
       <pi-ribbon id="ribbon" label="Pica" selected="0" on-select="ribbonSelect">
@@ -42,7 +43,7 @@
         </g-toolbar>
         <g-panels id="contentPanels">
           <pi-feed-viewer id="feedViewer" selected="topics" layout="grid" on-panelchange="feedViewerPanelChange"></pi-feed-viewer>
-          <div></div>
+          <pi-accounts id="accounts"></pi-accounts>
         </g-panels>
       </div>
       <div id="source" class="right" on-click="toggleSource"></div>
@@ -52,12 +53,6 @@
     this.component({
       ready: function() {
         this.ribbonSelect();
-        this.$.feedViewer.topics = [
-          {desc: 'The Verge', imgSrc: 'https://lh3.ggpht.com/NAigEH6J985CuPR2r71cJ6C5mr1JGShoyFOjKAh_vV7Chxx8zsMOIwdKyS89xsJ77w=w705', feed: 'http://www.theverge.com/rss/index.xml'},
-          {desc: 'Engadget', imgSrc: 'http://www.engadget.com/common/images/4844163528551596.jpg.39721570957757146', feed: 'http://feeds.engadget.com/weblogsinc/engadget'},
-          {desc: 'The Kitchn', imgSrc: 'http://assets.hellocotton.com/avatars/square-256-911-12b30c1b425ea51d0b6ae70c8eae8346.png', feed: 'http://feeds.thekitchn.com/apartmenttherapy/thekitchn'},
-          {desc: 'Rock Paper Shotgun', imgSrc: 'http://www.rockpapershotgun.com/images/11/june/rpsf3r.jpg', feed: 'http://feeds.feedburner.com/RockPaperShotgun'}
-        ];
       },
       navButtonClick: function() {
         if (this.$.feedViewer.selected == 'topics') {
@@ -83,6 +78,8 @@
         if (item) {
           this.toolbarTitle = item.label;
           this.$.contentPanels.index = this.$.ribbon.selected;
+          // force to mutate topics (which is items in pi-items-view) to trigger the delegate in pi-items-view
+          this.$.feedViewer.topics = [].concat(this.$.accounts.topics);
           this.toggleNav('main');
         }
       },

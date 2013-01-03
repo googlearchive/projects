@@ -15,18 +15,7 @@
 #panels > * {
   background: white;
   overflow: auto;
-  font-family: 'Helvetica Nue', Helvetica, Arial, 'open sans', sans-serif;
   font-size: 15px;
-}
-
-#title {
-  font-size: 30px;
-  padding: 20px;
-  padding-bottom: 0;
-}
-
-#content {
-  padding: 20px;
 }
 
 #loading {
@@ -44,21 +33,10 @@
   border: 1px solid #ffff00;
 }
 
-#items.loading {
+#stories.loading {
   opacity: 0;
 }
 
 #loading.loading {
   display: block;
-}
-
-@media screen and (max-width: 800px) {
-  #detail img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  #title {
-    font-size: 20px;
-  }
 }

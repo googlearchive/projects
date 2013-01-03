@@ -20,20 +20,20 @@
 }
 
 /* quilt */
-.one .entry {
+.one .item {
   -webkit-flex: 2;
   width: 600px;
 }
 
-.one .entry:last-child {
+.one .item:last-child {
   -webkit-flex: 1;
 }
 
-.two .entry {
+.two .item {
   width: 300px;
 }
 
-.entry {
+.item {
   padding: 20px;
   border: 1px solid #ddd;
   border-top: 0;
@@ -41,6 +41,7 @@
 }
 
 .image {
+  background-color: #eee;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -64,7 +65,7 @@
   display: block;
 }
 
-.grid .entry {
+.grid .item {
   -webkit-flex: 1;
   width: auto;
   height: 300px;
@@ -89,7 +90,7 @@
     -webkit-flex-flow: row;
   }
   
-  .one .entry, .two .entry {
+  .one .item, .two .item {
     box-sizing: border-box;
     display: -webkit-flex;
     -webkit-flex-flow: column;
@@ -98,11 +99,11 @@
     padding: 10px;
   }
   
-  .entry {
+  .item {
     height: 300px;
   }
   
-  .one .entry:last-child, .two .entry:last-child {
+  .one .item:last-child, .two .item:last-child {
     border-right: 0;
   }
   

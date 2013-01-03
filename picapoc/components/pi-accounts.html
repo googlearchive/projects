@@ -1,0 +1,77 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-accounts">
+  <link rel="stylesheet" href="css/pi-accounts.css" />
+  <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
+  <template>
+    <div class="header item">Topics</div>
+    <template iterate="topics">
+      <div class="item">
+        <span class="label">{{title}}</span>
+        <g-icon-button src="images/close.svg" on-click="removeTopic"></g-icon-button>
+      </div>
+    </template>
+    <div class="item">
+      Name: <input id="name" />
+      Url: <input id="url" />
+      <g-icon-button src="../images/add.svg" on-click="addTopic"></g-icon-button>
+    </div>
+  </template>
+  <script>
+    var DEFAULT_TOPICS = [
+      {title: 'The Verge', imgSrc: 'https://lh3.ggpht.com/NAigEH6J985CuPR2r71cJ6C5mr1JGShoyFOjKAh_vV7Chxx8zsMOIwdKyS89xsJ77w=w705', feed: 'http://www.theverge.com/rss/index.xml'},
+      {title: 'Engadget', imgSrc: 'http://www.engadget.com/common/images/4844163528551596.jpg.39721570957757146', feed: 'http://feeds.engadget.com/weblogsinc/engadget'},
+      {title: 'The Kitchn', imgSrc: 'http://assets.hellocotton.com/avatars/square-256-911-12b30c1b425ea51d0b6ae70c8eae8346.png', feed: 'http://feeds.thekitchn.com/apartmenttherapy/thekitchn'},
+      {title: 'Rock Paper Shotgun', imgSrc: 'http://www.rockpapershotgun.com/images/09/nov/RPSUnityLogo.jpg', feed: 'http://feeds.feedburner.com/RockPaperShotgun'},
+      /*{title: 'Deadspin', imgSrc: 'http://www.userlogos.org/files/logos/Rog/deadspin.com-02.png', feed: 'http://feeds.gawker.com/deadspin/full'},
+      {title: 'Cute Overload', imgSrc: 'http://upload.wikimedia.org/wikipedia/en/b/b4/Cute_overload_logo.jpg', feed: 'http://cuteoverload.com/feed/'},
+      {title: 'Dinosaur Comics', imgSrc: 'http://www.qwantz.com/comics/comic2-2228.png', feed: 'http://rsspect.com/rss/qwantz.xml'},
+      {title: 'Design Milk', imgSrc: 'http://2.design-milk.com/images/2006/08/DMLogoTM-carton-icon-72dpi-100SQ.jpg', feed: 'http://feeds.feedburner.com/design-milk'},
+      {title: 'The Big Picture', imgSrc: 'http://cache.boston.com/universal/site_graphics/blogs/bigpicture/big_picture_header.jpg', feed: 'http://www.boston.com/bigpicture/index.xml'},
+      {title: 'MAKE', imgSrc: 'http://makezine.com/images/logos/makeLogo_url.gif', feed: 'http://blog.makezine.com/index.xml'}*/
+    ];
+    
+    var TOPICS_STORAGE_NAME = 'pi-accounts-topics';
+    
+    this.component({
+      publish: {
+        topics: DEFAULT_TOPICS
+      },
+      ready: function() {
+        this.load();
+      },
+      addTopic: function() {
+        var n = this.$.name.value;
+        var u = this.$.url.value;
+        if (n && u) {
+          var t = {title: n, feed: u};
+          this.topics.push(t);
+          this.$.name.value = '';
+          this.$.url.value = '';
+          this.save();
+        }
+      },
+      removeTopic: function(e) {
+        var i = this.topics.indexOf(e.currentTarget.model);
+        if (i >= 0) {
+          this.topics.splice(i, 1);
+        }
+        this.save();
+      },
+      load: function() {
+        var s = window.localStorage.getItem(TOPICS_STORAGE_NAME);
+        if (s) {
+          this.topics = JSON.parse(s);
+        }
+      },
+      save: function() {
+        window.localStorage.setItem(TOPICS_STORAGE_NAME, JSON.stringify(this.topics));
+      }
+    });
+  </script>
+</element>

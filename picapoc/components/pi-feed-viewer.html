@@ -5,22 +5,20 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-feed-viewer" attributes="selected layout">
+<element name="pi-feed-viewer" attributes="selected layout" handlers="keydown: keydownHandler">
   <link rel="stylesheet" href="css/pi-feed-viewer.css" />
   <link rel="components" href="../../../toolkit/src/g-panels.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
   <link rel="components" href="pi-items-view.html"/>
+  <link rel="components" href="pi-detail.html"/>
   <template>
     <g-panels id="panels" selected="{{selected}}" transition="keyframe" class="g-panels-scale-slide">
       <pi-items-view id="topics" layout="{{layout}}" view="topics" on-select="topicSelect"></pi-items-view>
-      <pi-items-view id="items" layout="{{layout}}" on-select="itemSelect"></pi-items-view>
-      <div id="detail">
-        <div id="title">{{title}}</div>
-        <div id="content"></div>
-      </div>
+      <pi-items-view id="stories" layout="{{layout}}" on-select="storySelect"></pi-items-view>
+      <pi-detail id="detail" title={{title}}></pi-detail>
     </g-panels>
     <div id="loading">Loading...</div>
-    <pi-gfeeds id="gfeeds" feed="{{feed}}" on-response="feedResponse"></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{feed}}" count="24" on-response="feedResponse"></pi-gfeeds>
   </template>
   <script>
     this.component({
@@ -31,6 +29,15 @@
           this.$.panels.previous();
           // FIXME(ffu): should be able to take this out when we have 2-ways binding
           this.node.selected = this.$.panels.selected;
+        },
+        showMoreStories: function(inNew) {
+          var s = this.$.stories;
+          if (inNew) {
+            s.items = [];
+          }
+          var l = s.items.length;
+          //s.items.push.apply(s.items, this.stories.slice(l, l+24));
+          s.items = this.stories.slice(0, l+24);
         }
       },
       ready: function() {
@@ -42,7 +49,7 @@
         this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 'g-panels-scale-slide';
       },
       topicsChanged: function() {
-        this.$.topics.entries = this.topics;
+        this.$.topics.items = this.topics;
       },
       selectedChanged: function() {
         this.fireEvent('panelchange', {selected: this.selected});
@@ -51,22 +58,43 @@
         this.toggleLoading(true);
       },
       topicSelect: function(e) {
-        this.node.feed = e.detail.entry.feed;
-        this.node.selected = 'items';
+        this.node.feed = e.detail.item.feed;
+        this.node.selected = 'stories';
       },
       feedResponse: function(e) {
-        this.$.items.entries = e.detail.feed.entries;
+        this.stories = e.detail.feed.entries;
+        this.showMoreStories(true);
         this.toggleLoading(false);
       },
       toggleLoading: function(inLoading) {
         this.$.loading.classList.toggle('loading', inLoading);
-        this.$.items.classList.toggle('loading', inLoading);
+        this.$.stories.classList.toggle('loading', inLoading);
       },
-      itemSelect: function(e) {
-        var d = e.detail.entry;
-        this.title = d.title;
-        this.$.content.innerHTML = d.content.replace(/(<iframe.*?>.*?<\/iframe>)/g, '');
-        this.node.selected = 'detail';
+      storySelect: function(e) {
+        this.showStory(e.detail.item);
+      },
+      showStory: function(inStory) {
+        if (inStory) {
+          this.currentStory = inStory; 
+          this.title = inStory.title;
+          this.$.detail.content = inStory.content;
+          this.node.selected = 'detail';
+        }
+      },
+      nextPrevStory: function(inPrev) {
+        var i = this.stories.indexOf(this.currentStory);
+        if (i >= 0) {
+          this.showStory(this.stories[i + (inPrev ? -1 : 1)]);
+        }
+      },
+      keydownHandler: function(e) {
+        var beforeIndex = this.index;
+        if (e.keyCode == 38) {
+          this.nextPrevStory();
+        } else if (e.keyCode == 40) {
+          this.nextPrevStory(true);
+        }
+        e.stopPropagation();
       }
     });
   </script>

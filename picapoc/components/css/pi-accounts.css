@@ -1,0 +1,34 @@
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
+.item {
+  padding: 10px 20px;
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid #ddd;
+  display: -webkit-flex;
+  -webkit-align-items: center;
+}
+
+.item > * {
+  display: inline-block;
+}
+
+.item > input {
+  height: 30px;
+  margin: 0 10px;
+  font-size: 16px;
+}
+
+.item > .label, .item > #url {
+  -webkit-flex: 1;
+}
+
+.header {
+  background-color: #4D4D4D;
+  color: #eee;
+  font-size: 20px;
+}
