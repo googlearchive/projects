@@ -23,7 +23,7 @@
   font-size: 16px;
 }
 
-.item > .label, .item > #url {
+.item > .label, .item > #feed {
   -webkit-flex: 1;
 }
 

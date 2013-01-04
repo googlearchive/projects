@@ -28,10 +28,7 @@
   <script>
     this.component({
       publish: {
-        items: []
-      },
-      bind: {
-        boxes: ['items']
+        items: null
       },
       process: function(inItems) {
         var n = document.createElement('div');
@@ -48,16 +45,16 @@
           }
         });
       },
-      boxesOutput: function(inItems) {
-        this.process(inItems);
+      itemsChanged: function() {
+        this.process(this.items);
         var b = [];
-        for (var i=0; i < inItems.length; i += 4) {
+        for (var i=0; i < this.items.length; i += 4) {
           b.push([
-            {box: 'one', items: inItems.slice(i, i+2)},
-            {box: 'two', items: inItems.slice(i+2, i+4)}
+            {box: 'one', items: this.items.slice(i, i+2)},
+            {box: 'two', items: this.items.slice(i+2, i+4)}
           ]);
         }
-        return b;
+        this.boxes = b;
       },
       itemClick: function(e) {
         this.fireEvent('select', {item: e.currentTarget.model});

@@ -19,7 +19,7 @@
     </template>
     <div class="item">
       Name: <input id="name" />
-      Url: <input id="url" />
+      Feed: <input id="feed" />
       <g-icon-button src="../images/add.svg" on-click="addTopic"></g-icon-button>
     </div>
     <pi-accounts-model id="accounts"></pi-accounts-model>
@@ -27,18 +27,18 @@
   <script>
     this.component({
       publish: {
-        topics: ''
+        topics: null
       },
       ready: function() {
         this.topics = this.$.accounts.topics;
       },
       addTopic: function() {
         var n = this.$.name.value;
-        var u = this.$.url.value;
-        if (n && u) {
-          this.$.accounts.addTopic({name: n, url: u})
+        var f = this.$.feed.value;
+        if (n && f) {
+          this.$.accounts.addTopic({title: n, feed: f})
           this.$.name.value = '';
-          this.$.url.value = '';
+          this.$.feed.value = '';
         }
       },
       removeTopic: function(e) {

@@ -24,10 +24,9 @@
     
     this.component({
       publish: {
-        topics: DEFAULT_TOPICS,
+        topics: null,
         addTopic: function(inTopic) {
-          var t = {title: inTopic.name, feed: inTopic.url};
-          this.topics.push(t);
+          this.topics.push(inTopic);
           this.save();
         },
         removeTopic: function(inTopic) {
@@ -45,6 +44,8 @@
         var s = window.localStorage.getItem(TOPICS_STORAGE_NAME);
         if (s) {
           this.topics = JSON.parse(s);
+        } else {
+          this.topics = DEFAULT_TOPICS.slice(0);
         }
       },
       save: function() {
