@@ -27,7 +27,7 @@
           <g-icon-button id="navButton" src="../images/nav-list.svg" on-click="navButtonClick"></g-icon-button>
           <label class="flex">{{toolbarTitle}}</label>
           <g-toolbar class="responsive">
-            <g-menu-button src="../images/view_quilt.svg" selected="0" on-click="layoutSelect">
+            <g-menu-button src="../images/view_quilt.svg" selected="0" on-select="layoutSelect">
               <g-menu-item label="Grid" src="../images/view_modules.svg"></g-menu-item>
               <g-menu-item label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
             </g-menu-button>
@@ -83,8 +83,10 @@
           this.toggleNav('main');
         }
       },
-      layoutSelect: function(e) {
-        this.$.feedViewer.layout = e.currentTarget.selection.label.toLowerCase();
+      layoutSelect: function(inEvent, inDetail, inSender) {
+        if (inDetail.isSelected) {
+          this.$.feedViewer.layout = inDetail.item.label.toLowerCase();
+        }
       },
       feedViewerPanelChange: function(e) {
         this.$.navButton.src = 'images/' + (e.detail.selected == 'topics' ? 'nav-list.svg' : 'nav-return.svg');

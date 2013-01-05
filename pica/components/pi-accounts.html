@@ -11,12 +11,14 @@
   <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
   <template>
     <div class="header item">Topics</div>
-    <template iterate="topics">
-      <div class="item">
-        <span class="label">{{title}}</span>
-        <g-icon-button src="images/close.svg" on-click="removeTopic"></g-icon-button>
-      </div>
-    </template>
+    <div>
+      <template iterate="topics">
+        <div class="item">
+          <span class="label">{{title}}</span>
+          <g-icon-button src="images/close.svg" on-click="removeTopic"></g-icon-button>
+        </div>
+      </template>
+    </div>
     <div class="item">
       Name: <input id="name" />
       Feed: <input id="feed" />

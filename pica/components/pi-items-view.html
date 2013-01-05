@@ -56,8 +56,8 @@
         }
         this.boxes = b;
       },
-      itemClick: function(e) {
-        this.fireEvent('select', {item: e.currentTarget.model});
+      itemClick: function(inEvent, inDetail, inSender) {
+        this.fireEvent('select', {item: inSender.model});
       }
     });
   </script>
