@@ -1,4 +1,4 @@
-<element name="td-todos" attributes="filter items">
+<element name="td-todos">
   <link rel="components" href="../../../toolkit/src/g-selector.html">
   <link rel="components" href="td-list.html">
   <template>
@@ -17,14 +17,13 @@
       <footer id="footer">
         <span id="todo-count"><strong>{{activeCount}}</strong> {{countText}}</span>
 
-<!--        <g-selector id="filters" selected="{{filter}}">-->
-        <g-selector id="filters">
+        <g-selector id="filters" selected="{{filter}}">
           <li name="all"><a href="../#/">All</a></li>
           <li name="active"><a href="../#/active">Active</a></li>
           <li name="completed"><a href="../#/completed">Completed</a></li>
         </g-selector>
 
-        <button id="clear-completed" on-click="clearAction">Clear completed ({{todos.completedCount}})</button>
+        <button id="clear-completed" showing="{{hasCompleted}}" on-click="clearAction">Clear completed ({{todos.completedCount}})</button>
       </footer>
     </section>
   </template>
@@ -35,11 +34,9 @@
         filter: '',
         activeCount: 0
       },
-      filterChanged: function() {
-        this.$.filters.selected = this.filter;
-      },
       activeCountChanged: function() {
         this.countText = ' item' + (this.activeCount == 1 ? '' : 's') + ' left';
+        this.hasCompleted = Boolean(this.todos.completedCount);
       },
       itemChanged: function( ){
         this.todos.itemsChanged();
