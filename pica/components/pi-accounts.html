@@ -43,8 +43,8 @@
           this.$.feed.value = '';
         }
       },
-      removeTopic: function(e) {
-        this.$.accounts.removeTopic(e.currentTarget.model);
+      removeTopic: function(inEvent, inDetail, inSender) {
+        this.$.accounts.removeTopic(inSender.model);
       }
     });
   </script>

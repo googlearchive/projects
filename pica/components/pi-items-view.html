@@ -46,9 +46,11 @@
         });
       },
       itemsChanged: function() {
-        this.process(this.items);
-        var b = [];
-        for (var i=0; i < this.items.length; i += 4) {
+        var b = [], l = this.items && this.items.length;
+        if (l) {
+          this.process(this.items);
+        }
+        for (var i=0; i < l; i += 4) {
           b.push([
             {box: 'one', items: this.items.slice(i, i+2)},
             {box: 'two', items: this.items.slice(i+2, i+4)}
@@ -57,7 +59,7 @@
         this.boxes = b;
       },
       itemClick: function(inEvent, inDetail, inSender) {
-        this.fireEvent('select', {item: inSender.model});
+        this.send('select', {item: inSender.model});
       }
     });
   </script>

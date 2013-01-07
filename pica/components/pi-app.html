@@ -17,19 +17,19 @@
   <link rel="components" href="pi-feed-viewer.html"/>
   <link rel="components" href="pi-accounts.html"/>
   <template>
-    <g-panels id="panels" selected="main" transition="flow">
-      <pi-ribbon id="ribbon" label="Pica" selected="0" on-select="ribbonSelect">
-        <g-menu-item label="Topics" src="../images/ribbon_topics.svg"></g-menu-item>
-        <g-menu-item label="Accounts" src="../images/ribbon_accounts.svg"></g-menu-item>
+    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow">
+      <pi-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-select="ribbonSelect">
+        <g-menu-item name="topics" label="Topics" src="../images/ribbon_topics.svg"></g-menu-item>
+        <g-menu-item name="accounts" label="Accounts" src="../images/ribbon_accounts.svg"></g-menu-item>
       </pi-ribbon>
       <div id="main">
         <g-toolbar>
           <g-icon-button id="navButton" src="../images/nav-list.svg" on-click="navButtonClick"></g-icon-button>
           <label class="flex">{{toolbarTitle}}</label>
           <g-toolbar class="responsive">
-            <g-menu-button src="../images/view_quilt.svg" selected="0" on-select="layoutSelect">
-              <g-menu-item label="Grid" src="../images/view_modules.svg"></g-menu-item>
-              <g-menu-item label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
+            <g-menu-button src="../images/view_quilt.svg" selected="{{layout}}" on-select="layoutSelect">
+              <g-menu-item name="grid" label="Grid" src="../images/view_modules.svg"></g-menu-item>
+              <g-menu-item name="quilt" label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
             </g-menu-button>
             <g-menu-button src="../images/add.svg">
               <g-menu-item src="../images/edit_page.svg">Post a Comment</g-menu-item>
@@ -41,8 +41,8 @@
           </g-toolbar>
           <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
         </g-toolbar>
-        <g-panels id="contentPanels">
-          <pi-feed-viewer id="feedViewer" selected="topics" layout="grid" on-panelchange="feedViewerPanelChange"></pi-feed-viewer>
+        <g-panels id="contentPanels" selected="{{ribbonSelected}}">
+          <pi-feed-viewer id="topics" selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
           <pi-accounts id="accounts"></pi-accounts>
         </g-panels>
       </div>
@@ -51,45 +51,41 @@
   </template>
   <script>
     this.component({
-      ready: function() {
-        this.ribbonSelect();
-      },
+      ribbonSelected: 'topics',
+      layout: 'grid',
+      selectedPanel: 'main',
+      topicsSelectedPanel: 'topics',
       navButtonClick: function() {
-        if (this.$.feedViewer.selected == 'topics') {
+        if (this.topicsSelectedPanel == 'topics') {
           this.toggleNav();
         } else {
-          this.$.feedViewer.previous();
+          this.$.topics.previous();
         }
       },
       toggleNav: function(inSelected) {
         if (inSelected) {
-          this.$.panels.selected = inSelected;
+          this.selectedPanel = inSelected;
         } else {
           this.$.panels.toggleBetween('ribbon', 'main');
         }
-        this.$.navButton.active = this.$.panels.selected == 'ribbon';
+        this.$.navButton.active = this.selectedPanel == 'ribbon';
       },
       toggleSource: function() {
         this.$.panels.toggleBetween('main', 'source');
-        this.$.sourceButton.active = this.$.panels.selected == 'source';
+        this.$.sourceButton.active = this.selectedPanel == 'source';
       },
       ribbonSelect: function() {
         var item = this.$.ribbon.selection;
         if (item) {
           this.toolbarTitle = item.label;
-          this.$.contentPanels.index = this.$.ribbon.selected;
-          // force to mutate topics (which is items in pi-items-view) to trigger the delegate in pi-items-view
-          this.$.feedViewer.topics = [].concat(this.$.accounts.topics);
+          // force to mutate topics to trigger itemsChanged in pi-items-view
+          this.$.topics.topics = this.$.accounts.topics.slice(0);
           this.toggleNav('main');
         }
       },
-      layoutSelect: function(inEvent, inDetail, inSender) {
-        if (inDetail.isSelected) {
-          this.$.feedViewer.layout = inDetail.item.label.toLowerCase();
-        }
-      },
-      feedViewerPanelChange: function(e) {
-        this.$.navButton.src = 'images/' + (e.detail.selected == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
+      topicsSelectedPanelChanged: function() {
+        this.$.navButton.src = 'images/' + 
+          (this.topicsSelectedPanel == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
         this.toggleNav('main');
       }
     });

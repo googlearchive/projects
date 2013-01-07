@@ -45,9 +45,9 @@
       },
       loaded: function(inResult) {
         if (!inResult.error) {
-          this.fireEvent('response', {feed: inResult.feed});
+          this.send('response', {feed: inResult.feed});
         } else {
-          this.fireEvent('error', {status: inResult.status});
+          this.send('error', {status: inResult.status});
         }
       }
     });

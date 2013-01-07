@@ -40,7 +40,8 @@
         content: ''
       },
       contentChanged: function() {
-        this.$.content.innerHTML = this.content.replace(/(<iframe.*?>.*?<\/iframe>)/g, '');
+        this.$.content.innerHTML = this.content.length &&
+          this.content.replace(/(<iframe.*?>.*?<\/iframe>)/g, '');
       }
     });
   </script>

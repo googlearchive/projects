@@ -13,9 +13,9 @@
   <link rel="components" href="pi-detail.html"/>
   <template>
     <g-panels id="panels" selected="{{selected}}" transition="keyframe" class="g-panels-scale-slide">
-      <pi-items-view id="topics" layout="{{layout}}" view="topics" on-select="topicSelect"></pi-items-view>
-      <pi-items-view id="stories" layout="{{layout}}" on-select="storySelect"></pi-items-view>
-      <pi-detail id="detail" title={{title}}></pi-detail>
+      <pi-items-view id="topics" layout="{{layout}}" items={{topics}} view="topics" on-select="topicSelect"></pi-items-view>
+      <pi-items-view id="stories" layout="{{layout}}" items={{stories}} on-select="storySelect"></pi-items-view>
+      <pi-detail id="detail" title="{{currentStory.title}}" content="{{currentStory.content}}"></pi-detail>
     </g-panels>
     <div id="loading">Loading...</div>
     <pi-gfeeds id="gfeeds" feed="{{feed}}" count="24" on-response="feedResponse"></pi-gfeeds>
@@ -24,22 +24,11 @@
     this.component({
       publish: {
         topics: null,
-        feed: '',
         previous: function() {
           this.$.panels.previous();
-          // FIXME(ffu): should be able to take this out when we have 2-ways binding
-          this.node.selected = this.$.panels.selected;
-        },
-        showMoreStories: function(inNew) {
-          var s = this.$.stories;
-          if (inNew) {
-            s.items = [];
-          }
-          var l = s.items.length;
-          //s.items.push.apply(s.items, this.stories.slice(l, l+24));
-          s.items = this.stories.slice(0, l+24);
         }
       },
+      feed: '',
       ready: function() {
         var mq = window.matchMedia('(max-width: 800px)');
         mq.addListener(this.layoutChange.bind(this));
@@ -48,22 +37,15 @@
       layoutChange: function(inQuery) {
         this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 'g-panels-scale-slide';
       },
-      topicsChanged: function() {
-        this.$.topics.items = this.topics;
-      },
-      selectedChanged: function() {
-        this.fireEvent('panelchange', {selected: this.selected});
-      },
       feedChanged: function() {
         this.toggleLoading(true);
       },
       topicSelect: function(e) {
-        this.node.feed = e.detail.item.feed;
-        this.node.selected = 'stories';
+        this.feed = e.detail.item.feed;
+        this.selected = 'stories';
       },
       feedResponse: function(e) {
         this.stories = e.detail.feed.entries;
-        this.showMoreStories(true);
         this.toggleLoading(false);
       },
       toggleLoading: function(inLoading) {
@@ -76,9 +58,7 @@
       showStory: function(inStory) {
         if (inStory) {
           this.currentStory = inStory; 
-          this.title = inStory.title;
-          this.$.detail.content = inStory.content;
-          this.node.selected = 'detail';
+          this.selected = 'detail';
         }
       },
       nextPrevStory: function(inPrev) {
