@@ -17,6 +17,7 @@
 #panels > * {
   background: white;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
   font-size: 15px;
 }
 

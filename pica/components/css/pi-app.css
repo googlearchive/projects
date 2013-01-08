@@ -52,6 +52,11 @@ g-toolbar {
   -webkit-box-align: center;
 }
 
+.flex {
+  -webkit-flex: 1;
+  -webkit-box-flex: 1;
+}
+
 @media screen and (max-width: 800px) {
   g-toolbar > label {
     -webkit-justify-content: center;

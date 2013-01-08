@@ -14,14 +14,14 @@
     <div>
       <template iterate="accounts.topics">
         <div class="item">
-          <span class="label">{{title}}</span>
+          <div class="flex">{{title}}</div>
           <g-icon-button src="images/close.svg" on-click="removeTopic"></g-icon-button>
         </div>
       </template>
     </div>
     <div class="item">
       Name: <input id="name" />
-      Feed: <input id="feed" />
+      Feed: <input id="feed" class="flex"/>
       <g-icon-button src="../images/add.svg" on-click="addTopic"></g-icon-button>
     </div>
     <!-- <pi-accounts-model id="accounts"></pi-accounts-model> -->

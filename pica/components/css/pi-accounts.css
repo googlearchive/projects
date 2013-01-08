@@ -5,26 +5,25 @@
  */
 
 .item {
-  padding: 10px 20px;
-  height: 30px;
-  line-height: 30px;
+  padding: 0 20px;
+  height: 60px;
   border-bottom: 1px solid #ddd;
   display: -webkit-flex;
+  display: -webkit-box;
   -webkit-align-items: center;
-}
-
-.item > * {
-  display: inline-block;
+  -webkit-box-align: center;
 }
 
 .item > input {
-  height: 30px;
+  height: 32px;
   margin: 0 10px;
   font-size: 16px;
 }
 
-.item > .label, .item > #feed {
+.item > .flex {
+  display: -webkit-box;
   -webkit-flex: 1;
+  -webkit-box-flex: 1;
 }
 
 .header {
