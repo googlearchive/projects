@@ -1,4 +1,4 @@
-<element name="td-model" attributes="filter">
+<element name="td-model" attributes="filter items">
   <script>
     this.component({
       publish: {
@@ -7,8 +7,7 @@
         }
       },
       ready: function() {
-         this.items = [
-        ];
+        this.items = [];
       },
       filterChanged: function() {
         this.filterItems();

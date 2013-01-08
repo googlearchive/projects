@@ -4,13 +4,17 @@
   <template>
     <!-- only one url to track per app -->
     <g-director path="/(\w*)" route="{{route}}"></g-director>
-
     <!-- make one, they're modular -->
-    <td-todos id="t_one" todos="{{one}}" activeCount="{{one.activeCount}}" filter="{{filter}}"></td-todos>
+    <td-todos id="one" on-todos="todosAction" filter="{{filter}}"
+              items="{{one.filtered}}" count="{{one.items.length}}" 
+              completedCount="{{one.completedCount}}" 
+              activeCount="{{one.activeCount}}"></td-todos>
 
     <!-- make two, they're reusable -->
-    <td-todos id="t_two" todos="{{two}}" activeCount="{{two.activeCount}}" filter="{{filter}}"></td-todos>
-
+    <td-todos id="two" on-todos="todosAction" filter="{{filter}}"
+              items="{{two.filtered}}" count="{{two.items.length}}" 
+              completedCount="{{two.completedCount}}" 
+              activeCount="{{two.activeCount}}" ></td-todos>
   </template>
   <script>
     this.component({
@@ -28,14 +32,23 @@
           {id: 2, title: "see", completed: false},
           {id: 3, title: "gee", completed: false}
         ]);
-        this.filterChanged();
+        this.routeChanged();
       },
+      // propagate filter property to models manually
       filterChanged: function() {
         this.one.filter = this.filter;
         this.two.filter = this.filter;
       },
+      // route information needs slight validation
       routeChanged: function() {
         this.filter = this.route || 'all';
+      },
+      // delegate action events to models
+      todosAction: function(inEvent, inDetail, inSender) {
+        // either model one or two
+        var model = this[inSender.id];
+        // invoke the named action
+        model[inDetail.what](inDetail.who);
       }
    });
   </script>
