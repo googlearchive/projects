@@ -50,6 +50,8 @@
       },
       save: function() {
         window.localStorage.setItem(TOPICS_STORAGE_NAME, JSON.stringify(this.topics));
+        // force to mutate topics to trigger property changed (e.g. itemsChanged in pi-items-view)
+        this.topics = this.topics.slice(0);
       }
     });
   </script>

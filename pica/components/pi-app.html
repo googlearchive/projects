@@ -42,12 +42,13 @@
           <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
         </g-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
-          <pi-feed-viewer id="topics" selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
-          <pi-accounts id="accounts"></pi-accounts>
+          <pi-feed-viewer id="topics" topics={{$.accountsModel.topics}} selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
+          <pi-accounts id="accounts" accounts={{$.accountsModel}}></pi-accounts>
         </g-panels>
       </div>
       <div id="source" class="right" on-click="toggleSource"></div>
     </g-panels>
+    <pi-accounts-model id="accountsModel"></pi-accounts-model>
   </template>
   <script>
     this.component({
@@ -78,8 +79,6 @@
         var item = this.$.ribbon.selection;
         if (item) {
           this.toolbarTitle = item.label;
-          // force to mutate topics to trigger itemsChanged in pi-items-view
-          this.$.topics.topics = this.$.accounts.topics.slice(0);
           this.toggleNav('main');
         }
       },

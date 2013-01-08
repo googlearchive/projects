@@ -12,7 +12,7 @@
   <template>
     <div class="header item">Topics</div>
     <div>
-      <template iterate="topics">
+      <template iterate="accounts.topics">
         <div class="item">
           <span class="label">{{title}}</span>
           <g-icon-button src="images/close.svg" on-click="removeTopic"></g-icon-button>
@@ -24,27 +24,24 @@
       Feed: <input id="feed" />
       <g-icon-button src="../images/add.svg" on-click="addTopic"></g-icon-button>
     </div>
-    <pi-accounts-model id="accounts"></pi-accounts-model>
+    <!-- <pi-accounts-model id="accounts"></pi-accounts-model> -->
   </template>
   <script>
     this.component({
       publish: {
-        topics: null
-      },
-      ready: function() {
-        this.topics = this.$.accounts.topics;
+        accounts: null
       },
       addTopic: function() {
         var n = this.$.name.value;
         var f = this.$.feed.value;
         if (n && f) {
-          this.$.accounts.addTopic({title: n, feed: f})
+          this.accounts.addTopic({title: n, feed: f})
           this.$.name.value = '';
           this.$.feed.value = '';
         }
       },
       removeTopic: function(inEvent, inDetail, inSender) {
-        this.$.accounts.removeTopic(inSender.model);
+        this.accounts.removeTopic(inSender.model);
       }
     });
   </script>
