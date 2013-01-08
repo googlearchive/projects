@@ -69,10 +69,12 @@
         } else {
           this.$.panels.toggleBetween('ribbon', 'main');
         }
-        this.$.navButton.active = this.selectedPanel == 'ribbon';
       },
       toggleSource: function() {
         this.$.panels.toggleBetween('main', 'source');
+      },
+      selectedPanelChanged: function() {
+        this.$.navButton.active = this.selectedPanel == 'ribbon';
         this.$.sourceButton.active = this.selectedPanel == 'source';
       },
       ribbonSelect: function() {
