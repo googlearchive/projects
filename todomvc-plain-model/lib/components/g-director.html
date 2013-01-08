@@ -1,4 +1,4 @@
-<element name="g-director" attributes="path">
+<element name="g-director" attributes="path, route">
   <script src="director.js"></script>
   <script>
     var router = new Router();
@@ -6,9 +6,12 @@
       router.init();
     });
     this.component({
+      routeChanged: function() {
+        this.send("route", this.route);
+      },
       pathChanged: function() {
         var doRoute = function(inPath) {
-          this.fireEvent("route", inPath);
+          this.route = inPath;
         }.bind(this);
         // TODO(sjmiles): router.on throws an exception, seems like director
         // is faulty (this pattern is directly out of their readme)

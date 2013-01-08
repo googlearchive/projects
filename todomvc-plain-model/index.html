@@ -16,6 +16,7 @@
   <![endif]-->
 </head>
 <body style="opacity: 0;">
+
   <header>
     <h1>todos</h1>
   </header>
@@ -30,13 +31,19 @@
 
   <!-- scripts here. Don't remove this ↓ -->
   <scripts>
+    <!-- part of todomvc template -->
     <script src="assets/base.js"></script>
+    <!-- generic data model -->
     <script src="js/todos.js"></script>
-    <script src="../../polyfills/Components/components-polyfill.js" log="data,bind,watch,ready" shadow="shim"></script>
+    <!-- polyfill for CustomElements -->
+    <script src="../../polyfills/Components/components-polyfill.js" log="data,xbind,xwatch,xready" shadow="shim"></script>
   </scripts>
 
   <!-- components -->
+
+  <!-- toolkit kernel -->
   <link rel="components" href="../../toolkit/src/g-component.html">
+  <!-- application -->
   <link rel="components" href="components/td-app.html">
 </body>
 </html>
