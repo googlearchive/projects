@@ -5,10 +5,12 @@
  */
 @host {
   display: -webkit-flex;
+  display: -webkit-box;
 }
 
 g-panels {
   -webkit-flex: 1;
+  -webkit-box-flex: 1;
   overflow: hidden;
 }
 
@@ -27,7 +29,9 @@ g-panels {
 
 #main {
   display: -webkit-flex;
+  display: -webkit-box;
   -webkit-flex-flow: column;
+  -webkit-box-orient: vertical;
   background: white; 
 }
 
@@ -38,7 +42,14 @@ g-panels {
 
 g-toolbar > label {
   display: -webkit-flex;
+  display: -webkit-box;
   font-size: 21px;
+}
+
+/* FIXME(ffu): temp fix; should move the fix to g-toolbar */
+g-toolbar {
+  display: -webkit-box;
+  -webkit-box-align: center;
 }
 
 @media screen and (max-width: 800px) {

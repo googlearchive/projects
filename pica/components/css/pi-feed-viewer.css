@@ -5,10 +5,12 @@
  */
 @host {
   display: -webkit-flex;
+  display: -webkit-box;
 }
 
 #panels {
   -webkit-flex: 1;
+  -webkit-box-flex: 1;
   position: relative;
 }
 
