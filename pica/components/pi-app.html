@@ -9,46 +9,26 @@
   <link rel="stylesheet" href="css/pi-app.css" />
   <link rel="components" href="../../../toolkit/src/g-component.html">
   <link rel="components" href="../../../toolkit/src/g-panels.html"/>
-  <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
   <link rel="components" href="../../../toolkit/src/g-menu-item.html"/>
-  <link rel="components" href="../../../toolkit/src/g-menu-button.html"/>
-  <link rel="components" href="../../../toolkit/src/g-toolbar.html"/>
-  <link rel="components" href="../../../toolkit/more/coolclock/coolclock.html"/>
   <link rel="components" href="pi-ribbon.html"/>
+  <link rel="components" href="pi-toolbar.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
+  <link rel="components" href="pi-home.html"/>
   <link rel="components" href="pi-accounts.html"/>
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow">
-      <pi-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-select="ribbonSelect">
-        <g-menu-item name="home" label="Home" src="../images/ribbon_trending.svg"></g-menu-item>
-        <g-menu-item name="topics" label="Topics" src="../images/ribbon_topics.svg"></g-menu-item>
-        <g-menu-item name="accounts" label="Accounts" src="../images/ribbon_accounts.svg"></g-menu-item>
+      <pi-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}">
+        <g-menu-item name="Home" src="../images/ribbon_trending.svg">Home</g-menu-item>
+        <g-menu-item name="Topics" src="../images/ribbon_topics.svg">Topics</g-menu-item>
+        <g-menu-item name="Accounts" src="../images/ribbon_accounts.svg">Accounts</g-menu-item>
       </pi-ribbon>
-      <div id="main">
-        <g-toolbar>
-          <g-icon-button id="navButton" src="../images/nav-list.svg" on-click="navButtonClick"></g-icon-button>
-          <label class="flex">{{toolbarTitle}}</label>
-          <g-toolbar class="responsive">
-            <g-menu-button src="../images/view_quilt.svg" selected="{{layout}}" on-select="layoutSelect">
-              <g-menu-item name="grid" label="Grid" src="../images/view_modules.svg"></g-menu-item>
-              <g-menu-item name="quilt" label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
-            </g-menu-button>
-            <g-menu-button src="../images/add.svg">
-              <g-menu-item src="../images/edit_page.svg">Post a Comment</g-menu-item>
-              <g-menu-item src="../images/chat.svg">Share Link</g-menu-item>
-              <g-menu-item src="../images/email.svg">Email Link</g-menu-item>
-              <g-menu-item src="../images/favorite.svg">Add to Favorites</g-menu-item>
-            </g-menu-button>
-            <g-icon-button src="../images/search_the_web.svg"></g-icon-button>
-          </g-toolbar>
-          <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
-        </g-toolbar>
+      <div id="main" on-click="showMain">
+        <pi-toolbar label="{{ribbonSelected}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
+            on-nav="navClick" on-source="toggleSource"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
-          <div id="home" style="padding: 8px; text-align: center;">
-            <x-coolclock></x-coolclock>
-          </div>
-          <pi-feed-viewer id="topics" topics={{$.accountsModel.topics}} selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
-          <pi-accounts id="accounts" accounts={{$.accountsModel}}></pi-accounts>
+          <pi-home id="Home"></pi-home>
+          <pi-feed-viewer id="Topics" topics={{$.accountsModel.topics}} selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
+          <pi-accounts id="Accounts" accounts={{$.accountsModel}}></pi-accounts>
         </g-panels>
       </div>
       <div id="source" class="right" on-click="toggleSource"></div>
@@ -57,42 +37,28 @@
   </template>
   <script>
     this.component({
-      ribbonSelected: 'topics',
+      ribbonSelected: 'Topics',
       layout: 'grid',
       selectedPanel: 'main',
       topicsSelectedPanel: 'topics',
-      navButtonClick: function() {
+      navClick: function() {
         if (this.topicsSelectedPanel == 'topics') {
           this.toggleNav();
         } else {
-          this.$.topics.previous();
+          this.$.Topics.previous();
         }
       },
       toggleNav: function(inSelected) {
-        if (inSelected) {
-          this.selectedPanel = inSelected;
-        } else {
-          this.$.panels.toggleBetween('ribbon', 'main');
-        }
+        this.$.panels.toggleBetween('ribbon', 'main');
       },
       toggleSource: function() {
         this.$.panels.toggleBetween('main', 'source');
       },
-      selectedPanelChanged: function() {
-        this.$.navButton.active = this.selectedPanel == 'ribbon';
-        this.$.sourceButton.active = this.selectedPanel == 'source';
+      ribbonSelectedChanged: function() {
+        this.showMain();
       },
-      ribbonSelect: function() {
-        var item = this.$.ribbon.selection;
-        if (item) {
-          this.toolbarTitle = item.label;
-          this.toggleNav('main');
-        }
-      },
-      topicsSelectedPanelChanged: function() {
-        this.$.navButton.src = 'images/' + 
-          (this.topicsSelectedPanel == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
-        this.toggleNav('main');
+      showMain: function() {
+        this.selectedPanel = 'main';
       }
     });
   </script>

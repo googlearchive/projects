@@ -1,0 +1,48 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-toolbar" attributes="label layout panel subpanel">
+  <link rel="components" href="../../../toolkit/src/g-toolbar.html"/>
+  <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
+  <link rel="components" href="../../../toolkit/src/g-menu-button.html"/>
+  <link rel="components" href="../../../toolkit/src/g-menu-item.html"/>
+  <template>
+    <g-toolbar>
+      <g-icon-button id="navButton" src="../images/nav-list.svg" toolaction="nav" on-click="toolClick"></g-icon-button>
+      <label class="flex">{{label}}</label>
+      <g-toolbar class="responsive">
+        <g-menu-button src="../images/view_quilt.svg" selected="{{layout}}">
+          <g-menu-item name="grid" label="Grid" src="../images/view_modules.svg"></g-menu-item>
+          <g-menu-item name="quilt" label="Quilt" src="../images/view_quilt.svg"></g-menu-item>
+        </g-menu-button>
+        <g-menu-button src="../images/add.svg">
+          <g-menu-item src="../images/edit_page.svg">Post a Comment</g-menu-item>
+          <g-menu-item src="../images/chat.svg">Share Link</g-menu-item>
+          <g-menu-item src="../images/email.svg">Email Link</g-menu-item>
+          <g-menu-item src="../images/favorite.svg">Add to Favorites</g-menu-item>
+        </g-menu-button>
+        <g-icon-button src="../images/search_the_web.svg"></g-icon-button>
+      </g-toolbar>
+      <g-icon-button id="sourceButton" src="../images/source.svg" toolaction="source" on-click="toolClick"></g-icon-button>
+    </g-toolbar>
+  </template>
+  <script>
+    this.component({
+      toolClick: function(inEvent, inDetail, inSender) {
+        this.send(inSender.getAttribute('toolaction') || 'toolaction');
+      },
+      panelChanged: function() {
+        this.$.navButton.active = this.panel == 'ribbon';
+        this.$.sourceButton.active = this.panel == 'source';
+      },
+      subpanelChanged: function() {
+        this.$.navButton.src = 'images/' + 
+          (this.subpanel == 'topics' ? 'nav-list.svg' : 'nav-return.svg');
+      }
+    });
+  </script>
+</element>

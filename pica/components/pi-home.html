@@ -5,12 +5,16 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-ribbon" extends="g-selector" attributes="label selected">
-  <link rel="stylesheet" href="css/pi-ribbon.css" />
-  <link rel="components" href="../../../toolkit/src/g-selector.html"/>
+<element name="pi-home">
+  <link rel="components" href="../../../toolkit/more/coolclock/coolclock.html"/>
   <template>
-    <div class="app-label">{{label}}</div>
-    <shadow></shadow>
+    <style>
+      @host {
+        padding: 8px;
+        text-align: center;
+      }
+    </style>
+    <x-coolclock></x-coolclock>
   </template>
   <script>
     this.component();
