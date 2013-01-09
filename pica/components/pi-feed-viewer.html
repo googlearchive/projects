@@ -18,7 +18,7 @@
       <pi-detail id="detail" title="{{currentStory.title}}" content="{{currentStory.content}}"></pi-detail>
     </g-panels>
     <div id="loading">Loading...</div>
-    <pi-gfeeds id="gfeeds" feed="{{feed}}" count="24" on-response="feedResponse"></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{feed}}" count="24" entries={{stories}}></pi-gfeeds>
   </template>
   <script>
     this.component({
@@ -44,8 +44,7 @@
         this.feed = e.detail.item.feed;
         this.selected = 'stories';
       },
-      feedResponse: function(e) {
-        this.stories = e.detail.feed.entries;
+      storiesChanged: function(e) {
         this.toggleLoading(false);
       },
       toggleLoading: function(inLoading) {

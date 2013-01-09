@@ -32,7 +32,8 @@
     
     this.component({
       publish: {
-        count: 24
+        count: 24,
+        entries: null
       },
       feedChanged: function() {
         XGFeeds.require(this.query.bind(this));
@@ -45,8 +46,10 @@
       },
       loaded: function(inResult) {
         if (!inResult.error) {
+          this.entries = inResult.feed.entries;
           this.send('response', {feed: inResult.feed});
         } else {
+          this.entries = null;
           this.send('error', {status: inResult.status});
         }
       }

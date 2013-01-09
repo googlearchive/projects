@@ -3,6 +3,10 @@
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
+@host {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .item {
   padding: 0 20px;
