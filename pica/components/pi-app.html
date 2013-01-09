@@ -19,6 +19,7 @@
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow">
       <pi-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-select="ribbonSelect">
+        <g-menu-item name="home" label="Home" src="../images/ribbon_trending.svg"></g-menu-item>
         <g-menu-item name="topics" label="Topics" src="../images/ribbon_topics.svg"></g-menu-item>
         <g-menu-item name="accounts" label="Accounts" src="../images/ribbon_accounts.svg"></g-menu-item>
       </pi-ribbon>
@@ -42,6 +43,7 @@
           <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
         </g-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
+          <div id="home"></div>
           <pi-feed-viewer id="topics" topics={{$.accountsModel.topics}} selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
           <pi-accounts id="accounts" accounts={{$.accountsModel}}></pi-accounts>
         </g-panels>
