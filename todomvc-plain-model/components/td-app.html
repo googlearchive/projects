@@ -4,13 +4,12 @@
   <template>
     <!-- only one url to track per app -->
     <g-director path="/(\w*)" route="{{route}}"></g-director>
-
+    
     <!-- make one, they're modular -->
     <td-todos id="t_one" todos="{{one}}" activeCount="{{one.activeCount}}" filter="{{filter}}"></td-todos>
-
+    
     <!-- make two, they're reusable -->
     <td-todos id="t_two" todos="{{two}}" activeCount="{{two.activeCount}}" filter="{{filter}}"></td-todos>
-
   </template>
   <script>
     this.component({

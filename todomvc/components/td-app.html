@@ -28,9 +28,9 @@
         {id: 2, title: "see", completed: false},
         {id: 3, title: "gee", completed: false}
       ],
-      route: function(inEvent) {
+      route: function(inEvent, inDetail) {
         // filter matches route, except for the empty route
-        this.filter = inEvent.detail || "all";
+        this.filter = inDetail || "all";
       }
    });
   </script>

@@ -13,6 +13,7 @@
   <link rel="components" href="../../../toolkit/src/g-menu-item.html"/>
   <link rel="components" href="../../../toolkit/src/g-menu-button.html"/>
   <link rel="components" href="../../../toolkit/src/g-toolbar.html"/>
+  <link rel="components" href="../../../toolkit/more/coolclock/coolclock.html"/>
   <link rel="components" href="pi-ribbon.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
   <link rel="components" href="pi-accounts.html"/>
@@ -43,7 +44,9 @@
           <g-icon-button id="sourceButton" src="../images/source.svg" on-click="toggleSource"></g-icon-button>
         </g-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
-          <div id="home"></div>
+          <div id="home" style="padding: 8px; text-align: center;">
+            <x-coolclock></x-coolclock>
+          </div>
           <pi-feed-viewer id="topics" topics={{$.accountsModel.topics}} selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
           <pi-accounts id="accounts" accounts={{$.accountsModel}}></pi-accounts>
         </g-panels>

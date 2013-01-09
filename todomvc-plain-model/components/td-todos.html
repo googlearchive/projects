@@ -17,7 +17,7 @@
       <footer id="footer">
         <span id="todo-count"><strong>{{activeCount}}</strong> {{countText}}</span>
 
-        <g-selector id="filters" Xselected="{{filter}}">
+        <g-selector id="filters" selected="{{filter}}">
           <li name="all"><a href="../#/">All</a></li>
           <li name="active"><a href="../#/active">Active</a></li>
           <li name="completed"><a href="../#/completed">Completed</a></li>
@@ -33,9 +33,6 @@
         todos: null,
         filter: '',
         activeCount: 0
-      },
-      filterChanged: function() {
-        this.$.filters.selected = this.filter;
       },
       activeCountChanged: function() {
         this.countText = ' item' + (this.activeCount == 1 ? '' : 's') + ' left';
