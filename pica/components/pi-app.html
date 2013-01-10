@@ -27,8 +27,8 @@
             on-nav="navClick" on-source="toggleSource"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
           <pi-home id="Home"></pi-home>
-          <pi-feed-viewer id="Topics" topics={{$.accountsModel.topics}} selected="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
-          <pi-accounts id="Accounts" accounts={{$.accountsModel}}></pi-accounts>
+          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
+          <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts>
         </g-panels>
       </div>
       <div id="source" class="right" on-click="toggleSource"></div>
@@ -48,7 +48,7 @@
           this.$.Topics.previous();
         }
       },
-      toggleNav: function(inSelected) {
+      toggleNav: function() {
         this.$.panels.toggleBetween('ribbon', 'main');
       },
       toggleSource: function() {

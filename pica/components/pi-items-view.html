@@ -28,7 +28,8 @@
   <script>
     this.component({
       publish: {
-        items: null
+        items: null,
+        selected: null
       },
       process: function(inItems) {
         var n = document.createElement('div');
@@ -59,6 +60,7 @@
         this.boxes = b;
       },
       itemClick: function(inEvent, inDetail, inSender) {
+        this.selected = inSender.model;
         this.send('select', {item: inSender.model});
       }
     });
