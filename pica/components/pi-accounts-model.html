@@ -35,6 +35,10 @@
             this.topics.splice(i, 1);
           }
           this.save();
+        },
+        reset: function() {
+          this.topics = DEFAULT_TOPICS.slice(0);
+          this.save();
         }
       },
       ready: function() {

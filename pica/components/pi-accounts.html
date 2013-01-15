@@ -10,7 +10,11 @@
   <link rel="components" href="pi-accounts-model.html"/>
   <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
   <template>
-    <div class="header item">Topics</div>
+    <div class="header item">
+      Topics
+      <div class="flex"></div>
+      <button class="button" on-click="reset">Restore Defaults</button>
+    </div>
     <div>
       <template iterate="accounts.topics">
         <div class="item">
@@ -42,6 +46,9 @@
       },
       removeTopic: function(inEvent, inDetail, inSender) {
         this.accounts.removeTopic(inSender.model);
+      },
+      reset: function() {
+        this.accounts.reset();
       }
     });
   </script>
