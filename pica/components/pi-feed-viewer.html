@@ -5,22 +5,25 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-feed-viewer" attributes="panel layout" on-keydown="keydownHandler">
+<element name="pi-feed-viewer" attributes="panel layout">
   <link rel="stylesheet" href="css/pi-feed-viewer.css" />
   <link rel="components" href="../../../toolkit/src/g-panels.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
   <link rel="components" href="pi-items-view.html"/>
   <link rel="components" href="pi-detail.html"/>
   <template>
-    <g-panels id="panels" selected="{{panel}}" transition="keyframe" class="g-panels-scale-slide">
+    <g-panels id="panels" selected="{{panel}}" transition="keyframe" class="g-panels-scale-slide" on-select="panelSelected">
       <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}" on-select="topicSelect"></pi-items-view>
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{currentStory}}" on-select="storySelect"></pi-items-view>
-      <pi-detail id="detail" title="{{currentStory.title}}" content="{{currentStory.content}}"></pi-detail>
+      <pi-detail id="detail" title="{{currentStory.title}}" content="{{currentStory.content}}" on-keydown="keydownHandler"></pi-detail>
     </g-panels>
     <div id="loading" loading="{{$.gfeeds.loading}}">Loading...</div>
     <pi-gfeeds id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}"></pi-gfeeds>
   </template>
   <script>
+    var RIGHT_ARROW_KEY = 39;
+    var LEFT_ARROW_KEY = 37;
+    
     this.component({
       publish: {
         topics: null,
@@ -50,15 +53,22 @@
           return true;
         }
       },
+      panelSelected: function(e, inDetail, inSender) {
+        if (inSender.selected == 'detail') {
+          this.$.detail.focus();
+        } else {
+          inSender.focus();
+        }
+      },
       keydownHandler: function(e) {
         var p = false;
-        if (e.keyCode == 38) {
+        if (e.keyCode == RIGHT_ARROW_KEY) {
           p = this.nextPrevStory();
-        } else if (e.keyCode == 40) {
+        } else if (e.keyCode == LEFT_ARROW_KEY) {
           p = this.nextPrevStory(true);
         }
         if (p) {
-          e.stopPropagation();
+          e.cancelBubble = true;
         }
       }
     });

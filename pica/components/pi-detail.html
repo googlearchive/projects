@@ -39,6 +39,11 @@
       publish: {
         content: ''
       },
+      ready: function() {
+        if (!this.node.hasAttribute('tabindex')) {
+          this.node.tabIndex = -1;
+        }
+      },
       contentChanged: function() {
         this.$.content.innerHTML = this.content.length &&
           this.content.replace(/(<iframe.*?>.*?<\/iframe>)/g, '');
