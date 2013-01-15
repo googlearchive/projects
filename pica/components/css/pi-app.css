@@ -4,13 +4,13 @@
  * license that can be found in the LICENSE file.
  */
 @host {
-  display: -webkit-flex;
   display: -webkit-box;
+  display: -webkit-flex;
 }
 
 g-panels {
-  -webkit-flex: 1;
   -webkit-box-flex: 1;
+  -webkit-flex: 1;
   overflow: hidden;
 }
 
@@ -38,10 +38,10 @@ g-panels {
 }
 
 #main {
-  display: -webkit-flex;
   display: -webkit-box;
-  -webkit-flex-flow: column;
+  display: -webkit-flex;
   -webkit-box-orient: vertical;
+  -webkit-flex-flow: column;
   background: white; 
 }
 
@@ -51,20 +51,9 @@ g-panels {
 }
 
 g-toolbar > label {
+  display: -webkit-box;
   display: -webkit-flex;
-  display: -webkit-box;
   font-size: 21px;
-}
-
-/* FIXME(ffu): temp fix; should move the fix to g-toolbar */
-g-toolbar {
-  display: -webkit-box;
-  -webkit-box-align: center;
-}
-
-.flex {
-  -webkit-flex: 1;
-  -webkit-box-flex: 1;
 }
 
 @media screen and (max-width: 800px) {

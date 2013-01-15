@@ -12,10 +12,10 @@
   padding: 0 20px;
   height: 60px;
   border-bottom: 1px solid #ddd;
-  display: -webkit-flex;
   display: -webkit-box;
-  -webkit-align-items: center;
+  display: -webkit-flex;
   -webkit-box-align: center;
+  -webkit-align-items: center;
 }
 
 .item > input {
@@ -26,8 +26,8 @@
 
 .item > .flex {
   display: -webkit-box;
-  -webkit-flex: 1;
   -webkit-box-flex: 1;
+  -webkit-flex: 1;
 }
 
 .header {

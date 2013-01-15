@@ -4,13 +4,13 @@
  * license that can be found in the LICENSE file.
  */
 @host {
-  display: -webkit-flex;
   display: -webkit-box;
+  display: -webkit-flex;
 }
 
 #panels {
-  -webkit-flex: 1;
   -webkit-box-flex: 1;
+  -webkit-flex: 1;
   position: relative;
 }
 

@@ -4,7 +4,9 @@
  * license that can be found in the LICENSE file.
  */
 @host {
+  display: -webkit-box;
   display: -webkit-flex;
+  -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
   background-color: #333;
   color: white;
