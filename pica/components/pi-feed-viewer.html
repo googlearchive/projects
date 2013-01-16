@@ -10,19 +10,29 @@
   <link rel="components" href="../../../toolkit/src/g-panels.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
   <link rel="components" href="pi-items-view.html"/>
-  <link rel="components" href="pi-detail.html"/>
+  <link rel="components" href="pi-story.html"/>
   <template>
-    <g-panels id="panels" selected="{{panel}}" transition="keyframe" on-select="panelSelected">
-      <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}" on-select="topicSelect"></pi-items-view>
-      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{currentStory}}" on-select="storySelect"></pi-items-view>
-      <pi-detail id="detail" label="{{currentStory.title}}" content="{{currentStory.content}}" on-keydown="keydownHandler"></pi-detail>
+    <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" class="g-panels-scale-slide" on-select="panelSelected" on-canselect="panelCanSelect">
+      <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
+      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}"></pi-items-view>
+      <pi-story id="story" story="{{selectedStory}}" on-keydown="keydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
-    <pi-gfeeds id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}" loading="{{loading}}"></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}" loading="{{loading}}" on-response="feedResponse"></pi-gfeeds>
   </template>
   <script>
     var RIGHT_ARROW_KEY = 39;
     var LEFT_ARROW_KEY = 37;
+    
+    // TODO(sorvell): if necessary, shouldn't go here
+    var isEmpty = function(inObj) {
+      if (inObj) {
+        for (var i in inObj) {
+          return false;
+        }
+      }
+      return true;
+    }
     
     this.component({
       publish: {
@@ -37,27 +47,58 @@
         this.layoutChange(mq);
       },
       layoutChange: function(inQuery) {
-        this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 'g-panels-scale-slide';
+        this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 
+          'g-panels-scale-slide';
       },
-      topicSelect: function() {
-        this.panel = 'stories';
+      storiesChanged: function() {
+        if (this.stories) {
+          this.panel = 'stories';
+        }
       },
-      storySelect: function() {
-        this.panel = 'detail';
+      selectedTopicChanged: function() {
+        if (!isEmpty(this.selectedTopic) && !this.loading) {
+        //if (!isEmpty(this.selectedTopic)) {
+          this.panel = 'stories';
+        }
+      },
+      selectedStoryChanged: function() {
+        if (!isEmpty(this.selectedStory)) {
+          this.panel = 'story';
+        }
       },
       nextPrevStory: function(inPrev) {
-        var i = this.stories.indexOf(this.currentStory);
+        var i = this.stories.indexOf(this.selectedStory);
         var s = this.stories[i + (inPrev ? -1 : 1)];
         if (s) {
-          this.currentStory = s;
+          this.selectedStory = s;
           return true;
         }
       },
+      // TODO(sorvell): handle selected event since this fires after the selection
+      // is complete and this is when we want to make the following changes.
+      // note, we want selectedTopic/Story to become unset
+      // when the panel that shows them is not selected, this allows
+      // us to rely on selectedTopic/StoryChanged to show the relevant
+      // panel.
+      // it's important to set selectedTopic to {} so that
+      // selectedTopic.feed actually changes and updates gfeeds.feed.
       panelSelected: function(e, inDetail, inSender) {
-        if (inSender.selected == 'detail') {
-          this.$.detail.focus();
+        if (inSender.selected == 'topics') {
+          this.selectedTopic = {};
+        } else if (inSender.selected == 'stories') {
+          this.selectedStory = {};
+        }
+        //
+        if (inSender.selected == 'story') {
+          this.$.story.focus();
         } else {
           inSender.focus();
+        }
+      },
+      panelCanSelect: function(e, inDetail) {
+        if ((inDetail.selected == 'stories' && (!this.stories && !this.$.gfeeds.loading)) || 
+           (inDetail.selected == 'story' && isEmpty(this.selectedStory))) {
+          inDetail.preventSelect();
         }
       },
       keydownHandler: function(e) {

@@ -1,0 +1,80 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-story" attributes="title story">
+  <template>
+    <style>
+      #header {
+        padding: 20px;
+        display: -webkit-flex;
+        display: -webkit-box;
+      }
+      
+      #header > a {
+        padding: 0 0 0 10px;
+      }
+      
+      #title {
+        font-size: 30px;
+        -webkit-flex: 1;
+        -webkit-box-flex: 1;
+      }
+      
+      #content {
+        padding: 20px;
+      }
+      
+      #linkButton {
+        -webkit-transform: rotate(135deg);
+      }
+      
+      @media screen and (max-width: 800px) {
+        #title {
+          font-size: 20px;
+        }
+        
+        #detail img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+    <div id="header">
+      <div id="title">{{story.title}}</div>
+      <a href="{{story.link}}" target="{{targetWindow}}">
+        <g-icon-button id="linkButton" src="../images/nav-return.svg"></g-icon-button>
+      </a>
+    </div>
+    <div id="detail">
+      <div id="content"></div>
+    </div>
+  </template>
+  <script>
+    this.component({
+      targetWindow: '_blank',
+      publish: {
+        content: ''
+      },
+      ready: function() {
+        if (!this.node.hasAttribute('tabindex')) {
+          this.node.tabIndex = -1;
+        }
+      },
+      storyChanged: function() {
+        this.content = this.story.content;
+      },
+      contentChanged: function() {
+        var content = this.content || '';
+        if (content) {
+          content = content.replace(/(<iframe.*?>.*?<\/iframe>)/g, '');
+          content = content.replace(/<a/g, '<a target="' + this.targetWindow + '" ');
+        }
+        this.$.content.innerHTML = content;
+      }
+    });
+  </script>
+</element>

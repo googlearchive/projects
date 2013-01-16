@@ -37,8 +37,12 @@
         loading: false
       },
       feedChanged: function() {
-        this.loading = true;
-        XGFeeds.require(this.query.bind(this));
+        if (this.feed) {
+          this.loading = true;
+          XGFeeds.require(this.query.bind(this));
+        } else {
+          this.entries = null;
+        }
       },
       query: function() {
         var feed = new google.feeds.Feed(this.feed);
