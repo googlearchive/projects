@@ -36,9 +36,10 @@
         this.todos = new Todos();
       },
       update: function() {
+        this.todos.itemsChanged();
         this.hasItems = Boolean(this.todos.items.length);
         this.hasCompleted = Boolean(this.todos.completedCount);
-        this.countText = ' item' + (this.todos.activeCount == 1 ? '' : 's') 
+        this.countText = ' item' + (this.todos.activeCount == 1 ? '' : 's')
             + ' left';
       },
       filterChanged: function() {

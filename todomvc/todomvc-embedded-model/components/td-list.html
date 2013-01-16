@@ -8,16 +8,16 @@
               <label>{{title}}</label>
               <button class="destroy" on-click="destroyAction"></button>
             </div>
-            <input class="edit" on-change="inputEnter" value="{{title}}"></input>
+            <input class="edit" on-change="inputEnter" on-domfocusout="inputEnter" value="{{title}}"></input>
           </li>
       </template>
     </ul>
   </template>
   <script>
     this.component({
-      editingItem: null,
+      //editingItem: null,
       itemsChanged: function() {
-        console.log("td-list.itemsChanged", this.items);
+        //console.log("td-list.itemsChanged", this.items);
       },
       completedAction: function() {
         // if completed property on an item was modified via the UI
