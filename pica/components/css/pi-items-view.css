@@ -49,9 +49,9 @@
 }
 
 .image {
-  background-color: #eee;
+  /*background-color: #eee;*/
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
 }
 
