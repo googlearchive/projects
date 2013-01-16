@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!--
+Copyright 2012 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="../../toolkit/platform/platform.js"></script>
+    <link rel="components" href="../../toolkit/src/g-page.html">
+    <link rel="components" href="../../toolkit/src/g-toolbar.html">
+    <link rel="components" href="../../pantry/Ace/Ace.html">
+    <style>
+      ajaxorg-ace {
+        top: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <g-page>
+      <g-toolbar>&nbsp;Hello World</g-toolbar>
+      <ajaxorg-ace>function foo(items) {
+      var x = "All this is syntax highlighted";
+      return x;
+  }</ajaxorg-ace>
+    </g-page>
+  </body>
+</html>
