@@ -1,0 +1,85 @@
+<element name="yt-video" attributes="videoid">
+<template>
+  <style>
+    @host {
+      position: relative;
+    }
+  </style>
+  <div id="container">
+  </div>
+</template>
+<script>
+  var ytListeners = [];
+  pollForYoutubeApi = function() {
+    setTimeout(function() {
+      if (!(window.YT && window.YT.Player)) {
+        pollForYoutubeApi();
+      } else {
+        youtubeApiReady();
+      }
+    }, 100);
+  }
+  
+  function youtubeApiReady() {
+    ytListeners.forEach(function(l) {
+      l.videoidChanged();
+    });
+  }
+  
+  this.component({
+    YT_URL: 'http://www.youtube.com/player_api',
+    videoidChanged: function() {
+      if (this.videoid && this.videoid !== true) {
+        if (this.player) {
+         this.player.loadVideoById(this.videoid);
+        } else {
+         this.createPlayer();
+        }
+      }
+    },
+    createPlayer: function() {
+      if (!window.YT) {
+        this.loadYtApi();
+        return;
+      }
+      this.player = new YT.Player(this.$.container, {
+        height: '100%',
+        width: '100%',
+        events: {
+          onReady: this.playerReady.bind(this),
+          onStateChange: this.playerStateChange.bind(this)
+        }
+      });
+      if (this.playerNode) {
+        this.playerNode.hidden = true;
+      }
+    },
+    playerReady: function(inEvent) {
+      this.playerNode.hidden = true;
+      this.player.loadVideoById(this.videoid);
+      this.player.playVideo();
+      // make player iframe fittable to this component.
+      this.playerNode.style.position = "absolute";
+    },
+    playerStateChange: function(inEvent) {
+      if (inEvent.data == 1) {
+        this.playerNode.hidden = false;
+      }
+    },
+    get playerNode() {
+      return this.player && this.player.a;
+    },
+    loadYtApi: function() {
+      if (!document.querySelector('[src="' + this.YT_URL + '"]')) {
+        var s = document.createElement('script');
+        s.src = this.YT_URL;
+        document.head.appendChild(s);
+        pollForYoutubeApi();
+      }
+      ytListeners.push(this);
+    }
+  });
+  
+  
+</script>
+</element>

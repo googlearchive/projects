@@ -1,0 +1,15 @@
+<element name="yt-videopanel" attributes="video">
+<link rel="components" href="yt-video.html">
+<link rel="components" href="../../../toolkit/src/g-icon-button.html">
+<template>
+  <div id="toolbar" class="toolbar">
+    <content select=".left"></content>
+    <div class="toolbar-title">{{video.title.$t}}</div>
+    <content select=".right"></content>
+  </div>
+  <yt-video id="video" videoid="{{video.media$group.yt$videoid.$t}}"></yt-video>
+</template>
+<script>
+  this.component();
+</script>
+</element>

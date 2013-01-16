@@ -1,0 +1,73 @@
+<element name="yt-app" extends="g-page">
+<link rel="stylesheet" href="yt-app.css">
+<link rel="components" href="../../../toolkit/src/g-page.html">
+<link rel="components" href="yt-videopanel.html">
+<link rel="components" href="../../../toolkit/src/g-panels.html">
+<link rel="components" href="../../../toolkit/src/g-icon-button.html">
+<link rel="components" href="../../../toolkit/src/g-ajax.html">
+<template>
+  <g-ajax id="ajax" url="http://gdata.youtube.com/feeds/api/videos/" 
+          handleAs="json" 
+          response="{{response}}">
+  </g-ajax>
+  <g-panels id="panels" transition="flow">
+    <section id="listPanel">
+      <div class="toolbar">
+        <input id="input" value="{{query}}" autofocus></input>
+        <div on-click="searchInputClear" class="input-clear"></div>
+      </div>
+      <div id="list" class="list">
+        <template id="listTemplate" iterate="response.feed.entry">
+          <div class="item {{selected}}" on-click="itemClick">{{title.$t}}</div>
+        </template>
+      </div>
+    </section>
+    <yt-videopanel id="videoPanel">
+      <g-icon-button class="left" src="images/nav-list.svg" on-click="listToggle"></g-icon-button>
+      <g-icon-button class="right" src="images/nav-grid.svg" on-click="moreToggle"></g-icon-button>
+    </yt-videopanel>
+    <section id="morePanel" class="right" on-click="moreToggle">
+      More Stuff!
+    </section>
+  </g-panels>
+</template>
+<script>
+  
+  this.component({
+    query: 'chrome commercial',
+    maxResults: 50,
+    startIndex: 1,
+    ready: function() {
+      this.$super();
+      this.requestVideos();
+    },
+    requestVideos: function() {
+      this.$.ajax.params = {
+        alt: 'json',
+        q: this.query,
+        v: '2', 
+        'max-results': this.maxResults,
+        'start-index': this.startIndex
+      }
+      this.$.ajax.go();
+    },
+    listToggle: function() {
+      this.$.panels.toggleBetween('listPanel', 'videoPanel');
+    },
+    moreToggle: function() {
+      this.$.panels.toggleBetween('morePanel', 'videoPanel');
+    },
+    itemClick: function(e, inDetail, inSender) {
+      this.$.videoPanel.video = inSender.model;
+      this.$.panels.selected = 'videoPanel';
+    },
+    searchInputClear: function() {
+      this.$.input.value = '';
+      this.$.input.focus();
+    },
+    queryChanged: function() {
+      this.requestVideos();
+    }
+  });
+</script>
+</element>
