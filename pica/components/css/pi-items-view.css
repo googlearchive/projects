@@ -72,6 +72,10 @@
   display: none;
 }
 
+.since {
+  display: none;
+}
+
 /* grid */
 .grid.view {
   display: block;
@@ -127,6 +131,16 @@
 }
 
 .list.topics .desc {
+  display: none;
+}
+
+.list .since {
+  display: block;
+  float: right;
+  color: #aaa;
+}
+
+.list.topics .since {
   display: none;
 }
 

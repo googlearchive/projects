@@ -18,6 +18,7 @@
                   <div class="image flex" style="background-image: url({{imgSrc}});"></div>
                   <div class="title">{{title}}</div>
                   <div class="desc">{{desc}}</div>
+                  <div class="since">{{since}} ago</div>
                 </div>
               </template>
             </div>
@@ -27,6 +28,35 @@
     </div>
   </template>
   <script>
+    var timeSince = function(inDate) {
+      var s = Math.floor(((new Date()) - inDate) / 1000);
+      var t = Math.floor(s / 31536000);
+      if (t > 1) {
+        return stringify(t, "year");
+      }
+      t = Math.floor(s / 2592000);
+      if (t > 1) {
+        return stringify(t, "month");
+      }
+      t = Math.floor(s / 86400);
+      if (t >= 1) {
+        return stringify(t, "day");
+      }
+      t = Math.floor(s / 3600);
+      if (t >= 1) {
+        return stringify(t, "hour");
+      }
+      t = Math.floor(s / 60);
+      if (t > 1) {
+        return stringify(t, "minute");
+      }
+      return stringify(Math.floor(s), "second");
+    }
+    
+    var stringify = function(inNum, inUnit) {
+      return inNum + ' ' + inUnit + (inNum == 1 ? '' : 's');
+    }
+  
     this.component({
       publish: {
         items: null,
@@ -44,6 +74,10 @@
           if (item.contentSnippet) {
             n.innerHTML = item.contentSnippet;
             item.desc = n.textContent;
+          }
+          // time since
+          if (item.publishedDate) {
+            item.since = timeSince(new Date(item.publishedDate));
           }
         });
       },
