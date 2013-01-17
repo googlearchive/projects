@@ -5,16 +5,47 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-home">
+<element name="pi-home" attributes="stocks">
   <link rel="components" href="../../../pantry/CoolClock/coolclock.html"/>
+  <link rel="components" href="../../../pantry/Stock/stock.html"/>
   <template>
     <style>
       @host {
-        padding: 8px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .widgets {
+        padding: 4px;
+      }
+      
+      .widgets > *:not(template) {
+        display: inline-block;
+        min-width: 480px;
+        margin: 8px 6px;
+        padding: 6px;
+        -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      }
+      
+      .center {
         text-align: center;
       }
+      
+      @media screen and (max-width: 800px) {
+        .widgets > *:not(template) {
+          display: block;
+          padding: 20px;
+        }
+      }
     </style>
-    <x-coolclock></x-coolclock>
+    <div class="widgets">
+      <div class="center">
+        <x-coolclock></x-coolclock>
+      </div>
+      <template iterate="stocks">
+        <x-stock symbol="{{.}}" autoupdate="false"></x-stock>
+      </template>
+    </div>
   </template>
   <script>
     this.component();

@@ -10,11 +10,24 @@
   <link rel="components" href="pi-accounts-model.html"/>
   <link rel="components" href="../../../toolkit/src/g-icon-button.html"/>
   <template>
-    <div class="header item">
-      Topics
+    <div class=" item">
       <div class="flex"></div>
       <button class="button" on-click="reset">Restore Defaults</button>
     </div>
+    <div class="header item">Finance</div>
+    <div>
+      <template iterate="accounts.stocks">
+        <div class="item">
+          <div class="flex">{{.}}</div>
+          <g-icon-button src="../images/close.svg" on-click="removeStock"></g-icon-button>
+        </div>
+      </template>
+    </div>
+    <div class="item">
+      Symbol: <input id="symbol" />
+      <g-icon-button src="../images/add.svg" on-click="addStock"></g-icon-button>
+    </div>
+    <div class="header item">Topics</div>
     <div>
       <template iterate="accounts.topics">
         <div class="item">
@@ -35,11 +48,21 @@
       publish: {
         accounts: null
       },
+      addStock: function() {
+        var s = this.$.symbol.value;
+        if (s) {
+          this.accounts.addStock(s);
+          this.$.symbol.value = '';
+        }
+      },
+      removeStock: function(inEvent, inDetail, inSender) {
+        this.accounts.removeStock(inSender.model);
+      },
       addTopic: function() {
         var n = this.$.name.value;
         var f = this.$.feed.value;
         if (n && f) {
-          this.accounts.addTopic({title: n, feed: f})
+          this.accounts.addTopic({title: n, feed: f});
           this.$.name.value = '';
           this.$.feed.value = '';
         }

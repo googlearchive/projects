@@ -20,11 +20,15 @@
       {title: 'MAKE', imgSrc: 'http://makezine.com/images/logos/makeLogo_url.gif', feed: 'http://blog.makezine.com/index.xml'}
     ];
     
+    var DEFAULT_STOCKS = ['GOOG', 'AAPL'];
+    
     var TOPICS_STORAGE_NAME = 'pi-accounts-topics';
+    var STOCKS_STORAGE_NAME = 'pi-accounts-stocks';
     
     this.component({
       publish: {
         topics: null,
+        stocks: null,
         addTopic: function(inTopic) {
           this.topics.push(inTopic);
           this.save();
@@ -36,8 +40,20 @@
           }
           this.save();
         },
+        addStock: function(inStock) {
+          this.stocks.push(inStock);
+          this.save();
+        },
+        removeStock: function(inStock) {
+          var i = this.stocks.indexOf(inStock);
+          if (i >= 0) {
+            this.stocks.splice(i, 1);
+          }
+          this.save();
+        },
         reset: function() {
           this.topics = DEFAULT_TOPICS.slice(0);
+          this.stocks = DEFAULT_STOCKS.slice(0);
           this.save();
         }
       },
@@ -51,11 +67,19 @@
         } else {
           this.topics = DEFAULT_TOPICS.slice(0);
         }
+        s = window.localStorage.getItem(STOCKS_STORAGE_NAME);
+        if (s) {
+          this.stocks = JSON.parse(s);
+        } else {
+          this.stocks = DEFAULT_STOCKS.slice(0);
+        }
       },
       save: function() {
         window.localStorage.setItem(TOPICS_STORAGE_NAME, JSON.stringify(this.topics));
+        window.localStorage.setItem(STOCKS_STORAGE_NAME, JSON.stringify(this.stocks));
         // force to mutate topics to trigger property changed (e.g. itemsChanged in pi-items-view)
         this.topics = this.topics.slice(0);
+        this.stocks = this.stocks.slice(0);
       }
     });
   </script>
