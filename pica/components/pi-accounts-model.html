@@ -22,34 +22,23 @@
     
     var DEFAULT_STOCKS = ['GOOG', 'AAPL'];
     
-    var TOPICS_STORAGE_NAME = 'pi-accounts-topics';
-    var STOCKS_STORAGE_NAME = 'pi-accounts-stocks';
+    var ACCOUNTS_STORAGE_NAME = 'pica-accounts';
     
     this.component({
       publish: {
         topics: null,
         stocks: null,
         addTopic: function(inTopic) {
-          this.topics.push(inTopic);
-          this.save();
+          this.addItem(this.topics, inTopic);
         },
         removeTopic: function(inTopic) {
-          var i = this.topics.indexOf(inTopic);
-          if (i >= 0) {
-            this.topics.splice(i, 1);
-          }
-          this.save();
+          this.removeItem(this.topics, inTopic);
         },
         addStock: function(inStock) {
-          this.stocks.push(inStock);
-          this.save();
+          this.addItem(this.stocks, inStock);
         },
         removeStock: function(inStock) {
-          var i = this.stocks.indexOf(inStock);
-          if (i >= 0) {
-            this.stocks.splice(i, 1);
-          }
-          this.save();
+          this.removeItem(this.stocks, inStock);
         },
         reset: function() {
           this.topics = DEFAULT_TOPICS.slice(0);
@@ -60,23 +49,30 @@
       ready: function() {
         this.load();
       },
+      addItem: function(inItems, inItem) {
+        inItems.push(inItem);
+        this.save();
+      },
+      removeItem: function(inItems, inItem) {
+        var i = inItems.indexOf(inItem);
+        if (i >= 0) {
+          inItems.splice(i, 1);
+        }
+        this.save();
+      },
       load: function() {
-        var s = window.localStorage.getItem(TOPICS_STORAGE_NAME);
+        var s = window.localStorage.getItem(ACCOUNTS_STORAGE_NAME);
         if (s) {
-          this.topics = JSON.parse(s);
+          var a = JSON.parse(s);
+          this.topics = a.topics;
+          this.stocks = a.stocks;
         } else {
           this.topics = DEFAULT_TOPICS.slice(0);
-        }
-        s = window.localStorage.getItem(STOCKS_STORAGE_NAME);
-        if (s) {
-          this.stocks = JSON.parse(s);
-        } else {
           this.stocks = DEFAULT_STOCKS.slice(0);
         }
       },
       save: function() {
-        window.localStorage.setItem(TOPICS_STORAGE_NAME, JSON.stringify(this.topics));
-        window.localStorage.setItem(STOCKS_STORAGE_NAME, JSON.stringify(this.stocks));
+        window.localStorage.setItem(ACCOUNTS_STORAGE_NAME, JSON.stringify({topics: this.topics, stocks: this.stocks}));
         // force to mutate topics to trigger property changed (e.g. itemsChanged in pi-items-view)
         this.topics = this.topics.slice(0);
         this.stocks = this.stocks.slice(0);
