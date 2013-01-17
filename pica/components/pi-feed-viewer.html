@@ -12,13 +12,13 @@
   <link rel="components" href="pi-items-view.html"/>
   <link rel="components" href="pi-story.html"/>
   <template>
-    <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" class="g-panels-scale-slide" on-select="panelSelected" on-canselect="panelCanSelect">
+    <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" on-select="panelSelected" on-canselect="panelCanSelect">
       <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}"></pi-items-view>
       <pi-story id="story" story="{{selectedStory}}" on-keydown="keydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
-    <pi-gfeeds id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}" loading="{{loading}}" on-response="feedResponse"></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
     var RIGHT_ARROW_KEY = 39;
