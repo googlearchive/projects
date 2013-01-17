@@ -11,20 +11,41 @@ license that can be found in the LICENSE file.
     <script src="../../toolkit/platform/platform.js"></script>
     <link rel="components" href="../../toolkit/src/g-page.html">
     <link rel="components" href="../../toolkit/src/g-toolbar.html">
+    <link rel="components" href="../../toolkit/src/g-panels.html">
+    <link rel="components" href="../../toolkit/src/g-menu-item.html">
+    <link rel="components" href="../pica/components/pi-ribbon.html">
     <link rel="components" href="../../pantry/Ace/Ace.html">
     <style>
+      .fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
       ajaxorg-ace {
         top: 60px;
+      }
+      pi-ribbon {
+        width: 300px;
       }
     </style>
   </head>
   <body>
     <g-page>
-      <g-toolbar>&nbsp;Hello World</g-toolbar>
-      <ajaxorg-ace>function foo(items) {
-      var x = "All this is syntax highlighted";
-      return x;
-  }</ajaxorg-ace>
+      <g-panels class="fill" index="1" transition="flow">
+        <pi-ribbon label="Ace">
+          <g-menu-item>Home</g-menu-item>
+        </pi-ribbon>
+        <div>
+          <g-toolbar>&nbsp;ace.ajax.org</g-toolbar>
+
+<ajaxorg-ace theme="github">function foo(items) {
+  var x = "All this is syntax highlighted";
+  return x;
+}</ajaxorg-ace>
+
+        </div>
     </g-page>
   </body>
 </html>
