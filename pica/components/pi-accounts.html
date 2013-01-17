@@ -24,7 +24,7 @@
       </template>
     </div>
     <div class="item">
-      Symbol: <input id="symbol" />
+      Symbol: <input id="symbol" on-keyup="stockKeyupHandler" />
       <g-icon-button src="../images/add.svg" on-click="addStock"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
@@ -37,8 +37,8 @@
       </template>
     </div>
     <div class="item">
-      Name: <input id="name" />
-      Feed: <input id="feed" class="flex"/>
+      Name: <input id="name" on-keyup="topicKeyupHandler" />
+      Feed: <input id="feed" class="flex" on-keyup="topicKeyupHandler" />
       <g-icon-button src="../images/add.svg" on-click="addTopic"></g-icon-button>
     </div>
     <!-- <pi-accounts-model id="accounts"></pi-accounts-model> -->
@@ -72,6 +72,16 @@
       },
       reset: function() {
         this.accounts.reset();
+      },
+      stockKeyupHandler: function(e) {
+        if (e.keyCode == 13) {
+          this.addStock();
+        }
+      },
+      topicKeyupHandler: function(e) {
+        if (e.keyCode == 13) {
+          this.addTopic();
+        }
       }
     });
   </script>
