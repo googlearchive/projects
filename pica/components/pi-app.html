@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-app" extends="g-app">
+<element name="pi-app" extends="g-app" on-keydown="keydownHandler">
   <link rel="stylesheet" href="css/pi-app.css" />
   <link rel="components" href="../../../toolkit/src/g-component.html">
   <link rel="components" href="../../../toolkit/src/g-app.html"/>
@@ -37,6 +37,8 @@
     <pi-accounts-model id="accountsModel"></pi-accounts-model>
   </template>
   <script>
+    var ESCAPE_KEY = 27;
+    
     this.component({
       ribbonSelected: 'Topics',
       layout: 'grid',
@@ -60,6 +62,11 @@
       },
       showMain: function() {
         this.selectedPanel = 'main';
+      },
+      keydownHandler: function(e) {
+        if (e.keyCode == ESCAPE_KEY) {
+          this.navClick()
+        }
       }
     });
   </script>
