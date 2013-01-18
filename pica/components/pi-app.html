@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-app" extends="g-app" on-keydown="keydownHandler">
+<element name="pi-app" extends="g-app" on-keyup="keyupHandler">
   <link rel="stylesheet" href="css/pi-app.css" />
   <link rel="components" href="../../../toolkit/src/g-component.html">
   <link rel="components" href="../../../toolkit/src/g-app.html"/>
@@ -24,11 +24,11 @@
         <g-menu-item name="Accounts" src="../images/ribbon_accounts.svg">Accounts</g-menu-item>
       </pi-ribbon>
       <div id="main" on-click="showMain">
-        <pi-toolbar label="{{ribbonSelected}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
+        <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
             on-nav="navClick" on-source="toggleSource"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
           <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home>
-          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
+          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" selectedtopic="{{selectedTopic}}" panel="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
           <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts>
         </g-panels>
       </div>
@@ -43,7 +43,9 @@
       ribbonSelected: 'Topics',
       layout: 'grid',
       selectedPanel: 'main',
-      topicsSelectedPanel: 'topics',
+      ready: function() {
+        this.topicsSelectedPanelChanged();
+      },
       navClick: function() {
         if (this.topicsSelectedPanel == 'topics') {
           this.toggleNav();
@@ -57,13 +59,18 @@
       toggleSource: function() {
         this.$.panels.toggleBetween('main', 'source');
       },
-      ribbonSelectedChanged: function() {
-        this.showMain();
-      },
       showMain: function() {
         this.selectedPanel = 'main';
       },
-      keydownHandler: function(e) {
+      ribbonSelectedChanged: function() {
+        this.topicsSelectedPanelChanged();
+        this.showMain();
+      },
+      topicsSelectedPanelChanged: function() {
+        this.toolbarLabel = this.topicsSelectedPanel == 'topics' ?
+            this.ribbonSelected : this.selectedTopic.title;
+      },
+      keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {
           this.navClick()
         }
