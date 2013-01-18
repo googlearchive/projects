@@ -106,7 +106,7 @@
 .list .pi-item {
   display: block;
   width: auto;
-  height: 100px;
+  height: auto;
   border-right: 0;
 }
 
@@ -135,8 +135,10 @@
 }
 
 .list .since {
-  display: block;
-  float: right;
+  display: -webkit-box;
+  display: -webkit-flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
   color: #aaa;
 }
 
