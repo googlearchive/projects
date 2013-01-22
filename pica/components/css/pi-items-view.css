@@ -72,6 +72,14 @@
   display: none;
 }
 
+.topics .title {
+  display: block;
+  padding: 0 4px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+}
+
 .since {
   display: none;
 }
@@ -128,6 +136,7 @@
 .list.topics .title {
   line-height: 60px;
   font-size: 18px;
+  color: #000;
 }
 
 .list.topics .desc {

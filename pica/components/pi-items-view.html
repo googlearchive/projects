@@ -67,13 +67,17 @@
         inItems.forEach(function(item) {
           // scrape image url
           if (item.content) {
-            var m$ = item.content.match(/src="(.*?)"/);
+            var m$ = item.content.match(/<img[^>]+src="([^">]+)"/);
             item.imgSrc = m$ && m$[1];
           }
           // unescape html content
           if (item.contentSnippet) {
             n.innerHTML = item.contentSnippet;
-            item.desc = n.textContent;
+            n.innerHTML = n.textContent;
+            item.desc = n.textContent.trim();
+            if (!item.desc) {
+              item.desc = item.title;
+            }
           }
           // time since
           if (item.publishedDate) {
