@@ -16,6 +16,7 @@
   <link rel="components" href="pi-feed-viewer.html"/>
   <link rel="components" href="pi-home.html"/>
   <link rel="components" href="pi-accounts.html"/>
+  <link rel="components" href="pi-accounts-model.html"/>
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
       <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}">
@@ -72,7 +73,7 @@
       },
       keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {
-          this.navClick()
+          this.navClick();
         }
       }
     });
