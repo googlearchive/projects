@@ -11,18 +11,18 @@
   <link rel="components" href="../../../toolkit/src/g-app.html"/>
   <link rel="components" href="../../../toolkit/src/g-panels.html"/>
   <link rel="components" href="../../../toolkit/src/g-menu-item.html"/>
-  <link rel="components" href="pi-ribbon.html"/>
+  <link rel="components" href="../../../toolkit/src/g-ribbon.html"/>
   <link rel="components" href="pi-toolbar.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
   <link rel="components" href="pi-home.html"/>
   <link rel="components" href="pi-accounts.html"/>
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
-      <pi-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}">
+      <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}">
         <g-menu-item name="Home" src="../images/ribbon_trending.svg">Home</g-menu-item>
         <g-menu-item name="Topics" src="../images/ribbon_topics.svg">Topics</g-menu-item>
         <g-menu-item name="Accounts" src="../images/ribbon_accounts.svg">Accounts</g-menu-item>
-      </pi-ribbon>
+      </g-ribbon>
       <div id="main" on-click="showMain">
         <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
             on-nav="navClick" on-source="toggleSource"></pi-toolbar>
