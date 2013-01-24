@@ -8,8 +8,15 @@
 <element name="pi-story" attributes="title story">
   <template>
     <style>
+      .body {
+        max-width: 640px;
+        margin: 0 auto;
+        font-size: 12px;
+        padding: 10px;
+      }
+       
       #header {
-        padding: 20px;
+        padding: 20px 0;
         display: -webkit-flex;
         display: -webkit-box;
       }
@@ -19,38 +26,41 @@
       }
       
       #title {
-        font-size: 30px;
+        font-size: 26px;
         -webkit-flex: 1;
         -webkit-box-flex: 1;
-      }
-      
-      #content {
-        padding: 20px;
       }
       
       #linkButton {
         -webkit-transform: rotate(135deg);
       }
       
+      #author {
+        color: #666;
+      }
+      
+      #detail {
+        padding-top: 20px;
+      }
+      
       @media screen and (max-width: 800px) {
-        #title {
-          font-size: 20px;
-        }
-        
         #detail img {
           max-width: 100%;
           height: auto;
         }
       }
     </style>
-    <div id="header">
-      <div id="title">{{story.title}}</div>
-      <a href="{{story.link}}" target="{{targetWindow}}">
-        <g-icon-button id="linkButton" src="../images/nav-return.svg"></g-icon-button>
-      </a>
-    </div>
-    <div id="detail">
-      <div id="content"></div>
+    <div class="body">
+      <div id="header">
+        <div id="title">{{story.title}}</div>
+        <a href="{{story.link}}" target="{{targetWindow}}">
+          <g-icon-button id="linkButton" src="../images/nav-return.svg"></g-icon-button>
+        </a>
+      </div>
+      <div id="author">by {{story.author}}</div>
+      <div id="detail">
+        <div id="content"></div>
+      </div>
     </div>
   </template>
   <script>

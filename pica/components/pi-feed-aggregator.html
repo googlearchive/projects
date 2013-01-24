@@ -8,7 +8,7 @@
 <element name="pi-feed-aggregator" attributes="feed count entries loading">
   <link rel="components" href="pi-gfeeds.html"/>
   <template>
-    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" loading="{{loading}}" entries={{feedEntries}}></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" loading="{{loading}}" results={{feedResults}}></pi-gfeeds>
   </template>
   <script>
     this.component({
@@ -32,8 +32,15 @@
           this.feedUrl = null;
         }
       },
-      feedEntriesChanged: function() {
-        this._entries.push.apply(this._entries, this.feedEntries);
+      feedResultsChanged: function() {
+        var entries = null;
+        if (this.feedResults) {
+          entries = this.feedResults.entries;
+          entries.forEach(function(e) {
+            e.source = this.feedResults.title;
+          }.bind(this));
+        }
+        this._entries.push.apply(this._entries, entries);
         this.fetch();
       },
       dateSortDesc: function(inEntry1, inEntry2) {

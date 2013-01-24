@@ -19,7 +19,6 @@
       <pi-story id="story" story="{{selectedStory}}" on-keydown="keydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
-    <!-- <pi-gfeeds id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}" loading="{{loading}}"></pi-gfeeds> -->
     <pi-feed-aggregator id="gfeeds" feed="{{selectedTopic.feed}}" count="24" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
   </template>
   <script>

@@ -18,7 +18,11 @@
                   <div class="image flex" style="background-image: url({{imgSrc}});"></div>
                   <div class="title">{{title}}</div>
                   <div class="desc">{{desc}}</div>
-                  <div class="since">{{since}} ago</div>
+                  <div class="flex space"></div>
+                  <div class="source">
+                    <span class="source-title">{{source}}</span>
+                    <span>{{since}}</span>
+                  </div>
                 </div>
               </template>
             </div>
@@ -32,29 +36,29 @@
       var s = Math.floor(((new Date()) - inDate) / 1000);
       var t = Math.floor(s / 31536000);
       if (t > 1) {
-        return stringify(t, "year");
+        return stringify(t, "y");
       }
       t = Math.floor(s / 2592000);
       if (t > 1) {
-        return stringify(t, "month");
+        return stringify(t, "m");
       }
       t = Math.floor(s / 86400);
       if (t >= 1) {
-        return stringify(t, "day");
+        return stringify(t, "d");
       }
       t = Math.floor(s / 3600);
       if (t >= 1) {
-        return stringify(t, "hour");
+        return stringify(t, "h");
       }
       t = Math.floor(s / 60);
       if (t > 1) {
-        return stringify(t, "minute");
+        return stringify(t, "m");
       }
-      return stringify(Math.floor(s), "second");
+      return stringify(Math.floor(s), "s");
     }
     
     var stringify = function(inNum, inUnit) {
-      return inNum + ' ' + inUnit + (inNum == 1 ? '' : 's');
+      return inNum + inUnit;/* + (inNum == 1 ? '' : 's');*/
     }
   
     this.component({
