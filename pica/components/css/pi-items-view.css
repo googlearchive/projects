@@ -35,7 +35,6 @@
 }
 
 .image {
-  /*background-color: #eee;*/
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
@@ -60,10 +59,6 @@
 }
 
 .topics .desc {
-  display: none;
-}
-
-.since {
   display: none;
 }
 
@@ -148,12 +143,10 @@
 
 .list .desc {
   display: block;
-  height: auto;
 }
 
 .list .title {
   display: block;
-  height: auto;
   font-weight: bold;
 }
 
@@ -164,18 +157,6 @@
 }
 
 .list.topics .desc {
-  display: none;
-}
-
-.list .since {
-  display: -webkit-box;
-  display: -webkit-flex;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-  color: #aaa;
-}
-
-.list.topics .since {
   display: none;
 }
 
