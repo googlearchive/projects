@@ -8,6 +8,7 @@
 <element name="pi-home" attributes="stocks">
   <link rel="components" href="../../../pantry/CoolClock/coolclock.html"/>
   <link rel="components" href="../../../pantry/Stock/stock.html"/>
+  <link rel="components" href="../../../pantry/Weather/wu-weather.html"/>
   <template>
     <style>
       @host {
@@ -50,6 +51,7 @@
       <div class="center">
         <x-coolclock></x-coolclock>
       </div>
+      <wu-weather autoupdate="false"></wu-weather>
       <template iterate="stocks">
         <x-stock symbol="{{.}}" autoupdate="false"></x-stock>
       </template>
