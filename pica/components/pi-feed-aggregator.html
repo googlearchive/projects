@@ -38,6 +38,7 @@
           entries = this.feedResults.entries;
           entries.forEach(function(e) {
             e.source = this.feedResults.title;
+            e.sourceLink = this.feedResults.link;
           }.bind(this));
         }
         this._entries.push.apply(this._entries, entries);
