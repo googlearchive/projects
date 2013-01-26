@@ -30,6 +30,7 @@
         </div>
       </template>
     </div>
+    <!--<div on-tap="loadMore">Load more...</div>-->
   </template>
   <script>
     var timeSince = function(inDate) {
@@ -63,8 +64,12 @@
   
     this.component({
       publish: {
+        pageSize: -1,
         items: null,
         selected: null
+      },
+      ready: function() {
+        this.node.setAttribute('touch-action', 'scroll');
       },
       process: function(inItems) {
         var n = document.createElement('div');
@@ -100,7 +105,17 @@
             {box: 'two', items: this.items.slice(i+2, i+4)}
           ]);
         }
-        this.boxes = b;
+        this.boxes = this.allBoxes = b;
+        if (this.pageSize > 0) {
+          this.boxes = this.allBoxes.slice(0, this.pageSize);
+        }
+      },
+      loadMore: function() {
+        var l = this.boxes.length;
+        var more = this.allBoxes.slice(l, l+this.pageSize);
+        more.forEach(function(m) {
+          this.boxes.push(m);
+        }, this);
       },
       itemClick: function(inEvent, inDetail, inSender) {
         this.selected = inSender.model;
