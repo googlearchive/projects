@@ -23,7 +23,7 @@
       </template>
     </div>
     <div class="item">
-      Symbol: <input id="symbol" autocorrect="off" on-keyup="stockKeyupHandler" />
+      <div class="item-label">Symbol: </div><input id="symbol" autocorrect="off" on-keyup="stockKeyupHandler" />
       <g-icon-button src="../images/add.svg" on-tap="addStock"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
@@ -35,12 +35,13 @@
         </div>
       </template>
     </div>
+    <div class="item no-border">
+      <div class="item-label">Name: </div><input id="name" on-keyup="topicKeyupHandler" />
+    </div>
     <div class="item">
-      Name: <input id="name" on-keyup="topicKeyupHandler" />
-      Feed: <input id="feed" class="flex" on-keyup="topicKeyupHandler" />
+      <div class="item-label">Feed: </div><input id="feed" class="flex" on-keyup="topicKeyupHandler" />
       <g-icon-button src="../images/add.svg" on-tap="addTopic"></g-icon-button>
     </div>
-    <!-- <pi-accounts-model id="accounts"></pi-accounts-model> -->
   </template>
   <script>
     this.component({

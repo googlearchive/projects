@@ -28,11 +28,16 @@
     
     var ACCOUNTS_STORAGE_NAME = 'pica-accounts';
     
+    var DEFAULT_TOPIC_IMG_SRC = 'http://www.google.com/reader/ui/2562708335-newspaper-icon.png';
+    
     this.component({
       publish: {
         topics: null,
         stocks: null,
         addTopic: function(inTopic) {
+          if (!inTopic.imgSrc) {
+            inTopic.imgSrc = DEFAULT_TOPIC_IMG_SRC;
+          }
           this.addItem(this.topics, inTopic);
         },
         removeTopic: function(inTopic) {
@@ -79,7 +84,6 @@
         window.localStorage.setItem(ACCOUNTS_STORAGE_NAME, JSON.stringify({topics: this.topics, stocks: this.stocks}));
         // force to mutate topics to trigger property changed (e.g. itemsChanged in pi-items-view)
         this.topics = this.topics.slice(0);
-        this.stocks = this.stocks.slice(0);
       }
     });
   </script>
