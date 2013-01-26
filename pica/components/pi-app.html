@@ -19,7 +19,7 @@
   <link rel="components" href="pi-accounts-model.html"/>
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
-      <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}">
+      <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
         <g-menu-item name="Home" src="../images/ribbon_trending.svg">Home</g-menu-item>
         <g-menu-item name="Topics" src="../images/ribbon_topics.svg">Topics</g-menu-item>
         <g-menu-item name="Accounts" src="../images/ribbon_accounts.svg">Accounts</g-menu-item>
@@ -65,7 +65,6 @@
       },
       ribbonSelectedChanged: function() {
         this.topicsSelectedPanelChanged();
-        this.showMain();
       },
       topicsSelectedPanelChanged: function() {
         this.toolbarLabel = this.topicsSelectedPanel == 'topics' ?
