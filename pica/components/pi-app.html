@@ -24,7 +24,7 @@
         <g-menu-item name="Topics" src="../images/ribbon_topics.svg">Topics</g-menu-item>
         <g-menu-item name="Accounts" src="../images/ribbon_accounts.svg">Accounts</g-menu-item>
       </g-ribbon>
-      <div id="main" on-tktap="showMain">
+      <div id="main" on-tap="showMain">
         <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
             on-nav="navClick" on-source="toggleSource"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}">
@@ -33,7 +33,7 @@
           <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts>
         </g-panels>
       </div>
-      <div id="source" class="right" on-tktap="toggleSource"></div>
+      <div id="source" class="right" on-tap="toggleSource"></div>
     </g-panels>
     <pi-accounts-model id="accountsModel"></pi-accounts-model>
   </template>
