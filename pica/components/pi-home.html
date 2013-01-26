@@ -17,13 +17,17 @@
       }
       
       .widgets {
-        padding: 4px;
+        width: 1024px;
+        box-sizing: border-box;
+        padding: 6px;
+        margin: 0 auto;
       }
       
       .widgets > *:not(template) {
         display: inline-block;
-        min-width: 480px;
-        min-height: 225px;
+        width: 491px;
+        height: 250px;
+        box-sizing: border-box;
         vertical-align: top;
         margin: 8px 6px;
         padding: 6px;
@@ -34,16 +38,27 @@
         text-align: center;
       }
       
-      .center > * {
+      x-coolclock {
         display: block;
-        padding-top: 25px;
+        padding-top: 30px;
       }
       
-      @media screen and (max-width: 800px) {
+      @media screen and (max-width: 1023px) {
+        .widgets {
+          width: 512px;
+        }
+      }
+      
+      @media screen and (max-width: 600px) {
+        .widgets {
+          width: auto;
+        }
+        
         .widgets > *:not(template) {
           display: block;
-          min-width: 0;
-          padding: 20px;
+          width: auto;
+          padding: 10px;
+          margin-bottom: 12px;
         }
       }
     </style>
