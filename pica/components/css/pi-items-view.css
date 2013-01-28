@@ -71,6 +71,7 @@
 }
 
 .source {
+  position: relative;
   color: #666;
   font-size: 11px;
 }
@@ -80,10 +81,12 @@
 }
 
 .source > * {
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 
 .source-icon {
+  position: relative;
+  top: 2px;
   padding-right: 4px;
 }
 
