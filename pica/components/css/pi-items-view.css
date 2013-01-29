@@ -22,7 +22,7 @@
 #more {
   padding: 20px;
   background: whitesmoke;
-  cursor: hand;
+  cursor: pointer;
   -webkit-user-select: none;
 }
 
@@ -101,6 +101,13 @@
   white-space: nowrap;
   vertical-align: top;
   font-size: 0;
+}
+
+.quilt #more {
+  display: inline-block;
+  vertical-align: bottom;
+  font-size: 1rem;
+  white-space: nowrap;
 }
 
 .quilt .box {
