@@ -119,6 +119,12 @@
           this.boxes = this.allBoxes.slice(0, this.pageSize);
         }
         this.updateMoreShowing();
+        this.scrollToTop();
+      },
+      scrollToTop: function() {
+        webkitRequestAnimationFrame(function() {
+          this.node.scrollTop = 0;
+        }.bind(this));
       },
       updateMoreShowing: function() {
         this.$.more.style.display = this.boxes.length < this.allBoxes.length ? 
