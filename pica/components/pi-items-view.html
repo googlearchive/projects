@@ -8,17 +8,16 @@
 <element name="pi-items-view" attributes="layout view">
   <link rel="stylesheet" href="css/pi-items-view.css" />
   <template>
-    <div class="view flexbox flex {{layout}} {{view}}">
+    <div class="view {{layout}} {{view}}">
       <template iterate="boxes">
-        <div class="box flexbox">
+        <div class="box">
           <template iterate>
-            <div class="inner flexbox flex-column flex {{box}}">
+            <div class="inner {{box}}">
               <template iterate="items">
-                <div class="pi-item flexbox flex-column flex" imageshowing="{{imageShowing}}" on-tap="itemClick">
-                  <div class="image flex" style="background-image: url({{imgSrc}});"></div>
+                <div class="pi-item" imageshowing="{{imageShowing}}" on-tap="itemClick">
+                  <div class="image" style="background-image: url({{imgSrc}});"></div>
                   <div class="title">{{title}}</div>
                   <div class="desc">{{desc}}</div>
-                  <div class="flex space"></div>
                   <div class="source">
                     <img class="source-icon" src="{{sourceIcon}}" />
                     <span class="source-title">{{source}}</span>

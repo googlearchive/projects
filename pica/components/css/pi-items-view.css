@@ -3,45 +3,26 @@
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
-@host {
-  display: -webkit-box;
-  display: -webkit-flex;
-}
-
-/* flex box */
-.flexbox {
-  display: -webkit-box;
-  display: -webkit-flex;
-  -webkit-box-orient: horizontal;
-  -webkit-flex-flow: row;
-}
-
-.flex-column {
-  -webkit-box-orient: vertical;
-  -webkit-flex-flow: column;
-}
-
-.flex {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-}
 
 /* base */
+.view {
+  width: 100%;
+}
+
 .pi-item {
+  position: relative;
+  box-sizing: border-box;
   padding: 20px;
   border: 1px solid #ddd;
   border-top: 0;
   border-left: 0;
+  font-size: 15px;
 }
 
 .image {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-}
-
-.pi-item[imageshowing=false] .image {
-  display: none;
 }
 
 .title {
@@ -51,10 +32,8 @@
 
 .topics .title {
   display: block;
-  padding: 0 4px;
   font-size: 18px;
-  font-weight: bold;
-  color: #555;
+  color: #333;
 }
 
 .desc {
@@ -63,6 +42,10 @@
 }
 
 .topics .desc {
+  display: none;
+}
+
+.view:not(.topics) .pi-item[imageshowing=false] .image {
   display: none;
 }
 
@@ -95,138 +78,129 @@
   padding-right: 8px;
 }
 
-/* quilt layout */
-.quilt .one .pi-item {
-  -webkit-box-flex: 2;
-  -webkit-flex: 2;
-  width: 600px;
-}
-
-.quilt .one .pi-item:last-child {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-}
-
-.quilt .two .pi-item {
-  width: 300px;
-}
-
-.quilt .space {
-  -webkit-box-flex: 0;
-  -webkit-flex: 0;
-}
-
-/* grid layout */
-.grid.view {
-  display: block;
-}
-
-.grid .pi-item {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  width: 0;
-  height: 300px;
-}
-
-.grid .image {
-  height: 180px;
-  -webkit-box-flex: 0;
-  -webkit-flex: 0;
-}
-
-.grid.topics .image {
-  height: 270px;
-}
-
-.grid.topics .pi-item {
-  height: 300px;
-}
-
-.grid .inner {
-  width: 0;
-  -webkit-box-orient: horizontal;
-  -webkit-flex-flow: row;
-}
-
 /* list layout */
-.list.view, .list .box {
-  display: block;
-}
-
 .list .pi-item {
-  display: block;
-  width: auto;
-  height: auto;
   border-right: 0;
-}
-
-.list.topics .pi-item {
-  height: 60px;
 }
 
 .list .pi-item .desc {
   display: block;
 }
 
-.list .title {
-  display: block;
-  font-weight: bold;
+/* quilt layout */
+.quilt.view {
+  display: inline-block;
+  height: 100%;
+  white-space: nowrap;
+  vertical-align: top;
+  font-size: 0;
 }
 
-.list.topics .title {
-  line-height: 60px;
-  font-size: 18px;
-  color: #000;
+.quilt .box {
+  display: inline-block;
+  height: 100%;
 }
 
-.list.topics .desc {
-  display: none;
+.quilt .inner {
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.quilt .one .pi-item {
+  width: 600px;
+  height: 70%;
+}
+
+.quilt .one .pi-item:last-child {
+  height: 30%;
+}
+
+.quilt .two .pi-item {
+  width: 300px;
+  height: 50%;
+}
+
+.quilt.topics .title {
+  position: absolute;
+  bottom: 20px;
+}
+
+.quilt .image {
+  height: 50%;
+}
+
+.quilt .one .pi-item .image {
+  height: 80%;
+}
+
+.quilt .one .pi-item:last-child .image {
+  height: 60%;
+}
+
+/* grid layout */
+.grid .box {
+  /* to remove whitespace between inline blocks,
+     alternative is to use float: left */
+  font-size: 0;
+}
+
+.grid .inner {
+  display: inline-block;
+  width: 50%;
+}
+
+.grid .pi-item {
+  display: inline-block;
+  width: 50%;
+  height: 300px;
+  vertical-align: top;
+}
+
+.grid .image {
+  height: 130px;
+}
+
+.grid.topics .image {
+  height: 220px;
+}
+
+.grid .source {
+  position: absolute;
+  bottom: 10px;
+}
+
+.grid .two .pi-item:last-child {
+  border-right: 0;
 }
 
 /* small screen size e.g. phone */
 @media screen and (max-width: 800px) {
-  .view, .box {
-    display: block;
-  }
-  
-  .inner {
-    -webkit-box-orient: horizontal;
-    -webkit-flex-flow: row;
-  }
-  
   .grid .inner {
-    width: auto;
-  }
-  
-  .list .inner {
     display: block;
+    width: 100%;
   }
   
-  .pi-item {
-    height: 300px;
-  }
-  
-  .inner .pi-item {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    padding: 10px;
-  }
-  
-  .inner .pi-item:last-child {
+  .grid .pi-item:last-child {
     border-right: 0;
   }
 }
 
 @media screen and (max-width: 480px) {
+  .grid .pi-item {
+    padding: 10px;
+  }
+  
   .grid.topics .pi-item {
     height: 200px;
   }
   
   .grid.topics .image {
-    height: 160px;
+    height: 120px;
   }
   
   .grid .image {
-    height: 100px;
+    height: 80px;
   }
 }
