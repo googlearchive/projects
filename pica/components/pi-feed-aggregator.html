@@ -11,6 +11,37 @@
     <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" loading="{{loading}}" results={{feedResults}}></pi-gfeeds>
   </template>
   <script>
+    var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
+    
+    var timeSince = function(inDate) {
+      var s = Math.floor(((new Date()) - inDate) / 1000);
+      var t = Math.floor(s / 31536000);
+      if (t > 1) {
+        return stringify(t, "y");
+      }
+      t = Math.floor(s / 2592000);
+      if (t > 1) {
+        return stringify(t, "m");
+      }
+      t = Math.floor(s / 86400);
+      if (t >= 1) {
+        return stringify(t, "d");
+      }
+      t = Math.floor(s / 3600);
+      if (t >= 1) {
+        return stringify(t, "h");
+      }
+      t = Math.floor(s / 60);
+      if (t > 1) {
+        return stringify(t, "m");
+      }
+      return stringify(Math.floor(s), "s");
+    }
+    
+    var stringify = function(inNum, inUnit) {
+      return inNum + inUnit;/* + (inNum == 1 ? '' : 's');*/
+    }
+  
     this.component({
       feedChanged: function() {
         if (this.feed) {
@@ -30,16 +61,13 @@
           this.entries = this._entries.sort(this.dateSortDesc.bind(this));
           this.loading = false;
           this.feedUrl = null;
+          this.send('response', {entries: this.entries});
         }
       },
       feedResultsChanged: function() {
         var entries = null;
         if (this.feedResults) {
-          entries = this.feedResults.entries;
-          entries.forEach(function(e) {
-            e.source = this.feedResults.title;
-            e.sourceLink = this.feedResults.link;
-          }.bind(this));
+          entries = this.processFeedResults(this.feedResults);
         }
         this._entries.push.apply(this._entries, entries);
         this.fetch();
@@ -53,6 +81,41 @@
           return 1;
         }
         return 0;
+      },
+      processFeedResults: function(inResults) {
+        var n = document.createElement('div');
+        var entries = inResults.entries;
+        entries.forEach(function(entry) {
+          // feed source
+          entry.source = inResults.title;
+          entry.sourceLink = inResults.link;
+          // scrape image url
+          if (entry.content) {
+            var m$ = entry.content.match(/<img[^>]+src="([^">]+)"/);
+            entry.imgSrc = m$ && m$[1];
+          }
+          entry.imageShowing = !!entry.imgSrc;
+          // unescape html content
+          if (entry.contentSnippet) {
+            n.innerHTML = entry.contentSnippet;
+            n.innerHTML = n.textContent;
+            entry.desc = n.textContent.trim();
+            if (!entry.desc) {
+              entry.desc = entry.title;
+            }
+          }
+          // favicon
+          if (entry.sourceLink) {
+            entry.sourceIcon = GET_FAVICON_URL + entry.sourceLink;
+          }
+          // time since
+          if (entry.publishedDate) {
+            var d = new Date(entry.publishedDate);
+            entry.since = timeSince(d);
+            entry.publishedLocaleDate = d.toLocaleString();
+          }
+        });
+        return entries;
       }
     });
   </script>

@@ -52,6 +52,22 @@
         this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 
           'g-panels-scale-slide';
       },
+      topicsChanged: function() {
+        this.topics.forEach(function(t) {
+          var fa = document.createElement('pi-feed-aggregator');
+          fa.count = 4;
+          fa.addEventListener('response', function(e) {
+            var ns = e.detail && e.detail.entries || [];
+            for (var i = 0, n; n = ns[i]; i++) {
+              if (n.imgSrc) {
+                t.imgSrc = n.imgSrc;
+                return;
+              }
+            }
+          });
+          fa.feed = t.feed;
+        });
+      },
       storiesChanged: function() {
         if (this.stories) {
           this.panel = 'stories';

@@ -14,8 +14,8 @@
           <template iterate>
             <div class="inner {{box}}">
               <template iterate="items">
-                <div class="pi-item" imageshowing="{{imageShowing}}" on-tap="itemClick">
-                  <div class="image" style="background-image: url({{imgSrc}});"></div>
+                <div class="pi-item" on-tap="itemClick">
+                  <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
                   <div class="title">{{title}}</div>
                   <div class="desc">{{desc}}</div>
                   <div class="source">
@@ -33,37 +33,6 @@
     </div>
   </template>
   <script>
-    var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
-    
-    var timeSince = function(inDate) {
-      var s = Math.floor(((new Date()) - inDate) / 1000);
-      var t = Math.floor(s / 31536000);
-      if (t > 1) {
-        return stringify(t, "y");
-      }
-      t = Math.floor(s / 2592000);
-      if (t > 1) {
-        return stringify(t, "m");
-      }
-      t = Math.floor(s / 86400);
-      if (t >= 1) {
-        return stringify(t, "d");
-      }
-      t = Math.floor(s / 3600);
-      if (t >= 1) {
-        return stringify(t, "h");
-      }
-      t = Math.floor(s / 60);
-      if (t > 1) {
-        return stringify(t, "m");
-      }
-      return stringify(Math.floor(s), "s");
-    }
-    
-    var stringify = function(inNum, inUnit) {
-      return inNum + inUnit;/* + (inNum == 1 ? '' : 's');*/
-    }
-  
     this.component({
       publish: {
         pageSize: 6,
@@ -73,41 +42,8 @@
       ready: function() {
         this.node.setAttribute('touch-action', 'scroll');
       },
-      process: function(inItems) {
-        var n = document.createElement('div');
-        inItems.forEach(function(item) {
-          // scrape image url
-          if (item.content) {
-            var m$ = item.content.match(/<img[^>]+src="([^">]+)"/);
-            item.imgSrc = m$ && m$[1];
-          }
-          item.imageShowing = !!item.imgSrc;
-          // unescape html content
-          if (item.contentSnippet) {
-            n.innerHTML = item.contentSnippet;
-            n.innerHTML = n.textContent;
-            item.desc = n.textContent.trim();
-            if (!item.desc) {
-              item.desc = item.title;
-            }
-          }
-          // favicon
-          if (item.sourceLink) {
-            item.sourceIcon = GET_FAVICON_URL + item.sourceLink;
-          }
-          // time since
-          if (item.publishedDate) {
-            var d = new Date(item.publishedDate);
-            item.since = timeSince(d);
-            item.publishedLocaleDate = d.toLocaleString();
-          }
-        });
-      },
       itemsChanged: function() {
         var b = [], l = this.items && this.items.length;
-        if (l) {
-          this.process(this.items);
-        }
         for (var i=0; i < l; i += 4) {
           b.push([
             {box: 'one', items: this.items.slice(i, i+2)},
