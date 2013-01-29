@@ -29,8 +29,8 @@
           </template>
         </div>
       </template>
+      <div id="more" on-tap="loadMore">Load more...</div>
     </div>
-    <!--<div on-tap="loadMore">Load more...</div>-->
   </template>
   <script>
     var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
@@ -66,7 +66,7 @@
   
     this.component({
       publish: {
-        pageSize: -1,
+        pageSize: 6,
         items: null,
         selected: null
       },
@@ -118,6 +118,11 @@
         if (this.pageSize > 0) {
           this.boxes = this.allBoxes.slice(0, this.pageSize);
         }
+        this.updateMoreShowing();
+      },
+      updateMoreShowing: function() {
+        this.$.more.style.display = this.boxes.length < this.allBoxes.length ? 
+          'block' : 'none';
       },
       loadMore: function() {
         var l = this.boxes.length;
@@ -125,6 +130,7 @@
         more.forEach(function(m) {
           this.boxes.push(m);
         }, this);
+        this.updateMoreShowing();
       },
       itemClick: function(inEvent, inDetail, inSender) {
         this.selected = inSender.model;

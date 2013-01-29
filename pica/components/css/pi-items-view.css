@@ -19,6 +19,13 @@
   font-size: 15px;
 }
 
+#more {
+  padding: 20px;
+  background: whitesmoke;
+  cursor: hand;
+  -webkit-user-select: none;
+}
+
 .image {
   background-repeat: no-repeat;
   background-size: contain;
