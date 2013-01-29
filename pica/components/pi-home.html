@@ -43,6 +43,11 @@
         padding-top: 30px;
       }
       
+      wu-weather {
+        -webkit-box-shadow: none;
+        text-align: left;
+      }
+      
       @media screen and (max-width: 1023px) {
         .widgets {
           width: 512px;
@@ -66,7 +71,9 @@
       <div class="center">
         <x-coolclock></x-coolclock>
       </div>
-      <wu-weather autoupdate="false"></wu-weather>
+      <div class="center">
+        <wu-weather autoupdate="false"></wu-weather>
+      </div>
       <template iterate="stocks">
         <x-stock symbol="{{.}}" autoupdate="false"></x-stock>
       </template>
