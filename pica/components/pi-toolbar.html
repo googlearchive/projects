@@ -33,7 +33,7 @@
         <g-menu-button src="../images/view_quilt.svg" selected="{{layout}}">
           <g-menu-item name="grid" label="Grid" src="../images/view_modules.svg"></g-menu-item>
           <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.svg"></g-menu-item>
-          <g-menu-item name="list" label="List" class="hidden-wide" src="../images/view_list.svg"></g-menu-item>
+          <g-menu-item name="list" label="List" src="../images/view_list.svg"></g-menu-item>
         </g-menu-button>
         <g-menu-button src="../images/add.svg">
           <g-menu-item src="../images/edit_page.svg">Post a Comment</g-menu-item>
@@ -54,7 +54,7 @@
         this.screenLayoutChange(mq);
       },
       screenLayoutChange: function(inQuery) {
-        if (this.layout == 'list' || (inQuery.matches && this.layout == 'quilt')) {
+        if (inQuery.matches && this.layout == 'quilt') {
           this.layout = 'grid';
         }
       },
