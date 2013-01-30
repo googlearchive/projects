@@ -1,6 +1,6 @@
 function Todos(inItems) {
   this.items = inItems || [];
-}
+};
 
 Todos.prototype = {
   filters: {
