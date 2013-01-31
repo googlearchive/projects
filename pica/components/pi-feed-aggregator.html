@@ -21,7 +21,7 @@
       }
       t = Math.floor(s / 2592000);
       if (t > 1) {
-        return stringify(t, "m");
+        return stringify(t, "M");
       }
       t = Math.floor(s / 86400);
       if (t >= 1) {
@@ -46,7 +46,7 @@
       feedChanged: function() {
         if (this.feed) {
           this._entries = [];
-          this.feeds = Array.isArray(this.feed) ? this.feed.slice(0) : [this.feed];
+          this.feeds = Array.isArray(this.feed) ? this.feed.slice(0) : [{feed: this.feed}];
           this.feedCount = Math.ceil(this.count / this.feeds.length);
           this.fetch();
         } else {
@@ -56,7 +56,7 @@
       fetch: function() {
         this.loading = true;
         if (this.feeds && this.feeds.length) {
-          this.feedUrl = this.feeds.shift();
+          this.feedUrl = this.feeds.shift().feed;
         } else {
           this.entries = this._entries.sort(this.dateSortDesc.bind(this));
           this.loading = false;

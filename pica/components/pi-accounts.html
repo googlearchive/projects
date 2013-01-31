@@ -11,42 +11,84 @@
   <template>
     <div class=" item">
       <div class="flex"></div>
-      <button class="button" on-tap="reset">Restore Defaults</button>
+      <button class="button" touch-action="none" on-tap="reset">Restore Defaults</button>
     </div>
     <div class="header item">Finance</div>
-    <div>
-      <template iterate="accounts.stocks">
-        <div class="item">
-          <div class="flex">{{.}}</div>
-          <g-icon-button src="../images/close.svg" on-tap="removeStock"></g-icon-button>
-        </div>
-      </template>
-    </div>
+    <template iterate="accounts.stocks">
+      <div class="item">
+        <div class="flex">{{.}}</div>
+        <g-icon-button src="../images/close.svg" touch-action="none" on-tap="removeStock"></g-icon-button>
+      </div>
+    </template>
     <div class="item">
-      <div class="item-label">Symbol: </div><input id="symbol" autocorrect="off" on-keyup="stockKeyupHandler" />
-      <g-icon-button src="../images/add.svg" on-tap="addStock"></g-icon-button>
+      <div class="item-input-label">Symbol: </div>
+      <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
+      <g-icon-button src="../images/add.svg" touch-action="none" on-tap="addStock"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
-    <div>
-      <template iterate="accounts.topics">
-        <div class="item">
-          <div class="flex">{{title}}</div>
-          <g-icon-button src="../images/close.svg" on-tap="removeTopic"></g-icon-button>
-        </div>
-      </template>
-    </div>
+    <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
-      <div class="item-label">Name: </div><input id="name" on-keyup="topicKeyupHandler" />
+      <div class="item-input-label">Url: </div>
+      <input id="feed" class="flex" operation="addFeed" on-keyup="keyupHandler" />
+      <g-icon-button src="../images/add.svg" touch-action="none" on-tap="addFeed"></g-icon-button>
     </div>
     <div class="item">
-      <div class="item-label">Feed: </div><input id="feed" class="flex" on-keyup="topicKeyupHandler" />
-      <g-icon-button src="../images/add.svg" on-tap="addTopic"></g-icon-button>
+      <div class="item-input-label">Category: </div>
+      <span class="category-select-value">{{selectedCategory}}</span>
+      <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow-down.png"></g-menu-button>
+      <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow-down.png">
+        <template iterate="accounts.categories">
+          <g-menu-item name="{{.}}">{{.}}</g-menu-item>
+        </template>
+      </g-menu-button> -->
     </div>
+    <div class="item accounts-title">Add New Category</div>
+    <div class="item">
+      <div class="item-input-label">Name: </div>
+      <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
+      <g-icon-button src="../images/add.svg" touch-action="none" on-tap="addCategory"></g-icon-button>
+    </div>
+    <template iterate="accounts.topics">
+      <div class="item accounts-title">
+        <g-icon src="../images/folder_graylite.png" style="margin-left: -8px;"></g-icon>
+        <div class="flex">{{title}}</div>
+        <g-icon-button src="../images/close.svg" touch-action="none" on-tap="removeTopic"></g-icon-button>
+      </div>
+      <template iterate="feed">
+        <div class="item">
+          <div class="flex accounts-feed-title">{{title}}</div>
+          <g-icon-button src="../images/close.svg" touch-action="none" on-tap="removeFeed"></g-icon-button>
+        </div>
+      </template>
+    </template>
+    <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="feedResponse" on-error="feedResponse"></pi-gfeeds>
   </template>
   <script>
     this.component({
       publish: {
         accounts: null
+      },
+      selectedCategory: null,
+      ready: function() {
+        this.node.setAttribute('touch-action', 'scroll');
+      },
+      accountsChanged: function() {
+        this.updateCategories();
+      },
+      updateCategories: function() {
+        // FIXME(ffu): can't use MDV template iterate to generate menu-items
+        // since it doesn't call distribute after all menu-items are generated;
+        // so we have to manually create menu-items and then call distribute.
+        this.$.categorySelect.lightDOM.textContent = '';
+        dirtyCheck();
+        this.accounts.categories.forEach(function(c) {
+          var i = document.createElement('g-menu-item');
+          i.setAttribute('name', c);
+          i.textContent = c;
+          this.$.categorySelect.lightDOM.appendChild(i);
+        }.bind(this));
+        this.$.categorySelect.distribute();
+        this.selectedCategory = this.accounts.categories[0];
       },
       addStock: function() {
         var s = this.$.symbol.value;
@@ -58,29 +100,50 @@
       removeStock: function(inEvent, inDetail, inSender) {
         this.accounts.removeStock(inSender.model);
       },
-      addTopic: function() {
-        var n = this.$.name.value;
+      addFeed: function() {
         var f = this.$.feed.value;
-        if (n && f) {
-          this.accounts.addTopic({title: n, feed: f});
-          this.$.name.value = '';
-          this.$.feed.value = '';
+        if (f) {
+          // verify feed and retrieve feed title
+          this.feedUrl = f;
         }
+      },
+      feedResponse: function(e, inDetail) {
+        var f = inDetail.feed;
+        if (f) {
+          this.accounts.addFeed({title: f.title, feed: f.feedUrl,
+            category: this.selectedCategory});
+          this.$.feed.value = '';
+          this.feedUrl = null;
+        } else {
+          console.error('Error trying to add feed', inDetail);
+        }
+      },
+      removeFeed: function(inEvent, inDetail, inSender) {
+        this.accounts.removeFeed(inSender.model);
       },
       removeTopic: function(inEvent, inDetail, inSender) {
         this.accounts.removeTopic(inSender.model);
+        this.removeCategory(inSender.model.title);
+      },
+      addCategory: function() {
+        var n = this.$.category.value;
+        if (n) {
+          this.accounts.addCategory(n);
+          this.$.category.value = '';
+          this.updateCategories();
+        }
+      },
+      removeCategory: function(inCategory) {
+        this.accounts.removeCategory(inCategory);
+        this.updateCategories();
       },
       reset: function() {
         this.accounts.reset();
       },
-      stockKeyupHandler: function(e) {
-        if (e.keyCode == 13) {
-          this.addStock();
-        }
-      },
-      topicKeyupHandler: function(e) {
-        if (e.keyCode == 13) {
-          this.addTopic();
+      keyupHandler: function(e, inDetail, inSender) {
+        var op = inSender.getAttribute('operation');
+        if (e.keyCode == 13 && op) {
+          this[op]();
         }
       }
     });

@@ -16,22 +16,25 @@
   display: -webkit-flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
+  font-size: 15px;
 }
 
-.no-border {
+.item.no-border {
   border-bottom: 0;
 }
 
-.item > .item-label {
-  min-width: 50px;
+.item > .item-input-label {
+  min-width: 80px;
+  color: #888;
+  font-weight: bold;
 }
 
 .item > input {
   height: 32px;
   width: 100px;
   vertical-align: middle;
-  margin: 0 10px;
-  font-size: 16px;
+  margin-right: 10px;
+  font-size: 15px;
 }
 
 .item > .flex {
@@ -44,6 +47,16 @@
   background-color: #4D4D4D;
   color: #eee;
   font-size: 20px;
+}
+
+.accounts-title {
+  background-color: #eee;
+  color: #888;
+  font-weight: bold;
+}
+
+.category-select-value {
+  padding: 0 4px 0 4px;
 }
 
 .button {
