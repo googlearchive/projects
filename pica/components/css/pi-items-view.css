@@ -60,6 +60,10 @@
   display: none;
 }
 
+.view:not(.list) .image[showing=false] + .title {
+  font-size: 20px;
+}
+
 .source {
   position: relative;
   color: #666;
