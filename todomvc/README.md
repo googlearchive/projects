@@ -1,6 +1,6 @@
 This folder contains several variations on the TodoMVC application implemented with Toolkit.
 
-> Not all features are implemented (data persistence, for example, is not implemented in any of these variations) and all version are not equally robust. The emphasis is on exploring the data-model variations.
+> Not all features are implemented (data persistence, for example, is not implemented in any of these variations) and all versions are not equally robust. The emphasis is on exploring the data-model variations.
 
 ## tododmvc-embedded-model
 
