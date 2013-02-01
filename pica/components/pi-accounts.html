@@ -26,14 +26,14 @@
     <div class="item">
       <div class="item-input-label">Symbol: </div>
       <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/plus.png" touch-action="none" on-tap="addStock"></g-icon-button>
+      <g-icon-button src="../images/add.png" touch-action="none" on-tap="addStock"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
     <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
       <div class="item-input-label">Url: </div>
       <input id="feed" class="flex" operation="addFeed" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/plus.png" touch-action="none" on-tap="addFeed"></g-icon-button>
+      <g-icon-button src="../images/add.png" touch-action="none" on-tap="addFeed"></g-icon-button>
     </div>
     <div class="item">
       <div class="item-input-label">Category: </div>
@@ -49,7 +49,7 @@
     <div class="item">
       <div class="item-input-label">Name: </div>
       <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
-      <g-icon-button src="../images/plus.png" touch-action="none" on-tap="addCategory"></g-icon-button>
+      <g-icon-button src="../images/add.png" touch-action="none" on-tap="addCategory"></g-icon-button>
     </div>
     <template iterate="accounts.topics">
       <div class="item accounts-title">
