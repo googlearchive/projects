@@ -41,6 +41,13 @@
         selectedTopic: null,
         previous: function() {
           this.$.panels.previous();
+        },
+        refresh: function() {
+          if (this.panel == 'topics') {
+            this.topicsChanged();
+          } else if (this.panel == 'stories') {
+            this.$.gfeeds.reload();
+          }
         }
       },
       ready: function() {
