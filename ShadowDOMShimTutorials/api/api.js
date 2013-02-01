@@ -173,3 +173,16 @@ DOM = function(inNode) {
   }
   return inNode.$fauxd; 
 };
+
+// possible 'entry-points' to a subtree
+/*
+document.body // top of standard tree
+window.nodeById // magic globals
+querySelector*
+getElementBy*
+childNodes
+children
+prevSibling
+nextSibling
+parentNode
+*/
