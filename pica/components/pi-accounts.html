@@ -17,26 +17,26 @@
     <template iterate="accounts.stocks">
       <div class="item">
         <div class="flex">{{.}}</div>
-        <g-icon-button src="../images/close.svg" touch-action="none" on-tap="removeStock"></g-icon-button>
+        <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeStock"></g-icon-button>
       </div>
     </template>
     <div class="item">
       <div class="item-input-label">Symbol: </div>
       <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.svg" touch-action="none" on-tap="addStock"></g-icon-button>
+      <g-icon-button src="../images/plus.png" touch-action="none" on-tap="addStock"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
     <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
       <div class="item-input-label">Url: </div>
       <input id="feed" class="flex" operation="addFeed" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.svg" touch-action="none" on-tap="addFeed"></g-icon-button>
+      <g-icon-button src="../images/plus.png" touch-action="none" on-tap="addFeed"></g-icon-button>
     </div>
     <div class="item">
       <div class="item-input-label">Category: </div>
       <span class="category-select-value">{{selectedCategory}}</span>
-      <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow-down.png"></g-menu-button>
-      <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow-down.png">
+      <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png"></g-menu-button>
+      <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
         <template iterate="accounts.categories">
           <g-menu-item name="{{.}}">{{.}}</g-menu-item>
         </template>
@@ -46,18 +46,18 @@
     <div class="item">
       <div class="item-input-label">Name: </div>
       <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.svg" touch-action="none" on-tap="addCategory"></g-icon-button>
+      <g-icon-button src="../images/plus.png" touch-action="none" on-tap="addCategory"></g-icon-button>
     </div>
     <template iterate="accounts.topics">
       <div class="item accounts-title">
         <g-icon src="../images/folder_graylite.png" style="margin-left: -8px;"></g-icon>
         <div class="flex">{{title}}</div>
-        <g-icon-button src="../images/close.svg" touch-action="none" on-tap="removeTopic"></g-icon-button>
+        <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeTopic"></g-icon-button>
       </div>
       <template iterate="feed">
         <div class="item">
           <div class="flex accounts-feed-title">{{title}}</div>
-          <g-icon-button src="../images/close.svg" touch-action="none" on-tap="removeFeed"></g-icon-button>
+          <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeFeed"></g-icon-button>
         </div>
       </template>
     </template>

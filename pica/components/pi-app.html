@@ -20,9 +20,9 @@
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
       <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
-        <g-menu-item name="Home" src="../images/ribbon_trending.svg">Home</g-menu-item>
-        <g-menu-item name="Topics" src="../images/ribbon_topics.svg">Topics</g-menu-item>
-        <g-menu-item name="Accounts" src="../images/ribbon_accounts.svg">Accounts</g-menu-item>
+        <g-menu-item name="Home" src="../images/ribbon_home_lightreg.png">Home</g-menu-item>
+        <g-menu-item name="Topics" src="../images/ribbon_topics_lightreg.png">Topics</g-menu-item>
+        <g-menu-item name="Accounts" src="../images/ribbon_accounts_lightreg.png">Accounts</g-menu-item>
       </g-ribbon>
       <div id="main" on-tap="showMain">
         <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
