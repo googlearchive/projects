@@ -17,12 +17,14 @@
       <button class="button" touch-action="none" on-tap="reset">Restore Defaults</button>
     </div>
     <div class="header item">Finance</div>
-    <template iterate="accounts.stocks">
-      <div class="item">
-        <div class="flex">{{.}}</div>
-        <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeStock"></g-icon-button>
-      </div>
-    </template>
+    <div>
+      <template iterate="accounts.stocks">
+        <div class="item">
+          <div class="flex">{{.}}</div>
+          <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeStock"></g-icon-button>
+        </div>
+      </template>
+    </div>
     <div class="item">
       <div class="item-input-label">Symbol: </div>
       <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
@@ -51,19 +53,21 @@
       <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
       <g-icon-button src="../images/add.png" touch-action="none" on-tap="addCategory"></g-icon-button>
     </div>
-    <template iterate="accounts.topics">
-      <div class="item accounts-title">
-        <g-icon class="accounts-title-icon" src="../images/folder_graylite.png"></g-icon>
-        <div class="flex">{{title}}</div>
-        <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeTopic"></g-icon-button>
-      </div>
-      <template iterate="feed">
-        <div class="item">
-          <div class="flex accounts-feed-title">{{title}}</div>
-          <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeFeed"></g-icon-button>
+    <div>
+      <template iterate="accounts.topics">
+        <div class="item accounts-title">
+          <g-icon class="accounts-title-icon" src="../images/folder_graylite.png"></g-icon>
+          <div class="flex">{{title}}</div>
+          <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeTopic"></g-icon-button>
         </div>
+        <template iterate="feed">
+          <div class="item">
+            <div class="flex accounts-feed-title">{{title}}</div>
+            <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeFeed"></g-icon-button>
+          </div>
+        </template>
       </template>
-    </template>
+    </div>
     <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="feedResponse" on-error="feedResponse"></pi-gfeeds>
   </template>
   <script>
