@@ -61,6 +61,7 @@
       },
       topicsChanged: function() {
         this.topics.forEach(function(t) {
+          t.imgSrc = null;
           var fa = document.createElement('pi-feed-aggregator');
           fa.count = 4;
           fa.addEventListener('response', function(e) {
