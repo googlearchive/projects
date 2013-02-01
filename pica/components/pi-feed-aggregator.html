@@ -112,7 +112,7 @@
           }
           entry.imageShowing = !!entry.imgSrc;
           // unescape html content
-          if (entry.contentSnippet) {
+          if (!entry.desc && entry.contentSnippet) {
             n.innerHTML = entry.contentSnippet;
             n.innerHTML = n.textContent;
             entry.desc = n.textContent.trim();
@@ -128,7 +128,6 @@
           if (entry.publishedDate) {
             var d = new Date(entry.publishedDate);
             entry.since = timeSince(d);
-            entry.publishedLocaleDate = d.toLocaleString();
           }
         });
         return entries;
