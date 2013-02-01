@@ -8,6 +8,9 @@
 <element name="pi-accounts">
   <link rel="stylesheet" href="css/pi-accounts.css" />
   <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
+  <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
+  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
+  <link rel="components" href="pi-gfeeds.html"/>
   <template>
     <div class=" item">
       <div class="flex"></div>
@@ -50,7 +53,7 @@
     </div>
     <template iterate="accounts.topics">
       <div class="item accounts-title">
-        <g-icon src="../images/folder_graylite.png" style="margin-left: -8px;"></g-icon>
+        <g-icon class="accounts-title-icon" src="../images/folder_graylite.png"></g-icon>
         <div class="flex">{{title}}</div>
         <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeTopic"></g-icon-button>
       </div>

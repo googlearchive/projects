@@ -55,6 +55,10 @@
   font-weight: bold;
 }
 
+.accounts-title-icon {
+  margin-left: -8px;
+}
+
 .category-select-value {
   padding: 0 4px 0 4px;
 }
