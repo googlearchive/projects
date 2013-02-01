@@ -38,14 +38,15 @@ license that can be found in the LICENSE file.
     <button onclick="newName()">New Name</button>
     
     <script>
+      pickOne = function(inChoices) {
+        return inChoices[Math.floor(Math.random()*inChoices.length)];
+      };
       newName = function() {
         one.lightDOM.textContent = '';
         one.lightDOM.appendChild(document.createElement('span')).textContent = 
-            ['Spongebob ', 'Patrick ', 'Eugene V. ']
-              [Math.floor(Math.random()*3)];
+            pickOne(['Spongebob ', 'Patrick ', 'Eugene V. ']);
         one.lightDOM.appendChild(document.createElement('span')).textContent = 
-            ['Squarepants', 'Starfish', 'Crabs']
-              [Math.floor(Math.random()*3)];
+            pickOne(['Squarepants', 'Starfish', 'Crabs']);
         // under the shim, we must trigger distribution manually whenever we 
         // modify lightDOM or shadowDOM
         one.distribute();
