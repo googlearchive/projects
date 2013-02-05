@@ -8,7 +8,7 @@ license that can be found in the LICENSE file.
   <head>
     <title></title>
     <meta charset="utf-8">
-    <script src="../../toolkit/platform/platform.js"></script>
+    <script src="../../../toolkit/platform/platform.js"></script>
   </head>
   <body>
     
@@ -41,9 +41,7 @@ license that can be found in the LICENSE file.
     
     <!-- end basic Shadow DOM setup -->
     
-    <script>
-
-    </script>
+    <script src="api.js"></script>
     
     <script>
       window.addEventListener('load', function() {
@@ -73,8 +71,8 @@ license that can be found in the LICENSE file.
        //
        var s = DOM(one.shadow);
        console.dir(s.childNodes);
-       s.removeChild(s.childNodes[2]);
-       
+       console.dir(s.childNodes[1].node);
+       s.removeChild(s.childNodes[1]);
       });
     </script>
   </body>

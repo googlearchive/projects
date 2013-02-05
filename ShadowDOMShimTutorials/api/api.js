@@ -8,6 +8,7 @@
 // make inSource[inName] available on inTarget as a getter/setter
 // pair or a method bound to this.node
 //
+
 function publishProperty(inSource, inName, inTarget) {
   // access property value (unless it is a getter itself)
   var value = (!inSource.__lookupGetter__(inName)) && inSource[inName];
@@ -155,7 +156,7 @@ FauxInsertionHost.prototype = Object.create(Fauxd.prototype);
 mixin(FauxInsertionHost.prototype, {
   get childNodes() {
     return this.fauxilate(this.node.insertions);
-  },
+  }
 });
 
 DOM = function(inNode) {
@@ -174,10 +175,14 @@ DOM = function(inNode) {
   return inNode.$fauxd; 
 };
 
+document.querySelector = function() {
+
+};
+
 // possible 'entry-points' to a subtree
 /*
 document.body // top of standard tree
-window.nodeById // magic globals
+window.<idOfNode> // magic globals
 querySelector*
 getElementBy*
 childNodes
