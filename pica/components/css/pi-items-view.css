@@ -161,13 +161,31 @@
 }
 
 .quilt .one .pi-item:last-child .image {
-  height: 60%;
+  width: 350px;
+  height: 100%;
+  float: left;
+  margin-right: 10px;
 }
 
 .quilt.topics .one .pi-item:last-child .image {
-  height: 80%;
+  width: 400px;
 }
 
+.quilt.topics .one .pi-item:last-child .title {
+  position: absolute;
+  top: 20px;
+  left: 440px;
+}
+
+.quilt .source {
+  position: absolute;
+  bottom: 20px;
+}
+
+.quilt .one .pi-item:last-child .source {
+  left: 380px;
+}
+ 
 /* grid layout */
 .grid .box {
   /* to remove whitespace between inline blocks,
@@ -197,7 +215,7 @@
 
 .grid .source {
   position: absolute;
-  bottom: 10px;
+  bottom: 12px;
 }
 
 .grid .two .pi-item:last-child {
