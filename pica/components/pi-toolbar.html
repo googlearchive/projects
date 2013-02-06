@@ -24,6 +24,17 @@
         g-menu-item.hidden-wide {
           display: block;
         }
+        
+        g-toolbar > label {
+          -webkit-box-pack: center;
+          -webkit-justify-content: center;
+        }
+        
+        .responsive > *:not(:last-child) {
+          display: -webkit-box;
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+        }
       }
     </style>
     <g-toolbar>

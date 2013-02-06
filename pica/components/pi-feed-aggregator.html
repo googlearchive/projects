@@ -8,7 +8,7 @@
 <element name="pi-feed-aggregator" attributes="feed count entries loading">
   <link rel="components" href="pi-gfeeds.html"/>
   <template>
-    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" results={{feedResults}}></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" results="{{feedResults}}" on-error="feedError"></pi-gfeeds>
   </template>
   <script>
     var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
@@ -17,25 +17,25 @@
       var s = Math.floor(((new Date()) - inDate) / 1000);
       var t = Math.floor(s / 31536000);
       if (t > 1) {
-        return stringify(t, "y");
+        return stringify(t, 'y');
       }
       t = Math.floor(s / 2592000);
       if (t > 1) {
-        return stringify(t, "M");
+        return stringify(t, 'M');
       }
       t = Math.floor(s / 86400);
       if (t >= 1) {
-        return stringify(t, "d");
+        return stringify(t, 'd');
       }
       t = Math.floor(s / 3600);
       if (t >= 1) {
-        return stringify(t, "h");
+        return stringify(t, 'h');
       }
       t = Math.floor(s / 60);
       if (t > 1) {
-        return stringify(t, "m");
+        return stringify(t, 'm');
       }
-      return stringify(Math.floor(s), "s");
+      return stringify(Math.floor(s), 's');
     }
     
     var stringify = function(inNum, inUnit) {
@@ -84,17 +84,19 @@
         }
       },
       feedResultsChanged: function() {
-        var entries = null;
         if (this.feedResults) {
           this.feedCache[this.feedResults.feedUrl] = this.feedResults;
-          entries = this.processFeedResults(this.feedResults);
+          var entries = this.processFeedResults(this.feedResults);
+          this._entries.push.apply(this._entries, entries);
+          this.fetch();
         }
-        this._entries.push.apply(this._entries, entries);
+      },
+      feedError: function() {
         this.fetch();
       },
       dateSortDesc: function(inEntry1, inEntry2) {
-        var d1 = new Date(inEntry1.publishedDate);
-        var d2 = new Date(inEntry2.publishedDate);
+        var d1 = inEntry1._date || new Date(inEntry1.publishedDate);
+        var d2 = inEntry2._date || new Date(inEntry2.publishedDate);
         if (d1 > d2) {
           return -1;
         } else if (d1 < d2) {
@@ -130,7 +132,8 @@
           }
           // time since
           if (entry.publishedDate) {
-            var d = new Date(entry.publishedDate);
+            var d = entry._date || new Date(entry.publishedDate);
+            entry._date = d;
             entry.since = timeSince(d);
           }
         });

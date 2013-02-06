@@ -52,10 +52,6 @@ g-toolbar > label {
 }
 
 @media screen and (max-width: 800px) {
-  g-toolbar > label {
-    -webkit-justify-content: center;
-  }
-
   #contentPanels {
     margin-bottom: 60px;
   }
