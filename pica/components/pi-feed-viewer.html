@@ -15,8 +15,8 @@
   <template>
     <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" on-select="panelSelected" on-canselect="panelCanSelect">
       <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
-      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}"></pi-items-view>
-      <pi-story id="story" story="{{selectedStory}}" on-keydown="keydownHandler"></pi-story>
+      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}" cascading></pi-items-view>
+      <pi-story id="story" story="{{selectedStory}}" touch-action="none" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
     <pi-feed-aggregator id="gfeeds" feed="{{selectedTopic.feed}}" count="200" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
@@ -38,6 +38,7 @@
     this.component({
       publish: {
         topics: null,
+        loading: true,
         selectedTopic: null,
         previous: function() {
           this.$.panels.previous();
@@ -54,6 +55,10 @@
         var mq = window.matchMedia('(max-width: 800px)');
         mq.addListener(this.layoutChange.bind(this));
         this.layoutChange(mq);
+        this.asyncMethod('loaded');
+      },
+      loaded: function() {
+        this.loading = false;
       },
       layoutChange: function(inQuery) {
         this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 
@@ -86,12 +91,14 @@
           this.panel = 'story';
         }
       },
-      nextPrevStory: function(inPrev) {
-        var i = this.stories.indexOf(this.selectedStory);
-        var s = this.stories[i + (inPrev ? -1 : 1)];
-        if (s) {
-          this.selectedStory = s;
-          return true;
+      nextPrevStory: function(inNext, inPrev) {
+        if (inPrev || inNext) {
+          var i = this.stories.indexOf(this.selectedStory);
+          var s = this.stories[i + (inPrev ? -1 : 1)];
+          if (s) {
+            this.selectedStory = s;
+            return true;
+          }
         }
       },
       // TODO(sorvell): handle selected event since this fires after the selection
@@ -103,16 +110,19 @@
       // it's important to set selectedTopic to {} so that
       // selectedTopic.feed actually changes and updates gfeeds.feed.
       panelSelected: function(e, inDetail, inSender) {
-        if (inSender.selected == 'topics') {
-          this.selectedTopic = {};
-        } else if (inSender.selected == 'stories') {
-          this.selectedStory = {};
-        }
-        //
-        if (inSender.selected == 'story') {
-          this.$.story.focus();
-        } else {
-          inSender.focus();
+        if (e.target == this.$.panels) {
+          if (inSender.selected == 'topics') {
+            this.selectedTopic = {};
+          } else if (inSender.selected == 'stories') {
+            this.selectedStory = {};
+            this.$.stories.$protected.loadClass = 'loaded';
+          }
+          //
+          if (inSender.selected == 'story') {
+            this.$.story.focus();
+          } else {
+            inSender.focus();
+          }
         }
       },
       panelCanSelect: function(e, inDetail) {
@@ -121,15 +131,18 @@
           inDetail.preventSelect();
         }
       },
-      keydownHandler: function(e) {
-        var p = false;
-        if (e.keyCode == RIGHT_ARROW_KEY) {
-          p = this.nextPrevStory();
-        } else if (e.keyCode == LEFT_ARROW_KEY) {
-          p = this.nextPrevStory(true);
-        }
-        if (p) {
+      storyKeydownHandler: function(e) {
+        var n = e.keyCode == RIGHT_ARROW_KEY, p = e.keyCode == LEFT_ARROW_KEY;
+        if (this.nextPrevStory(n, p)) {
           e.cancelBubble = true;
+        }
+      },
+      storyFlickHandler: function(e) {
+        if (e.majorAxis == 'x') {
+          var n = e.xVelocity < 0, p = e.xVelocity > 0;
+          if (this.nextPrevStory(n, p)) {
+            e.cancelBubble = true;
+          }
         }
       }
     });

@@ -43,6 +43,10 @@
         padding-top: 20px;
       }
       
+      #detail img {
+        pointer-events: none;
+      }
+      
       @media screen and (max-width: 800px) {
         #detail img {
           max-width: 100%;
@@ -50,7 +54,7 @@
         }
       }
     </style>
-    <div class="body">
+    <div class="body" touch-action="pan-y">
       <div id="header">
         <div id="title">{{story.title}}</div>
         <a href="{{story.link}}" target="{{targetWindow}}">
