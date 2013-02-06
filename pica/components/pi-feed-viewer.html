@@ -138,7 +138,7 @@
         }
       },
       storyFlickHandler: function(e) {
-        if (e.majorAxis == 'x') {
+        if (e.majorAxis == 'x' && e.pointerType === 'touch') {
           var n = e.xVelocity < 0, p = e.xVelocity > 0;
           if (this.nextPrevStory(n, p)) {
             e.cancelBubble = true;
