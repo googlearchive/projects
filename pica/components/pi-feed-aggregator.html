@@ -8,7 +8,7 @@
 <element name="pi-feed-aggregator" attributes="feed count entries loading">
   <link rel="components" href="pi-gfeeds.html"/>
   <template>
-    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" loading="{{loading}}" results={{feedResults}}></pi-gfeeds>
+    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" results={{feedResults}}></pi-gfeeds>
   </template>
   <script>
     var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
@@ -70,6 +70,7 @@
           if (!this.forceLoad && this.useCache && this.feedCache[f]) {
             this.$.gfeeds.results = this.feedCache[f];
           } else {
+            this.loading = true;
             this.feedUrl = f;
           }
         } else {
@@ -78,6 +79,7 @@
           this.forceLoad = false;
           this.feedUrl = null;
           this.$.gfeeds.results = null;
+          this.loading = false;
           this.send('response', {entries: this.entries});
         }
       },
