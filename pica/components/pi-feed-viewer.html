@@ -10,6 +10,7 @@
   <link rel="components" href="../../../toolkit/components/g-panels.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
   <link rel="components" href="pi-feed-aggregator.html"/>
+  <link rel="components" href="pi-feed-tracker.html"/>
   <link rel="components" href="pi-items-view.html"/>
   <link rel="components" href="pi-story.html"/>
   <template>
@@ -19,7 +20,8 @@
       <pi-story id="story" story="{{selectedStory}}" touch-action="none" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
-    <pi-feed-aggregator id="gfeeds" feed="{{selectedTopic.feed}}" count="200" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
+    <pi-feed-aggregator id="feeds" feed="{{selectedTopic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}" on-response="feedResponse"></pi-feed-aggregator>
+    <pi-feed-tracker id="tracker" on-change="updateReadCount"></pi-feed-tracker>
   </template>
   <script>
     var RIGHT_ARROW_KEY = 39;
@@ -46,11 +48,13 @@
         refresh: function() {
           if (this.panel == 'topics') {
             this.topicsChanged();
+            this.$.feeds.resetCache();
           } else if (this.panel == 'stories') {
-            this.$.gfeeds.reload();
+            this.$.feeds.reload();
           }
         }
       },
+      feedCount: 200,
       ready: function() {
         var mq = window.matchMedia('(max-width: 800px)');
         mq.addListener(this.layoutChange.bind(this));
@@ -66,7 +70,7 @@
       },
       topicsChanged: function() {
         this.topics.forEach(function(t) {
-          t.imgSrc = null;
+          t.imgSrc = '';
           var fa = document.createElement('pi-feed-aggregator');
           fa.count = 4;
           fa.addEventListener('response', function(e) {
@@ -80,6 +84,7 @@
           });
           fa.feed = t.feed;
         });
+        this.updateReadCount();
       },
       storiesChanged: function() {
         if (this.stories) {
@@ -88,6 +93,7 @@
       },
       selectedStoryChanged: function() {
         if (!isEmpty(this.selectedStory)) {
+          this.$.tracker.markRead(this.selectedStory);
           this.panel = 'story';
         }
       },
@@ -101,6 +107,16 @@
           }
         }
       },
+      feedResponse: function(e, inDetail) {
+        if (inDetail.feed) {
+          this.$.tracker.updateFeed(inDetail.feed);
+        }
+      },
+      updateReadCount: function() {
+        this.topics.forEach(function(t) {
+          t.unread = this.feedCount - this.$.tracker.getReadCountForTopic(t);
+        }.bind(this));
+      },
       // TODO(sorvell): handle selected event since this fires after the selection
       // is complete and this is when we want to make the following changes.
       // note, we want selectedTopic/Story to become unset
@@ -108,7 +124,7 @@
       // us to rely on selectedTopic/StoryChanged to show the relevant
       // panel.
       // it's important to set selectedTopic to {} so that
-      // selectedTopic.feed actually changes and updates gfeeds.feed.
+      // selectedTopic.feed actually changes and updates feeds.feed.
       panelSelected: function(e, inDetail, inSender) {
         if (e.target == this.$.panels) {
           if (inSender.selected == 'topics') {
@@ -126,7 +142,7 @@
         }
       },
       panelCanSelect: function(e, inDetail) {
-        if ((inDetail.selected == 'stories' && (!this.stories && !this.$.gfeeds.loading)) || 
+        if ((inDetail.selected == 'stories' && (!this.stories && !this.$.feeds.loading)) || 
            (inDetail.selected == 'story' && isEmpty(this.selectedStory))) {
           inDetail.preventSelect();
         }

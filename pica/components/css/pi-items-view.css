@@ -43,6 +43,17 @@
   color: #333;
 }
 
+.unread-count {
+  display: none;
+  padding-left: 8px;
+  font-weight: normal;
+  color: #aaa;
+}
+
+.topics .unread-count {
+  display: inline-block;
+}
+
 .desc {
   padding-bottom: 10px;
   font-size: 12px;

@@ -16,12 +16,15 @@
               <template iterate="items">
                 <div class="pi-item" on-tap="itemClick">
                   <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
-                  <div class="title">{{title}}</div>
+                  <div class="title">{{title}}
+                    <span class="unread-count">{{unread}}</span>
+                  </div>
                   <div class="desc">{{desc}}</div>
                   <div class="source">
                     <img class="source-icon" src="{{sourceIcon}}" />
                     <span class="source-title">{{source}}</span>
                     <span>{{since}}</span>
+                    <span showing="{{read}}">(read)</span>
                   </div>
                 </div>
               </template>

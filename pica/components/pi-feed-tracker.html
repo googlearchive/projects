@@ -1,0 +1,63 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-feed-tracker">
+  <script>
+    var FEED_TRACKER_STORAGE_NAME = 'pica-feed-tracker-1';
+    
+    this.component({
+      publish: {
+        updateFeed: function(inFeed) {
+          var url = inFeed.feedUrl;
+          var f = this.feeds[url];
+          var feed = this.feeds[url] = {};
+          inFeed.entries.forEach(function(e) {
+            var l = e.title;
+            e.read = !!(f && f[l] && f[l].read);
+            feed[l] = {read: e.read};
+          });
+          this.update();
+        },
+        markRead: function(inStory) {
+          var f = this.feeds[inStory.feedUrl];
+          if (f) {
+            f[inStory.title].read = inStory.read = true;
+            this.update();
+          }
+        },
+        getReadCountForTopic: function(inTopic) {
+          var read = 0;
+          inTopic.feed.forEach(function(f) {
+            var feed = this.feeds[f.feed];
+            for (var l in feed) {
+              feed[l].read && read++;
+            }
+          }.bind(this));
+          return read;
+        }
+      },
+      ready: function() {
+        this.feeds = {};
+        this.load();
+      },
+      update: function() {
+        this.send('change', {feeds: this.feeds});
+        this.save();
+      },
+      load: function() {
+        var s = window.localStorage.getItem(FEED_TRACKER_STORAGE_NAME);
+        if (s) {
+          this.feeds = JSON.parse(s).feeds;
+        }
+      },
+      save: function() {
+        window.localStorage.setItem(FEED_TRACKER_STORAGE_NAME,
+            JSON.stringify({feeds: this.feeds}));
+      }
+    });
+  </script>
+</element>

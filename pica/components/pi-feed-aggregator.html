@@ -48,10 +48,13 @@
         reload: function() {
           this.forceLoad = true;
           this.feedChanged();
+        },
+        resetCache: function() {
+          this.feedCache = {};
         }
       },
       ready: function() {
-        this.feedCache = {};
+        this.resetCache();
         this.contentNode = document.createElement('div');
       },
       feedChanged: function() {
@@ -68,7 +71,7 @@
         if (this.feeds && this.feeds.length) {
           var f = this.feeds.shift().feed;
           if (!this.forceLoad && this.useCache && this.feedCache[f]) {
-            this.$.gfeeds.results = this.feedCache[f];
+            this.feedResults = this.feedCache[f];
           } else {
             this.loading = true;
             this.feedUrl = f;
@@ -78,7 +81,7 @@
           this.entries = this._entries.sort(this.dateSortDesc.bind(this));
           this.forceLoad = false;
           this.feedUrl = null;
-          this.$.gfeeds.results = null;
+          this.feedResults = null;
           this.loading = false;
           this.send('response', {entries: this.entries});
         }
@@ -111,6 +114,7 @@
           // feed source
           entry.source = inResults.title;
           entry.sourceLink = inResults.link;
+          entry.feedUrl = inResults.feedUrl;
           // scrape image url
           if (!entry.imgSrc && entry.content) {
             var m$ = entry.content.match(/<img[^>]+src="([^">]+)"/);

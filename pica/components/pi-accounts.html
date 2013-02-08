@@ -20,7 +20,7 @@
     <div>
       <template iterate="accounts.stocks">
         <div class="item">
-          <div class="flex">{{.}}</div>
+          <div class="flex">{{}}</div>
           <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeStock"></g-icon-button>
         </div>
       </template>
@@ -43,7 +43,7 @@
       <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png"></g-menu-button>
       <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
         <template iterate="accounts.categories">
-          <g-menu-item name="{{.}}">{{.}}</g-menu-item>
+          <g-menu-item name="{{}}">{{}}</g-menu-item>
         </template>
       </g-menu-button> -->
     </div>
@@ -87,7 +87,6 @@
         // since it doesn't call distribute after all menu-items are generated;
         // so we have to manually create menu-items and then call distribute.
         this.$.categorySelect.lightDOM.textContent = '';
-        dirtyCheck();
         this.accounts.categories.forEach(function(c) {
           var i = document.createElement('g-menu-item');
           i.setAttribute('name', c);
