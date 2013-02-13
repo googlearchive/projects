@@ -8,13 +8,13 @@
   display: -webkit-flex;
 }
 
-#panels {
+@host #panels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   position: relative;
 }
 
-#panels > * {
+@host #panels > * {
   background: white;
   overflow: auto;
   -webkit-overflow-scrolling: touch;

@@ -11,10 +11,6 @@ g-panels {
 
 #ribbon {
   width: 260px;
-  background-color: #333;
-  color: white;
-  font-size: 15px;
-  overflow: auto;
 }
 
 #ribbon.narrow-layout {
@@ -42,7 +38,6 @@ g-panels {
 
 #source {
   width: 340px;
-  background-color: #4D4D4D;
 }
 
 g-toolbar > label {
