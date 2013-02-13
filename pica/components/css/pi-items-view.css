@@ -117,35 +117,26 @@
 }
 
 /* quilt layout */
-.quilt.view {
-  display: inline-block;
-  height: 100%;
-  white-space: nowrap;
-  vertical-align: top;
-  font-size: 0;
-}
-
-.quilt #more {
-  display: inline-block;
-  vertical-align: bottom;
-  font-size: 1rem;
-  white-space: nowrap;
-}
-
 .quilt .box {
-  display: inline-block;
-  height: 100%;
+  font-size: 0;
 }
 
 .quilt .inner {
   display: inline-block;
-  height: 100%;
+  height: 900px;
   vertical-align: top;
   white-space: normal;
 }
 
+.quilt .one {
+  width: 70%;
+}
+
+.quilt .two {
+  width: 30%;
+}
+
 .quilt .one .pi-item {
-  width: 600px;
   height: 70%;
 }
 
@@ -154,7 +145,6 @@
 }
 
 .quilt .two .pi-item {
-  width: 300px;
   height: 50%;
 }
 
@@ -164,7 +154,7 @@
 }
 
 .quilt .image {
-  height: 50%;
+  height: 70%;
 }
 
 .quilt.topics .image {
@@ -172,7 +162,7 @@
 }
 
 .quilt .one .pi-item .image {
-  height: 80%;
+  height: 85%;
 }
 
 .quilt.topics .one .pi-item .image {
@@ -180,7 +170,7 @@
 }
 
 .quilt .one .pi-item:last-child .image {
-  width: 350px;
+  width: 60%;
   height: 100%;
   float: left;
   margin-right: 10px;
@@ -190,14 +180,9 @@
   padding-top: 0;
 }
 
-.quilt.topics .one .pi-item:last-child .image {
-  width: 400px;
-}
-
 .quilt.topics .one .pi-item:last-child .title {
-  position: absolute;
-  top: 20px;
-  left: 440px;
+  position: relative;
+  top: 0;
 }
 
 .quilt .source {
@@ -206,7 +191,8 @@
 }
 
 .quilt .one .pi-item:last-child .source {
-  left: 380px;
+  left: 60%;
+  padding-left: 5px;
 }
  
 /* grid layout */
