@@ -81,6 +81,10 @@
     </div>
   </template>
   <script>
-    this.component();
+    this.component({
+      ready: function() {
+        this.send('ready');
+      }
+    });
   </script>
 </element>

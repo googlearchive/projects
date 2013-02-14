@@ -46,6 +46,27 @@ g-toolbar > label {
   font-size: 21px;
 }
 
+#Accounts > .panel-loading, #Home > .panel-loading {
+	position: absolute;
+  width: 50px;
+  height: 50px;
+  left: 50%;
+  bottom: 50%;
+  margin: -25px;
+  -webkit-animation: spin 2s linear infinite;
+  background: url(../../images/loading_icon.svg);
+}
+
+#Accounts.ready > .panel-loading, #Home.ready > .panel-loading {
+  display: none;
+}
+    
+@-webkit-keyframes spin {
+  0% {-webkit-transform: rotate(0deg);}
+  100% {-webkit-transform: rotate(359deg);}
+}
+
+
 @media screen and (max-width: 800px) {
   #contentPanels {
     margin-bottom: 60px;

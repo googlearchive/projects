@@ -27,10 +27,22 @@
       <div id="main" on-tap="showMain">
         <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
             on-nav="navClick" on-source="toggleSource" on-refresh="refresh"></pi-toolbar>
-        <g-panels id="contentPanels" selected="{{ribbonSelected}}">
-          <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home>
+        <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
+          <div id="Home" on-ready="homeReadyHandler">
+            <div class="panel-loading"></div>
+            <template dehydrated>
+              <pi-home></pi-home>
+            </template>
+          </div>
+          <!--<pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home>-->
           <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" selectedtopic="{{selectedTopic}}" panel="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
-          <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts>
+          <!--<pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts>-->
+          <div id="Accounts" on-ready="accountsReadyHandler">
+            <div class="panel-loading"></div>
+            <template dehydrated>
+              <pi-accounts></pi-accounts>
+            </template>
+          </div>
         </g-panels>
       </div>
       <g-ribbon id="source" class="right" on-tap="toggleSource"></g-ribbon>
@@ -45,7 +57,10 @@
       layout: 'grid',
       selectedPanel: 'main',
       ready: function() {
-        this.topicsSelectedPanelChanged();
+        if (location.search.indexOf('hydrate') >= 0) {
+          this.hydrate(this.$.Home);
+          this.hydrate(this.$.Accounts);
+        }
       },
       navClick: function() {
         if (this.topicsSelectedPanel == 'topics') {
@@ -77,6 +92,32 @@
         if (e.keyCode == ESCAPE_KEY) {
           this.navClick();
         }
+      },
+      // instantiate lazy content
+      contentPanelSelectHandler: function(e, inDetails) {
+        if (e.target == this.$.contentPanels) {
+          this.hydrate(this.$.contentPanels.getSelectedPanel());
+        }
+      },
+      // instantiate dehydrated templates inside this nodes
+      hydrate: function(inNode) {
+        if (!inNode.hydrated) {
+          inNode.hydrated = true;
+          var t = inNode.querySelector('template[dehydrated]');
+          if (t) {
+            t.instantiate = '';
+          }
+        }
+      },
+      // TODO(sorvell): since we cannot do proper property bindings dynamically
+      // we assign data to dynamic components as they become ready.
+      accountsReadyHandler: function(e) {
+        e.target.accounts = this.$.accountsModel.$protected;
+        this.$.Accounts.classList.add('ready');
+      },
+      homeReadyHandler: function(e) {
+        e.target.stocks = this.$.accountsModel.$protected.stocks;
+        this.$.Home.classList.add('ready');
       }
     });
   </script>

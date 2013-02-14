@@ -78,6 +78,7 @@
       selectedCategory: null,
       ready: function() {
         this.node.setAttribute('touch-action', 'scroll');
+        this.send('ready');
       },
       accountsChanged: function() {
         this.updateCategories();
@@ -86,6 +87,9 @@
         // FIXME(ffu): can't use MDV template iterate to generate menu-items
         // since it doesn't call distribute after all menu-items are generated;
         // so we have to manually create menu-items and then call distribute.
+        if (!this.$.categorySelect) {
+          return;
+        }
         this.$.categorySelect.lightDOM.textContent = '';
         this.accounts.categories.forEach(function(c) {
           var i = document.createElement('g-menu-item');
