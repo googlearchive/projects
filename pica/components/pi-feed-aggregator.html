@@ -17,31 +17,27 @@
       var s = Math.floor(((new Date()) - inDate) / 1000);
       var t = Math.floor(s / 31536000);
       if (t > 1) {
-        return stringify(t, 'y');
+        return t + 'y';
       }
       t = Math.floor(s / 2592000);
       if (t > 1) {
-        return stringify(t, 'M');
+        return t + 'M';
       }
       t = Math.floor(s / 86400);
       if (t >= 1) {
-        return stringify(t, 'd');
+        return t + 'd';
       }
       t = Math.floor(s / 3600);
       if (t >= 1) {
-        return stringify(t, 'h');
+        return t + 'h';
       }
       t = Math.floor(s / 60);
       if (t > 1) {
-        return stringify(t, 'm');
+        return t + 'm';
       }
-      return stringify(Math.floor(s), 's');
-    }
-    
-    var stringify = function(inNum, inUnit) {
-      return inNum + inUnit;/* + (inNum == 1 ? '' : 's');*/
-    }
-  
+      return Math.floor(s) + 's';
+    };
+
     this.component({
       publish: {
         useCache: true,
@@ -69,29 +65,37 @@
       },
       fetch: function() {
         if (this.feeds && this.feeds.length) {
+          // processing feeds one by one
           var f = this.feeds.shift().feed;
           if (!this.forceLoad && this.useCache && this.feedCache[f]) {
-            this.feedResults = this.feedCache[f];
+            //this.feedResults = this.feedCache[f];
+            this.gotFeedResults(this.feedCache[f]);
           } else {
+            // retrive feed data using pi-gfeeds (google Feed API)
             this.loading = true;
             this.feedUrl = f;
           }
         } else {
           // done processing all feeds
-          this.entries = this._entries.sort(this.dateSortDesc.bind(this));
-          this.forceLoad = false;
-          this.feedUrl = null;
-          this.feedResults = null;
-          this.loading = false;
-          this.send('response', {entries: this.entries});
+          this.fetchCompleted();
         }
+      },
+      fetchCompleted: function() {
+        this.entries = this._entries.sort(this.dateSortDesc.bind(this));
+        this.forceLoad = false;
+        this.feedUrl = null;
+        this.loading = false;
+        this.send('response', {entries: this.entries});
+      },
+      gotFeedResults: function(inResults) {
+        this.feedCache[inResults.feedUrl] = inResults;
+        var entries = this.processFeedResults(inResults);
+        this._entries.push.apply(this._entries, entries);
+        this.fetch();
       },
       feedResultsChanged: function() {
         if (this.feedResults) {
-          this.feedCache[this.feedResults.feedUrl] = this.feedResults;
-          var entries = this.processFeedResults(this.feedResults);
-          this._entries.push.apply(this._entries, entries);
-          this.fetch();
+          this.gotFeedResults(this.feedResults);
         }
       },
       feedError: function() {
