@@ -8,7 +8,7 @@
 <element name="pi-feed-aggregator" attributes="feed count entries loading">
   <link rel="components" href="pi-gfeeds.html"/>
   <template>
-    <pi-gfeeds id="gfeeds" feed="{{feedUrl}}" count="{{feedCount}}" results="{{feedResults}}" on-error="feedError"></pi-gfeeds>
+    <pi-gfeeds feed="{{feedUrl}}" count="{{feedCount}}" results="{{feedResults}}"></pi-gfeeds>
   </template>
   <script>
     var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
@@ -68,7 +68,6 @@
           // processing feeds one by one
           var f = this.feeds.shift().feed;
           if (!this.forceLoad && this.useCache && this.feedCache[f]) {
-            //this.feedResults = this.feedCache[f];
             this.gotFeedResults(this.feedCache[f]);
           } else {
             // retrive feed data using pi-gfeeds (google Feed API)
@@ -88,18 +87,16 @@
         this.send('response', {entries: this.entries});
       },
       gotFeedResults: function(inResults) {
-        this.feedCache[inResults.feedUrl] = inResults;
-        var entries = this.processFeedResults(inResults);
-        this._entries.push.apply(this._entries, entries);
+        if (inResults && inResults.feedUrl) {
+          this.feedCache[inResults.feedUrl] = inResults;
+          var entries = this.processFeedResults(inResults);
+          this._entries.push.apply(this._entries, entries);
+        }
+        // next feed
         this.fetch();
       },
       feedResultsChanged: function() {
-        if (this.feedResults) {
-          this.gotFeedResults(this.feedResults);
-        }
-      },
-      feedError: function() {
-        this.fetch();
+        this.gotFeedResults(this.feedResults);
       },
       dateSortDesc: function(inEntry1, inEntry2) {
         var d1 = inEntry1._date || new Date(inEntry1.publishedDate);

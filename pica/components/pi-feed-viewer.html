@@ -20,8 +20,8 @@
       <pi-story id="story" story="{{selectedStory}}" touch-action="pan-y" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
-    <pi-feed-aggregator id="feeds" feed="{{selectedTopic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}" on-response="feedResponse"></pi-feed-aggregator>
-    <pi-feed-tracker id="tracker" on-change="updateReadCount"></pi-feed-tracker>
+    <pi-feed-aggregator id="feeds" feed="{{selectedTopic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
+    <pi-feed-tracker id="tracker"></pi-feed-tracker>
   </template>
   <script>
     var RIGHT_ARROW_KEY = 39;
@@ -69,6 +69,34 @@
           'g-panels-scale-slide';
       },
       topicsChanged: function() {
+        this.fetchImageForTopics();
+        this.updateReadCount();
+      },
+      storiesChanged: function() {
+        if (this.stories) {
+          this.$.tracker.loadStories(this.stories);
+          this.updateReadCount();
+          this.panel = 'stories';
+        }
+      },
+      selectedStoryChanged: function() {
+        if (!isEmpty(this.selectedStory)) {
+          this.$.tracker.markRead(this.selectedStory);
+          this.updateReadCount();
+          this.panel = 'story';
+        }
+      },
+      nextPrevStory: function(inNext, inPrev) {
+        if (inPrev || inNext) {
+          var i = this.stories.indexOf(this.selectedStory);
+          var s = this.stories[i + (inPrev ? -1 : 1)];
+          if (s) {
+            this.selectedStory = s;
+            return true;
+          }
+        }
+      },
+      fetchImageForTopics: function() {
         this.topics.forEach(function(t) {
           t.imgSrc = '';
           var fa = document.createElement('pi-feed-aggregator');
@@ -84,33 +112,6 @@
           });
           fa.feed = t.feed;
         });
-        this.updateReadCount();
-      },
-      storiesChanged: function() {
-        if (this.stories) {
-          this.panel = 'stories';
-        }
-      },
-      selectedStoryChanged: function() {
-        if (!isEmpty(this.selectedStory)) {
-          this.$.tracker.markRead(this.selectedStory);
-          this.panel = 'story';
-        }
-      },
-      nextPrevStory: function(inNext, inPrev) {
-        if (inPrev || inNext) {
-          var i = this.stories.indexOf(this.selectedStory);
-          var s = this.stories[i + (inPrev ? -1 : 1)];
-          if (s) {
-            this.selectedStory = s;
-            return true;
-          }
-        }
-      },
-      feedResponse: function(e, inDetail) {
-        if (inDetail.feed) {
-          this.$.tracker.updateFeed(inDetail.feed);
-        }
       },
       updateReadCount: function() {
         this.topics.forEach(function(t) {

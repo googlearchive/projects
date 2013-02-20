@@ -39,7 +39,9 @@
       feedChanged: function() {
         if (this.feed) {
           this.loading = true;
-          XGFeeds.require(this.query.bind(this));
+          // call query async to make sure any binding to count property is resolved
+          // before query is called
+          XGFeeds.require(this.asyncMethod.bind(this, 'query'));
         } else {
           this.results = null;
         }
@@ -53,7 +55,7 @@
       loaded: function(inResult) {
         this.loading = false;
         if (inResult.error) {
-          this.results = null;
+          this.results = {};
           this.send('error', {status: inResult.status});
         } else {
           this.results = inResult.feed;
