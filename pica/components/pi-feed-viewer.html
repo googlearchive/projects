@@ -75,14 +75,14 @@
       storiesChanged: function() {
         if (this.stories) {
           this.$.tracker.loadStories(this.stories);
-          this.updateReadCount();
+          this.updateReadCount(this.selectedTopic);
           this.panel = 'stories';
         }
       },
       selectedStoryChanged: function() {
         if (!isEmpty(this.selectedStory)) {
           this.$.tracker.markRead(this.selectedStory);
-          this.updateReadCount();
+          this.updateReadCount(this.selectedTopic);
           this.panel = 'story';
         }
       },
@@ -113,8 +113,9 @@
           fa.feed = t.feed;
         });
       },
-      updateReadCount: function() {
-        this.topics.forEach(function(t) {
+      updateReadCount: function(inTopic) {
+        var topics = inTopic ? [inTopic] : this.topics;
+        topics.forEach(function(t) {
           t.unread = this.feedCount - this.$.tracker.getReadCountForTopic(t);
         }.bind(this));
       },
