@@ -64,6 +64,7 @@
           for (var i=0, t; t = this.topics[i]; i++) {
             if (t.title == inFeed.category) {
               t.feed.push({title: inFeed.title, feed: inFeed.feed});
+              this.save();
               return;
             }
           }
