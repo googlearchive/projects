@@ -77,7 +77,12 @@
           this.$.tracker.loadStories(this.stories);
           this.updateReadCount(this.selectedTopic);
           this.panel = 'stories';
+          this.$.stories.loaded = false;
+          this.asyncMethod('storiesLoaded');
         }
+      },
+      storiesLoaded: function() {
+        this.$.stories.loaded = true;
       },
       selectedStoryChanged: function() {
         if (!isEmpty(this.selectedStory)) {
@@ -133,7 +138,6 @@
             this.selectedTopic = {};
           } else if (inSender.selected == 'stories') {
             this.selectedStory = {};
-            this.$.stories.$protected.loadClass = 'loaded';
           }
           //
           if (inSender.selected == 'story') {

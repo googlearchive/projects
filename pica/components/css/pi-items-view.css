@@ -213,30 +213,91 @@
   height: 300px;
   vertical-align: top;
 }
-/*
-[cascading] .grid .pi-item * {
-  -webkit-transition: -webkit-transform 0.218s, opacity 0.218s;
-  -webkit-transform: translateX(50px);
-  opacity: 0;
+
+/* row one */
+@host[cascading] .grid > div:nth-of-type(1) .pi-item {
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transform: translateX(25px) translateY(25px);
+  opacity: 0.1;
 }
 
-[cascading] .grid  .inner.one .pi-item:nth-of-type(2) * {
+@host[cascading] .grid > div:nth-of-type(1) .inner.one .pi-item:nth-of-type(2) {
+  -webkit-transform: translateX(5px) translateY(25px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transition-delay: 0.05s;
+}
+
+@host[cascading] .grid > div:nth-of-type(1) .inner.two .pi-item:nth-of-type(1) {
+  -webkit-transform: translateX(-5px) translateY(25px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
   -webkit-transition-delay: 0.1s;
 }
 
-[cascading] .grid .inner.two .pi-item:nth-of-type(1) * {
+@host[cascading] .grid > div:nth-of-type(1) .inner.two .pi-item:nth-of-type(2) {
+  -webkit-transform: translateX(-25px) translateY(25px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transition-delay: 0.15s;
+}
+
+/* row two */
+@host[cascading] .grid > div:nth-of-type(2) .pi-item {
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transform: translateX(25px) translateY(10px);
+  -webkit-transition-delay: 0.1s;
+  opacity: 0.1;
+}
+
+@host[cascading] .grid > div:nth-of-type(2) .inner.one .pi-item:nth-of-type(2) {
+  -webkit-transform: translateX(5px) translateY(10px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transition-delay: 0.15s;
+}
+
+@host[cascading] .grid > div:nth-of-type(2) .inner.two .pi-item:nth-of-type(1) {
+  -webkit-transform: translateX(-5px) translateY(10px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
   -webkit-transition-delay: 0.2s;
 }
 
-[cascading] .grid .inner.two .pi-item:nth-of-type(2) * {
+@host[cascading] .grid > div:nth-of-type(2) .inner.two .pi-item:nth-of-type(2) {
+  -webkit-transform: translateX(-25px) translateY(10px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transition-delay: 0.25s;
+}
+
+/* row three - n */
+@host[cascading] .grid > div .pi-item {
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transform: translateX(25px) translateY(-10px);
+  -webkit-transition-delay: 0.2s;
+  opacity: 0.1;
+}
+
+@host[cascading] .grid > div .inner.one .pi-item:nth-of-type(2) {
+  -webkit-transform: translateX(5px) translateY(-10px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transition-delay: 0.25s;
+}
+
+@host[cascading] .grid > div .inner.two .pi-item:nth-of-type(1) {
+  -webkit-transform: translateX(-5px) translateY(-10px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
   -webkit-transition-delay: 0.3s;
 }
 
-[cascading] .grid.loaded .pi-item * {
-  -webkit-transform: translateX(0);
+@host[cascading] .grid > div .inner.two .pi-item:nth-of-type(2) {
+  -webkit-transform: translateX(-25px) translateY(-10px);
+  -webkit-transition: -webkit-transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+  -webkit-transition-delay: 0.35s;
+}
+
+@host[cascading] .grid[loaded=true] > div.box .pi-item,
+@host[cascading] .grid[loaded=true] > div.box .inner.one .pi-item,
+@host[cascading] .grid[loaded=true] > div.box .inner.two .pi-item {
+  -webkit-transform: translateZ(0);
   opacity: 1;
 }
-*/
+
 .grid .image {
   height: 130px;
 }

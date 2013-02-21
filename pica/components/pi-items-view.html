@@ -8,7 +8,7 @@
 <element name="pi-items-view" attributes="layout view">
   <link rel="stylesheet" href="css/pi-items-view.css" />
   <template>
-    <div class="view {{layout}} {{view}}">
+    <div loaded="{{loaded}}" class="view {{layout}} {{view}}">
       <template iterate="boxes">
         <div class="box">
           <template iterate>
@@ -38,6 +38,7 @@
   <script>
     this.component({
       publish: {
+        loaded: true,
         pageSize: 6,
         items: null,
         selected: null
