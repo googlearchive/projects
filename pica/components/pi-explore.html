@@ -1,0 +1,105 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-explore" attributes="panel layout">
+  <link rel="components" href="pi-gfeeds.html"/>
+  <link rel="components" href="pi-feed-viewer.html"/>
+  <link rel="components" href="pi-speech-mic.html"/>
+  <template>
+    <style>
+      @host {
+        display: -webkit-box;
+        display: -webkit-flex;
+        -webkit-box-orient: vertical;
+        -webkit-flex-flow: column;
+      }
+      
+      pi-feed-viewer#viewer {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+      }
+      
+      #searchBox {
+        position: relative;
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+      }
+      
+      #searchInput {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: 0 1px;
+        padding: 0 0 0 40px;
+        border: 0;
+        font-size: 16px;
+      }
+      
+      #searchBox > pi-speech-mic {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+      }
+      
+      #searchBox > g-icon {
+        position: absolute;
+        top: 9px;
+        bottom: 0;
+        left: 6px;
+      }
+    </style>
+    <div id="searchBox">
+      <input id="searchInput" on-input="inputChange"/>
+      <g-icon src="../images/search_darkreg.png"></g-icon>
+      <pi-speech-mic on-result="speechResult"></pi-speech-mic>
+    </div>
+    <pi-feed-viewer id="viewer" topics="{{topics}}" panel="{{panel}}" layout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
+    <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
+  </template>
+  <script>
+    this.component({
+      publish: {
+        get selectedTopic() {
+          return this.$.viewer.selectedTopic;
+        },
+        previous: function() {
+          this.$.viewer.previous();
+        }
+      },
+      layout: 'list',
+      ready: function() {
+        this.contentNode = document.createElement('div');
+      },
+      panelChanged: function() {
+        this.$.searchBox.hidden = this.panel !== 'topics';
+      },
+      inputChange: function() {
+        clearTimeout(this._queryJob);
+        this._queryJob = setTimeout(function() {
+          this.query = this.$.searchInput.value;
+        }.bind(this), 500);
+      },
+      speechResult: function(e, inDetail) {
+        this.$.searchInput.value = inDetail.transcript;
+        this.inputChange();
+      },
+      queryResponse: function(e, inDetail) {
+        var n = this.contentNode;
+        this.topics = [];
+        inDetail.entries.forEach(function(e) {
+          n.innerHTML = e.title;
+          var t = n.textContent.trim();
+          this.topics.push({title: t, feed: [{feed: e.url}]});
+        }.bind(this));
+      }
+    });
+  </script>
+</element>

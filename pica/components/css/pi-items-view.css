@@ -99,6 +99,14 @@
   padding-right: 8px;
 }
 
+.source .read {
+  display: none;
+}
+
+.source .read[showing=true] {
+  display: inline-block;
+}
+
 /* list layout */
 .list .pi-item {
   border-right: 0;

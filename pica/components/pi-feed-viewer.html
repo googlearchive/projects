@@ -42,6 +42,7 @@
         topics: null,
         loading: true,
         selectedTopic: null,
+        track: true,
         previous: function() {
           this.$.panels.previous();
         },
@@ -74,8 +75,10 @@
       },
       storiesChanged: function() {
         if (this.stories) {
-          this.$.tracker.loadStories(this.stories);
-          this.updateReadCount(this.selectedTopic);
+          if (this.track) {
+            this.$.tracker.loadStories(this.stories);
+            this.updateReadCount(this.selectedTopic);
+          }
           this.panel = 'stories';
           this.$.stories.loaded = false;
           this.asyncMethod('storiesLoaded');
@@ -86,8 +89,10 @@
       },
       selectedStoryChanged: function() {
         if (!isEmpty(this.selectedStory)) {
-          this.$.tracker.markRead(this.selectedStory);
-          this.updateReadCount(this.selectedTopic);
+          if (this.track) {
+            this.$.tracker.markRead(this.selectedStory);
+            this.updateReadCount(this.selectedTopic);
+          }
           this.panel = 'story';
         }
       },
@@ -119,10 +124,12 @@
         });
       },
       updateReadCount: function(inTopic) {
-        var topics = inTopic ? [inTopic] : this.topics;
-        topics.forEach(function(t) {
-          t.unread = this.feedCount - this.$.tracker.getReadCountForTopic(t);
-        }.bind(this));
+        if (this.track) {
+          var topics = inTopic ? [inTopic] : this.topics;
+          topics.forEach(function(t) {
+            t.unread = this.feedCount - this.$.tracker.getReadCountForTopic(t);
+          }.bind(this));
+        }
       },
       // TODO(sorvell): handle selected event since this fires after the selection
       // is complete and this is when we want to make the following changes.

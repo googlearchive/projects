@@ -14,6 +14,7 @@
   <link rel="components" href="../../../toolkit/components/g-ribbon.html"/>
   <link rel="components" href="pi-toolbar.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
+  <link rel="components" href="pi-explore.html"/>
   <link rel="components" href="pi-home.html"/>
   <link rel="components" href="pi-accounts.html"/>
   <link rel="components" href="pi-accounts-model.html"/>
@@ -22,21 +23,23 @@
       <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
         <g-menu-item name="Home" src="../images/ribbon_home_lightreg.png">Home</g-menu-item>
         <g-menu-item name="Topics" src="../images/ribbon_topics_lightreg.png">Topics</g-menu-item>
+        <g-menu-item name="Explore" src="../images/ribbon_explore_lightreg.png">Explore</g-menu-item>
         <g-menu-item name="Accounts" src="../images/ribbon_accounts_lightreg.png">Accounts</g-menu-item>
       </g-ribbon>
       <div id="main" on-tap="showMain">
-        <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{topicsSelectedPanel}}"
+        <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{selectedSubPanel}}"
             on-nav="navClick" on-source="toggleSource" on-refresh="refresh"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
+          <!-- <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home> -->
           <div id="Home" on-ready="homeReadyHandler">
             <div class="panel-loading"></div>
             <template dehydrated>
               <pi-home></pi-home>
             </template>
           </div>
-          <!--<pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home>-->
-          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" selectedtopic="{{selectedTopic}}" panel="{{topicsSelectedPanel}}" layout="{{layout}}"></pi-feed-viewer>
-          <!--<pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts>-->
+          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedSubPanel}}" layout="{{layout}}"></pi-feed-viewer>
+          <pi-explore id="Explore" panel="{{selectedSubPanel}}"></pi-explore>
+          <!-- <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts> -->
           <div id="Accounts" on-ready="accountsReadyHandler">
             <div class="panel-loading"></div>
             <template dehydrated>
@@ -62,11 +65,15 @@
           this.hydrate(this.$.Accounts);
         }
       },
+      getSelectedContentPanel: function() {
+        return this.$.contentPanels.getSelectedPanel();
+      },
       navClick: function() {
-        if (this.topicsSelectedPanel == 'topics') {
+        if (this.selectedSubPanel == 'topics') {
           this.toggleNav();
         } else {
-          this.$.Topics.previous();
+          var p = this.getSelectedContentPanel();
+          p.previous && p.previous();
         }
       },
       toggleNav: function() {
@@ -79,14 +86,16 @@
         this.selectedPanel = 'main';
       },
       refresh: function() {
-        this.$.Topics.refresh();
+        var p = this.getSelectedContentPanel();
+        p.refresh && p.refresh();
       },
       ribbonSelectedChanged: function() {
-        this.topicsSelectedPanelChanged();
+        this.selectedSubPanelChanged();
       },
-      topicsSelectedPanelChanged: function() {
-        this.toolbarLabel = this.topicsSelectedPanel == 'topics' ?
-            this.ribbonSelected : this.selectedTopic.title;
+      selectedSubPanelChanged: function() {
+        var p = this.getSelectedContentPanel();
+        this.toolbarLabel = this.selectedSubPanel == 'topics' ?
+            this.ribbonSelected : p.selectedTopic && p.selectedTopic.title;
       },
       keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {
@@ -96,7 +105,7 @@
       // instantiate lazy content
       contentPanelSelectHandler: function(e, inDetails) {
         if (e.target == this.$.contentPanels) {
-          this.hydrate(this.$.contentPanels.getSelectedPanel());
+          this.hydrate(this.getSelectedContentPanel());
         }
       },
       // instantiate dehydrated templates inside this nodes

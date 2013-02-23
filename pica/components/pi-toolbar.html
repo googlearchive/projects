@@ -78,7 +78,7 @@
         this.$.sourceButton.active = this.panel == 'source';
       },
       subpanelChanged: function() {
-        this.$.navButton.src = 'images/' + 
+        this.$.navButton.src = this.node.__path__ + '../images/' + 
           (this.subpanel == 'topics' ? 'menu.png' : 'arrow_left.png');
       }
     });

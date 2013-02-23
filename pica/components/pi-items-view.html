@@ -24,7 +24,7 @@
                     <img class="source-icon" src="{{sourceIcon}}" />
                     <span class="source-title">{{source}}</span>
                     <span>{{since}}</span>
-                    <span showing="{{read}}">(read)</span>
+                    <span class="read" showing="{{read}}">(read)</span>
                   </div>
                 </div>
               </template>
@@ -45,6 +45,7 @@
       },
       ready: function() {
         this.node.setAttribute('touch-action', 'scroll');
+        this.updateMoreShowing();
       },
       itemsChanged: function() {
         var b = [], l = this.items && this.items.length;
@@ -67,7 +68,7 @@
         }.bind(this));
       },
       updateMoreShowing: function() {
-        this.$.more.style.display = this.boxes.length < this.allBoxes.length ? 
+        this.$.more.style.display = (this.boxes && this.boxes.length < this.allBoxes.length) ? 
           null : 'none';
       },
       loadMore: function() {

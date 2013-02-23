@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-gfeeds" attributes="feed">
+<element name="pi-gfeeds" attributes="feed query">
   <script>
     var feedsAreReady = false;
     var pendingFeeds = [];
@@ -39,20 +39,20 @@
       feedChanged: function() {
         if (this.feed) {
           this.loading = true;
-          // call query async to make sure any binding to count property is resolved
-          // before query is called
-          XGFeeds.require(this.asyncMethod.bind(this, 'query'));
+          // call fetchFeeds async to make sure any binding to count property is resolved
+          // before fetchFeeds is called
+          XGFeeds.require(this.asyncMethod.bind(this, 'fetchFeeds'));
         } else {
           this.results = null;
         }
       },
-      query: function() {
+      fetchFeeds: function() {
         var feed = new google.feeds.Feed(this.feed);
         feed.includeHistoricalEntries(); // tell the API we want to have old entries too
         feed.setNumEntries(this.count); // we want this maximum number of entries, if they exist
-        feed.load(this.loaded.bind(this));
+        feed.load(this.fetchFeedsDone.bind(this));
       },
-      loaded: function(inResult) {
+      fetchFeedsDone: function(inResult) {
         this.loading = false;
         if (inResult.error) {
           this.results = {};
@@ -60,6 +60,23 @@
         } else {
           this.results = inResult.feed;
           this.send('response', {feed: inResult.feed});
+        }
+      },
+      queryChanged: function() {
+        if (this.query) {
+          this.loading = true;
+          XGFeeds.require(this.asyncMethod.bind(this, 'findFeeds'));
+        }
+      },
+      findFeeds: function() {
+        google.feeds.findFeeds(this.query, this.findFeedsDone.bind(this));
+      },
+      findFeedsDone: function(inResult) {
+        this.loading = false;
+        if (inResult.error) {
+          this.send('queryerror', {status: inResult.status});
+        } else {
+          this.send('queryresponse', {entries: inResult.entries});
         }
       }
     });
