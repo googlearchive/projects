@@ -69,11 +69,11 @@
         return this.$.contentPanels.getSelectedPanel();
       },
       navClick: function() {
-        if (this.selectedSubPanel == 'topics') {
-          this.toggleNav();
+        var p = this.getSelectedContentPanel();
+        if (p.canPrevious) {
+          p.previous();
         } else {
-          var p = this.getSelectedContentPanel();
-          p.previous && p.previous();
+          this.toggleNav();
         }
       },
       toggleNav: function() {
@@ -90,12 +90,15 @@
         p.refresh && p.refresh();
       },
       ribbonSelectedChanged: function() {
-        this.selectedSubPanelChanged();
+        this.updateToolbarLabel();
       },
       selectedSubPanelChanged: function() {
+        this.updateToolbarLabel();
+      },
+      updateToolbarLabel: function() {
         var p = this.getSelectedContentPanel();
-        this.toolbarLabel = this.selectedSubPanel == 'topics' ?
-            this.ribbonSelected : p.selectedTopic && p.selectedTopic.title;
+        this.toolbarLabel = p.canPrevious && p.selectedTopic ?
+          p.selectedTopic.title : this.ribbonSelected;
       },
       keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {

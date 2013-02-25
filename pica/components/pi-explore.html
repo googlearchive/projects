@@ -8,7 +8,7 @@
 <element name="pi-explore" attributes="panel layout">
   <link rel="components" href="pi-gfeeds.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
-  <link rel="components" href="pi-speech-mic.html"/>
+  <link rel="components" href="../../../pantry/speech/g-speech-mic.html"/>
   <template>
     <style>
       @host {
@@ -42,9 +42,9 @@
         font-size: 16px;
       }
       
-      #searchBox > pi-speech-mic {
+      #searchBox > g-speech-mic {
         position: absolute;
-        top: 0;
+        top: 5px;
         bottom: 0;
         right: 0;
       }
@@ -59,7 +59,7 @@
     <div id="searchBox">
       <input id="searchInput" on-input="inputChange"/>
       <g-icon src="../images/search_darkreg.png"></g-icon>
-      <pi-speech-mic on-result="speechResult"></pi-speech-mic>
+      <g-speech-mic id="speech" on-result="speechResult"></g-speech-mic>
     </div>
     <pi-feed-viewer id="viewer" topics="{{topics}}" panel="{{panel}}" layout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
@@ -69,6 +69,9 @@
       publish: {
         get selectedTopic() {
           return this.$.viewer.selectedTopic;
+        },
+        get canPrevious() {
+          return this.$.viewer.canPrevious;
         },
         previous: function() {
           this.$.viewer.previous();
@@ -84,6 +87,7 @@
       inputChange: function() {
         clearTimeout(this._queryJob);
         this._queryJob = setTimeout(function() {
+          this.$.speech.stop();
           this.query = this.$.searchInput.value;
         }.bind(this), 500);
       },
@@ -95,6 +99,7 @@
         var n = this.contentNode;
         this.topics = [];
         inDetail.entries.forEach(function(e) {
+          // unescape html content
           n.innerHTML = e.title;
           var t = n.textContent.trim();
           this.topics.push({title: t, feed: [{feed: e.url}]});

@@ -390,7 +390,7 @@
 @media screen and (max-width: 480px) {
   /* grid layout */
   .grid .pi-item {
-    padding: 10px;
+    padding: 6px;
   }
   
   .grid.topics .pi-item {

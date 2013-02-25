@@ -43,6 +43,9 @@
         loading: true,
         selectedTopic: null,
         track: true,
+        get canPrevious() {
+          return this.$.panels.index;
+        },
         previous: function() {
           this.$.panels.previous();
         },
