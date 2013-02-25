@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-toolbar" attributes="label layout panel subpanel">
+<element name="pi-toolbar" attributes="label layout panel subpanel hideactionbar">
   <link rel="components" href="../../../toolkit/components/g-toolbar.html"/>
   <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
   <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
@@ -40,14 +40,14 @@
     <g-toolbar>
       <g-icon-button id="navButton" src="../images/menu.png" toolaction="nav" on-tap="toolClick"></g-icon-button>
       <label class="flex">{{label}}</label>
-      <g-toolbar class="responsive">
+      <g-toolbar id="actionbar" class="responsive">
         <g-menu-button src="../images/view_quilt.png" selected="{{layout}}">
           <g-menu-item name="grid" label="Grid" src="../images/view_module.png"></g-menu-item>
           <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.png"></g-menu-item>
-          <g-menu-item name="list" label="List" src="../images/view_list.png"></g-menu-item>
+          <g-menu-item name="list" label="List" class="hidden-wide" src="../images/view_list.png"></g-menu-item>
           <g-menu-item name="stream" label="Stream" src="../images/view_stream.png"></g-menu-item>
         </g-menu-button>
-        <g-menu-button src="../images/plus.png">
+        <g-menu-button src="../images/plus.png" class="right-aligned">
           <g-menu-item src="../images/create.png">Post a Comment</g-menu-item>
           <g-menu-item src="../images/hangout.png">Share Link</g-menu-item>
           <g-menu-item src="../images/mail.png">Email Link</g-menu-item>
@@ -55,7 +55,7 @@
         </g-menu-button>
         <g-icon-button src="../images/refresh.png" toolaction="refresh" on-tap="toolClick"></g-icon-button>
       </g-toolbar>
-      <g-icon-button id="sourceButton" src="../images/drawer.png" toolaction="source" on-tap="toolClick"></g-icon-button>
+      <g-icon-button id="sourceButton" style="display: none;" src="../images/drawer.png" toolaction="source" on-tap="toolClick"></g-icon-button>
     </g-toolbar>
   </template>
   <script>
@@ -67,15 +67,18 @@
       },
       screenLayoutChange: function(inQuery) {
         if (inQuery.matches && this.layout == 'quilt') {
-          this.layout = 'grid';
+          //this.layout = 'grid';
         }
       },
       toolClick: function(inEvent, inDetail, inSender) {
         this.send(inSender.getAttribute('toolaction') || 'toolaction');
       },
+      hideactionbarChanged: function() {
+        this.$.actionbar.style.display = this.hideactionbar ? 'none' : '';
+      },
       panelChanged: function() {
         this.$.navButton.active = this.panel == 'ribbon';
-        this.$.sourceButton.active = this.panel == 'source';
+        //this.$.sourceButton.active = this.panel == 'source';
       },
       subpanelChanged: function() {
         this.$.navButton.src = this.node.__path__ + '../images/' + 

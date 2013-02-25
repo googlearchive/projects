@@ -26,9 +26,9 @@
         <g-menu-item name="Explore" src="../images/ribbon_explore_lightreg.png">Explore</g-menu-item>
         <g-menu-item name="Accounts" src="../images/ribbon_accounts_lightreg.png">Accounts</g-menu-item>
       </g-ribbon>
-      <div id="main" on-tap="showMain">
+      <div id="main" on-tap="showMain" hideactionbar="{{hideActionbar}}">
         <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{selectedSubPanel}}"
-            on-nav="navClick" on-source="toggleSource" on-refresh="refresh"></pi-toolbar>
+            on-nav="navClick" on-source="toggleSource" on-refresh="refresh" hideactionbar="{{hideActionbar}}"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
           <!-- <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home> -->
           <div id="Home" on-ready="homeReadyHandler">
@@ -91,6 +91,7 @@
       },
       ribbonSelectedChanged: function() {
         this.updateToolbarLabel();
+        this.updateActionbar();
       },
       selectedSubPanelChanged: function() {
         this.updateToolbarLabel();
@@ -99,6 +100,9 @@
         var p = this.getSelectedContentPanel();
         this.toolbarLabel = p.canPrevious && p.selectedTopic ?
           p.selectedTopic.title : this.ribbonSelected;
+      },
+      updateActionbar: function() {
+        this.hideActionbar = this.ribbonSelected != 'Topics';
       },
       keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {

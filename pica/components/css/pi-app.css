@@ -68,7 +68,7 @@ g-toolbar > label {
 
 
 @media screen and (max-width: 800px) {
-  #contentPanels {
+  #main:not([hideactionbar=true]) #contentPanels {
     margin-bottom: 60px;
   }
 }
