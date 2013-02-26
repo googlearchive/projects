@@ -11,21 +11,21 @@
       .story-main {
         position: absolute;
         top: 0;
-        bottom: 40px;
+        bottom: 44px;
         width: 100%;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
       }
       
       .body {
-        max-width: 640px;
+        max-width: 770px;
         margin: 0 auto;
         font-size: 12px;
-        padding: 10px;
+        padding: 40px;
       }
        
       #header {
-        padding: 20px 0;
+        padding-bottom: 20px;
         display: -webkit-flex;
         display: -webkit-box;
       }
@@ -55,14 +55,14 @@
       .bottom-source-bar {
         position: absolute;
         width: 100%;
-        height: 40px;
+        height: 44px;
         bottom: 0;
         box-sizing: border-box;
         border-top: 1px solid #ddd;
         color: #666;
         font-size: 11px;
-        line-height: 40px;
-        padding: 0 10px;
+        line-height: 44px;
+        padding: 0 12px;
       }
       
       .bottom-source-bar > * {
@@ -77,10 +77,24 @@
         padding-right: 8px;
       }
       
+      @media screen and (max-width: 1024px) {
+        .body {
+          max-width: 688px;
+        }
+      }
+      
       @media screen and (max-width: 800px) {
+        .body {
+          padding: 15px;
+        }
+        
         #detail img {
           max-width: 100%;
           height: auto;
+        }
+        
+        .bottom-source-bar {
+          display: none;
         }
       }
     </style>

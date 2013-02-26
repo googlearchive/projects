@@ -12,6 +12,10 @@
   <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
   <template>
     <style>
+      g-toolbar label {
+        margin: 0;
+      }
+      
       g-menu-item.hidden-wide {
         display: none;
       }
@@ -28,6 +32,7 @@
         g-toolbar > label {
           -webkit-box-pack: center;
           -webkit-justify-content: center;
+          margin-right: 56px;
         }
         
         .responsive > *:not(:last-child) {
