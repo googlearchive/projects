@@ -17,7 +17,7 @@
     <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" on-select="panelSelected" on-canselect="panelCanSelect">
       <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}" cascading></pi-items-view>
-      <pi-story id="story" story="{{selectedStory}}" touch-action="pan-y" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
+      <pi-story id="story" story="{{selectedStory}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}">Loading...</div>
     <pi-feed-aggregator id="feeds" feed="{{selectedTopic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>

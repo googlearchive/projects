@@ -16,9 +16,12 @@
 
 @host #panels > * {
   background: white;
+  font-size: 15px;
+}
+
+@host #panels pi-items-view {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  font-size: 15px;
 }
 
 #loading {

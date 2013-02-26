@@ -8,6 +8,15 @@
 <element name="pi-story" attributes="title story">
   <template>
     <style>
+      .story-main {
+        position: absolute;
+        top: 0;
+        bottom: 40px;
+        width: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
       .body {
         max-width: 640px;
         margin: 0 auto;
@@ -43,6 +52,31 @@
         pointer-events: none;
       }
       
+      .bottom-source-bar {
+        position: absolute;
+        width: 100%;
+        height: 40px;
+        bottom: 0;
+        box-sizing: border-box;
+        border-top: 1px solid #ddd;
+        color: #666;
+        font-size: 11px;
+        line-height: 40px;
+        padding: 0 10px;
+      }
+      
+      .bottom-source-bar > * {
+        vertical-align: middle;
+      }
+      
+      .bottom-source-bar .icon {
+        padding-right: 4px;
+      }
+      
+      .bottom-source-bar .title {
+        padding-right: 8px;
+      }
+      
       @media screen and (max-width: 800px) {
         #detail img {
           max-width: 100%;
@@ -50,17 +84,24 @@
         }
       }
     </style>
-    <div class="body">
-      <div id="header">
-        <div id="title">{{story.title}}</div>
-        <a href="{{story.link}}" target="{{targetWindow}}">
-          <g-icon-button id="linkButton" src="../images/web.png"></g-icon-button>
-        </a>
+    <div class="story-main" touch-action="pan-y">
+      <div class="body">
+        <div id="header">
+          <div id="title">{{story.title}}</div>
+          <a href="{{story.link}}" target="{{targetWindow}}">
+            <g-icon-button id="linkButton" src="../images/web.png"></g-icon-button>
+          </a>
+        </div>
+        <div id="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
+        <div id="detail">
+          <div id="content"></div>
+        </div>
       </div>
-      <div id="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
-      <div id="detail">
-        <div id="content"></div>
-      </div>
+    </div>
+    <div class="bottom-source-bar">
+      <img class="icon" src="{{story.sourceIcon}}" />
+      <span class="title">{{story.source}}</span>
+      <span>{{story.since}}</span>
     </div>
   </template>
   <script>
