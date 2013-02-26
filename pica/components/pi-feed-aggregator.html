@@ -37,6 +37,8 @@
       }
       return Math.floor(s) + 's';
     };
+    
+    var DUMMY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla sapien sed enim sollicitudin laoreet. Suspendisse suscipit, metus ac volutpat sodales, libero magna semper lacus, molestie fringilla massa orci ut arcu. Nullam sodales urna sit amet odio vehicula mattis.';
 
     this.component({
       publish: {
@@ -141,6 +143,8 @@
             entry._date = d;
             entry.since = timeSince(d);
           }
+          // dummy text used for filling white spaces (for demo only)
+          entry.dummyText = DUMMY_TEXT;
         });
         return entries;
       }

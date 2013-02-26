@@ -63,6 +63,10 @@
   display: none;
 }
 
+.dummy-desc {
+  display: none;
+}
+
 [showing=false] {  
   display: none;
 }
@@ -343,6 +347,10 @@
 }
 
 .stream:not(.topics) .desc {
+  display: block;
+}
+
+.stream .dummy-desc {
   display: block;
 }
 
