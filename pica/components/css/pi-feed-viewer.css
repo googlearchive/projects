@@ -27,16 +27,22 @@
 #loading {
   display: none;
   position: absolute;
+  bottom: 50%;
   left: 50%;
   width: 100px;
-  height: 20px;
-  line-height: 20px;
-  margin-left: -50px;
-  padding: 4px;
+  height: 100px;
+  margin: -50px;
   z-index: 1;
-  background: #ffffcc;
+  background: rgba(0,0,0,0.7);
   text-align: center;
-  border: 1px solid #ffff00;
+  font-size: 16px;
+  color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+#loading div {
+  padding-top: 40px;
 }
 
 #loading[loading=true] {

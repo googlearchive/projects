@@ -19,7 +19,7 @@
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}" cascading></pi-items-view>
       <pi-story id="story" story="{{selectedStory}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
-    <div id="loading" loading="{{loading}}">Loading...</div>
+    <div id="loading" loading="{{loading}}"><div>Loading...</div></div>
     <pi-feed-aggregator id="feeds" feed="{{selectedTopic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
     <pi-feed-tracker id="tracker"></pi-feed-tracker>
   </template>
