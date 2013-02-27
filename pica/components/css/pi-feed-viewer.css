@@ -29,20 +29,11 @@
   position: absolute;
   bottom: 50%;
   left: 50%;
-  width: 100px;
-  height: 100px;
-  margin: -50px;
+  width: 160px;
+  height: 160px;
+  margin: -80px;
+  background: url(../../images/loading.png);
   z-index: 1;
-  background: rgba(0,0,0,0.7);
-  text-align: center;
-  font-size: 16px;
-  color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-}
-
-#loading div {
-  padding-top: 40px;
 }
 
 #loading[loading=true] {

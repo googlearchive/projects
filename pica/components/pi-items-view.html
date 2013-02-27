@@ -23,10 +23,10 @@
                     <span class="dummy-desc"><p>{{dummyText}}</p><p>{{dummyText}}</p></span>
                   </div>
                   <div class="source">
-                    <img class="source-icon" src="{{sourceIcon}}" />
-                    <span class="source-title">{{source}}</span>
-                    <span>{{since}}</span>
-                    <!-- <span class="read" showing="{{read}}">(read)</span> -->
+                    <div class="source-icon" style="background-image: url({{sourceIcon}});"></div>
+                    <div class="source-title">{{source}}
+                      <span class="source-time">{{since}}</span>
+                    </div>
                   </div>
                 </div>
               </template>
@@ -34,7 +34,10 @@
           </template>
         </div>
       </template>
-      <div id="more" on-tap="loadMore">Load more...</div>
+      <div id="more" on-tap="loadMore">
+        <g-icon src="../images/refresh_lightreg.png"></g-icon>
+        Load more articles
+      </div>
     </div>
   </template>
   <script>

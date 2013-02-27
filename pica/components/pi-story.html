@@ -61,20 +61,30 @@
         border-top: 1px solid #ddd;
         color: #666;
         font-size: 11px;
-        line-height: 44px;
-        padding: 0 12px;
+        padding: 12px;
+        
       }
       
       .bottom-source-bar > * {
+        display: inline-block;
         vertical-align: middle;
       }
       
-      .bottom-source-bar .icon {
-        padding-right: 4px;
+      .bottom-source-icon {
+        width: 20px;
+        height: 20px;
+        background-repeat: no-repeat;
+        background-position: center;
       }
       
-      .bottom-source-bar .title {
-        padding-right: 8px;
+      .bottom-source-title {
+        font-weight: bold;
+        padding-left: 2px;
+      }
+      
+      .bottom-source-time {
+        font-weight: normal;
+        padding-left: 8px;
       }
       
       @media screen and (max-width: 1024px) {
@@ -113,9 +123,10 @@
       </div>
     </div>
     <div class="bottom-source-bar">
-      <img class="icon" src="{{story.sourceIcon}}" />
-      <span class="title">{{story.source}}</span>
-      <span>{{story.since}}</span>
+      <div class="bottom-source-icon" style="background-image: url({{story.sourceIcon}});"></div>
+      <div class="bottom-source-title">{{story.source}}
+        <span class="bottom-source-time">{{story.since}}</span>
+      </div>
     </div>
   </template>
   <script>
