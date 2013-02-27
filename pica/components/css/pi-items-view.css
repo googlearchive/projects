@@ -45,11 +45,17 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .title {
   padding: 20px 0;
-  font-weight: bold;
+}
+
+.view:not(.topics) .title {
+  font-family: Helvetica Neue Medium;
+  font-size: 21px;
+  opacity: .8;
 }
 
 .topics .title {
@@ -61,7 +67,7 @@
 
 .unread-count {
   display: none;
-  padding-left: 8px;
+  padding-left: 4px;
   font-weight: normal;
   color: #aaa;
 }
@@ -116,24 +122,20 @@
   height: 20px;
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 100% 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .source-title {
-  font-weight: bold;
   padding-left: 2px;
+  font-family: Helvetica Neue Bold;
+  font-size: 12px;
+  opacity: .5;
 }
 
 .source-time {
-  font-weight: normal;
   padding-left: 8px;
-}
-
-.source .read {
-  display: none;
-}
-
-.source .read[showing=true] {
-  display: inline-block;
+  font-family: Helvetica Neue Regular;
 }
 
 /* list layout */
@@ -143,6 +145,10 @@
 
 .list.topics .pi-item {
   border-bottom: 1px solid #ddd;
+}
+
+.list .image {
+  display: none;
 }
 
 .list .title {
@@ -164,7 +170,7 @@
 
 .quilt .inner {
   display: inline-block;
-  height: 900px;
+  height: 1000px;
   vertical-align: top;
   white-space: normal;
 }
@@ -195,7 +201,7 @@
 }
 
 .quilt .image {
-  height: 70%;
+  height: 65%;
 }
 
 .quilt.topics .image {
@@ -203,7 +209,7 @@
 }
 
 .quilt .one .pi-item .image {
-  height: 85%;
+  height: 80%;
 }
 
 .quilt.topics .one .pi-item .image {
@@ -211,31 +217,14 @@
 }
 
 .quilt .one .pi-item:last-child .image {
-  width: 60%;
-  height: 100%;
-  float: left;
-  margin-right: 20px;
-}
-
-.quilt .one .pi-item:last-child .title {
-  padding-top: 0;
-}
-
-.quilt.topics .one .pi-item:last-child .title {
-  position: relative;
-  top: 0;
+  height: 60%;
 }
 
 .quilt .source {
   position: absolute;
-  bottom: 30px;
+  bottom: 25px;
 }
 
-.quilt .one .pi-item:last-child .source {
-  left: 60%;
-  padding-left: 15px;
-}
- 
 /* grid layout */
 .grid .box {
   /* to remove whitespace between inline blocks,
@@ -251,7 +240,7 @@
 .grid .pi-item {
   display: inline-block;
   width: 50%;
-  height: 340px;
+  height: 380px;
   vertical-align: top;
 }
 
