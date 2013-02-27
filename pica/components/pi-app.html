@@ -65,6 +65,12 @@
           this.hydrate(this.$.Home);
           this.hydrate(this.$.Accounts);
         }
+        var mq = window.matchMedia('(max-width: 800px)');
+        mq.addListener(this.screenLayoutChange.bind(this));
+        this.screenLayoutChange(mq);
+      },
+      screenLayoutChange: function(inQuery) {
+        this.layout = inQuery.matches ? 'stream' : 'quilt';
       },
       getSelectedContentPanel: function() {
         return this.$.contentPanels.getSelectedPanel();

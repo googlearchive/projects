@@ -61,21 +61,12 @@
         </g-menu-button>
         <g-icon-button src="../images/refresh.png" toolaction="refresh" on-tap="toolClick"></g-icon-button>
       </g-toolbar>
-      <g-icon-button id="sourceButton" style="display: none;" src="../images/drawer.png" toolaction="source" on-tap="toolClick"></g-icon-button>
     </g-toolbar>
   </template>
   <script>
     this.component({
       ready: function() {
-        var mq = window.matchMedia('(max-width: 800px)');
-        mq.addListener(this.screenLayoutChange.bind(this));
-        this.screenLayoutChange(mq);
         this.hidelink = true;
-      },
-      screenLayoutChange: function(inQuery) {
-        if (inQuery.matches && this.layout == 'quilt') {
-          //this.layout = 'grid';
-        }
       },
       toolClick: function(inEvent, inDetail, inSender) {
         this.send(inSender.getAttribute('toolaction') || 'toolaction');
@@ -91,7 +82,6 @@
       },
       panelChanged: function() {
         this.$.navButton.active = this.panel == 'ribbon';
-        //this.$.sourceButton.active = this.panel == 'source';
       },
       subpanelChanged: function() {
         this.$.navButton.src = this.node.__path__ + '../images/' + 
