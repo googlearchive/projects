@@ -19,6 +19,10 @@
   font-size: 15px;
 }
 
+.topics .pi-item {
+  border: 0;
+}
+
 #more {
   padding: 20px;
   background: whitesmoke;
@@ -186,7 +190,7 @@
   width: 60%;
   height: 100%;
   float: left;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .quilt .one .pi-item:last-child .title {
@@ -200,12 +204,12 @@
 
 .quilt .source {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px;
 }
 
 .quilt .one .pi-item:last-child .source {
   left: 60%;
-  padding-left: 5px;
+  padding-left: 15px;
 }
  
 /* grid layout */
@@ -223,7 +227,7 @@
 .grid .pi-item {
   display: inline-block;
   width: 50%;
-  height: 300px;
+  height: 340px;
   vertical-align: top;
 }
 
@@ -321,7 +325,7 @@
 
 .grid .source {
   position: absolute;
-  bottom: 12px;
+  bottom: 25px;
 }
 
 .grid .two .pi-item:last-child {
@@ -364,6 +368,10 @@
 @media screen and (max-width: 1024px) {
   .pi-item {
     padding: 20px;
+  }
+  
+  .grid .source {
+    bottom: 20px;
   }
 }  
 

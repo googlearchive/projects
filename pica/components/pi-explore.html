@@ -61,7 +61,7 @@
       <g-icon src="../images/search.png"></g-icon>
       <g-speech-mic id="speech" on-result="speechResult"></g-speech-mic>
     </div>
-    <pi-feed-viewer id="viewer" topics="{{topics}}" panel="{{panel}}" layout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
+    <pi-feed-viewer id="viewer" topics="{{topics}}" panel="{{panel}}" layout="{{layout}}" topicslayout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>

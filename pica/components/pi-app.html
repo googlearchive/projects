@@ -28,7 +28,8 @@
       </g-ribbon>
       <div id="main" on-tap="showMain" hideactionbar="{{hideActionbar}}">
         <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{selectedSubPanel}}"
-            on-nav="navClick" on-source="toggleSource" on-refresh="refresh" hideactionbar="{{hideActionbar}}"></pi-toolbar>
+            on-nav="navClick" on-source="toggleSource" on-refresh="refresh" on-link="linkStory"
+            hideactionbar="{{hideActionbar}}" hideview="{{hideView}}" hidelink="{{hideLink}}"></pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
           <!-- <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home> -->
           <div id="Home" on-ready="homeReadyHandler">
@@ -37,7 +38,7 @@
               <pi-home></pi-home>
             </template>
           </div>
-          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedSubPanel}}" layout="{{layout}}"></pi-feed-viewer>
+          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedSubPanel}}" layout="{{layout}}" topicslayout="grid"></pi-feed-viewer>
           <pi-explore id="Explore" panel="{{selectedSubPanel}}"></pi-explore>
           <!-- <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts> -->
           <div id="Accounts" on-ready="accountsReadyHandler">
@@ -57,7 +58,7 @@
     
     this.component({
       ribbonSelected: 'Topics',
-      layout: 'grid',
+      layout: 'quilt',
       selectedPanel: 'main',
       ready: function() {
         if (location.search.indexOf('hydrate') >= 0) {
@@ -95,6 +96,7 @@
       },
       selectedSubPanelChanged: function() {
         this.updateToolbarLabel();
+        this.updateActionbar();
       },
       updateToolbarLabel: function() {
         var p = this.getSelectedContentPanel();
@@ -103,6 +105,15 @@
       },
       updateActionbar: function() {
         this.hideActionbar = this.ribbonSelected != 'Topics';
+        this.hideView = this.selectedSubPanel != 'stories';
+        this.hideLink = this.selectedSubPanel != 'story';
+      },
+      linkStory: function() {
+        var l = this.$.Topics.selectedStory.link;
+        if (l) {
+          var newtab = window.open();
+          newtab.location = l;
+        }
       },
       keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {

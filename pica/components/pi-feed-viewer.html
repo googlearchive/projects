@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-feed-viewer" attributes="panel layout">
+<element name="pi-feed-viewer" attributes="panel layout topicslayout">
   <link rel="stylesheet" href="css/pi-feed-viewer.css" />
   <link rel="components" href="../../../toolkit/components/g-panels.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
@@ -15,7 +15,7 @@
   <link rel="components" href="pi-story.html"/>
   <template>
     <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" on-select="panelSelected" on-canselect="panelCanSelect">
-      <pi-items-view id="topics" layout="{{layout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
+      <pi-items-view id="topics" layout="{{topicslayout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}" cascading></pi-items-view>
       <pi-story id="story" story="{{selectedStory}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
@@ -42,6 +42,7 @@
         topics: null,
         loading: true,
         selectedTopic: null,
+        selectedStory: null,
         track: true,
         get canPrevious() {
           return this.$.panels.index;
