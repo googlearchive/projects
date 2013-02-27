@@ -48,13 +48,13 @@ g-toolbar > label {
 
 #Accounts > .panel-loading, #Home > .panel-loading {
 	position: absolute;
-  width: 32px;
-  height: 32px;
+  width: 50px;
+  height: 50px;
   left: 50%;
   bottom: 50%;
-  margin: -16px;
+  margin: -25px;
   -webkit-animation: spin 2s linear infinite;
-  background: url(../../images/spinner.png);
+  background: url(../../images/loading_icon.svg);
 }
 
 #Accounts.ready > .panel-loading, #Home.ready > .panel-loading {
