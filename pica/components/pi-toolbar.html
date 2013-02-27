@@ -47,7 +47,7 @@
       <label class="flex">{{label}}</label>
       <g-toolbar id="actionbar" class="responsive">
         <g-icon-button id="linkButton" src="../images/web.png" toolaction="link" on-tap="toolClick"></g-icon-button>
-        <g-menu-button id="viewButton" src="../images/view_quilt.png" selected="{{layout}}">
+        <g-menu-button id="viewButton" src="../images/view_quilt.png" selected="{{selectedLayout}}">
           <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.png"></g-menu-item>
           <g-menu-item name="grid" label="Grid" src="../images/view_module.png"></g-menu-item>
           <g-menu-item name="list" label="List" class="hidden-wide" src="../images/view_list.png"></g-menu-item>
@@ -67,6 +67,20 @@
     this.component({
       ready: function() {
         this.hidelink = true;
+        var mq = window.matchMedia('(max-width: 800px)');
+        mq.addListener(this.screenLayoutChange.bind(this));
+        this.screenLayoutChange(mq);
+        this.selectedLayout = this.layout;
+      },
+      screenLayoutChange: function(inQuery) {
+        if (inQuery.matches && this.layout == 'quilt') {
+          this.layout = 'stream';
+        } else {
+          this.layout = this.selectedLayout || (inQuery.matches ? 'stream' : 'quilt');
+        }
+      },
+      selectedLayoutChanged: function() {
+        this.layout = this.selectedLayout;
       },
       toolClick: function(inEvent, inDetail, inSender) {
         this.send(inSender.getAttribute('toolaction') || 'toolaction');
