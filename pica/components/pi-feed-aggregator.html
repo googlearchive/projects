@@ -38,7 +38,13 @@
       return Math.floor(s) + 's';
     };
     
-    var DUMMY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fringilla sapien sed enim sollicitudin laoreet. Suspendisse suscipit, metus ac volutpat sodales, libero magna semper lacus, molestie fringilla massa orci ut arcu. Nullam sodales urna sit amet odio vehicula mattis.';
+    var DUMMY_TEXT = [
+      'Forma temperiemque cornua sidera dissociata cornua recessit innabilis ligavit: solidumque coeptis nullus caelum sponte phoebe di regat mentisque tanta austro capacius amphitrite sui quin postquam semina fossae liquidum umor galeae coeptis caligine liberioris quin liquidum matutinis invasit posset: flexi glomeravit radiis certis invasit oppida postquam onerosior inclusum dominari opifex terris pace finxit quam aquae nunc sine altae auroram quam habentem homo totidemque scythiam in pondus ensis tegit caecoque poena lapidosos humanas coeperunt poena aetas totidem nec natura aethera locavit caelumque distinxit animalibus phoebe cingebant moderantum porrexerat terrae possedit sua sole diu summaque obliquis melioris orbem',
+      'Quae zephyro praecipites vos frigida membra foret gentes ne librata liquidas lacusque animus liquidum ne orba opifex circumdare scythiam tuba militis chaos: sidera regio utramque quia effervescere proximus arce illic diversa homo ille aethere ventos qui principio coeperunt di colebat et nebulas adsiduis glomeravit lanient otia usu habitandae glomeravit librata cepit possedit metusque habentia sed mundi aetas sublime oppida consistere dixere dixere aequalis evolvit mixta animus sibi duae circumfluus litem egens metusque modo otia tumescere occiduo dispositam nix ut caeca innabilis conversa sponte flamina lucis lumina tegit pulsant adhuc zephyro recessit quoque tanto regio tegi terrarum extendi aeris pondus manebat summaque',
+      'Coercuit iunctarum vix sic aberant spisso imagine litem cetera nubes ambitae tanta usu circumfuso fulminibus umentia rectumque iuga pluviaque meis semina regat ne campoque meis coeperunt nix cura iunctarum ligavit: secant ventos seductaque permisit sic iunctarum locoque his coeptis tum terras animalia recepta aethera cornua invasit tollere videre tonitrua humanas otia tuba alta dissociata sanctius adsiduis inclusum caesa ita onus sine pluviaque litem manebat fixo extendi ubi inposuit cum sublime membra undas orba forma deducite aethera turba coercuit retinebat obliquis bracchia nisi mentisque origine peregrinum manebat',
+      'Obstabatque cingebant nitidis rapidisque cepit moderantum discordia habentia frigore solidumque fert inter caecoque sine coeperunt corpore quarum fluminaque coercuit vultus animal austro quem os sectamque animus origo solidumque quoque melioris adspirate recepta utramque rapidisque caelumque orba unus pluviaque erant mutastis gravitate illic quisque alta calidis speciem mixtam ante contraria duae',
+      'Ut aer semina aequalis egens videre tum deus pluviaque quae tellure ad orbe habentia solidumque consistere pluvialibus neu ripis emicuit foret hanc abscidit et fulgura bracchia sorbentur caelo cuncta liberioris finxit tum obliquis terris deerat inter caecoque piscibus fidem otia caesa usu induit radiis supplex exemit neu cinxit nova facientes'
+    ];
 
     this.component({
       publish: {
@@ -144,7 +150,7 @@
             entry.since = timeSince(d);
           }
           // dummy text used for filling white spaces (for demo only)
-          entry.dummyText = DUMMY_TEXT;
+          entry.dummyText = DUMMY_TEXT[Math.floor(Math.random() * DUMMY_TEXT.length)];
         });
         return entries;
       }

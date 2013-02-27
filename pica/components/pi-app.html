@@ -58,7 +58,6 @@
     
     this.component({
       ribbonSelected: 'Topics',
-      layout: 'quilt',
       selectedPanel: 'main',
       ready: function() {
         if (location.search.indexOf('hydrate') >= 0) {
@@ -70,7 +69,7 @@
         this.screenLayoutChange(mq);
       },
       screenLayoutChange: function(inQuery) {
-        this.layout = inQuery.matches ? 'stream' : 'quilt';
+        this.layout = this.layout || (inQuery.matches ? 'stream' : 'quilt');
       },
       getSelectedContentPanel: function() {
         return this.$.contentPanels.getSelectedPanel();
