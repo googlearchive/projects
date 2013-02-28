@@ -110,8 +110,7 @@
       linkStory: function() {
         var l = this.$.Topics.selectedStory.link;
         if (l) {
-          var newtab = window.open();
-          newtab.location = l;
+          window.open(l, '_blank');
         }
       },
       keyupHandler: function(e) {

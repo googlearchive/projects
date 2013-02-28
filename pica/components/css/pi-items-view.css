@@ -451,6 +451,10 @@
 
 @media screen and (max-width: 420px) {
   /* grid layout */
+  .grid:not(.topics) .title {
+    font-size: 14px;
+  }
+  
   .grid.topics .pi-item {
     height: 200px;
   }
@@ -460,6 +464,6 @@
   }
   
   .grid .image {
-    height: 80px;
+    height: 100px;
   }
 }
