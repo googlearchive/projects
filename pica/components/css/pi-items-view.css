@@ -100,7 +100,6 @@
 
 .view:not(.list) .image[showing=false] + .title {
   padding-top: 0;
-  font-size: 20px;
 }
 
 .source {
@@ -114,11 +113,11 @@
 }
 
 .source > * {
-  display: inline-block;
   vertical-align: middle;
 }
 
 .source-icon {
+  display: inline-block;
   width: 20px;
   height: 20px;
   background-repeat: no-repeat;
@@ -204,7 +203,7 @@
 }
 
 .quilt .image {
-  height: 65%;
+  height: 60%;
 }
 
 .quilt.topics .image {
