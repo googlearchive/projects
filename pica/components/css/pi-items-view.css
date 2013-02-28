@@ -53,7 +53,8 @@
 }
 
 .view:not(.topics) .title {
-  font-family: Helvetica Neue Medium;
+  font-family: 'Helvetica Neue Medium', 'Helvetica Neue';
+  font-weight: 500;
   font-size: 21px;
   opacity: .8;
 }
@@ -128,14 +129,16 @@
 
 .source-title {
   padding-left: 2px;
-  font-family: Helvetica Neue Bold;
+  font-family: 'Helvetica Neue Bold', 'Helvetica Neue';
+  font-weight: 600;
   font-size: 12px;
   opacity: .5;
 }
 
 .source-time {
   padding-left: 8px;
-  font-family: Helvetica Neue Regular;
+  font-family: 'Helvetica Neue';
+  font-weight: 400;
 }
 
 /* list layout */
