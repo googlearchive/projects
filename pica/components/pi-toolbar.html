@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-toolbar" attributes="label layout panel subpanel hideactionbar hideview hidelink">
+<element name="pi-toolbar" attributes="label layout panel subpanel story hideactionbar hideview hidelink">
   <link rel="components" href="../../../toolkit/components/g-toolbar.html"/>
   <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
   <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
@@ -47,7 +47,9 @@
       <label class="flex">{{label}}</label>
       <g-toolbar id="actionbar" class="responsive">
         <div id="linkButton">
-          <g-icon-button src="../images/web.png" toolaction="link" on-tap="toolClick"></g-icon-button>
+          <a href="{{story.link}}" target="_blank">
+            <g-icon-button src="../images/web.png"></g-icon-button>
+          </a>
         </div>
         <g-menu-button id="viewButton" src="../images/view_quilt.png" selected="{{selectedLayout}}">
           <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.png"></g-menu-item>
