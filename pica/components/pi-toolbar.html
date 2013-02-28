@@ -46,7 +46,9 @@
       <g-icon-button id="navButton" src="../images/menu.png" toolaction="nav" on-tap="toolClick"></g-icon-button>
       <label class="flex">{{label}}</label>
       <g-toolbar id="actionbar" class="responsive">
-        <g-menu-button id="linkButton" src="../images/web.png" toolaction="link" on-tap="toolClick"></g-menu-button>
+        <div id="linkButton">
+          <g-icon-button src="../images/web.png" toolaction="link" on-tap="toolClick"></g-icon-button>
+        </div>
         <g-menu-button id="viewButton" src="../images/view_quilt.png" selected="{{selectedLayout}}">
           <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.png"></g-menu-item>
           <g-menu-item name="grid" label="Grid" src="../images/view_module.png"></g-menu-item>
