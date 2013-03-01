@@ -1,0 +1,144 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<element name="pi-app" extends="g-app" on-keyup="keyupHandler">
+  <link rel="stylesheet" href="css/pi-app.css" />
+  <link rel="components" href="../../../toolkit/components/g-component.html">
+  <link rel="components" href="../../../toolkit/components/g-app.html"/>
+  <link rel="components" href="../../../toolkit/components/g-panels.html"/>
+  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
+  <link rel="components" href="../../../toolkit/components/g-ribbon.html"/>
+  <link rel="components" href="pi-toolbar.html"/>
+  <link rel="components" href="pi-feed-viewer.html"/>
+  <link rel="components" href="pi-explore.html"/>
+  <link rel="components" href="pi-home.html"/>
+  <link rel="components" href="pi-accounts.html"/>
+  <link rel="components" href="pi-accounts-model.html"/>
+  <template>
+    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
+      <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
+        <g-menu-item name="Home" src="../images/ribbon_home_lightreg.png" iconsize="large">Home</g-menu-item>
+        <g-menu-item name="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="large">Topics</g-menu-item>
+        <g-menu-item name="Explore" src="../images/ribbon_explore_lightreg.png" iconsize="large">Explore</g-menu-item>
+        <g-menu-item name="Accounts" src="../images/ribbon_accounts_lightreg.png" iconsize="large">Accounts</g-menu-item>
+      </g-ribbon>
+      <div id="main" on-tap="showMain" hideactionbar="{{hideActionbar}}">
+        <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{selectedSubPanel}}"
+            on-nav="navClick" on-source="toggleSource" on-refresh="refresh" story="{{story}}"
+            hideactionbar="{{hideActionbar}}" hideview="{{hideView}}" hidelink="{{hideLink}}"></pi-toolbar>
+        <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
+          <!-- <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home> -->
+          <div id="Home" on-ready="homeReadyHandler">
+            <div class="panel-loading"></div>
+            <template dehydrated>
+              <pi-home></pi-home>
+            </template>
+          </div>
+          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedSubPanel}}" 
+              layout="{{layout}}" topicslayout="grid" selectedstory="{{story}}"></pi-feed-viewer>
+          <pi-explore id="Explore" panel="{{selectedSubPanel}}"></pi-explore>
+          <!-- <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts> -->
+          <div id="Accounts" on-ready="accountsReadyHandler">
+            <div class="panel-loading"></div>
+            <template dehydrated>
+              <pi-accounts></pi-accounts>
+            </template>
+          </div>
+        </g-panels>
+      </div>
+      <g-ribbon id="source" class="right" on-tap="toggleSource"></g-ribbon>
+    </g-panels>
+    <pi-accounts-model id="accountsModel"></pi-accounts-model>
+  </template>
+  <script>
+    var ESCAPE_KEY = 27;
+    
+    this.component({
+      ribbonSelected: 'Topics',
+      selectedPanel: 'main',
+      ready: function() {
+        if (location.search.indexOf('hydrate') >= 0) {
+          this.hydrate(this.$.Home);
+          this.hydrate(this.$.Accounts);
+        }
+      },
+      getSelectedContentPanel: function() {
+        return this.$.contentPanels.getSelectedPanel();
+      },
+      navClick: function() {
+        var p = this.getSelectedContentPanel();
+        if (p.canPrevious) {
+          p.previous();
+        } else {
+          this.toggleNav();
+        }
+      },
+      toggleNav: function() {
+        this.$.panels.toggleBetween('ribbon', 'main');
+      },
+      toggleSource: function() {
+        this.$.panels.toggleBetween('main', 'source');
+      },
+      showMain: function() {
+        this.selectedPanel = 'main';
+      },
+      refresh: function() {
+        var p = this.getSelectedContentPanel();
+        p.refresh && p.refresh();
+      },
+      ribbonSelectedChanged: function() {
+        this.updateToolbarLabel();
+        this.updateActionbar();
+      },
+      selectedSubPanelChanged: function() {
+        this.updateToolbarLabel();
+        this.updateActionbar();
+      },
+      updateToolbarLabel: function() {
+        var p = this.getSelectedContentPanel();
+        this.toolbarLabel = p.canPrevious && p.selectedTopic ?
+          p.selectedTopic.title : this.ribbonSelected;
+      },
+      updateActionbar: function() {
+        this.hideActionbar = this.ribbonSelected != 'Topics';
+        this.hideView = this.selectedSubPanel != 'stories';
+        this.hideLink = this.selectedSubPanel != 'story';
+      },
+      keyupHandler: function(e) {
+        if (e.keyCode == ESCAPE_KEY) {
+          this.navClick();
+        }
+      },
+      // instantiate lazy content
+      contentPanelSelectHandler: function(e, inDetails) {
+        if (e.target == this.$.contentPanels) {
+          this.hydrate(this.getSelectedContentPanel());
+        }
+      },
+      // instantiate dehydrated templates inside this nodes
+      hydrate: function(inNode) {
+        if (!inNode.hydrated) {
+          inNode.hydrated = true;
+          var t = inNode.querySelector('template[dehydrated]');
+          if (t) {
+            t.instantiate = '';
+          }
+        }
+      },
+      // TODO(sorvell): since we cannot do proper property bindings dynamically
+      // we assign data to dynamic components as they become ready.
+      accountsReadyHandler: function(e) {
+        e.target.accounts = this.$.accountsModel.$protected;
+        this.$.Accounts.classList.add('ready');
+      },
+      homeReadyHandler: function(e) {
+        e.target.stocks = this.$.accountsModel.$protected.stocks;
+        this.$.Home.classList.add('ready');
+      }
+    });
+  </script>
+</element>

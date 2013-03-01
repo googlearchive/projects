@@ -1,0 +1,43 @@
+<!--
+/*
+ * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pica2</title>
+  <script src="https://www.google.com/jsapi"></script>
+  <script src="../../toolkit/platform/platform.js"></script>
+  <link rel="components" href="components/pi-app.html"/>
+  <!-- FIXME(ffu): need to include this file in the document that wants panel transitions. -->
+  <link rel="stylesheet" href="../../toolkit/components/css/g-panels.css" />
+  <style>
+    body {
+      opacity: 1;
+    }
+    
+    .app-loading {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      left: 50%;
+      bottom: 50%;
+      margin: -25px;
+      -webkit-animation: spin 2s linear infinite;
+    }
+    
+    @-webkit-keyframes spin {
+      0% {-webkit-transform: rotate(0deg);}
+      100% {-webkit-transform: rotate(359deg);}
+    }
+  </style>
+</head>
+<body>
+  <pi-app>
+    <img src="images/loading_icon.svg" class="app-loading"></img>
+  </pi-app>
+</body>
+</html>
