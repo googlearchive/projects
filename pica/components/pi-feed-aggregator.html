@@ -64,7 +64,7 @@
       feedChanged: function() {
         if (this.feed) {
           this._entries = [];
-          this.feeds = Array.isArray(this.feed) ? this.feed.slice(0) : [{feed: this.feed}];
+          this.feeds = this.feed.slice(0);
           this.feedCount = Math.ceil(this.count / this.feeds.length);
           this.fetch();
         } else {

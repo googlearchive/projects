@@ -5,37 +5,26 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-toolbar" attributes="label layout panel subpanel story hideactionbar hideview hidelink">
+<element name="pi-toolbar" attributes="label nav hideactionbar">
   <link rel="components" href="../../../toolkit/components/g-toolbar.html"/>
   <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
   <template>
     <style>
-      g-toolbar label {
+      .toolbar-label {
+        font-size: 21px;
         margin: 0;
       }
       
-      g-menu-item.hidden-wide {
-        display: none;
-      }
-        
       @media screen and (max-width: 800px) {
-        g-menu-item.hidden-narrow {
-          display: none;
-        }
-        
-        g-menu-item.hidden-wide {
-          display: block;
-        }
-        
-        g-toolbar > label {
+        .toolbar-label {
+          display: -webkit-box;
+          display: -webkit-flex;
           -webkit-box-pack: center;
           -webkit-justify-content: center;
           margin-right: 56px;
         }
         
-        .responsive > *:not(:last-child) {
+        .responsive > *:not(:last-child), .responsive content::-webkit-distributed(*:not(:last-child)) {
           display: -webkit-box;
           -webkit-box-flex: 1;
           -webkit-flex: 1;
@@ -43,67 +32,26 @@
       }
     </style>
     <g-toolbar>
-      <g-icon-button id="navButton" src="../images/menu.png" toolaction="nav" on-tap="toolClick"></g-icon-button>
-      <label class="flex">{{label}}</label>
+      <g-icon-button src="{{navIconSrc}}" on-tap="navClick"></g-icon-button>
+      <div class="toolbar-label flex">{{label}}</div>
       <g-toolbar id="actionbar" class="responsive">
-        <div id="linkButton">
-          <a href="{{story.link}}" target="_blank">
-            <g-icon-button src="../images/web.png"></g-icon-button>
-          </a>
-        </div>
-        <g-menu-button id="viewButton" src="../images/view_quilt.png" selected="{{selectedLayout}}">
-          <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.png"></g-menu-item>
-          <g-menu-item name="grid" label="Grid" src="../images/view_module.png"></g-menu-item>
-          <g-menu-item name="list" label="List" class="hidden-wide" src="../images/view_list.png"></g-menu-item>
-          <g-menu-item name="stream" label="Stream" src="../images/view_stream.png"></g-menu-item>
-        </g-menu-button>
-        <g-menu-button src="../images/plus.png" class="right-aligned">
-          <g-menu-item src="../images/comment.png">Post a Comment</g-menu-item>
-          <g-menu-item src="../images/hangout.png">Share Link</g-menu-item>
-          <g-menu-item src="../images/mail.png">Email Link</g-menu-item>
-          <g-menu-item src="../images/favorite.png">Add to Favorites</g-menu-item>
-        </g-menu-button>
-        <g-icon-button src="../images/refresh.png" toolaction="refresh" on-tap="toolClick"></g-icon-button>
+        <content></content>
       </g-toolbar>
     </g-toolbar>
   </template>
   <script>
     this.component({
-      ready: function() {
-        this.hidelink = true;
-        var mq = window.matchMedia('(max-width: 800px)');
-        mq.addListener(this.screenLayoutChange.bind(this));
-        this.screenLayoutChange(mq);
-        this.selectedLayout = this.layout;
-      },
-      screenLayoutChange: function(inQuery) {
-        if (inQuery.matches && this.layout == 'quilt') {
-          this.layout = 'stream';
-        } else {
-          this.layout = this.selectedLayout || (inQuery.matches ? 'stream' : 'quilt');
-        }
-      },
-      selectedLayoutChanged: function() {
-        this.layout = this.selectedLayout;
-      },
-      toolClick: function(inEvent, inDetail, inSender) {
-        this.send(inSender.getAttribute('toolaction') || 'toolaction');
+      nav: 'menu',
+      navClick: function() {
+        this.send('nav');
       },
       hideactionbarChanged: function() {
         this.$.actionbar.style.display = this.hideactionbar ? 'none' : '';
       },
-      hideviewChanged: function() {
-        this.$.viewButton.style.display = this.hideview ? 'none' : '';
-      },
-      hidelinkChanged: function() {
-        this.$.linkButton.style.display = this.hidelink ? 'none' : '';
-      },
-      panelChanged: function() {
-        this.$.navButton.active = this.panel == 'ribbon';
-      },
-      subpanelChanged: function() {
-        this.$.navButton.src = this.node.__path__ + '../images/' + 
-          (this.subpanel == 'topics' ? 'menu.png' : 'arrow_left.png');
+      navChanged: function() {
+        if (this.nav) {
+          this.navIconSrc = this.node.__path__ + '../images/' + this.nav + '.png';
+        }
       }
     });
   </script>

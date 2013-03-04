@@ -29,7 +29,7 @@
   background: #5f5f5f;
   cursor: pointer;
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   -webkit-user-select: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -50,26 +50,21 @@
 
 .title {
   padding: 20px 0;
-}
-
-.view:not(.topics) .title {
-  font-family: 'Helvetica Neue Medium', 'Helvetica Neue';
-  font-weight: 500;
-  font-size: 21px;
   opacity: .8;
 }
 
+.view:not(.topics) .title {
+  font-weight: 500;
+  font-size: 21px;
+}
+
 .topics .title {
-  display: block;
   font-size: 18px;
-  font-weight: normal;
-  color: #333;
 }
 
 .unread-count {
   display: none;
   padding-left: 4px;
-  font-weight: normal;
   color: #aaa;
 }
 
@@ -104,8 +99,6 @@
 
 .source {
   position: relative;
-  color: #666;
-  font-size: 11px;
 }
 
 .topics .source {
@@ -128,7 +121,6 @@
 
 .source-title {
   padding-left: 2px;
-  font-family: 'Helvetica Neue Bold', 'Helvetica Neue';
   font-weight: 600;
   font-size: 12px;
   opacity: .5;
@@ -136,7 +128,6 @@
 
 .source-time {
   padding-left: 8px;
-  font-family: 'Helvetica Neue';
   font-weight: 400;
 }
 
@@ -195,11 +186,6 @@
 
 .quilt .two .pi-item {
   height: 50%;
-}
-
-.quilt.topics .title {
-  position: absolute;
-  bottom: 12px;
 }
 
 .quilt .image {

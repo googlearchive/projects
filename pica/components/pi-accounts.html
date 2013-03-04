@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-accounts">
+<element name="pi-accounts" attributes="accounts">
   <link rel="stylesheet" href="css/pi-accounts.css" />
   <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
   <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
@@ -71,11 +71,9 @@
     <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="feedResponse" on-error="feedResponse"></pi-gfeeds>
   </template>
   <script>
+    var ENTER_KEY = 13;
+    
     this.component({
-      publish: {
-        accounts: null
-      },
-      selectedCategory: null,
       ready: function() {
         this.node.setAttribute('touch-action', 'scroll');
         this.send('ready');
@@ -152,7 +150,7 @@
       },
       keyupHandler: function(e, inDetail, inSender) {
         var op = inSender.getAttribute('operation');
-        if (e.keyCode == 13 && op) {
+        if (e.keyCode == ENTER_KEY && op) {
           this[op]();
         }
       }

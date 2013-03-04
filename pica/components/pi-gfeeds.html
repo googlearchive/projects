@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-gfeeds" attributes="feed query">
+<element name="pi-gfeeds" attributes="feed query results loading">
   <script>
     var feedsAreReady = false;
     var pendingFeeds = [];
@@ -32,9 +32,7 @@
     
     this.component({
       publish: {
-        count: 24,
-        results: null,
-        loading: false
+        count: 24
       },
       feedChanged: function() {
         if (this.feed) {

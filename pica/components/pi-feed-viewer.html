@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-feed-viewer" attributes="panel layout topicslayout">
+<element name="pi-feed-viewer" attributes="topics panel topic story layout topicslayout">
   <link rel="stylesheet" href="css/pi-feed-viewer.css" />
   <link rel="components" href="../../../toolkit/components/g-panels.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
@@ -14,13 +14,15 @@
   <link rel="components" href="pi-items-view.html"/>
   <link rel="components" href="pi-story.html"/>
   <template>
-    <g-panels id="panels" autoselect selected="{{panel}}" transition="keyframe" on-select="panelSelected" on-canselect="panelCanSelect">
-      <pi-items-view id="topics" layout="{{topicslayout}}" items="{{topics}}" view="topics" selected="{{selectedTopic}}"></pi-items-view>
-      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{selectedStory}}" cascading></pi-items-view>
-      <pi-story id="story" story="{{selectedStory}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
+    <g-panels id="panels" class="feed-viewer-panels" autoselect selected="{{panel}}" transition="keyframe" 
+        on-select="panelSelected" on-canselect="panelCanSelect">
+      <pi-items-view id="topics" layout="{{topicslayout}}" items="{{topics}}" view="topics" selected="{{topic}}"></pi-items-view>
+      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{story}}" cascading></pi-items-view>
+      <pi-story id="story" story="{{story}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}"></div>
-    <pi-feed-aggregator id="feeds" feed="{{selectedTopic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
+    <pi-feed-aggregator id="feeds" feed="{{topic.feed}}" count="{{feedCount}}" entries="{{stories}}" 
+        loading="{{loading}}"></pi-feed-aggregator>
     <pi-feed-tracker id="tracker"></pi-feed-tracker>
   </template>
   <script>
@@ -39,18 +41,16 @@
     
     this.component({
       publish: {
-        topics: null,
         loading: true,
-        selectedTopic: null,
-        selectedStory: null,
         track: true,
-        get canPrevious() {
-          return this.$.panels.index;
+        feedCount: 200,
+        get canprevious() {
+          return this.panel != 'topics'
         },
         previous: function() {
           this.$.panels.previous();
         },
-        refresh: function() {
+        reload: function() {
           if (this.panel == 'topics') {
             this.topicsChanged();
             this.$.feeds.resetCache();
@@ -59,7 +59,6 @@
           }
         }
       },
-      feedCount: 200,
       ready: function() {
         var mq = window.matchMedia('(max-width: 800px)');
         mq.addListener(this.layoutChange.bind(this));
@@ -70,8 +69,8 @@
         this.loading = false;
       },
       layoutChange: function(inQuery) {
-        this.$.panels.className = inQuery.matches ? 'g-panels-fly-up-right' : 
-          'g-panels-scale-slide';
+        this.$.panels.classList.toggle('g-panels-fly-up-right', inQuery.matches);
+        this.$.panels.classList.toggle('g-panels-scale-slide', !inQuery.matches);
       },
       topicsChanged: function() {
         this.fetchImageForTopics();
@@ -81,7 +80,7 @@
         if (this.stories) {
           if (this.track) {
             this.$.tracker.loadStories(this.stories);
-            this.updateReadCount(this.selectedTopic);
+            this.updateReadCount(this.topic);
           }
           this.panel = 'stories';
           this.$.stories.loaded = false;
@@ -91,21 +90,21 @@
       storiesLoaded: function() {
         this.$.stories.loaded = true;
       },
-      selectedStoryChanged: function() {
-        if (!isEmpty(this.selectedStory)) {
+      storyChanged: function() {
+        if (!isEmpty(this.story)) {
           if (this.track) {
-            this.$.tracker.markRead(this.selectedStory);
-            this.updateReadCount(this.selectedTopic);
+            this.$.tracker.markRead(this.story);
+            this.updateReadCount(this.topic);
           }
           this.panel = 'story';
         }
       },
       nextPrevStory: function(inNext, inPrev) {
         if (inPrev || inNext) {
-          var i = this.stories.indexOf(this.selectedStory);
+          var i = this.stories.indexOf(this.story);
           var s = this.stories[i + (inPrev ? -1 : 1)];
           if (s) {
-            this.selectedStory = s;
+            this.story = s;
             return true;
           }
         }
@@ -137,18 +136,18 @@
       },
       // TODO(sorvell): handle selected event since this fires after the selection
       // is complete and this is when we want to make the following changes.
-      // note, we want selectedTopic/Story to become unset
+      // note, we want selected topic/story to become unset
       // when the panel that shows them is not selected, this allows
-      // us to rely on selectedTopic/StoryChanged to show the relevant
+      // us to rely on topic/storyChanged to show the relevant
       // panel.
-      // it's important to set selectedTopic to {} so that
-      // selectedTopic.feed actually changes and updates feeds.feed.
+      // it's important to set topic to {} so that
+      // topic.feed actually changes and updates feeds.feed.
       panelSelected: function(e, inDetail, inSender) {
         if (e.target == this.$.panels) {
           if (inSender.selected == 'topics') {
-            this.selectedTopic = {};
+            this.topic = {};
           } else if (inSender.selected == 'stories') {
-            this.selectedStory = {};
+            this.story = {};
           }
           //
           if (inSender.selected == 'story') {
@@ -160,7 +159,7 @@
       },
       panelCanSelect: function(e, inDetail) {
         if ((inDetail.selected == 'stories' && (!this.stories && !this.$.feeds.loading)) || 
-           (inDetail.selected == 'story' && isEmpty(this.selectedStory))) {
+           (inDetail.selected == 'story' && isEmpty(this.story))) {
           inDetail.preventSelect();
         }
       },

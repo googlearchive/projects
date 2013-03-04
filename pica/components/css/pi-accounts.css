@@ -9,19 +9,19 @@
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background: white;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .item {
-  padding: 0 20px;
-  height: 60px;
-  border-bottom: 1px solid #ddd;
   display: -webkit-box;
   display: -webkit-flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
+  height: 60px;
+  padding: 0 20px;
+  border-bottom: 1px solid #ddd;
   font-size: 15px;
 }
 
@@ -63,6 +63,7 @@
 
 .accounts-title-icon {
   margin-left: -8px;
+  padding-right: 6px;
 }
 
 .category-select-value {

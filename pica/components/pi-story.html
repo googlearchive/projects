@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-story" attributes="title story">
+<element name="pi-story" attributes="story">
   <template>
     <style>
       .story-main {
@@ -28,10 +28,6 @@
         padding-bottom: 20px;
         display: -webkit-flex;
         display: -webkit-box;
-      }
-      
-      #header > a {
-        padding: 0 0 0 10px;
       }
       
       #title {
@@ -64,10 +60,7 @@
         bottom: 0;
         box-sizing: border-box;
         border-top: 1px solid #ddd;
-        color: #666;
-        font-size: 11px;
         padding: 12px;
-        
       }
       
       .bottom-source-bar > * {
@@ -80,16 +73,20 @@
         height: 20px;
         background-repeat: no-repeat;
         background-position: center;
+        background-size: 100% 100%;
+        border: 1px solid rgba(0, 0, 0, 0.1);
       }
       
       .bottom-source-title {
-        font-weight: bold;
         padding-left: 2px;
+        font-weight: 600;
+        font-size: 12px;
+        opacity: .5;
       }
       
       .bottom-source-time {
-        font-weight: normal;
         padding-left: 8px;
+        font-weight: 400;
       }
       
       @media screen and (max-width: 1024px) {
@@ -121,9 +118,6 @@
       <div class="body">
         <div id="header">
           <div id="title">{{story.title}}</div>
-          <!-- <a href="{{story.link}}" target="{{targetWindow}}">
-            <g-icon-button id="linkButton" src="../images/web.png"></g-icon-button>
-          </a> -->
         </div>
         <div id="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
         <div id="detail">
@@ -140,7 +134,6 @@
   </template>
   <script>
     this.component({
-      targetWindow: '_blank',
       publish: {
         content: ''
       },

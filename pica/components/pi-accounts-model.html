@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-accounts-model">
+<element name="pi-accounts-model" attributes="topics categories stocks">
   <script>
     var DEFAULT_TOPICS = [
       {title: 'Technology', feed: [
@@ -32,13 +32,6 @@
       {title: 'Food', feed: [
         {title: 'The Kitchn', feed: 'http://feeds.thekitchn.com/apartmenttherapy/thekitchn'},
         {title: 'Scanwiches', feed: 'http://scanwiches.com/rss'}]}
-      /*
-      {title: 'Rock Paper Shotgun', feed: 'http://feeds.feedburner.com/RockPaperShotgun'},
-      {title: 'The Big Picture', feed: 'http://www.boston.com/bigpicture/index.xml'},
-      {title: 'Cute Overload', feed: 'http://cuteoverload.com/feed/'},
-      {title: 'MAKE', feed: 'http://blog.makezine.com/index.xml'},
-      {title: 'PopSugar', feed: 'http://www.popsugar.com/posts/feed'},
-      */
     ];
     
     var DEFAULT_CATEGORIES = ['Technology', 'Sports', 'Music', 'Art', 'Fashion', 'Architecture', 'Design', 'Food'];
@@ -49,9 +42,6 @@
     
     this.component({
       publish: {
-        topics: null,
-        categories: null,
-        stocks: null,
         addTopic: function(inTopic) {
           this.addItem(this.topics, inTopic);
           this.updateTopics();

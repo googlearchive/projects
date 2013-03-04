@@ -13,6 +13,7 @@
   <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
   <link rel="components" href="../../../toolkit/components/g-ribbon.html"/>
   <link rel="components" href="pi-toolbar.html"/>
+  <link rel="components" href="pi-toolbar-buttons.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
   <link rel="components" href="pi-explore.html"/>
   <link rel="components" href="pi-home.html"/>
@@ -27,9 +28,12 @@
         <g-menu-item name="Accounts" src="../images/ribbon_accounts_lightreg.png" iconsize="large">Accounts</g-menu-item>
       </g-ribbon>
       <div id="main" on-tap="showMain" hideactionbar="{{hideActionbar}}">
-        <pi-toolbar label="{{toolbarLabel}}" layout="{{layout}}" panel="{{selectedPanel}}" subpanel="{{selectedSubPanel}}"
-            on-nav="navClick" on-source="toggleSource" on-refresh="refresh" story="{{story}}"
-            hideactionbar="{{hideActionbar}}" hideview="{{hideView}}" hidelink="{{hideLink}}"></pi-toolbar>
+        <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideactionbar="{{hideActionbar}}" on-nav="navAction">
+          <pi-link-button id="linkButton" link="{{story.link}}"></pi-link-button>
+          <pi-view-button id="viewButton" layout="{{selectedLayout}}"></pi-view-button>
+          <pi-action-button></pi-action-button>
+          <g-icon-button src="../images/refresh.png" on-tap="reloadAction"></g-icon-button>
+        </pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
           <!-- <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home> -->
           <div id="Home" on-ready="homeReadyHandler">
@@ -39,7 +43,7 @@
             </template>
           </div>
           <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedSubPanel}}" 
-              layout="{{layout}}" topicslayout="grid" selectedstory="{{story}}"></pi-feed-viewer>
+              layout="{{layout}}" topicslayout="grid" story="{{story}}"></pi-feed-viewer>
           <pi-explore id="Explore" panel="{{selectedSubPanel}}"></pi-explore>
           <!-- <pi-accounts id="Accounts" accounts="{{$.accountsModel}}"></pi-accounts> -->
           <div id="Accounts" on-ready="accountsReadyHandler">
@@ -50,7 +54,6 @@
           </div>
         </g-panels>
       </div>
-      <g-ribbon id="source" class="right" on-tap="toggleSource"></g-ribbon>
     </g-panels>
     <pi-accounts-model id="accountsModel"></pi-accounts-model>
   </template>
@@ -61,56 +64,67 @@
       ribbonSelected: 'Topics',
       selectedPanel: 'main',
       ready: function() {
+        // hydrate
         if (location.search.indexOf('hydrate') >= 0) {
           this.hydrate(this.$.Home);
           this.hydrate(this.$.Accounts);
         }
+        // screen size change
+        var mq = window.matchMedia('(max-width: 800px)');
+        mq.addListener(this.screenSizeChange.bind(this));
+        this.screenSizeChange(mq);
+        // initialization
+        this.selectedLayout = this.layout;
+        this.selectedSubPanel = 'topics';
+      },
+      screenSizeChange: function(inQuery) {
+        if (inQuery.matches && this.selectedLayout == 'quilt') {
+          // use stream layout if user select quilt and in phone size
+          this.layout = 'stream';
+        } else {
+          this.layout = this.selectedLayout ||
+              (inQuery.matches ? 'stream' : 'quilt');
+        }
+      },
+      selectedLayoutChanged: function() {
+        this.layout = this.selectedLayout;
       },
       getSelectedContentPanel: function() {
         return this.$.contentPanels.getSelectedPanel();
       },
-      navClick: function() {
+      navAction: function() {
         var p = this.getSelectedContentPanel();
-        if (p.canPrevious) {
+        if (p.canprevious) {
           p.previous();
         } else {
-          this.toggleNav();
+          this.$.panels.toggleBetween('ribbon', 'main');
         }
-      },
-      toggleNav: function() {
-        this.$.panels.toggleBetween('ribbon', 'main');
-      },
-      toggleSource: function() {
-        this.$.panels.toggleBetween('main', 'source');
       },
       showMain: function() {
         this.selectedPanel = 'main';
       },
-      refresh: function() {
+      reloadAction: function() {
         var p = this.getSelectedContentPanel();
-        p.refresh && p.refresh();
+        p.reload && p.reload();
       },
       ribbonSelectedChanged: function() {
-        this.updateToolbarLabel();
-        this.updateActionbar();
+        this.updateToolbar();
       },
       selectedSubPanelChanged: function() {
-        this.updateToolbarLabel();
-        this.updateActionbar();
+        this.updateToolbar();
       },
-      updateToolbarLabel: function() {
+      updateToolbar: function() {
         var p = this.getSelectedContentPanel();
-        this.toolbarLabel = p.canPrevious && p.selectedTopic ?
-          p.selectedTopic.title : this.ribbonSelected;
-      },
-      updateActionbar: function() {
+        this.toolbarLabel = p.canprevious && p.topic ?
+            p.topic.title : this.ribbonSelected;
+        this.nav = p.canprevious ? 'back' : 'menu';
         this.hideActionbar = this.ribbonSelected != 'Topics';
-        this.hideView = this.selectedSubPanel != 'stories';
-        this.hideLink = this.selectedSubPanel != 'story';
+        this.$.viewButton.style.display = this.selectedSubPanel != 'stories' ? 'none' : '';
+        this.$.linkButton.style.display = this.selectedSubPanel != 'story' ? 'none' : '';
       },
       keyupHandler: function(e) {
         if (e.keyCode == ESCAPE_KEY) {
-          this.navClick();
+          this.navAction();
         }
       },
       // instantiate lazy content

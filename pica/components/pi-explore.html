@@ -5,10 +5,12 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-explore" attributes="panel layout">
+<element name="pi-explore" attributes="panel topic canprevious">
+  <link rel="components" href="../../../toolkit/components/g-icon.html"/>
+  <link rel="components" href="../../../pantry/Speech/g-speech-mic.html"/>
   <link rel="components" href="pi-gfeeds.html"/>
   <link rel="components" href="pi-feed-viewer.html"/>
-  <link rel="components" href="../../../pantry/Speech/g-speech-mic.html"/>
+  
   <template>
     <style>
       @host {
@@ -61,23 +63,18 @@
       <g-icon src="../images/search.png"></g-icon>
       <g-speech-mic id="speech" on-result="speechResult"></g-speech-mic>
     </div>
-    <pi-feed-viewer id="viewer" topics="{{topics}}" panel="{{panel}}" layout="{{layout}}" topicslayout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
+    <pi-feed-viewer id="viewer" topics="{{topics}}" topic="{{topic}}" panel="{{panel}}" canprevious="{{canprevious}}"
+        layout="{{layout}}" topicslayout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
     this.component({
       publish: {
-        get selectedTopic() {
-          return this.$.viewer.selectedTopic;
-        },
-        get canPrevious() {
-          return this.$.viewer.canPrevious;
-        },
+        layout: 'list',
         previous: function() {
           this.$.viewer.previous();
         }
       },
-      layout: 'list',
       ready: function() {
         this.contentNode = document.createElement('div');
       },

@@ -5,8 +5,9 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-items-view" attributes="layout view">
+<element name="pi-items-view" attributes="layout view items selected">
   <link rel="stylesheet" href="css/pi-items-view.css" />
+  <link rel="components" href="../../../toolkit/components/g-icon.html"/>
   <template>
     <div loaded="{{loaded}}" class="view {{layout}} {{view}}">
       <template iterate="boxes">
@@ -44,9 +45,7 @@
     this.component({
       publish: {
         loaded: true,
-        pageSize: 6,
-        items: null,
-        selected: null
+        pageSize: 6
       },
       ready: function() {
         this.node.setAttribute('touch-action', 'scroll');
@@ -54,10 +53,10 @@
       },
       itemsChanged: function() {
         var b = [], l = this.items && this.items.length;
-        for (var i=0; i < l; i += 4) {
+        for (var i = 0; i < l; i += 4) {
           b.push([
-            {box: 'one', items: this.items.slice(i, i+2)},
-            {box: 'two', items: this.items.slice(i+2, i+4)}
+            {box: 'one', items: this.items.slice(i, i + 2)},
+            {box: 'two', items: this.items.slice(i + 2, i + 4)}
           ]);
         }
         this.boxes = this.allBoxes = b;
@@ -73,12 +72,12 @@
         }.bind(this));
       },
       updateMoreShowing: function() {
-        this.$.more.style.display = (this.boxes && this.boxes.length < this.allBoxes.length) ? 
-          null : 'none';
+        this.$.more.style.display = 
+            (this.boxes && this.boxes.length < this.allBoxes.length) ? null : 'none';
       },
       loadMore: function() {
         var l = this.boxes.length;
-        var more = this.allBoxes.slice(l, l+this.pageSize);
+        var more = this.allBoxes.slice(l, l + this.pageSize);
         more.forEach(function(m) {
           this.boxes.push(m);
         }, this);

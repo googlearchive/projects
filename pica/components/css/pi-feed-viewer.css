@@ -8,18 +8,18 @@
   display: -webkit-flex;
 }
 
-@host #panels {
+.feed-viewer-panels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   position: relative;
 }
 
-@host #panels > * {
+.feed-viewer-panels > * {
   background: white;
   font-size: 15px;
 }
 
-@host #panels pi-items-view {
+.feed-viewer-panels pi-items-view {
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }

@@ -3,7 +3,7 @@
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
-g-panels {
+#panels, #contentPanels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   overflow: hidden;
@@ -22,28 +22,12 @@ g-panels {
   width: auto;
 }
 
-#source.narrow-layout {
-  left: 60px;
-  width: auto;
-  right: 0;
-}
-
 #main {
   display: -webkit-box;
   display: -webkit-flex;
   -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
   background: white; 
-}
-
-#source {
-  width: 340px;
-}
-
-g-toolbar > label {
-  display: -webkit-box;
-  display: -webkit-flex;
-  font-size: 21px;
 }
 
 #Accounts > .panel-loading, #Home > .panel-loading {
