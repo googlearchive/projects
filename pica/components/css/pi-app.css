@@ -14,9 +14,6 @@
 }
 
 #ribbon.narrow-layout {
-  /* TODO(sorvell); calc + transitions crash safari so abort */
-  /*width: -webkit-calc(100% - 60px);
-  width: calc(100% - 60px);*/
   left: 0;
   right: 60px;
   width: auto;

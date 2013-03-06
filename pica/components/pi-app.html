@@ -21,7 +21,7 @@
   <link rel="components" href="pi-accounts-model.html"/>
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
-      <g-ribbon id="ribbon" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
+      <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
         <g-menu-item name="Home" src="../images/ribbon_home_lightreg.png" iconsize="large">Home</g-menu-item>
         <g-menu-item name="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="large">Topics</g-menu-item>
         <g-menu-item name="Explore" src="../images/ribbon_explore_lightreg.png" iconsize="large">Explore</g-menu-item>
