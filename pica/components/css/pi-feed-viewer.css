@@ -4,8 +4,10 @@
  * license that can be found in the LICENSE file.
  */
 @host {
-  display: -webkit-box;
-  display: -webkit-flex;
+  * {
+    display: -webkit-box;
+    display: -webkit-flex;
+}
 }
 
 .feed-viewer-panels {
@@ -32,7 +34,7 @@
   width: 160px;
   height: 160px;
   margin: -80px;
-  background: url(../../images/loading.png);
+  xbackground: url(../../images/loading.png);
   z-index: 1;
 }
 

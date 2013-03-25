@@ -1,12 +1,12 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="pi-gfeeds.html"/>
 <element name="pi-feed-aggregator" attributes="feed count entries loading">
-  <link rel="components" href="pi-gfeeds.html"/>
   <template>
     <pi-gfeeds feed="{{feedUrl}}" count="{{feedCount}}" results="{{feedResults}}"></pi-gfeeds>
   </template>
@@ -46,17 +46,22 @@
       'Ut aer semina aequalis egens videre tum deus pluviaque quae tellure ad orbe habentia solidumque consistere pluvialibus neu ripis emicuit foret hanc abscidit et fulgura bracchia sorbentur caelo cuncta liberioris finxit tum obliquis terris deerat inter caecoque piscibus fidem otia caesa usu induit radiis supplex exemit neu cinxit nova facientes'
     ];
 
-    this.component({
-      publish: {
-        useCache: true,
-        reload: function() {
-          this.forceLoad = true;
-          this.feedChanged();
-        },
-        resetCache: function() {
-          this.feedCache = {};
-        }
+    Toolkit.register(this, {
+      // public
+      feed: '',
+      count: 24,
+      entries: null,
+      loading: false,
+      useCache: true,
+      reload: function() {
+        this.forceLoad = true;
+        this.feedChanged();
       },
+      resetCache: function() {
+        this.feedCache = {};
+      },
+      // protected
+      feedResults: null,
       ready: function() {
         this.resetCache();
         this.contentNode = document.createElement('div');
@@ -104,7 +109,9 @@
         this.fetch();
       },
       feedResultsChanged: function() {
-        this.gotFeedResults(this.feedResults);
+        if (this.feedResults) {
+          this.gotFeedResults(this.feedResults);
+        }
       },
       dateSortDesc: function(inEntry1, inEntry2) {
         var d1 = inEntry1._date || new Date(inEntry1.publishedDate);

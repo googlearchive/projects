@@ -5,9 +5,9 @@
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-toolbar.html"/>
+<link rel="component" href="../../../toolkit/components/g-icon-button.html"/>
 <element name="pi-toolbar" attributes="label nav hideactionbar">
-  <link rel="components" href="../../../toolkit/components/g-toolbar.html"/>
-  <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
   <template>
     <style>
       .toolbar-label {
@@ -24,8 +24,7 @@
           margin-right: 56px;
         }
         
-        /*#actionbar.responsive > *:not(:last-child), #actionbar.responsive content::-webkit-distributed(*:not(:last-child)) {*/
-        #actionbar.responsive > *:not(:last-child) {
+        #actionbar content::-webkit-distributed(*:not(:last-child)) {
           display: -webkit-box;
           -webkit-box-flex: 1;
           -webkit-flex: 1;
@@ -35,14 +34,21 @@
     <g-toolbar>
       <g-icon-button src="{{navIconSrc}}" on-tap="navClick"></g-icon-button>
       <div class="toolbar-label flex">{{label}}</div>
-      <g-toolbar id="actionbar" class="responsive">
+      <g-toolbar id="actionbar" responsive="true">
         <content></content>
       </g-toolbar>
     </g-toolbar>
   </template>
   <script>
-    this.component({
+    Toolkit.register(this, {
+      // public
+      label: '',
       nav: 'menu',
+      hideactionbar: false,
+      // protected
+      ready: function() {
+        this.navChanged();
+      },
       navClick: function() {
         this.send('nav');
       },
@@ -51,7 +57,7 @@
       },
       navChanged: function() {
         if (this.nav) {
-          this.navIconSrc = this.node.__path__ + '../images/' + this.nav + '.png';
+          this.navIconSrc = '../images/' + this.nav + '.png';
         }
       }
     });

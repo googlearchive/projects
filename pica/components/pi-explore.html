@@ -1,23 +1,24 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-icon.html"/>
+<link rel="component" href="../../../pantry/Speech/g-speech-mic.html"/>
+<link rel="component" href="pi-gfeeds.html"/>
+<link rel="component" href="pi-feed-viewer.html"/>
 <element name="pi-explore" attributes="panel topic canprevious">
-  <link rel="components" href="../../../toolkit/components/g-icon.html"/>
-  <link rel="components" href="../../../pantry/Speech/g-speech-mic.html"/>
-  <link rel="components" href="pi-gfeeds.html"/>
-  <link rel="components" href="pi-feed-viewer.html"/>
-  
   <template>
     <style>
       @host {
-        display: -webkit-box;
-        display: -webkit-flex;
-        -webkit-box-orient: vertical;
-        -webkit-flex-flow: column;
+        * {
+          display: -webkit-box;
+          display: -webkit-flex;
+          -webkit-box-orient: vertical;
+          -webkit-flex-flow: column;
+        }
       }
       
       pi-feed-viewer#viewer {
@@ -68,13 +69,16 @@
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
-    this.component({
-      publish: {
-        layout: 'list',
-        previous: function() {
-          this.$.viewer.previous();
-        }
-      },
+    Toolkit.register(this, {
+      // public
+      panel: '',
+      topic: '',
+      canprevious: false,
+      layout: 'list',
+      previous: function() {
+        this.$.viewer.previous();
+      }
+      // protected
       ready: function() {
         this.contentNode = document.createElement('div');
       },

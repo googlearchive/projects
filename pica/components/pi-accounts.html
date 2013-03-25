@@ -1,16 +1,16 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-icon-button.html"/>
+<link rel="component" href="../../../toolkit/components/g-menu-button.html"/>
+<link rel="component" href="../../../toolkit/components/g-menu-item.html"/>
+<link rel="component" href="pi-gfeeds.html"/>
 <element name="pi-accounts" attributes="accounts">
   <link rel="stylesheet" href="css/pi-accounts.css" />
-  <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
-  <link rel="components" href="pi-gfeeds.html"/>
   <template>
     <div class=" item">
       <div class="flex"></div>
@@ -40,12 +40,12 @@
     <div class="item">
       <div class="item-input-label">Category: </div>
       <span class="category-select-value">{{selectedCategory}}</span>
-      <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png"></g-menu-button>
-      <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
+      <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png"></g-menu-button> -->
+      <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
         <template iterate="accounts.categories">
           <g-menu-item name="{{}}">{{}}</g-menu-item>
         </template>
-      </g-menu-button> -->
+      </g-menu-button>
     </div>
     <div class="item accounts-title">Add New Category</div>
     <div class="item">
@@ -73,9 +73,10 @@
   <script>
     var ENTER_KEY = 13;
     
-    this.component({
+    Toolkit.register(this, {
+      // protected
       ready: function() {
-        this.node.setAttribute('touch-action', 'scroll');
+        this.setAttribute('touch-action', 'scroll');
         this.send('ready');
       },
       accountsChanged: function() {
@@ -85,7 +86,7 @@
         // FIXME(ffu): can't use MDV template iterate to generate menu-items
         // since it doesn't call distribute after all menu-items are generated;
         // so we have to manually create menu-items and then call distribute.
-        if (!this.$.categorySelect) {
+        /* if (!this.$.categorySelect) {
           return;
         }
         this.$.categorySelect.lightDOM.textContent = '';
@@ -96,7 +97,7 @@
           this.$.categorySelect.lightDOM.appendChild(i);
         }.bind(this));
         this.$.categorySelect.distribute();
-        this.selectedCategory = this.accounts.categories[0];
+        this.selectedCategory = this.accounts.categories[0]; */
       },
       addStock: function() {
         var s = this.$.symbol.value;

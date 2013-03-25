@@ -1,13 +1,13 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-icon.html"/>
 <element name="pi-items-view" attributes="layout view items selected">
   <link rel="stylesheet" href="css/pi-items-view.css" />
-  <link rel="components" href="../../../toolkit/components/g-icon.html"/>
   <template>
     <div loaded="{{loaded}}" class="view {{layout}} {{view}}">
       <template iterate="boxes">
@@ -15,7 +15,7 @@
           <template iterate>
             <div class="inner {{box}}">
               <template iterate="items">
-                <div class="pi-item" on-tap="itemClick">
+                <div class="pi-item" on-click="itemClick">
                   <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
                   <div class="title">{{title}}
                     <span class="unread-count">{{unread}}</span>
@@ -35,20 +35,24 @@
           </template>
         </div>
       </template>
-      <div id="more" on-tap="loadMore">
+      <div id="more" on-click="loadMore">
         <g-icon src="../images/refresh_lightreg.png"></g-icon>
         Load more articles
       </div>
     </div>
   </template>
   <script>
-    this.component({
-      publish: {
-        loaded: true,
-        pageSize: 6
-      },
+    Toolkit.register(this, {
+      // public
+      layout: 'grid',
+      view: '',
+      items: null,
+      selected: null,
+      loaded: true,
+      // protected
+      pageSize: 6,
       ready: function() {
-        this.node.setAttribute('touch-action', 'scroll');
+        this.setAttribute('touch-action', 'scroll');
         this.updateMoreShowing();
       },
       itemsChanged: function() {
@@ -68,7 +72,7 @@
       },
       scrollToTop: function() {
         webkitRequestAnimationFrame(function() {
-          this.node.scrollTop = 0;
+          this.scrollTop = 0;
         }.bind(this));
       },
       updateMoreShowing: function() {

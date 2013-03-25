@@ -1,24 +1,23 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-app.html"/>
+<link rel="component" href="../../../toolkit/components/g-panels.html"/>
+<link rel="component" href="../../../toolkit/components/g-menu-item.html"/>
+<link rel="component" href="../../../toolkit/components/g-ribbon.html"/>
+<link rel="component" href="pi-toolbar.html"/>
+<link rel="component" href="pi-toolbar-buttons.html"/>
+<link rel="component" href="pi-feed-viewer.html"/>
+<link rel="component" href="pi-explore.html"/>
+<link rel="component" href="pi-home.html"/>
+<link rel="component" href="pi-accounts.html"/>
+<link rel="component" href="pi-accounts-model.html"/>
 <element name="pi-app" extends="g-app" on-keyup="keyupHandler">
   <link rel="stylesheet" href="css/pi-app.css" />
-  <link rel="components" href="../../../toolkit/components/g-component.html">
-  <link rel="components" href="../../../toolkit/components/g-app.html"/>
-  <link rel="components" href="../../../toolkit/components/g-panels.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
-  <link rel="components" href="../../../toolkit/components/g-ribbon.html"/>
-  <link rel="components" href="pi-toolbar.html"/>
-  <link rel="components" href="pi-toolbar-buttons.html"/>
-  <link rel="components" href="pi-feed-viewer.html"/>
-  <link rel="components" href="pi-explore.html"/>
-  <link rel="components" href="pi-home.html"/>
-  <link rel="components" href="pi-accounts.html"/>
-  <link rel="components" href="pi-accounts-model.html"/>
   <template>
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect>
       <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" on-activate="showMain">
@@ -60,7 +59,7 @@
   <script>
     var ESCAPE_KEY = 27;
     
-    this.component({
+    Toolkit.register(this, {
       ribbonSelected: 'Topics',
       selectedPanel: 'main',
       ready: function() {

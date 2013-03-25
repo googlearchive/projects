@@ -1,22 +1,24 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../pantry/CoolClock/coolclock.html"/>
+<link rel="component" href="../../../pantry/Stock/stock.html"/>
+<link rel="component" href="../../../pantry/Weather/wu-weather.html"/>
 <element name="pi-home" attributes="stocks">
-  <link rel="components" href="../../../pantry/CoolClock/coolclock.html"/>
-  <link rel="components" href="../../../pantry/Stock/stock.html"/>
-  <link rel="components" href="../../../pantry/Weather/wu-weather.html"/>
   <template>
     <style>
       @host {
-        display: block;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
+        * {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
       }
       
       .widgets {
@@ -83,7 +85,10 @@
     </div>
   </template>
   <script>
-    this.component({
+    Toolkit.register(this, {
+      // public
+      stocks: null,
+      // protected
       ready: function() {
         this.send('ready');
       }

@@ -1,6 +1,6 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
@@ -40,54 +40,57 @@
     
     var ACCOUNTS_STORAGE_NAME = 'pica-accounts-model-1';
     
-    this.component({
-      publish: {
-        addTopic: function(inTopic) {
-          this.addItem(this.topics, inTopic);
-          this.updateTopics();
-        },
-        removeTopic: function(inTopic) {
-          this.removeItem(this.topics, inTopic);
-          this.updateTopics();
-        },
-        addFeed: function(inFeed) {
-          for (var i=0, t; t = this.topics[i]; i++) {
-            if (t.title == inFeed.category) {
-              t.feed.push({title: inFeed.title, feed: inFeed.feed});
-              this.save();
-              return;
-            }
-          }
-          this.addTopic({title: inFeed.category,
-            feed: [{title: inFeed.title, feed: inFeed.feed}]});
-        },
-        removeFeed: function(inFeed) {
-          this.topics.forEach(function(t) {
-            if (t.feed) {
-              this.removeItem(t.feed, inFeed);
-            }
-          }.bind(this));
-        },
-        addCategory: function(inCategory) {
-          this.addItem(this.categories, inCategory);
-        },
-        removeCategory: function(inCategory) {
-          this.removeItem(this.categories, inCategory);
-        },
-        addStock: function(inStock) {
-          this.addItem(this.stocks, inStock);
-        },
-        removeStock: function(inStock) {
-          this.removeItem(this.stocks, inStock);
-        },
-        reset: function() {
-          this.topics = DEFAULT_TOPICS.slice(0);
-          this.categories = DEFAULT_CATEGORIES.slice(0);
-          this.stocks = DEFAULT_STOCKS.slice(0);
-          this.save();
-          this.load();
-        }
+    Toolkit.register(this, {
+      // public
+      topics: null,
+      categories: null,
+      stocks: null,
+      addTopic: function(inTopic) {
+        this.addItem(this.topics, inTopic);
+        this.updateTopics();
       },
+      removeTopic: function(inTopic) {
+        this.removeItem(this.topics, inTopic);
+        this.updateTopics();
+      },
+      addFeed: function(inFeed) {
+        for (var i=0, t; t = this.topics[i]; i++) {
+          if (t.title == inFeed.category) {
+            t.feed.push({title: inFeed.title, feed: inFeed.feed});
+            this.save();
+            return;
+          }
+        }
+        this.addTopic({title: inFeed.category,
+          feed: [{title: inFeed.title, feed: inFeed.feed}]});
+      },
+      removeFeed: function(inFeed) {
+        this.topics.forEach(function(t) {
+          if (t.feed) {
+            this.removeItem(t.feed, inFeed);
+          }
+        }.bind(this));
+      },
+      addCategory: function(inCategory) {
+        this.addItem(this.categories, inCategory);
+      },
+      removeCategory: function(inCategory) {
+        this.removeItem(this.categories, inCategory);
+      },
+      addStock: function(inStock) {
+        this.addItem(this.stocks, inStock);
+      },
+      removeStock: function(inStock) {
+        this.removeItem(this.stocks, inStock);
+      },
+      reset: function() {
+        this.topics = DEFAULT_TOPICS.slice(0);
+        this.categories = DEFAULT_CATEGORIES.slice(0);
+        this.stocks = DEFAULT_STOCKS.slice(0);
+        this.save();
+        this.load();
+      },
+      // protected
       ready: function() {
         this.load();
       },

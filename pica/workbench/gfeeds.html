@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--
+/*
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<html>
+<head>
+  <title>gfeeds</title>
+  <script src="https://www.google.com/jsapi"></script>
+  <script src="../../../toolkit/platform/platform.js"></script>
+  <script src="../../../toolkit/toolkit.js"></script>
+  <link rel="component" href="../components/pi-gfeeds.html"/>
+</head>
+<body>
+  <pi-gfeeds id="gfeeds"></pi-gfeeds>
+  <template iterate="entries">
+    <div>{{title}}</div>
+  </template>
+  
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      gfeeds.addEventListener("response", 
+        function(inEvent) {
+          document.body.model = {entries: inEvent.detail.feed.entries};
+        }
+      );
+      gfeeds.feed = 'http://www.theverge.com/rss/index.xml';
+    });
+  </script>
+</body>
+</html>

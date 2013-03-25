@@ -4,14 +4,16 @@
  * license that can be found in the LICENSE file.
  */
 @host {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .item {

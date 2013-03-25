@@ -1,18 +1,18 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-panels.html"/>
+<link rel="component" href="pi-gfeeds.html"/>
+<link rel="component" href="pi-feed-aggregator.html"/>
+<link rel="component" href="pi-feed-tracker.html"/>
+<link rel="component" href="pi-items-view.html"/>
+<link rel="component" href="pi-story.html"/>
 <element name="pi-feed-viewer" attributes="topics panel topic story layout topicslayout">
   <link rel="stylesheet" href="css/pi-feed-viewer.css" />
-  <link rel="components" href="../../../toolkit/components/g-panels.html"/>
-  <link rel="components" href="pi-gfeeds.html"/>
-  <link rel="components" href="pi-feed-aggregator.html"/>
-  <link rel="components" href="pi-feed-tracker.html"/>
-  <link rel="components" href="pi-items-view.html"/>
-  <link rel="components" href="pi-story.html"/>
   <template>
     <g-panels id="panels" class="feed-viewer-panels" autoselect selected="{{panel}}" transition="keyframe" 
         on-select="panelSelected" on-canselect="panelCanSelect">
@@ -39,26 +39,32 @@
       return true;
     }
     
-    this.component({
-      publish: {
-        loading: true,
-        track: true,
-        feedCount: 200,
-        get canprevious() {
-          return this.panel != 'topics'
-        },
-        previous: function() {
-          this.$.panels.previous();
-        },
-        reload: function() {
-          if (this.panel == 'topics') {
-            this.topicsChanged();
-            this.$.feeds.resetCache();
-          } else if (this.panel == 'stories') {
-            this.$.feeds.reload();
-          }
+    Toolkit.register(this, {
+      // public
+      topics: null,
+      panel: '',
+      topic: null,
+      story: null,
+      layout: '',
+      topicslayout: '',
+      loading: true,
+      track: true,
+      feedCount: 200,
+      get canprevious() {
+        return this.panel != 'topics'
+      },
+      previous: function() {
+        this.$.panels.previous();
+      },
+      reload: function() {
+        if (this.panel == 'topics') {
+          this.topicsChanged();
+          this.$.feeds.resetCache();
+        } else if (this.panel == 'stories') {
+          this.$.feeds.reload();
         }
       },
+      // protected
       ready: function() {
         var mq = window.matchMedia('(max-width: 800px)');
         mq.addListener(this.layoutChange.bind(this));

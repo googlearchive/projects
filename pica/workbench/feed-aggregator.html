@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+/*
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<html>
+<head>
+  <title>feed aggregator</title>
+  <script src="https://www.google.com/jsapi"></script>
+  <script src="../../../toolkit/platform/platform.js"></script>
+  <script src="../../../toolkit/toolkit.js"></script>
+  <link rel="component" href="../components/pi-feed-aggregator.html"/>
+</head>
+<body>
+  <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
+  <template iterate="entries">
+    <div>{{source}} - {{title}}</div>
+  </template>
+  
+  <script>
+    document.addEventListener('WebComponentsReady', function() {
+      feedAggregator.addEventListener("response", 
+        function(inEvent) {
+          document.body.model = {entries: inEvent.detail.entries};
+        }
+      );
+      feedAggregator.count = 50;
+      feedAggregator.feed = [
+        {feed: 'http://www.theverge.com/rss/index.xml'},
+        {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}
+      ];
+    });
+  </script>
+</body>
+</html>

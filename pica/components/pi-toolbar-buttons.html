@@ -1,13 +1,13 @@
 <!--
 /*
- * Copyright 2012 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="component" href="../../../toolkit/components/g-menu-button.html"/>
+<link rel="component" href="../../../toolkit/components/g-menu-item.html"/>
 <element name="pi-view-button" attributes="layout">
-  <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
   <template>
     <style>
       g-menu-item.hidden-wide {
@@ -24,7 +24,7 @@
         }
       }
     </style>
-    <g-menu-button id="viewButton" class="responsive" src="../images/view_quilt.png" selected="{{layout}}">
+    <g-menu-button id="viewButton" responsive="true" src="../images/view_quilt.png" selected="{{layout}}">
       <g-menu-item name="quilt" label="Quilt" class="hidden-narrow" src="../images/view_quilt.png"></g-menu-item>
       <g-menu-item name="grid" label="Grid" src="../images/view_module.png"></g-menu-item>
       <g-menu-item name="list" label="List" class="hidden-wide" src="../images/view_list.png"></g-menu-item>
@@ -32,15 +32,17 @@
     </g-menu-button>
   </template>
   <script>
-    this.component();
+    Toolkit.register(this, {
+      layout: ''
+    });
   </script>
 </element>
 
+<link rel="component" href="../../../toolkit/components/g-menu-button.html"/>
+<link rel="component" href="../../../toolkit/components/g-menu-item.html"/>
 <element name="pi-action-button">
-  <link rel="components" href="../../../toolkit/components/g-menu-button.html"/>
-  <link rel="components" href="../../../toolkit/components/g-menu-item.html"/>
   <template>
-    <g-menu-button src="../images/plus.png" class="right-aligned responsive">
+    <g-menu-button src="../images/plus.png" responsive="true" valign="right">
       <g-menu-item src="../images/comment.png">Post a Comment</g-menu-item>
       <g-menu-item src="../images/hangout.png">Share Link</g-menu-item>
       <g-menu-item src="../images/mail.png">Email Link</g-menu-item>
@@ -48,18 +50,20 @@
     </g-menu-button>
   </template>
   <script>
-    this.component();
+    Toolkit.register(this);
   </script>
 </element>
 
+<link rel="component" href="../../../toolkit/components/g-icon-button.html"/>
 <element name="pi-link-button" attributes="link">
-  <link rel="components" href="../../../toolkit/components/g-icon-button.html"/>
   <template>
     <a href="{{link}}" target="_blank">
       <g-icon-button src="../images/web.png"></g-icon-button>
     </a>
   </template>
   <script>
-    this.component();
+    Toolkit.register(this, {
+      link: ''
+    });
   </script>
 </element>
