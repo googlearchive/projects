@@ -144,10 +144,12 @@
         }
       },
       storyChanged: function() {
-        this.content = this.story.content;
-        if (!this.story.publishedLocaleDate) {
-          var d = new Date(this.story.publishedDate);
-          this.story.publishedLocaleDate = d.toLocaleString();
+        if (this.story && this.story.content) {
+          this.content = this.story.content;
+          if (!this.story.publishedLocaleDate) {
+            var d = new Date(this.story.publishedDate);
+            this.story.publishedLocaleDate = d.toLocaleString();
+          }
         }
       },
       contentChanged: function() {
