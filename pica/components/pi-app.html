@@ -65,6 +65,7 @@
       selectedLayout: '',
       selectedSubPanel: '',
       ready: function() {
+        this.super();
         // hydrate
         if (location.search.indexOf('hydrate') >= 0) {
           this.hydrate(this.$.Home);
