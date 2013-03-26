@@ -80,8 +80,10 @@
         this.$.panels.classList.toggle('g-panels-scale-slide', !inQuery.matches);
       },
       topicsChanged: function() {
-        this.fetchImageForTopics();
-        this.updateReadCount();
+        if (this.topics) {
+          this.fetchImageForTopics();
+          this.updateReadCount();
+        }
       },
       storiesChanged: function() {
         if (this.stories) {
