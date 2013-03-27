@@ -7,41 +7,49 @@
 -->
 <link rel="component" href="../../../toolkit/components/g-icon.html"/>
 <element name="pi-items-view" attributes="layout view items selected">
+  <link rel="stylesheet" href="css/pi-layout.css" />
   <link rel="stylesheet" href="css/pi-items-view.css" />
   <template>
-    <div loaded="{{loaded}}" class="view {{layout}} {{view}}">
-      <template iterate="boxes">
-        <div class="box">
-          <template iterate>
-            <div class="inner {{box}}">
-              <template iterate="items">
-                <div class="pi-item" on-click="itemClick">
-                  <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
-                  <div class="title">{{title}}
-                    <span class="unread-count">{{unread}}</span>
-                  </div>
-                  <div class="desc">{{desc}}
-                    <span class="dummy-desc"><p>{{dummyText}}</p></span>
-                  </div>
-                  <div class="source">
-                    <span class="source-icon" style="background-image: url({{sourceIcon}});"></span>
-                    <span class="source-title">{{source}}
-                      <span class="source-time">{{since}}</span>
-                    </span>
-                  </div>
-                </div>
-              </template>
+    <div id="container" loaded="{{loaded}}" class="view {{layout}} {{view}}">
+      <template iterate="viewItems">
+        <div class="item">
+          <div class="card" on-click="itemClick">
+            <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
+            <div class="info">
+              <div class="title">{{title}}
+                <span class="unread-count">{{unread}}</span>
+              </div>
+              <div class="description">{{desc}}</div>
+              <div class="content">{{dummyText}}</div>
+              <div class="source">
+                <span class="source-icon" style="background-image: url({{sourceIcon}});"></span>
+                <span class="source-title">{{source}}
+                  <span class="source-time">{{since}}</span>
+                </span>
+              </div>
             </div>
-          </template>
+          </div>
         </div>
       </template>
       <div id="more" on-click="loadMore">
         <g-icon src="../images/refresh_lightreg.png"></g-icon>
-        Load more articles
+          Load more articles
       </div>
     </div>
   </template>
   <script>
+    function toNumber(s) {
+      return Number(s.substring(0, s.length - 2));
+    }
+  
+    function calcMaxX() {
+      var maxX = 0;
+      for (var i = 0; i < cards.length; i++) {
+        if (maxX < cards[i].offsetLeft) { maxX = cards[i].offsetLeft; }
+      }
+      return maxX;
+    }
+    
     Toolkit.register(this, {
       // public
       layout: 'grid',
@@ -50,22 +58,19 @@
       selected: null,
       loaded: true,
       // protected
-      pageSize: 6,
+      pageSize: 24,
       ready: function() {
         this.setAttribute('touch-action', 'scroll');
         this.updateMoreShowing();
       },
-      itemsChanged: function() {
-        var b = [], l = this.items && this.items.length;
-        for (var i = 0; i < l; i += 4) {
-          b.push([
-            {box: 'one', items: this.items.slice(i, i + 2)},
-            {box: 'two', items: this.items.slice(i + 2, i + 4)}
-          ]);
+      loadedChanged: function() {
+        if (this.loaded && this.layout == 'grid') {
+          this.cascade();
         }
-        this.boxes = this.allBoxes = b;
-        if (this.pageSize > 0) {
-          this.boxes = this.allBoxes.slice(0, this.pageSize);
+      },
+      itemsChanged: function() {
+        if (this.items && this.pageSize > 0) {
+          this.viewItems = this.items.slice(0, this.pageSize);
         }
         this.updateMoreShowing();
         this.scrollToTop();
@@ -77,19 +82,52 @@
       },
       updateMoreShowing: function() {
         this.$.more.style.display = 
-            (this.boxes && this.boxes.length < this.allBoxes.length) ? null : 'none';
+            (this.viewItems && this.viewItems.length < 
+                (this.items && this.items.length)) ? null : 'none';
       },
       loadMore: function() {
-        var l = this.boxes.length;
-        var more = this.allBoxes.slice(l, l + this.pageSize);
-        more.forEach(function(m) {
-          this.boxes.push(m);
-        }, this);
+        var l = this.viewItems.length;
+        var more = this.items.slice(l, l + this.pageSize);
+        this.viewItems.push.apply(this.viewItems, more);
         this.updateMoreShowing();
       },
       itemClick: function(inEvent, inDetail, inSender) {
         this.selected = inSender.model;
         this.send('select', {item: inSender.model});
+      },
+      cascade: function() {
+        var container = this.$.container;
+        var cards = container.querySelectorAll('.item');
+        
+        var width = toNumber(window.getComputedStyle(cards[0]).width);
+        var height = toNumber(window.getComputedStyle(cards[0]).height);
+
+        var containerWidth = toNumber(window.getComputedStyle(container).width);
+        var containerHeight = document.documentElement.clientHeight;
+        
+        var scaledMiddleX = containerWidth / width / 2;
+        var scaledMiddleY = containerHeight / height / 2;
+
+        var parGroup = new ParGroup();
+
+        for (var i = 0; i < cards.length; i++) {
+          var y = cards[i].offsetTop / height;
+          var x = cards[i].offsetLeft / width;
+          var yDist = scaledMiddleY - y + 0.5;
+          var xDist = scaledMiddleX - x + 0.5;
+          var dist = Math.sqrt(yDist * yDist + xDist * xDist);
+          var yTrans = yDist * 10 / dist;
+          var xTrans = xDist * 10 / dist;
+          var d = x + y;
+          parGroup.add(
+            new Animation(cards[i], {
+              opacity: ["0", "1"],
+              "-webkit-transform": [
+                "translate(" + xTrans + "px, " + yTrans + "px) translateZ(0)", 
+                "translate(0px, 0px) translateZ(0)"]},
+              {duration: 0.5, startDelay: 0.03 * d, fillMode: "backwards"}));
+        }
+        document.timeline.play(parGroup);
       }
     });
   </script>

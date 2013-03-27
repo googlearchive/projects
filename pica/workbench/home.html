@@ -8,12 +8,11 @@
 -->
 <html>
 <head>
-  <title>items view</title>
+  <title>home</title>
   <script src="https://www.google.com/jsapi"></script>
   <script src="../../../toolkit/platform/platform.js"></script>
   <script src="../../../toolkit/toolkit.js"></script>
-  <link rel="component" href="../components/pi-feed-aggregator.html"/>
-  <link rel="component" href="../components/pi-items-view2.html"/>
+  <link rel="component" href="../components/pi-home.html"/>
   <style>
     html, body {
       height: 100%;
@@ -21,26 +20,22 @@
     body {
       font-family: 'Helvetica Neue', Helvetica, Arial, 'open sans', sans-serif;
       margin: 0;
+      display: -webkit-flex;
+      -webkit-flex-flow: column;
+    }
+    
+    pi-home {
+      -webkit-flex: 1;
+      overflow: hidden;
     }
   </style>
 </head>
 <body>
-  <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
-  <pi-items-view id="itemsView" layout="quilt"></pi-items-view>
+  <pi-home id="home"></pi-home>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
-      feedAggregator.addEventListener("response", 
-        function(inEvent) {
-          var entries = inEvent.detail.entries;
-          itemsView.items  = entries;
-        }
-      );
-      feedAggregator.count = 200;
-      feedAggregator.feed = [
-        {feed: 'http://www.theverge.com/rss/index.xml'},
-        {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}
-      ];
+      home.stocks = ['GOOG', 'AAPL'];
     });
   </script>
 </body>

@@ -26,7 +26,7 @@
 </head>
 <body>
   <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
-  <pi-items-view id="itemsView" layout="grid"></pi-items-view>
+  <pi-items-view id="itemsView" layout="quilt"></pi-items-view>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
@@ -36,7 +36,7 @@
           itemsView.items  = entries;
         }
       );
-      feedAggregator.count = 50;
+      feedAggregator.count = 200;
       feedAggregator.feed = [
         {feed: 'http://www.theverge.com/rss/index.xml'},
         {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}

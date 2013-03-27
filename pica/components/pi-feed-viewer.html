@@ -6,7 +6,6 @@
  */
 -->
 <link rel="component" href="../../../toolkit/components/g-panels.html"/>
-<link rel="component" href="pi-gfeeds.html"/>
 <link rel="component" href="pi-feed-aggregator.html"/>
 <link rel="component" href="pi-feed-tracker.html"/>
 <link rel="component" href="pi-items-view.html"/>
@@ -17,7 +16,7 @@
     <g-panels id="panels" class="feed-viewer-panels" autoselect selected="{{panel}}" transition="keyframe" 
         on-select="panelSelected" on-canselect="panelCanSelect">
       <pi-items-view id="topics" layout="{{topicslayout}}" items="{{topics}}" view="topics" selected="{{topic}}"></pi-items-view>
-      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{story}}" cascading></pi-items-view>
+      <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" selected="{{story}}"></pi-items-view>
       <pi-story id="story" story="{{story}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}"></div>

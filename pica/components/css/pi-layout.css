@@ -16,7 +16,7 @@
 
 /*
   column layout
-  each cell has width: 320px and height: 100%
+  each column has width: 320px and height: 100%
 */
 .column {
   position: absolute;
@@ -39,13 +39,13 @@
 
 /* 
   grid layout 
-  each cell has min-width: 256px and height: 360px
+  each cell has min-width: 256px and height: 380px
 */
 .grid > * {
   float: left;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  height: 360px;
+  height: 380px;
   width: 25%;
 }
 
@@ -99,12 +99,12 @@
   float: left;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  min-height: 300px;
+  min-height: 350px;
 }
 
 .quilt > .item:nth-of-type(8n+1) {
   width: 50%;
-  height: 600px;
+  height: 700px;
 }
 
 .quilt > .item:nth-of-type(8n+2), .quilt > .item:nth-of-type(8n+3), .quilt > .item:nth-of-type(8n+4), .quilt > .item:nth-of-type(8n+5) {
@@ -119,7 +119,7 @@
 @media all and (max-width: 1200px) {
   .quilt > .item:nth-of-type(5n+1) {
     width: 60%;
-    height: 600px;
+    height: 700px;
   }
 
   .quilt > .item:nth-of-type(5n+2), .quilt > .item:nth-of-type(5n+3) {
