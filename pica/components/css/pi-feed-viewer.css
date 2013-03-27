@@ -34,7 +34,7 @@
   width: 160px;
   height: 160px;
   margin: -80px;
-  background: url(../../images/loading.png);
+  background: url(../images/loading.png);
   z-index: 1;
 }
 
