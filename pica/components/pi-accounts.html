@@ -14,28 +14,28 @@
   <template>
     <div class=" item">
       <div class="flex"></div>
-      <button class="button" touch-action="none" on-tap="reset">Restore Defaults</button>
+      <button class="button" touch-action="none" on-click="reset">Restore Defaults</button>
     </div>
     <div class="header item">Finance</div>
     <div>
       <template iterate="accounts.stocks">
         <div class="item">
           <div class="flex">{{}}</div>
-          <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeStock"></g-icon-button>
+          <g-icon-button src="../images/clear.png" touch-action="none" on-click="removeStock"></g-icon-button>
         </div>
       </template>
     </div>
     <div class="item">
       <div class="item-input-label">Symbol: </div>
       <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.png" touch-action="none" on-tap="addStock"></g-icon-button>
+      <g-icon-button src="../images/add.png" touch-action="none" on-click="addStock"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
     <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
       <div class="item-input-label">Url: </div>
       <input id="feed" type="url" class="flex" operation="addFeed" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.png" touch-action="none" on-tap="addFeed"></g-icon-button>
+      <g-icon-button src="../images/add.png" touch-action="none" on-click="addFeed"></g-icon-button>
     </div>
     <div class="item">
       <div class="item-input-label">Category: </div>
@@ -51,19 +51,19 @@
     <div class="item">
       <div class="item-input-label">Name: </div>
       <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.png" touch-action="none" on-tap="addCategory"></g-icon-button>
+      <g-icon-button src="../images/add.png" touch-action="none" on-click="addCategory"></g-icon-button>
     </div>
     <div>
       <template iterate="accounts.topics">
         <div class="item accounts-title">
           <g-icon class="accounts-title-icon" src="../images/folder.png"></g-icon>
           <div class="flex">{{title}}</div>
-          <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeTopic"></g-icon-button>
+          <g-icon-button src="../images/clear.png" touch-action="none" on-click="removeTopic"></g-icon-button>
         </div>
         <template iterate="feed">
           <div class="item">
             <div class="flex accounts-feed-title">{{title}}</div>
-            <g-icon-button src="../images/clear.png" touch-action="none" on-tap="removeFeed"></g-icon-button>
+            <g-icon-button src="../images/clear.png" touch-action="none" on-click="removeFeed"></g-icon-button>
           </div>
         </template>
       </template>
@@ -74,6 +74,8 @@
     var ENTER_KEY = 13;
     
     Toolkit.register(this, {
+      // public
+      accounts: null,
       // protected
       ready: function() {
         this.setAttribute('touch-action', 'scroll');
@@ -96,8 +98,8 @@
           i.textContent = c;
           this.$.categorySelect.lightDOM.appendChild(i);
         }.bind(this));
-        this.$.categorySelect.distribute();
-        this.selectedCategory = this.accounts.categories[0]; */
+        this.$.categorySelect.distribute();*/
+        this.selectedCategory = this.accounts.categories[0]; 
       },
       addStock: function() {
         var s = this.$.symbol.value;

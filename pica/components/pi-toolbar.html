@@ -49,8 +49,9 @@
       ready: function() {
         this.navChanged();
       },
-      navClick: function() {
+      navClick: function(e) {
         this.send('nav');
+        e.cancelBubble = true;
       },
       hideactionbarChanged: function() {
         this.$.actionbar.style.display = this.hideactionbar ? 'none' : '';
