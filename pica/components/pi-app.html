@@ -148,11 +148,11 @@
       // TODO(sorvell): since we cannot do proper property bindings dynamically
       // we assign data to dynamic components as they become ready.
       accountsReadyHandler: function(e) {
-        e.target.accounts = this.$.accountsModel.$protected;
+        e.target.accounts = this.$.accountsModel;
         this.$.Accounts.classList.add('ready');
       },
       homeReadyHandler: function(e) {
-        e.target.stocks = this.$.accountsModel.$protected.stocks;
+        e.target.stocks = this.$.accountsModel.stocks;
         this.$.Home.classList.add('ready');
       }
     });
