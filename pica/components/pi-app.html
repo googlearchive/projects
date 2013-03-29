@@ -141,7 +141,8 @@
           inNode.hydrated = true;
           var t = inNode.querySelector('template[dehydrated]');
           if (t) {
-            t.instantiate = '';
+             t.bind('bind', this);
+            dirtyCheck();
           }
         }
       },
