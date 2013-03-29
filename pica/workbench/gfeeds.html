@@ -16,7 +16,7 @@
 </head>
 <body>
   <pi-gfeeds id="gfeeds"></pi-gfeeds>
-  <template iterate="entries">
+  <template repeat="{{entries}}">
     <div>{{title}}</div>
   </template>
   
@@ -24,7 +24,8 @@
     document.addEventListener('WebComponentsReady', function() {
       gfeeds.addEventListener("response", 
         function(inEvent) {
-          document.body.model = {entries: inEvent.detail.feed.entries};
+          var model = {entries: inEvent.detail.feed.entries};
+          HTMLTemplateElement.bindTree(document.body, model);
         }
       );
       gfeeds.feed = 'http://www.theverge.com/rss/index.xml';

@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/pi-items-view.css" />
   <template>
     <div id="container" loaded="{{loaded}}" class="view {{layout}} {{view}}">
-      <template iterate="viewItems">
+      <template repeat="{{viewItems}}">
         <div class="item">
           <div class="card" on-click="itemClick">
             <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
@@ -93,8 +93,8 @@
         this.updateMoreShowing();
       },
       itemClick: function(inEvent, inDetail, inSender) {
-        this.selected = inSender.model;
-        this.send('select', {item: inSender.model});
+        this.selected = inSender.templateInstance.model;
+        this.send('select', {item: this.selected});
       },
       cascade: function() {
         var container = this.$.container;

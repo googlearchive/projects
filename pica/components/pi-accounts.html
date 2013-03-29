@@ -18,7 +18,7 @@
     </div>
     <div class="header item">Finance</div>
     <div>
-      <template iterate="accounts.stocks">
+      <template repeate="{{accounts.stocks}}">
         <div class="item">
           <div class="flex">{{}}</div>
           <g-icon-button src="../images/clear.png" touch-action="none" on-click="removeStock"></g-icon-button>
@@ -42,7 +42,7 @@
       <span class="category-select-value">{{selectedCategory}}</span>
       <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png"></g-menu-button> -->
       <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
-        <template iterate="accounts.categories">
+        <template repeat="{{accounts.categories}}">
           <g-menu-item name="{{}}">{{}}</g-menu-item>
         </template>
       </g-menu-button>
@@ -54,13 +54,13 @@
       <g-icon-button src="../images/add.png" touch-action="none" on-click="addCategory"></g-icon-button>
     </div>
     <div>
-      <template iterate="accounts.topics">
+      <template repeat="{{accounts.topics}}">
         <div class="item accounts-title">
           <g-icon class="accounts-title-icon" src="../images/folder.png"></g-icon>
           <div class="flex">{{title}}</div>
           <g-icon-button src="../images/clear.png" touch-action="none" on-click="removeTopic"></g-icon-button>
         </div>
-        <template iterate="feed">
+        <template repeat="{{feed}}">
           <div class="item">
             <div class="flex accounts-feed-title">{{title}}</div>
             <g-icon-button src="../images/clear.png" touch-action="none" on-click="removeFeed"></g-icon-button>
@@ -85,7 +85,7 @@
         this.updateCategories();
       },
       updateCategories: function() {
-        // FIXME(ffu): can't use MDV template iterate to generate menu-items
+        // FIXME(ffu): can't use MDV template repeat to generate menu-items
         // since it doesn't call distribute after all menu-items are generated;
         // so we have to manually create menu-items and then call distribute.
         /* if (!this.$.categorySelect) {
@@ -109,7 +109,7 @@
         }
       },
       removeStock: function(inEvent, inDetail, inSender) {
-        this.accounts.removeStock(inSender.model);
+        this.accounts.removeStock(inSender.templateInstance.model);
       },
       addFeed: function() {
         var f = this.$.feed.value;
@@ -130,11 +130,12 @@
         }
       },
       removeFeed: function(inEvent, inDetail, inSender) {
-        this.accounts.removeFeed(inSender.model);
+        this.accounts.removeFeed(inSender.templateInstance.model);
       },
       removeTopic: function(inEvent, inDetail, inSender) {
-        this.accounts.removeTopic(inSender.model);
-        this.removeCategory(inSender.model.title);
+        var m = inSender.templateInstance.model;
+        this.accounts.removeTopic(m);
+        this.removeCategory(m.title);
       },
       addCategory: function() {
         var n = this.$.category.value;

@@ -18,7 +18,7 @@
 <body>
   <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
   <pi-feed-tracker id="tracker"></pi-feed-tracker>
-  <template iterate="entries">
+  <template repeat="{{entries}}">
     <div>{{source}} - {{title}}</div>
   </template>
   
@@ -32,7 +32,8 @@
         function(inEvent) {
           var entries = inEvent.detail.entries;
           if (entries) {
-            document.body.model = {entries: entries};
+            var model = {entries: entries};
+            HTMLTemplateElement.bindTree(document.body, model);
             tracker.loadStories(entries);
             // mark 3 stories read
             tracker.markRead(entries[0]);

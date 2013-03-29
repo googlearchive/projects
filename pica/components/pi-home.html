@@ -80,7 +80,7 @@
       <div class="center">
         <wu-weather autoupdate="false"></wu-weather>
       </div>
-      <template iterate="stocks">
+      <template repeat="{{stocks}}">
         <x-stock symbol="{{}}" autoupdate="false"></x-stock>
       </template>
     </div>

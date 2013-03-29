@@ -16,7 +16,7 @@
 </head>
 <body>
   <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
-  <template iterate="entries">
+  <template repeat="{{entries}}">
     <div>{{source}} - {{title}}</div>
   </template>
   
@@ -24,7 +24,8 @@
     document.addEventListener('WebComponentsReady', function() {
       feedAggregator.addEventListener("response", 
         function(inEvent) {
-          document.body.model = {entries: inEvent.detail.entries};
+          var model = {entries: inEvent.detail.entries};
+          HTMLTemplateElement.bindTree(document.body, model);
         }
       );
       feedAggregator.count = 50;
