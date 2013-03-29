@@ -61,7 +61,7 @@
   color: #aaa;
 }
 
-.title .unread-count {
+.topics:not(.list) .unread-count {
   display: inline-block;
 }
 
@@ -75,6 +75,7 @@
 }
 
 .topics .description {
+  display: none;
   padding: 0;
 }
 
@@ -293,7 +294,7 @@
   display: none;
 }
 
-.list .description {
+.list:not(.topics) .description {
   display: block;
 }
 
