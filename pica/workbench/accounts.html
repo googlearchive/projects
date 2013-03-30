@@ -25,12 +25,14 @@
   </style>
 </head>
 <body>
-  <pi-accounts-model id="accountsModel"></pi-accounts-model>
-  <pi-accounts id="accounts"></pi-accounts>
+  <pi-accounts-model></pi-accounts-model>
+  <pi-accounts></pi-accounts>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
-      accounts.accounts = accountsModel
+      var accounts = document.querySelector('pi-accounts');
+      var model = document.querySelector('pi-accounts-model');
+      accounts.accounts = model;
     });
   </script>
 </body>

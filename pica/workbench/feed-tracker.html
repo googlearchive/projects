@@ -16,8 +16,8 @@
   <link rel="component" href="../components/pi-feed-tracker.html"/>
 </head>
 <body>
-  <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
-  <pi-feed-tracker id="tracker"></pi-feed-tracker>
+  <pi-feed-aggregator></pi-feed-aggregator>
+  <pi-feed-tracker></pi-feed-tracker>
   <template repeat="{{entries}}">
     <div>{{source}} - {{title}}</div>
   </template>
@@ -28,12 +28,14 @@
       {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}
     ]};
     document.addEventListener('WebComponentsReady', function() {
-      feedAggregator.addEventListener("response", 
+      var fa = document.querySelector('pi-feed-aggregator');
+      var tracker = document.querySelector('pi-feed-tracker');
+      fa.addEventListener("response", 
         function(inEvent) {
           var entries = inEvent.detail.entries;
           if (entries) {
             var model = {entries: entries};
-            HTMLTemplateElement.bindTree(document.body, model);
+            HTMLTemplateElement.bindTree(wrap(document.body), model);
             tracker.loadStories(entries);
             // mark 3 stories read
             tracker.markRead(entries[0]);
@@ -45,8 +47,8 @@
           }
         }
       );
-      feedAggregator.count = 50;
-      feedAggregator.feed = topic.feed;
+      fa.count = 50;
+      fa.feed = topic.feed;
     });
   </script>
 </body>

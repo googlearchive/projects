@@ -25,19 +25,20 @@
   </style>
 </head>
 <body>
-  <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
-  <pi-items-view id="itemsView" layout="quilt"></pi-items-view>
+  <pi-feed-aggregator></pi-feed-aggregator>
+  <pi-items-view layout="quilt"></pi-items-view>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
-      feedAggregator.addEventListener("response", 
+      var fa = document.querySelector('pi-feed-aggregator');
+      var itemsView = document.querySelector('pi-items-view');
+      fa.addEventListener("response", 
         function(inEvent) {
-          var entries = inEvent.detail.entries;
-          itemsView.items  = entries;
+          itemsView.items  = inEvent.detail.entries;
         }
       );
-      feedAggregator.count = 200;
-      feedAggregator.feed = [
+      fa.count = 200;
+      fa.feed = [
         {feed: 'http://www.theverge.com/rss/index.xml'},
         {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}
       ];

@@ -31,10 +31,11 @@
   </style>
 </head>
 <body>
-  <pi-feed-viewer id="viewer" layout="quilt" topicslayout="grid"></pi-feed-viewer>
+  <pi-feed-viewer layout="quilt" topicslayout="grid"></pi-feed-viewer>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
+      var viewer = document.querySelector('pi-feed-viewer');
       viewer.topics = [
         {title: 'Technology', feed: [
           {title: 'The Verge', feed: 'http://www.theverge.com/rss/index.xml'},

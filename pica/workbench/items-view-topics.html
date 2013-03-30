@@ -29,10 +29,11 @@
   </style>
 </head>
 <body>
-  <pi-items-view id="itemsView" view="topics" layout="grid"></pi-items-view>
+  <pi-items-view view="topics" layout="grid"></pi-items-view>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
+      var itemsView = document.querySelector('pi-items-view');
       itemsView.items = [
         {title: 'Technology', feed: [
          {title: 'The Verge', feed: 'http://www.theverge.com/rss/index.xml'},

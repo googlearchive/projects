@@ -24,7 +24,14 @@
           margin-right: 56px;
         }
         
-        #actionbar content::-webkit-distributed(*:not(:last-child)) {
+        #actionbar content::-webkit-distributed(*:not(:last-child)), #actionbar > .toolbar > *:not(:last-child) {
+          display: -webkit-box;
+          -webkit-box-flex: 1;
+          -webkit-flex: 1;
+        }
+        
+        /* TODO(ffu): remove this extra rule when shimStyling can strip out invalid rule */
+        #actionbar > .toolbar > *:not(:last-child) {
           display: -webkit-box;
           -webkit-box-flex: 1;
           -webkit-flex: 1;

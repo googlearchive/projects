@@ -31,10 +31,11 @@
   </style>
 </head>
 <body>
-  <pi-home id="home"></pi-home>
+  <pi-home></pi-home>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
+      var home = document.querySelector('pi-home');
       home.stocks = ['GOOG', 'AAPL'];
     });
   </script>

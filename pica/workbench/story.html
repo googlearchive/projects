@@ -16,11 +16,13 @@
   <link rel="component" href="../components/pi-story.html"/>
 </head>
 <body>
-  <pi-gfeeds id="gfeeds"></pi-gfeeds>
-  <pi-story id="story"></pi-story>
+  <pi-gfeeds></pi-gfeeds>
+  <pi-story></pi-story>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
+      var gfeeds = document.querySelector('pi-gfeeds');
+      var story = document.querySelector('pi-story');
       gfeeds.addEventListener("response", 
         function(inEvent) {
           story.story = inEvent.detail.feed.entries[0];

@@ -15,21 +15,22 @@
   <link rel="component" href="../components/pi-feed-aggregator.html"/>
 </head>
 <body>
-  <pi-feed-aggregator id="feedAggregator"></pi-feed-aggregator>
+  <pi-feed-aggregator></pi-feed-aggregator>
   <template repeat="{{entries}}">
     <div>{{source}} - {{title}}</div>
   </template>
   
   <script>
     document.addEventListener('WebComponentsReady', function() {
-      feedAggregator.addEventListener("response", 
+      var fa = document.querySelector('pi-feed-aggregator');
+      fa.addEventListener("response", 
         function(inEvent) {
           var model = {entries: inEvent.detail.entries};
-          HTMLTemplateElement.bindTree(document.body, model);
+          HTMLTemplateElement.bindTree(wrap(document.body), model);
         }
       );
-      feedAggregator.count = 50;
-      feedAggregator.feed = [
+      fa.count = 50;
+      fa.feed = [
         {feed: 'http://www.theverge.com/rss/index.xml'},
         {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}
       ];
