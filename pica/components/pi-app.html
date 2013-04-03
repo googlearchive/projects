@@ -139,7 +139,9 @@
       hydrate: function(inNode) {
         if (!inNode.hydrated) {
           inNode.hydrated = true;
-          var t = inNode.querySelector('template[dehydrated]');
+          // FIXME(ffu): custom querySelector patch currently only supports simple selectors
+          //var t = inNode.querySelector('template[dehydrated]');
+          var t = inNode.querySelector('[dehydrated]');
           if (t) {
              t.bind('bind', this);
             dirtyCheck();

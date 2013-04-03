@@ -13,6 +13,7 @@
   border: 1px solid #ddd;
   border-top: 0;
   border-left: 0;
+  height: auto;
 }
 
 .card {
@@ -131,7 +132,7 @@
   float: none;
   width: 100%;
   height: 60px;
-  min-height: auto;
+  min-height: 0;
   padding: 0 18px;
   background: #5f5f5f;
   color: white;
@@ -198,7 +199,7 @@
 .quilt-horiz #more {
   -webkit-writing-mode: horizontal-tb;
   width: 150px;
-  min-width: auto;
+  min-width: 0;
   height: 100%;
 }
 
@@ -216,7 +217,7 @@
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   width: 150px;
-  min-width: auto;
+  min-width: 0;
   height: 100%;
 }
 
