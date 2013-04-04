@@ -38,7 +38,7 @@
           <div id="Home" on-ready="homeReadyHandler">
             <div class="panel-loading"></div>
             <template dehydrated>
-              <pi-home></pi-home>
+              <pi-home stocks="{{$.accountsModel.stocks}}"></pi-home>
             </template>
           </div>
           <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedSubPanel}}" 
@@ -48,7 +48,7 @@
           <div id="Accounts" on-ready="accountsReadyHandler">
             <div class="panel-loading"></div>
             <template dehydrated>
-              <pi-accounts></pi-accounts>
+              <pi-accounts accounts="{{$.accountsModel}}"></pi-accounts>
             </template>
           </div>
         </g-panels>
@@ -144,18 +144,18 @@
           var t = inNode.querySelector('[dehydrated]');
           if (t) {
              t.bind('bind', this);
-            dirtyCheck();
+             dirtyCheck();
           }
         }
       },
       // TODO(sorvell): since we cannot do proper property bindings dynamically
       // we assign data to dynamic components as they become ready.
       accountsReadyHandler: function(e) {
-        e.target.accounts = this.$.accountsModel;
+        //e.target.accounts = this.$.accountsModel;
         this.$.Accounts.classList.add('ready');
       },
       homeReadyHandler: function(e) {
-        e.target.stocks = this.$.accountsModel.stocks;
+        //e.target.stocks = this.$.accountsModel.stocks;
         this.$.Home.classList.add('ready');
       }
     });
