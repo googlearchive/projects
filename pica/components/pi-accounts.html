@@ -40,7 +40,6 @@
     <div class="item">
       <div class="item-input-label">Category: </div>
       <span class="category-select-value">{{selectedCategory}}</span>
-      <!-- <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png"></g-menu-button> -->
       <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
         <template repeat="{{accounts.categories}}">
           <g-menu-item name="{{}}">{{}}</g-menu-item>
@@ -82,24 +81,7 @@
         this.asend('ready');
       },
       accountsChanged: function() {
-        this.updateCategories();
-      },
-      updateCategories: function() {
-        // FIXME(ffu): can't use MDV template repeat to generate menu-items
-        // since it doesn't call distribute after all menu-items are generated;
-        // so we have to manually create menu-items and then call distribute.
-        /* if (!this.$.categorySelect) {
-          return;
-        }
-        this.$.categorySelect.lightDOM.textContent = '';
-        this.accounts.categories.forEach(function(c) {
-          var i = document.createElement('g-menu-item');
-          i.setAttribute('name', c);
-          i.textContent = c;
-          this.$.categorySelect.lightDOM.appendChild(i);
-        }.bind(this));
-        this.$.categorySelect.distribute();*/
-        this.selectedCategory = this.accounts.categories[0]; 
+        this.selectedCategory = this.accounts.categories[0];
       },
       addStock: function() {
         var s = this.$.symbol.value;
@@ -142,12 +124,10 @@
         if (n) {
           this.accounts.addCategory(n);
           this.$.category.value = '';
-          this.updateCategories();
         }
       },
       removeCategory: function(inCategory) {
         this.accounts.removeCategory(inCategory);
-        this.updateCategories();
       },
       reset: function() {
         this.accounts.reset();
