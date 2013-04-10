@@ -9,43 +9,57 @@ license that can be found in the LICENSE file.
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="../../toolkit/platform/platform.js"></script>
-    <link rel="components" href="../../toolkit/components/g-app.html">
-    <link rel="components" href="../../toolkit/components/g-toolbar.html">
-    <link rel="components" href="../../toolkit/components/g-panels.html">
-    <link rel="components" href="../../toolkit/components/g-menu-item.html">
-    <link rel="components" href="../../toolkit/components/g-ribbon.html">
-    <link rel="components" href="../../pantry/Ace/Ace.html">
-    <style>
-      .fill {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
-      ajaxorg-ace {
-        top: 60px;
-      }
-      g-ribbon {
-        width: 300px;
-      }
-    </style>
+    <script src="../../toolkit/toolkit.js"></script>
+    <link rel="import" href="../../toolkit/components/g-app.html">
+    <link rel="import" href="../../toolkit/components/g-toolbar.html">
+    <link rel="import" href="../../toolkit/components/g-panels.html">
+    <link rel="import" href="../../toolkit/components/g-menu-item.html">
+    <link rel="import" href="../../toolkit/components/g-ribbon.html">
+    <link rel="import" href="../../toolkit/components/g-icon-button.html">
+    <link rel="import" href="../../pantry/Ace/Ace.html">
   </head>
   <body>
-    <g-app>
-      <g-panels class="fill" index="1" transition="flow">
-        <g-ribbon label="Ace">
-          <g-menu-item>Home</g-menu-item>
-        </g-ribbon>
-        <div>
-          <g-toolbar>&nbsp;ace.ajax.org</g-toolbar>
-
-<ajaxorg-ace theme="github">function foo(items) {
+    <ace-app>function foo(items) {
   var x = "All this is syntax highlighted";
   return x;
-}</ajaxorg-ace>
-
-        </div>
-    </g-app>
+  }
+ </ace-app>
+    
+    
+    <element name="ace-app" extends="g-app">
+      <template> 
+        <style>
+          ajaxorg-ace {
+            top: 60px !important;
+          }
+          g-panels > g-ribbon {
+            width: 300px;
+          }
+        </style>
+        <g-panels id="panels" class="flex" index="1" transition="flow">
+          <g-ribbon name="ribbon" label="Ace" selected="home">
+            <g-menu-item name="home" on-tap="toggle">Home</g-menu-item>
+          </g-ribbon>
+          <div name="content">
+            <g-toolbar>
+              <g-icon-button src="images/menu.png" on-tap="toggle"></g-icon-button>
+              ace.ajax.org
+            </g-toolbar>
+            <ajaxorg-ace theme="github" id="ace"></ajaxorg-ace>
+          </div>
+        </g-panels>
+      </template>
+      <script>
+        Toolkit.register(this, {
+          ready: function() {
+            this.super();
+            this.$.ace.value = this.textContent;
+          },
+          toggle: function() {
+            this.$.panels.toggleBetween('ribbon', 'content');
+          }
+        });
+      </script>
+    </element>
   </body>
 </html>
