@@ -14,7 +14,7 @@
     <div id="container" loaded="{{loaded}}" class="view {{layout}} {{view}}">
       <template repeat="{{viewItems}}">
         <div class="item">
-          <div class="card" on-click="itemClick">
+          <div class="card" on-tap="itemClick">
             <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
             <div class="info">
               <div class="title">{{title}}
@@ -32,7 +32,7 @@
           </div>
         </div>
       </template>
-      <div id="more" on-click="loadMore">
+      <div id="more" on-tap="loadMore">
         <g-icon src="../images/refresh_lightreg.png"></g-icon>
           Load more articles
       </div>

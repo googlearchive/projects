@@ -26,12 +26,12 @@
         <g-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png" iconsize="32"></g-menu-item>
         <g-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png" iconsize="32"></g-menu-item>
       </g-ribbon>
-      <div id="main" on-click="showMain" hideactionbar="{{hideActionbar}}">
+      <div id="main" on-tap="showMain" hideactionbar="{{hideActionbar}}">
         <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideactionbar="{{hideActionbar}}" on-nav="navAction">
           <pi-link-button id="linkButton" link="{{story.link}}"></pi-link-button>
           <pi-view-button id="viewButton" layout="{{selectedLayout}}"></pi-view-button>
           <pi-action-button></pi-action-button>
-          <g-icon-button src="../images/refresh.png" on-click="reloadAction"></g-icon-button>
+          <g-icon-button src="../images/refresh.png" on-tap="reloadAction"></g-icon-button>
         </pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" on-select="contentPanelSelectHandler">
           <!-- <pi-home id="Home" stocks="{{$.accountsModel.stocks}}"></pi-home> -->
