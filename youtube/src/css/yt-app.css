@@ -1,42 +1,42 @@
-g-panels {
+/*
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+#panels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   min-height: 0;
   -webkit-user-select: none;
 }
 
-g-ajax {
-  display: none;
-}
-
-g-panels > * {
-  box-sizing: border-box;
-  -webkit-transition: -webkit-transform .3s;
+#panels > * {
   -webkit-box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.5);
   background: white;
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
 }
 
 #videoPanel {
-  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
-  background: whitesmoke;
 }
 
 #listPanel {
-  width: 260px;
+  width: 360px;
   display: -webkit-box;
   display: -webkit-flex;
   -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
+  background: #333 url(../images/ribbon_bg.png) repeat-y;
   font-size: 14px;
-  background: whitesmoke;
+  color: white;
+}
+
+#listPanel.narrow-layout {
+  left: 0;
+  right: 60px;
+  width: auto;
 }
 
 #morePanel {
@@ -59,6 +59,7 @@ g-panels > * {
   max-height: 100%;
   min-height: 0;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 input {
@@ -68,39 +69,17 @@ input {
   background: whitesmoke;
   opacity: 0.8;
   font-size: 18px;
-  padding: 0 8px;
+  padding: 0 16px;
   border: none;
   outline: 0;
   margin: 0;
 }
 
-.input-clear {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background: white;
-  color: #777;
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.input-clear:before {
-  content: 'x';
-}
-
-.list {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  min-height: 0;
-  overflow: auto;
-}
-
 .item {
+  height: 60px;
+  line-height: 60px;
   box-sizing: border-box;
-  border-bottom: 1px solid #e1e1e1;
-  height: 40px;
-  line-height: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-left: 20px;
   white-space: nowrap;
   overflow: hidden;
@@ -109,33 +88,5 @@ input {
 }
 
 .item.selected {
-  background-color: lightblue;
+  background-color: #777;
 }
-
-.toolbar {
-  display: -webkit-box;
-  display: -webkit-flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  border-bottom: 1px solid #ccc;
-  min-height: 60px;
-}
-
-.toolbar > * {
-  margin: 0 4px;
-}
-
-.toolbar-title {
-  text-align: center;
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  min-height: 0;
-}
-
-yt-video {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  display: block;
-  min-height: 0;
-}
-

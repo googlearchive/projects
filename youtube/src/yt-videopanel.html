@@ -1,15 +1,41 @@
+<!--
+/*
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<link rel="import" href="../../../toolkit/components/g-toolbar.html">
+<link rel="import" href="../../../pantry/Youtube/yt-video.html"/>
 <element name="yt-videopanel" attributes="video">
-<link rel="components" href="yt-video.html">
-<link rel="components" href="../../../toolkit/components/g-icon-button.html">
-<template>
-  <div id="toolbar" class="toolbar">
-    <content select=".left"></content>
-    <div class="toolbar-title">{{video.title.$t}}</div>
-    <content select=".right"></content>
-  </div>
-  <yt-video id="video" videoid="{{video.media$group.yt$videoid.$t}}"></yt-video>
-</template>
-<script>
-  this.component();
-</script>
+  <template>
+    <style>
+    	.title {
+    	  text-align: center;
+    	}
+
+    	yt-video {
+    	  display: block;
+        position: relative;
+    	  -webkit-box-flex: 1;
+    	  -webkit-flex: 1;
+    	  min-height: 0;
+    	}
+    </style>
+    <g-toolbar>
+      <content select=".left"></content>
+      <div class="flex title">
+        <template bind="{{}}" if="{{video}}">
+          {{video.title.$t}}
+        </template>
+      </div>
+      <content select="*"></content>
+    </g-toolbar>
+    <yt-video videoid="{{video.media$group.yt$videoid.$t}}"></yt-video>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      video: null
+    });
+  </script>
 </element>

@@ -1,73 +1,55 @@
+<!--
+/*
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<link rel="import" href="../../../toolkit/components/g-app.html">
+<link rel="import" href="../../../toolkit/components/g-panels.html">
+<link rel="import" href="../../../toolkit/components/g-icon-button.html">
+<link rel="import" href="../../../toolkit/components/g-toolbar.html">
+<link rel="import" href="../../../toolkit/components/g-ajax.html">
+<link rel="import" href="../../../toolkit/components/g-selector.html">
+<link rel="import" href="../../../pantry/Speech/g-speech-mic.html"/>
+<link rel="import" href="yt-videopanel.html">
 <element name="yt-app" extends="g-app">
-<link rel="stylesheet" href="yt-app.css">
-<link rel="components" href="../../../toolkit/components/g-app.html">
-<link rel="components" href="yt-videopanel.html">
-<link rel="components" href="../../../toolkit/components/g-panels.html">
-<link rel="components" href="../../../toolkit/components/g-icon-button.html">
-<link rel="components" href="../../../toolkit/components/g-ajax.html">
-<template>
-  <g-ajax id="ajax" url="http://gdata.youtube.com/feeds/api/videos/" 
-          handleAs="json" 
-          response="{{response}}">
-  </g-ajax>
-  <g-panels id="panels" transition="flow">
-    <section id="listPanel">
-      <div class="toolbar">
-        <input id="input" value="{{query}}" autofocus></input>
-        <div on-click="searchInputClear" class="input-clear"></div>
-      </div>
-      <div id="list" class="list">
-        <template id="listTemplate" iterate="response.feed.entry">
-          <div class="item {{selected}}" on-click="itemClick">{{title.$t}}</div>
-        </template>
-      </div>
-    </section>
-    <yt-videopanel id="videoPanel">
-      <g-icon-button class="left" src="images/nav-list.svg" on-click="listToggle"></g-icon-button>
-      <g-icon-button class="right" src="images/nav-grid.svg" on-click="moreToggle"></g-icon-button>
-    </yt-videopanel>
-    <section id="morePanel" class="right" on-click="moreToggle">
-      More Stuff!
-    </section>
-  </g-panels>
-</template>
-<script>
-  
-  this.component({
-    query: 'chrome commercial',
-    maxResults: 50,
-    startIndex: 1,
-    ready: function() {
-      this.$super();
-      this.requestVideos();
-    },
-    requestVideos: function() {
-      this.$.ajax.params = {
-        alt: 'json',
-        q: this.query,
-        v: '2', 
-        'max-results': this.maxResults,
-        'start-index': this.startIndex
+  <link rel="stylesheet" href="css/yt-app.css">
+  <template>
+    <g-ajax auto id="ajax" url="http://gdata.youtube.com/feeds/api/videos/" 
+        params='{"alt":"json", "v":"2", "max-results":"50", "q":"{{query}}"}'
+        handleAs="json" response="{{response}}">
+    </g-ajax>
+    <g-panels id="panels" transition="flow">
+      <section id="listPanel">
+        <g-toolbar>
+          <input value="{{query}}" autofocus></input>
+          <g-speech-mic transcript="{{query}}"></g-speech-mic>
+        </g-toolbar>
+        <g-selector class="list" on-activate="listToggle" selectedModel="{{selectedModel}}">
+          <template repeat="{{response.feed.entry}}">
+            <div class="item">{{title.$t}}</div>
+          </template>
+        </g-selector>
+      </section>
+      <yt-videopanel id="videoPanel" video="{{selectedModel}}">
+        <g-icon-button class="left" src="images/menu.png" on-click="listToggle"></g-icon-button>
+        <g-icon-button src="images/grid.png" on-click="moreToggle"></g-icon-button>
+      </yt-videopanel>
+      <section id="morePanel" class="right" on-click="moreToggle">
+        More Stuff!
+      </section>
+    </g-panels>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      query: 'chrome commercial',
+      listToggle: function() {
+        this.$.panels.toggleBetween('listPanel', 'videoPanel');
+      },
+      moreToggle: function() {
+        this.$.panels.toggleBetween('morePanel', 'videoPanel');
       }
-      this.$.ajax.go();
-    },
-    listToggle: function() {
-      this.$.panels.toggleBetween('listPanel', 'videoPanel');
-    },
-    moreToggle: function() {
-      this.$.panels.toggleBetween('morePanel', 'videoPanel');
-    },
-    itemClick: function(e, inDetail, inSender) {
-      this.$.videoPanel.video = inSender.model;
-      this.$.panels.selected = 'videoPanel';
-    },
-    searchInputClear: function() {
-      this.$.input.value = '';
-      this.$.input.focus();
-    },
-    queryChanged: function() {
-      this.requestVideos();
-    }
-  });
-</script>
+    });
+  </script>
 </element>
