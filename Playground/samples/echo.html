@@ -1,0 +1,17 @@
+<element name="x-echo">
+  <template>
+    <input value="{{value}}">
+    <button on-click="clearInput">X</button>
+    <div>{{value}}</div>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      value: '',
+      clearInput: function() {
+        this.value = ''
+      }
+    });
+  </script>
+</element>
+
+<x-echo value="hello"></x-echo>

@@ -1,0 +1,60 @@
+#menu {
+  width: 300px;
+}
+
+#main {
+  display: -webkit-flex;
+  -webkit-flex-flow: column;
+}
+
+#content {
+  display: -webkit-flex;
+  position: relative;
+  -webkit-flex: 1;
+}
+
+#ace {
+  position: relative !important;
+  width: 620px;
+}
+
+#outputContainer {
+  -webkit-flex: 1;
+  border-left: 1px solid #ccc;
+}
+
+.titlebar {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  background: #333;
+  color: white;
+}
+
+#output {
+  background: white;
+  padding: 20px;
+  overflow: auto;
+}
+
+.toolbar-button {
+  -webkit-appearance: none;
+  padding: 8px 14px 5px;
+  background-color: #e6e6e6;
+  background-repeat: no-repeat;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(0.25, #ffffff), to(#e6e6e6));
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -webkit-border-radius: 3px;
+  font-size: 14px;
+  color: #333;
+}
+
+.toolbar-button:hover {
+  background-position: 0 -15px;
+}
+
+.toolbar-button:active {
+  -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #555;
+}

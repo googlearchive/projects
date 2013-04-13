@@ -1,0 +1,34 @@
+<!-- Toolkit supports declarative binding of events to methods in 
+the element. The toolkit uses special on-event syntax to trigger 
+this binding behavior. -->
+<element name="x-nametag" on-click="makeLarge">
+  <template>
+    <style>
+      @host {
+        * {
+          display: inline-block;
+          padding: 6px;
+          border: 1px solid #ccc;
+        }
+      }
+    </style>
+    
+    <!-- You can bind properties in your element to Toolkit supports 
+    declarative data binding using the "double-mustache" syntax ({{}}) 
+    from Model Driven Views. -->
+    Hello! My name is <span style="color:{{color}}">{{name}}</span>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      color: 'blue',
+      name: '',
+      makeLarge: function() {
+        this.style.fontSize = '40px';
+        this.style.fontWeight = 'bold';
+      }
+    });
+  </script>
+</element>
+
+<x-nametag name="Joe"></x-nametag>
+<x-nametag name="Mary" color="tomato"></x-nametag>
