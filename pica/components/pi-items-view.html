@@ -52,13 +52,10 @@
     }
     
     Toolkit.register(this, {
-      // public
-      layout: 'grid',
-      view: '',
-      items: null,
-      selected: null,
-      loaded: true,
-      // protected
+      publish: {
+        layout: 'grid',
+        loaded: true
+      },
       pageSize: 24,
       ready: function() {
         this.setAttribute('touch-action', 'scroll');

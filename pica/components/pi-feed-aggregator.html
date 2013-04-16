@@ -47,11 +47,9 @@
     ];
 
     Toolkit.register(this, {
-      // public
-      feed: '',
-      count: 24,
-      entries: null,
-      loading: false,
+      publish: {
+        count: 24
+      },
       useCache: true,
       reload: function() {
         this.forceLoad = true;
