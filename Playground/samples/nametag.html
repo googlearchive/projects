@@ -20,8 +20,9 @@ this binding behavior. -->
   </template>
   <script>
     Toolkit.register(this, {
-      color: 'blue',
-      name: '',
+      publish: {
+        color: 'blue'
+      },
       makeLarge: function() {
         this.style.fontSize = '40px';
         this.style.fontWeight = 'bold';

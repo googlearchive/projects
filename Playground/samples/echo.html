@@ -1,12 +1,13 @@
+<link rel="import" href="samples/nametag.html">
 <element name="x-echo" attributes="value">
   <template>
     <input value="{{value}}">
     <button on-click="clearInput">X</button>
-    <div>{{value}}</div>
+    <br>
+    <x-nametag name="{{value}}"></x-nametag>
   </template>
   <script>
     Toolkit.register(this, {
-      value: '',
       clearInput: function() {
         this.value = ''
       }
@@ -14,4 +15,4 @@
   </script>
 </element>
 
-<x-echo value="hello"></x-echo>
+<x-echo value="Bob"></x-echo>

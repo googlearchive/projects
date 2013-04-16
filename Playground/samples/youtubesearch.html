@@ -1,6 +1,6 @@
 <link rel="import" href="../../toolkit/components/g-ajax.html">
 <link rel="import" href="../../toolkit/components/g-selector.html">
-<element name="x-youtubesearch">
+<element name="x-youtubesearch" attributes="query">
   <template>
     <style>
       .item {
@@ -20,9 +20,7 @@
     </g-selector>
   </template>
   <script>
-    Toolkit.register(this, {
-      query: ''
-    });
+    Toolkit.register(this);
   </script>
 </element>
 
