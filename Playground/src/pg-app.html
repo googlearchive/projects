@@ -50,7 +50,8 @@
         {name: 'Youtube Search', file: 'samples/youtubesearch.html'},
         {name: 'Youtube App', file: 'samples/yt-app.html'},
         {name: 'Pica', file: 'samples/pica.html'},
-        {name: 'panels', file: 'samples/panels.html'}
+        {name: 'panels', file: 'samples/panels.html'},
+        {name: 'cats', file: 'samples/cats.html'}
       ],
       selectedSample: null,
       ready: function() {
@@ -72,24 +73,37 @@
         this.$.output.src = '';
         setTimeout(function() {
           var doc = this.$.output.contentDocument;
-          var s = this.makeOutputHTML();
+          var win = this.$.output.contentWindow;
+          // put base href in head
+          var h = '<base href="' + document.baseURI + '">\n';
+          // fire fake load events in body
+          var b = '<script>document.dispatchEvent(' +
+            'new CustomEvent("DOMContentLoaded", {bubbles: true}));\n' +
+            '</s' + 'cript>\n' +
+            '<script>dispatchEvent(' +
+            'new CustomEvent("load", {bubbles: true}));</s' + 'cript>';
+          var s = this.makeOutputHTML(h, b);
           doc.write(s);
-          // make fake load handler since there is no load if you document.write
-          doc.write('<script>window.dispatchEvent(' +
-            'new CustomEvent("load", {bubbles: true}));</s' + 'cript>');
+          // fire load after ready in case scripts are loaded and depend on this
+          // e.g. WebAnimations
+          var fn = function() {
+            win.removeEventListener('WebComponentsReady', fn);
+            win.dispatchEvent(new CustomEvent("load", {bubbles: true}));
+          };
+          win.addEventListener('WebComponentsReady', fn);
         }.bind(this), 0);
       },
-      makeOutputHTML: function() {
+      makeOutputHTML: function(head, body) {
        var html = '<!DOCTYPE html>\n';
        html += '<head>\n';
-       // set base url
-       html += '<base href="' + document.baseURI + '">\n';
+       html += head || '';
        // include base scripts
        html += '<script src="../../toolkit/platform/platform.js"></s' + 'cript>\n' +
         '<script src="../../toolkit/toolkit.js"></s' + 'cript>\n';
        html += '</head>\n<body>\n';
        // include content
        html += (this.$.ace.editor.getValue());
+       html += body || '';
        html += '</body>\n</html>';
        return html;
       }
