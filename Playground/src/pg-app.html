@@ -73,24 +73,12 @@
         this.$.output.src = '';
         setTimeout(function() {
           var doc = this.$.output.contentDocument;
-          var win = this.$.output.contentWindow;
           // put base href in head
           var h = '<base href="' + document.baseURI + '">\n';
-          // fire fake load events in body
-          var b = '<script>document.dispatchEvent(' +
-            'new CustomEvent("DOMContentLoaded", {bubbles: true}));\n' +
-            '</s' + 'cript>\n' +
-            '<script>dispatchEvent(' +
-            'new CustomEvent("load", {bubbles: true}));</s' + 'cript>';
-          var s = this.makeOutputHTML(h, b);
+          var s = this.makeOutputHTML(h, '');
+          doc.open('text/html', '');
           doc.write(s);
-          // fire load after ready in case scripts are loaded and depend on this
-          // e.g. WebAnimations
-          var fn = function() {
-            win.removeEventListener('WebComponentsReady', fn);
-            win.dispatchEvent(new CustomEvent("load", {bubbles: true}));
-          };
-          win.addEventListener('WebComponentsReady', fn);
+          doc.close();
         }.bind(this), 0);
       },
       makeOutputHTML: function(head, body) {
