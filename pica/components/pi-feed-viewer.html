@@ -10,7 +10,7 @@
 <link rel="import" href="pi-feed-tracker.html"/>
 <link rel="import" href="pi-items-view.html"/>
 <link rel="import" href="pi-story.html"/>
-<element name="pi-feed-viewer" attributes="topics panel topic story layout topicslayout">
+<element name="pi-feed-viewer" attributes="topics panel topic stories story layout topicslayout">
   <link rel="stylesheet" href="css/pi-feed-viewer.css" />
   <template>
     <g-panels id="panels" class="feed-viewer-panels" autoselect selected="{{panel}}" transition="keyframe" 
@@ -39,17 +39,11 @@
     }
     
     Toolkit.register(this, {
-      // public
-      topics: null,
-      panel: '',
-      topic: null,
-      stories: null,
-      story: null,
-      layout: '',
-      topicslayout: '',
-      loading: true,
-      track: true,
-      feedCount: 200,
+      publish: {
+        loading: true,
+        track: true,
+        feedCount: 200
+      },
       get canprevious() {
         return this.panel != 'topics';
       },

@@ -42,10 +42,9 @@
   </template>
   <script>
     Toolkit.register(this, {
-      // public
-      label: '',
-      nav: 'menu',
-      hideactionbar: false,
+      publish: {
+        nav: 'menu'
+      },
       // protected
       ready: function() {
         this.navChanged();
