@@ -27,12 +27,15 @@
         <g-toolbar>
           <g-icon-button src="images/menu.png" on-tap="toggle"></g-icon-button>
           <div>{{selectedSample.name}}</div>
-          <button class="toolbar-button" on-click="run">Run</button>
+          <button class="toolbar-button" on-tap="run">Run</button>
         </g-toolbar>
         <div id="content">
           <ajaxorg-ace id="ace" theme="github" mode="html"></ajaxorg-ace>
           <div id="outputContainer">
-            <div class="titlebar">Output</div>
+            <div class="titlebar">
+              <g-icon-button src="{{arrowImageSrc}}" touch-action="none" on-tap="toggleOutputFullScreen"></g-icon-button>
+              <span>Output</span>
+            </div>
             <div class="outputFrameContainer">
               <iframe id="output"></iframe>
             </div>
@@ -55,15 +58,24 @@
         {name: 'Playground', file: 'samples/pg-app-sample.html'}
       ],
       selectedSample: null,
+      isOutputFullScreen: false,
       ready: function() {
         this.super();
         this.$.ace.editor.getSession().setTabSize(2);
         setTimeout(function() {
           this.$.menu.selected = this.sampleData[0].name;
         }.bind(this), 0);
+        this.isOutputFullScreenChanged();
       },
       toggle: function() {
         this.$.panels.toggleBetween('menu', 'main');
+      },
+      toggleOutputFullScreen: function() {
+        this.isOutputFullScreen = !this.isOutputFullScreen;
+      },
+      isOutputFullScreenChanged: function() {
+        this.$.ace.style.width = this.isOutputFullScreen ? '0px' : '620px';
+        this.arrowImageSrc = this.resolvePath('images/arrow_' + (this.isOutputFullScreen ? 'right' : 'left')  + '.png');
       },
       fileResponse: function(e, inDetail) {
         this.$.ace.value = inDetail.response;
@@ -83,17 +95,17 @@
         }.bind(this), 0);
       },
       makeOutputHTML: function(head, body) {
-       var html = '<!DOCTYPE html>\n';
-       html += '<head>\n';
-       html += head || '';
-       // include base scripts
-       html += '<script src="../../toolkit/toolkit.js"></s' + 'cript>\n';
-       html += '</head>\n<body>\n';
-       // include content
-       html += (this.$.ace.editor.getValue());
-       html += body || '';
-       html += '</body>\n</html>';
-       return html;
+        var html = '<!DOCTYPE html>\n';
+        html += '<head>\n';
+        html += head || '';
+        // include base scripts
+        html += '<script src="../../toolkit/toolkit.js"></s' + 'cript>\n';
+        html += '</head>\n<body>\n';
+        // include content
+        html += (this.$.ace.editor.getValue());
+        html += body || '';
+        html += '</body>\n</html>';
+        return html;
       }
     });
   </script>

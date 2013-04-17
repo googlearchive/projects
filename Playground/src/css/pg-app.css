@@ -16,6 +16,7 @@
 #ace {
   position: relative !important;
   width: 620px;
+  -webkit-transition: width 0.2s;
 }
 
 #outputContainer {
@@ -26,11 +27,14 @@
 }
 
 .titlebar {
-  height: 40px;
-  line-height: 40px;
-  padding: 0 20px;
+  height: 44px;
   background: #333;
   color: white;
+}
+
+.titlebar > * {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .outputFrameContainer {
