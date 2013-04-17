@@ -1,0 +1,99 @@
+<!--
+/*
+ * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+<link rel="import" href="../../../toolkit/components/g-app.html">
+<link rel="import" href="../../../toolkit/components/g-ajax.html">
+<link rel="import" href="../../../toolkit/components/g-toolbar.html">
+<link rel="import" href="../../../toolkit/components/g-panels.html">
+<link rel="import" href="../../../toolkit/components/g-menu-item.html">
+<link rel="import" href="../../../toolkit/components/g-ribbon.html">
+<link rel="import" href="../../../toolkit/components/g-icon-button.html">
+<link rel="import" href="../../../pantry/Ace/Ace.html">
+<element name="pg-app" extends="g-app">
+  <link rel="stylesheet" href="css/pg-app.css" />
+  <template>
+    <g-panels id="panels" class="flex" index="1" transition="flow">
+      <g-ribbon id="menu" label="Playground" valueattr="label" on-activate="toggle"
+          selectedModel="{{selectedSample}}">
+        <template repeat="{{sampleData}}">
+          <g-menu-item src="images/sample.png" iconsize="32" label="{{name}}"></g-menu-item>
+        </template>
+      </g-ribbon>
+      <div id="main">
+        <g-toolbar>
+          <g-icon-button src="images/menu.png" on-tap="toggle"></g-icon-button>
+          <div>{{selectedSample.name}}</div>
+          <button class="toolbar-button" on-click="run">Run</button>
+        </g-toolbar>
+        <div id="content">
+          <ajaxorg-ace id="ace" theme="github" mode="html"></ajaxorg-ace>
+          <div id="outputContainer">
+            <div class="titlebar">Output</div>
+            <div class="outputFrameContainer">
+              <iframe id="output"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </g-panels>
+    <g-ajax auto on-response="fileResponse" url="{{selectedSample.file}}"></ajax>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      sampleData: [
+        {name: 'NameTag', file: 'samples/nametag.html'},
+        {name: 'Echo', file: 'samples/echo.html'},
+        {name: 'Youtube Search', file: 'samples/youtubesearch.html'},
+        {name: 'Youtube App', file: 'samples/yt-app.html'},
+        {name: 'Pica', file: 'samples/pica.html'},
+        {name: 'panels', file: 'samples/panels.html'},
+        {name: 'cats', file: 'samples/cats.html'}
+      ],
+      selectedSample: null,
+      ready: function() {
+        this.super();
+        this.$.ace.editor.getSession().setTabSize(2);
+        setTimeout(function() {
+          this.$.menu.selected = this.sampleData[0].name;
+        }.bind(this), 0);
+      },
+      toggle: function() {
+        this.$.panels.toggleBetween('menu', 'main');
+      },
+      fileResponse: function(e, inDetail) {
+        this.$.ace.value = inDetail.response;
+        dirtyCheck();
+        this.run();
+      },
+      run: function() {
+        this.$.output.src = '';
+        setTimeout(function() {
+          var doc = this.$.output.contentDocument;
+          // put base href in head
+          var h = '<base href="' + document.baseURI + '">\n';
+          var s = this.makeOutputHTML(h, '');
+          doc.open('text/html', '');
+          doc.write(s);
+          doc.close();
+        }.bind(this), 0);
+      },
+      makeOutputHTML: function(head, body) {
+       var html = '<!DOCTYPE html>\n';
+       html += '<head>\n';
+       html += head || '';
+       // include base scripts
+       html += '<script src="../../toolkit/toolkit.js"></s' + 'cript>\n';
+       html += '</head>\n<body>\n';
+       // include content
+       html += (this.$.ace.editor.getValue());
+       html += body || '';
+       html += '</body>\n</html>';
+       return html;
+      }
+    });
+  </script>
+</element>

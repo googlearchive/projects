@@ -31,13 +31,9 @@
     google.load('feeds', '1', {callback: feedsReady.bind(this)});
     
     Toolkit.register(this, {
-      // public
-      feed: '',
-      query: '',
-      results: null,
-      loading: false,
-      count: 24,
-      // protected
+      publish: {
+        count: 24
+      },
       feedChanged: function() {
         if (this.feed) {
           this.loading = true;

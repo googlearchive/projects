@@ -1,0 +1,18 @@
+<link rel="import" href="samples/nametag.html">
+<element name="x-echo" attributes="value">
+  <template>
+    <input value="{{value}}">
+    <button on-click="clearInput">X</button>
+    <br>
+    <x-nametag name="{{value}}"></x-nametag>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      clearInput: function() {
+        this.value = ''
+      }
+    });
+  </script>
+</element>
+
+<x-echo value="Bob"></x-echo>

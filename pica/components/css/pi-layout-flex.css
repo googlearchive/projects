@@ -12,7 +12,4 @@
   box-sizing: border-box;
   min-width: 256px;
   height: 380px;
-  /* reset css properties from pi-layout.css */
-  float: none;
-  width: auto;
 }
