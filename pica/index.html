@@ -26,6 +26,7 @@
       bottom: 50%;
       margin: -25px;
       -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
       background: url(images/loading_icon.svg);
     }
     
@@ -33,11 +34,16 @@
       0% {-webkit-transform: rotate(0deg);}
       100% {-webkit-transform: rotate(359deg);}
     }
+    
+    @keyframes spin {
+      0% {transform: rotate(0deg);}
+      100% {transform: rotate(359deg);}
+    }
   </style>
 </head>
 <body>
   <pi-app>
-    <div class="app-loading"></img>
+    <div class="app-loading"></div>
   </pi-app>
 </body>
 </html>

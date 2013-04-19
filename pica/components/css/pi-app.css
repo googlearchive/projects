@@ -6,6 +6,7 @@
 #panels, #contentPanels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
+  flex: 1;
   overflow: hidden;
 }
 
@@ -22,8 +23,10 @@
 #main {
   display: -webkit-box;
   display: -webkit-flex;
+  display: flex;
   -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
+  flex-direction: column;
   background: white; 
 }
 
@@ -35,6 +38,7 @@
   bottom: 50%;
   margin: -25px;
   -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
   background: url(../../images/loading_icon.svg);
 }
 
@@ -47,6 +51,10 @@
   100% {-webkit-transform: rotate(359deg);}
 }
 
+@keyframes spin {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(359deg);}
+}
 
 @media screen and (max-width: 800px) {
   #main:not([hideactionbar=true]) #contentPanels {

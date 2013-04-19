@@ -3,26 +3,41 @@
 }
 
 #main {
+  display: -webkit-box;
   display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
+  flex-direction: column;
 }
 
 #content {
+  display: -webkit-box;
   display: -webkit-flex;
+  display: flex;
   position: relative;
+  -webkit-box-flex: 1;
   -webkit-flex: 1;
+  flex: 1;
 }
 
 #ace {
   position: relative !important;
   width: 620px;
   -webkit-transition: width 0.2s;
+  transition: width 0.2s;
 }
 
 #outputContainer {
-  -webkit-flex: 1;
+  display: -webkit-box;
   display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
   border-left: 1px solid #ccc;
 }
 
@@ -38,7 +53,9 @@
 }
 
 .outputFrameContainer {
+  -webkit-box-flex: 1;
   -webkit-flex: 1;
+  flex: 1;
   position: relative;
 }
 
@@ -57,10 +74,11 @@
   padding: 8px 14px 5px;
   background-color: #e6e6e6;
   background-repeat: no-repeat;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(0.25, #ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
   border: 1px solid #ccc;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  -webkit-border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
   font-size: 14px;
   color: #333;
 }
@@ -70,6 +88,6 @@
 }
 
 .toolbar-button:active {
-  -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   color: #555;
 }
