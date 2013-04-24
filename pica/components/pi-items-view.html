@@ -74,7 +74,7 @@
         this.scrollToTop();
       },
       scrollToTop: function() {
-        webkitRequestAnimationFrame(function() {
+        requestAnimationFrame(function() {
           this.scrollTop = 0;
         }.bind(this));
       },
