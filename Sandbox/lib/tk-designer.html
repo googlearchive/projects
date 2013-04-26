@@ -154,7 +154,7 @@ license that can be found in the LICENSE file.
           this.selected = (t === this.$.canvas ? null : t);
         }
       },
-      selectParentAction: function() {
+      selectParentElement: function() {
         var e = this.selected;
         if (e && e.parentNode) {
           e = e.parentNode;
@@ -166,7 +166,7 @@ license that can be found in the LICENSE file.
       },
       keyup: function(event) {
         if (event.keyCode === 27) {
-          this.selectParentAction();
+          this.selectParentElement();
         }
       }
     });
