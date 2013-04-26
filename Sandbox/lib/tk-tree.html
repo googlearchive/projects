@@ -14,16 +14,22 @@ license that can be found in the LICENSE file.
         bottom: 0;
         left: 0;
         padding: 8px;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       b {
         color: blue;
+      }
+      id {
+        font-style: italic;
+        color: #804C00;
       }
     </style>
     <div id="interior">
       <strong>Components</strong>
       <hr/>
       <template repeat="{{components}}">
-        <div style="padding-left: {{indent}}px"><b>{{name}}</b>{{text}}</div>
+        <div style="padding-left: {{indent}}px"><b>{{name}}</b><id>{{id}}</id>{{text}}</div>
       </template>
     </div>
   </template>
@@ -31,7 +37,7 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       components: null,
       update: function() {
-        var tabsize = 16;
+        var tabsize = 32;
         var components = this.components = [];
         function subtree(root, indent) {
           var e = root.firstElementChild;
@@ -45,7 +51,8 @@ license that can be found in the LICENSE file.
             }
             components.push({
               indent: indent,
-              name: e.localName + (e.id ? ' [#' + e.id + ']': ''),
+              name: e.localName,
+              id: e.id ? ' #' + e.id + '': '',
               text: text
             });
             subtree(e, indent + tabsize);

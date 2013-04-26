@@ -3,9 +3,9 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-source" attributes="element">
+<element name="tk-source" attributes="element fontSize">
   <template>
-    <ajaxorg-ace id="editor" mode="html" theme="merbivore" readonly wrap></ajaxorg-ace>
+    <ajaxorg-ace id="editor" mode="html" theme="merbivore" fontSize="{{fontSize}}" readonly wrap></ajaxorg-ace>
   </template>
   <script>
     Toolkit.register(this, {
@@ -29,16 +29,46 @@ license that can be found in the LICENSE file.
           elt = elt.nextElementSibling;
         }
       },
+      dump: function() {
+        var html = '';
+        function subtree(root, indent) {
+          var e = root.firstElementChild;
+          while (e) {
+            html += indent + '<' + e.localName;
+            for (var i=0, a; (a = e.attributes[i]); i++) {
+              if (a.name !== 'class' || a.value != '') {
+                html += ' ' + a.name + 
+                    (a.value != '' ? '="' + a.value + '"': '');
+              }
+            }
+            html += '>';
+            if (e.firstElementChild) {
+              html += '\n';
+              subtree(e, indent + '    ');
+              html += indent;
+            } else {
+              html += e.textContent;
+            }
+            html += '</' + e.localName + '>\n';
+            e = e.nextElementSibling;
+          }
+        }
+        subtree(this.element, '');
+        return html;
+      },
       update: function() {
         // force components to update before dumping source
         dirtyCheck();
         this.publishPropertiesToAttributes();
-        var html = this.element.innerHTML;
+        //var html = this.element.innerHTML;
+        var html = this.dump()
         html = html
           .replace(/ style="[^"]*"/g, '')
           .replace(/( )?app-selected/g, '')
           ;
-        this.$.editor.value = html_beautify(html);
+        //html = html_beautify(html);
+        this.$.editor.value = html;
+        console.log(html);
       }
     });
   </script>

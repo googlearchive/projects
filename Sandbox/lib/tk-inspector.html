@@ -16,6 +16,8 @@ license that can be found in the LICENSE file.
         bottom: 0;
         left: 0;
         padding: 8px;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
     </style>
     <div id="interior">
@@ -105,10 +107,13 @@ license that can be found in the LICENSE file.
       property: null,
       liveValue: null,
       propertyChanged: function() {
-        Toolkit.bindProperties(this, 'liveValue', this.property.obj, this.property.name);
+        Toolkit.bindProperties(this, 'liveValue', this.property.obj, 
+          this.property.name);
       },
       liveValueChanged: function() {
-        this.send('property-changed');
+        if (this.liveValue !== this.property.obj[this.property.name]) {
+          this.send('property-changed');
+        }
       },
       inputChange: function(e) {
         this.liveValue = e.target.value;
