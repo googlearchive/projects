@@ -83,6 +83,7 @@ license that can be found in the LICENSE file.
         'select': 'tk-select-property-editor',
         'color': 'tk-color-property-editor',
         'text': 'tk-text-property-editor',
+        'id-select': 'tk-id-select-property-editor',
         any: 'tk-string-property-editor'
       },
       propertyChanged: function() {
@@ -185,6 +186,25 @@ license that can be found in the LICENSE file.
       propertyChanged: function() {
         this.super();
         this.$.textarea.textContent = this.liveValue;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-id-select-property-editor" extends="tk-select-property-editor">  
+  <script>
+    Toolkit.register(this, {
+      propertyChanged: function() {
+        var o = [];
+        var p = this.property.obj.parentNode;
+        while (p.parentNode && p.localName !== 'tk-canvas') {
+          p = p.parentNode;
+        }
+        Array.prototype.forEach.call(p.querySelectorAll('[id]'), function(n) {
+          o.push(n.id);
+        });
+        this.property.meta.options = o;
+        this.super();
       }
     });
   </script>
