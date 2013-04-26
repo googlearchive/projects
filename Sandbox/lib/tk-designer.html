@@ -77,13 +77,19 @@ license that can be found in the LICENSE file.
       createNew: function(tag) {
         var meta = metadata.querySelector('#' + tag);
         var neo = meta.createElement();
-        neo.id = tag.split('-').pop().toLowerCase();
+        neo.id = this.makeUniqueId(tag.replace(/^g-/, ''));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
         neo.meta = meta;
         this.$.canvas.appendChild(neo);
         this.selected = neo;
         this.neo = neo;
+      },
+      makeUniqueId: function(id, suffix) {
+        var uId = id + (suffix || '');
+        return this.$.canvas.querySelector('#' + uId) ?
+          this.makeUniqueId(id, suffix ? ++suffix : 1) :
+          uId;
       },
       paletteDragStart: function(event, detail) {
         var rect = this.getBoundingClientRect();
