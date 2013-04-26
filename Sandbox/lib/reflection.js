@@ -17,12 +17,12 @@ function reflect(element, name) {
 
 function reflectProperty(element, name) {
   var v = element[name];
-  if ((name && v === null)
-      || (v !== undefined
+  if (v !== null
+      && v !== undefined
       && typeof v !== 'function'
       && typeof v !== 'object'
       //&& element.propertyIsEnumerable(k)
-      && !reflectProperty.blacklist[name])) {
+      && !reflectProperty.blacklist[name]) {
     var prop = reflect(element, name);
   }
   return prop;
