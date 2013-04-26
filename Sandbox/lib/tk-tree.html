@@ -3,7 +3,7 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-tree" attributes="element">
+<element name="tk-tree" attributes="element selected">
   <template>
     <style>
       #interior {
@@ -16,6 +16,7 @@ license that can be found in the LICENSE file.
         padding: 8px;
         overflow-x: hidden;
         overflow-y: auto;
+        cursor: pointer;
       }
       b {
         color: blue;
@@ -24,12 +25,18 @@ license that can be found in the LICENSE file.
         font-style: italic;
         color: #804C00;
       }
+      #interior div {
+        display: inline-block;
+      }
+      .selected span {
+        background: lightblue;
+      }
     </style>
-    <div id="interior">
+    <div id="interior" touch-action="none" on-tap="tap">
       <strong>Components</strong>
       <hr/>
       <template repeat="{{components}}">
-        <div style="padding-left: {{indent}}px"><b>{{name}}</b><id>{{id}}</id>{{text}}</div>
+        <div class="{{selected}}" style="padding-left: {{indent}}px"><span><b>{{name}}</b><id>{{id}}</id>{{text}}</span></div><br>
       </template>
     </div>
   </template>
@@ -37,6 +44,7 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       components: null,
       update: function() {
+        var selected = this.selected;
         var tabsize = 32;
         var components = this.components = [];
         function subtree(root, indent) {
@@ -52,14 +60,23 @@ license that can be found in the LICENSE file.
             components.push({
               indent: indent,
               name: e.localName,
+              element: e,
               id: e.id ? ' #' + e.id + '': '',
-              text: text
+              text: text,
+              selected: (e == selected) ? 'selected' : ''
             });
             subtree(e, indent + tabsize);
             e = e.nextElementSibling;
           }
         }
         subtree(this.element, 0);
+      },
+      tap: function(e) {
+        var nodes = this.$.interior.children;
+        var selected = nodes[Toolkit.findDistributedTarget(e.target, nodes)];
+        if (selected) {
+          this.selected = selected.templateInstance.model.element;
+        }
       }
     });
   </script>
