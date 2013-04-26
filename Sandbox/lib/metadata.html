@@ -1,4 +1,4 @@
-<tk-meta id="g-toolbar" label="Toolbar">
+<tk-meta id="g-toolbar" label="Toolbar" isContainer>
   <template>
     <g-toolbar style="right: 0px; left: 0px;">
       <g-icon-button src="images/star_full.svg" active="true"></g-icon-button>
@@ -12,7 +12,7 @@
   </template>
 </tk-meta>
 
-<tk-meta id="g-tabs" label="Tabs">
+<tk-meta id="g-tabs" label="Tabs" isContainer>
   <template>
     <g-tabs selected="0">
       <span>One</span>
@@ -27,7 +27,7 @@
 
 <tk-meta id="g-togglebutton" label="Toggle Button"></tk-meta>
 
-<tk-meta id="g-menu" label="Menu">
+<tk-meta id="g-menu" label="Menu" isContainer>
   <template>
     <g-menu selected="0">
       <g-menu-item src="images/comment.png">Post a Comment</g-menu-item>
@@ -38,7 +38,7 @@
   </template>
 </tk-meta>
 
-<tk-meta id="div" label="Caption">
+<tk-meta id="div" label="Caption" isContainer>
   <template>
     <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
   </template>
@@ -88,7 +88,7 @@
   </template>
 </tk-meta>
 
-<tk-meta id="g-flip-bounce" label="Flip & Bounce">
+<tk-meta id="g-flip-bounce" label="Flip & Bounce" isContainer>
   <template>
     <g-animation-group type="seq" style="border: 1px dotted silver; padding: 8px">
       SeqGroup
@@ -98,7 +98,7 @@
   </template>
 </tk-meta>
 
-<tk-meta id="g-flip-out" label="Flip Out">
+<tk-meta id="g-flip-out" label="Flip Out" isContainer>
   <template>
     <g-animation-group type="par" style="border: 1px dotted silver; padding: 8px">
       ParGroup
@@ -130,8 +130,10 @@
 
 <tk-meta id="humane-js" label="Notification">
   <template>
-    <humane-js onclick="log()" style="border: 3px dotted gray; background-color: silver; padding: 12px;">Notification</humane-js>
+    <humane-js onclick="log()" style="border: 2px dotted gray; background-color: whitesmoke; padding: 12px;">Notification</humane-js>
   </template>
+  <property name="theme" kind="select" options="jackedup,bigbox,boldlight,libnotify,original"></property>
+  <property name="textContent" kind="text"></property>
 </tk-meta>
 
 <tk-meta id="pdf-js" label="PDF Reader"></tk-meta>
@@ -140,4 +142,10 @@
 
 <tk-meta id="marked-js" label="Markdown Renderer">
   <property name="text" kind="text"></property>
+</tk-meta>
+
+<tk-meta id="pixi-js" label="Pixi JS">
+  <template>
+    <iframe style="width: 500px; height: 400px;" src="http://www.goodboydigital.com/runpixierun/"></iframe>
+  </template>
 </tk-meta>

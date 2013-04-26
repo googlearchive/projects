@@ -11,7 +11,7 @@ function reflect(element, name) {
     obj: element,
     name: name,
     value: element[name],
-    meta: element.meta && element.meta[name]
+    meta: element.meta && element.meta.properties[name]
   };
 }
 

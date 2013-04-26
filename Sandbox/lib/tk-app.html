@@ -1,0 +1,115 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged">
+  <template>
+    <style>
+      .top {
+        position: absolute;
+        top: 0px;
+        padding: 4px;
+        right: 350px;
+        left: 0px;
+        height: 34px;
+        background-color: white;
+        overflow: hidden;
+      }
+      .left {
+        position: absolute !important;
+        top: 34px;
+        right: 350px;
+        bottom: 0;
+        left: 0;
+        background-color: white !important;
+      }
+      .right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 350px;
+        overflow: auto;
+      }
+      .right-top {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 216px;
+        left: 0;
+        overflow: auto;
+      }
+      .right-bottom {
+        position: absolute;
+        top: 216px;
+        right: 0;
+        bottom: 0;
+        left: 0px;
+        overflow: auto;
+      }
+      .tab-selected {
+        z-index: 100;
+      }
+    </style>
+    
+    <g-tabs 
+        id="tabs" 
+        class="top" 
+        selected="{{selectedTabName}}">
+      <div name="designer">Design</div>
+      <div name="source">Source</div>
+    </g-tabs>
+    
+    <tk-designer 
+        selected="{{selected}}" 
+        id="designer" 
+        class="left">
+    </tk-designer>
+    
+    <tk-source
+        id="source"
+        class="left"
+        element="{{$.designer.$.canvas}}">
+    </tk-source>
+    
+    <div class="right">
+      <tk-tree 
+          id="tree"
+          class="right-top"
+          element="{{$.designer.$.canvas}}">
+      </tk-tree>
+      <tk-inspector
+          class="right-bottom"
+          element="{{selected}}"
+          on-parent-element="selectParentAction"
+          on-delete-element="deleteElement"
+          on-property-changed="designChanged">
+      </tk-inspector>
+    </div>
+  </template>  
+  
+  <script>
+    Toolkit.register(this, {
+      selected: null,
+      selectedTabName: '',
+      ready: function() {
+        this.selectedTabName = 'designer';
+      },
+      selectedTabNameChanged: function(oldTabName) {
+        this.classFollows(this.$[this.selectedTabName], this.$[oldTabName], 
+          'tab-selected');
+      },
+      designChanged: function() {
+        this.$.source.update();
+        this.$.tree.update();
+      },
+      selectParentElement: function() {
+        this.$.designer.selectParentElement();
+      },
+      deleteElement: function() {
+        this.$.designer.deleteElement();
+      }
+    });
+  </script>
+</element>

@@ -1,6 +1,7 @@
-<element name="tk-meta" attributes="label">
+<element name="tk-meta" attributes="label isContainer">
   <script>
     Toolkit.register(this, {
+      isContainer: false,
       get archetype() {
         return this.querySelector('template');
       },

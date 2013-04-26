@@ -11,10 +11,6 @@ license that can be found in the LICENSE file.
       #interior {
         border: 1px dotted gray;
         position: absolute;
-/*        top: 8px;
-        left: 8px;
-        bottom: 8px;
-        right: 8px;*/
         top: 0;
         right: 0;
         bottom: 0;
@@ -177,7 +173,7 @@ license that can be found in the LICENSE file.
 
 <element name="tk-text-property-editor" extends="tk-abstract-property-editor">
   <template>
-    <textarea id="textarea" on-change="inputChange" rows="10" style="overflow: auto; margin: 0; vertical-align: top;"></textarea><br/>
+    <textarea id="textarea" on-change="inputChange" cols="14" rows="10" style="overflow: auto; margin: 0; vertical-align: top;"></textarea><br/>
   </template>
   <script>
     Toolkit.register(this, {
