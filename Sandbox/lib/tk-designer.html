@@ -6,7 +6,7 @@ license that can be found in the LICENSE file.
 <element name="tk-designer" on-keyup="keyup" attributes="selected">
   <template>
     <style>
-      .left {
+      .designer-left {
         position: absolute !important;
         top: 0;
         width: 264px;
@@ -14,7 +14,7 @@ license that can be found in the LICENSE file.
         left: 0;
         background-color: white !important;
       }
-      .middle {
+      .designer-middle {
         position: absolute;
         top: 0px;
         right: 0;
@@ -38,7 +38,7 @@ license that can be found in the LICENSE file.
         z-index: 100;
       }
     </style>
-    <g-sidebar class="left" label="Palette">
+    <g-sidebar class="designer-left" label="Palette">
       <tk-palette
           id="palette"
           class="fit"
@@ -53,7 +53,7 @@ license that can be found in the LICENSE file.
       tabIndex="-1"
       on-tap="canvasTap"
       on-pointerup="canvasDrop"
-      class="middle">
+      class="designer-middle">
     </tk-canvas>
   </template>
   <script>
