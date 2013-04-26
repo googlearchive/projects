@@ -65,40 +65,21 @@
   <property name="handleAs" kind="select" options="json,text,xml"></property>
 </tk-meta>
 
-<tk-meta id="g-blink" label="Blink">
+<tk-meta id="animation-group" label="Animation Group" isContainer>
   <template>
-    <g-blink style="border: 1px dotted silver; padding: 8px;">Blink</g-blink>
+    <animation-group style="border: 1px dotted silver; padding: 8px"></animation-group>
   </template>
+  <property name="type" kind="select" options="par,seq"></property>
 </tk-meta>
 
-<tk-meta id="g-bounce" label="Bounce">
+<tk-meta id="animation" label="Animation">
   <template>
-    <g-bounce style="border: 1px dotted silver; padding: 8px;">Bounce</g-bounce>
+    <animation-picker style="border: 1px dotted silver; padding: 8px"></animation-picker>
   </template>
+  <property name="animationType" kind="select" options="blink,bounce,fadein,fadeout,flip,shake"></property>
 </tk-meta>
 
-<tk-meta id="g-flip" label="Flip">
-  <template>
-    <g-flip style="border: 1px dotted silver; padding: 8px;">Flip</g-flip>
-  </template>
-</tk-meta>
-
-<tk-meta id="g-shake" label="Shake">
-  <template>
-    <g-shake style="border: 1px dotted silver; padding: 8px;">Shake</g-shake>
-  </template>
-</tk-meta>
-
-<tk-meta id="g-flip-bounce" label="Flip & Bounce" isContainer>
-  <template>
-    <g-animation-group type="seq" style="border: 1px dotted silver; padding: 8px">
-      SeqGroup
-      <g-flip targetSelector="#div" style="border: 1px dotted silver; padding: 8px;">Flip</g-flip>
-      <g-bounce targetSelector="#div1"  startOffset="-0.2" magnitude="-100px" style="border: 1px dotted silver; padding: 8px;">Bounce</g-bounce>
-    </g-animation-group>
-  </template>
-</tk-meta>
-
+<!--
 <tk-meta id="g-flip-out" label="Flip Out" isContainer>
   <template>
     <g-animation-group type="par" style="border: 1px dotted silver; padding: 8px">
@@ -114,6 +95,7 @@
     </g-animation-group>
   </template>
 </tk-meta>
+//-->
 
 <tk-meta id="x-stock" label="Stock">
   <template>
