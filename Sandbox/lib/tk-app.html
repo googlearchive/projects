@@ -80,8 +80,9 @@ license that can be found in the LICENSE file.
           selected="{{selected}}">
       </tk-tree>
       <tk-inspector
+          id="inspector"
           class="right-bottom"
-          element="{{selected}}"
+          Xelement="{{selected}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
           on-property-changed="designChanged">
@@ -101,14 +102,23 @@ license that can be found in the LICENSE file.
           'tab-selected');
       },
       designChanged: function() {
-        this.$.source.update();
-        this.$.tree.update();
+        this.designJob = this.job(this.designJob, function () {
+          this.$.source.update();
+          this.$.tree.update();
+        }, 150);
       },
       selectParentElement: function() {
         this.$.designer.selectParentElement();
       },
       deleteElement: function() {
         this.$.designer.deleteElement();
+      },
+      selectedChanged: function () {
+        // job inspector selection to avoid slowing down selection
+        // this is as opposed to simply binding element to {{selected}}
+        this.inspectJob = this.job(this.inspectJob, function () {
+          this.$.inspector.element = this.selected;
+        }, 150);
       }
     });
   </script>
