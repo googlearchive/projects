@@ -92,7 +92,6 @@ license that can be found in the LICENSE file.
         var type = this.editorTypes[m && m.kind || typeof this.property.value];
         this.editor = document.createElement(type || this.editorTypes.any);
         this.editor.property = this.property;
-        this.property.obj.bind(this.property.name, this.editor, 'liveValue');
       },
       editorChanged: function(inOld) {
         if (inOld) {
@@ -110,13 +109,13 @@ license that can be found in the LICENSE file.
       property: null,
       liveValue: null,
       propertyChanged: function() {
-        this.liveValue = this.property.value;
+        Toolkit.bindProperties(this, 'liveValue', this.property.obj, this.property.name);
+      },
+      liveValueChanged: function() {
+        this.send('property-changed');
       },
       inputChange: function(e) {
-        this.property.value
-            = this.property.obj[this.property.name]
-            = e.target.value;
-        this.send('property-changed');
+        this.liveValue = e.target.value;
       }
     });
   </script>
@@ -131,6 +130,7 @@ license that can be found in the LICENSE file.
       type: "text",
       liveValueChanged: function() {
         this.inputValue = this.liveValue;
+        this.super();
       }
     });
   </script>
@@ -182,11 +182,8 @@ license that can be found in the LICENSE file.
   <script>
     Toolkit.register(this, {
       propertyChanged: function() {
-        this.$.textarea.textContent = this.property.value;
-      },
-      inputChange: function() {
-        this.liveValue = this.$.textarea.value;
-        this.super(arguments);
+        this.super();
+        this.$.textarea.textContent = this.liveValue;
       }
     });
   </script>
