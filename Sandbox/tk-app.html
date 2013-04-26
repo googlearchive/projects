@@ -167,8 +167,16 @@ license that can be found in the LICENSE file.
           this.neo = null;
         }
       },
-      canvasDrop: function() {
+      canvasDrop: function(e) {
         // if dropped on canvas, let neo stay
+        if (this.neo) {
+          if (e.target != this.$.canvas) {
+            this.neo.style.left = null;
+            this.neo.style.top = null;
+            this.neo.style.position = null;
+          }
+          e.target.appendChild(this.neo);
+        }
         this.neo = null;
       },
       deleteElement: function() {
