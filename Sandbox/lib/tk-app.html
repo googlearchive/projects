@@ -65,13 +65,13 @@ license that can be found in the LICENSE file.
         class="left">
     </tk-designer>
     
-<!--    <tk-source
+    <tk-source
         id="source"
         class="left"
         style="display:none"
         fontSize="16px"
         element="{{$.designer.$.canvas}}">
-    </tk-source>-->
+    </tk-source>
     
     <div class="right">
       <tk-tree 
@@ -105,7 +105,7 @@ license that can be found in the LICENSE file.
       },
       designChanged: function() {
         //this.designJob = this.job(this.designJob, function () {
-          //this.$.source.update();
+          this.$.source.update();
           this.$.tree.update();
         //}, 150);
       },
