@@ -6,15 +6,14 @@ license that can be found in the LICENSE file.
 <element name="tk-designer" on-keyup="keyup" attributes="selected">
   <template>
     <style>
-      .designer-left {
+      #palette {
         position: absolute !important;
         top: 0;
         width: 264px;
         bottom: 0;
         left: 0;
-        background-color: white !important;
       }
-      .designer-middle {
+      #canvas {
         position: absolute;
         top: 0px;
         right: 0;
@@ -23,38 +22,22 @@ license that can be found in the LICENSE file.
         background-color: white;
         overflow: hidden;
       }
-      .fit {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-      .app-selected {
-        outline: dashed thin rgba(0, 98, 255, 0.4);
-        outline-offset: 1px;
+      .selected-element {
+        outline: ridge 6px rgba(72, 154, 254, 0.30);
       }
       .tab-selected {
         z-index: 100;
       }
     </style>
-    <g-sidebar class="designer-left" label="Palette">
-      <tk-palette
-          id="palette"
-          class="fit"
-          elements="{{elements}}"
-          on-palette-drag-start="paletteDragStart"
-          on-palette-drag="paletteDrag"
-          on-palette-drag-end="paletteDragEnd">
-      </tk-palette>
-    </g-sidebar>
-    <tk-canvas
-      id="canvas"
-      tabIndex="-1"
-      on-tap="canvasTap"
-      on-pointerup="canvasDrop"
-      class="designer-middle">
-    </tk-canvas>
+    <tk-palette id="palette" elements="{{elements}}"
+        on-palette-drag-start="paletteDragStart"
+        on-palette-drag="paletteDrag"
+        on-palette-drag-end="paletteDragEnd"
+    ></tk-palette>
+    <tk-canvas id="canvas" tabIndex="-1"
+        on-tap="canvasTap"
+        on-pointerup="canvasDrop"
+    ></tk-canvas>
   </template>
   <script>
     Toolkit.register(this, {
@@ -62,13 +45,12 @@ license that can be found in the LICENSE file.
       selectedTab: 'design',
       ready: function() {
         this.metadata = document
-          //.querySelector('[href$="components.html"]').content
           .querySelector('[href$="metadata.html"]').content;
         this.elements = Array.prototype.slice.call(
             this.metadata.querySelectorAll('tk-meta'));
       },
       selectedChanged: function(inOld) {
-        this.classFollows(this.selected, inOld, 'app-selected');
+        this.classFollows(this.selected, inOld, 'selected-element');
         this.canvasChange();
       },
       canvasChange: function() {
@@ -152,6 +134,7 @@ license that can be found in the LICENSE file.
         var t = event.target;
         if (t) {
           this.selected = (t === this.$.canvas ? null : t);
+          dirtyCheck();
         }
       },
       selectParentElement: function() {

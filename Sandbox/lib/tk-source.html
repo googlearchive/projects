@@ -5,7 +5,8 @@ license that can be found in the LICENSE file.
 -->
 <element name="tk-source" attributes="element fontSize">
   <template>
-    <ajaxorg-ace id="editor" mode="html" theme="merbivore" fontSize="{{fontSize}}" readonly wrap></ajaxorg-ace>
+    <ajaxorg-ace id="editor" mode="html" theme="merbivore" 
+        fontSize="{{fontSize}}" readonly wrap></ajaxorg-ace>
   </template>
   <script>
     Toolkit.register(this, {
@@ -64,7 +65,7 @@ license that can be found in the LICENSE file.
         var html = this.dump()
         html = html
           .replace(/ style="[^"]*"/g, '')
-          .replace(/( )?app-selected/g, '')
+          .replace(/( )?selected-element/g, '')
           ;
         //html = html_beautify(html);
         this.$.editor.value = html;

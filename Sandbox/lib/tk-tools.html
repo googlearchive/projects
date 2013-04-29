@@ -1,0 +1,41 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-tools" attributes="selected element">
+  <template>
+    <style>
+      #tree {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 246px;
+        left: 0;
+      }
+      #inspector {
+        position: absolute;
+        top: 246px;
+        right: 0;
+        bottom: 0;
+        left: 0px;
+      }
+    </style>
+    <tk-tree id="tree" element="{{element}}" selected="{{selected}}"></tk-tree>
+    <tk-inspector id="inspector" element="{{selected}}"></tk-inspector>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      update: function() {
+        this.$.tree.update();
+      }/*,
+      selectedChanged: function () {
+        // job inspector selection to avoid slowing down selection
+        // this is as opposed to simply binding element to {{selected}}
+        this.inspectJob = this.job(this.inspectJob, function () {
+          this.$.inspector.element = this.selected;
+        }, 150);
+      }*/
+    });
+  </script>
+</element>

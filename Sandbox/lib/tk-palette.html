@@ -5,24 +5,40 @@ license that can be found in the LICENSE file.
 -->
 <element name="tk-palette" attributes="elements" on-mousedown="mousedown">
   <template>
-      <style>
-        g-menu-item {
-          display: block;
-          padding: 10px 14px 10px 30px;
-          cursor: pointer;
-        }
-        g-menu-item.selected {
-          background-color: gray;
-        }
-        g-selector {
-          display: block;
-        }
-      </style>
-      <div touch-action="user" on-trackstart="trackStart" on-track="track" on-trackend="trackEnd">
-        <template repeat="{{elements}}">
-          <g-menu-item src="assets/ic_ribbon_labels_lightreg.png" tag="{{id}}" label="{{label}}"></g-menu-item>
-        </template>
-     </div>
+    <style>
+      #title {
+        height: 60px;
+        line-height: 60px;
+        font-size: 21px;
+        padding-left: 22px;
+        background-color: #EDEDEC;
+        border-bottom: 1px solid #C1C1C1;
+      }
+      #list {
+        border-top: 1px solid #BCBCBC;
+        background-color: #F2F2F2;
+      }
+      .item {
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 12px;
+        margin: 10px 6px 10px 10px;
+        background-color: white;
+        border: 1px solid #D3D2D2;
+        border-radius: 7px;
+      }
+    </style>
+    <div id="title">Palette</div>
+    <div id="list" 
+        touch-action="user" 
+        on-trackstart="trackStart" 
+        on-track="track" 
+        on-trackend="trackEnd">
+      <template repeat="{{elements}}">
+        <div class="item" tag="{{id}}">{{label}}</div>
+      </template>
+   </div>
   </template>
   <script>
     Toolkit.register(this, {
