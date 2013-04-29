@@ -8,10 +8,21 @@ license that can be found in the LICENSE file.
 <element name="tk-inspector" attributes="element">
   <template>
     <style>
+      @host {
+        * {
+          border: 1px solid silver;
+        }
+      }
+      #header {
+        background-color: #E0E0E0;
+        border-bottom: 1px solid silver;
+        padding-top: 4px;
+        height: 44px;
+        /*line-height: 60px;*/
+      }
       #interior {
-        border: 1px dotted gray;
         position: absolute;
-        top: 0;
+        top: 62px;
         right: 0;
         bottom: 0;
         left: 0;
@@ -19,15 +30,16 @@ license that can be found in the LICENSE file.
         overflow-x: hidden;
         overflow-y: auto;
       }
+      g-icon-button {
+        vertical-align: middle;
+      }
     </style>
-    <div id="interior">
-      <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"
-          style="vertical-align: middle;"></g-icon-button>
-      <b>{{name}}</b>
-      <g-icon-button src="assets/ic_delete_darkreg.png" on-click="deleteElement"
-          style="vertical-align: middle; float: right"></g-icon-button>
-      <hr/>
-      <div style="padding-right: 16px;">
+      <div id="header">
+        <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"></g-icon-button>
+        <b>{{name}}</b>
+        <g-icon-button src="assets/ic_delete_darkreg.png" on-click="deleteElement" style="float: right"></g-icon-button>
+      </div>
+      <div id="interior">
         <template repeat="{{properties}}">
           <tk-property-editor property="{{}}"></tk-property-editor>
         </template>
