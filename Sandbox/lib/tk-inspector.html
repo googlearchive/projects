@@ -86,6 +86,7 @@ license that can be found in the LICENSE file.
         'color': 'tk-color-property-editor',
         'text': 'tk-text-property-editor',
         'id-select': 'tk-id-select-property-editor',
+        'speech': 'tk-speech-property-editor',
         any: 'tk-string-property-editor'
       },
       propertyChanged: function() {
@@ -240,6 +241,18 @@ license that can be found in the LICENSE file.
         this.property.meta.options = o;
         this.super();
       }
+    });
+  </script>
+</element>
+
+<element name="tk-speech-property-editor" extends="tk-abstract-property-editor">
+  <template>
+    <input type="{{type}}" value="{{liveValue}}" style="width: 40%; -webkit-user-select: all; -moz-user-select: all;">
+    <speech-mic completeTranscript="{{liveValue}}" style="position: relative; top: 15px; left: -10px;"></speech-mic><br>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      type: "text"
     });
   </script>
 </element>
