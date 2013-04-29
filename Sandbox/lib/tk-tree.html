@@ -6,6 +6,12 @@ license that can be found in the LICENSE file.
 <element name="tk-tree" attributes="element selected">
   <template>
     <style>
+      #title {
+        font-size: 16px;
+        padding: 8px 0 14px;
+        border-bottom: 1px solid silver;
+        margin-bottom: 4px;
+      }
       #interior {
         border: 1px dotted gray;
         position: absolute;
@@ -25,7 +31,7 @@ license that can be found in the LICENSE file.
         font-style: italic;
         color: #804C00;
       }
-      #interior div {
+      #tree {
         display: inline-block;
       }
       .selected span {
@@ -33,11 +39,12 @@ license that can be found in the LICENSE file.
       }
     </style>
     <div id="interior" touch-action="none" on-tap="tap">
-      <strong>Components</strong>
-      <hr/>
-      <template repeat="{{components}}">
-        <div class="{{selected}}" style="padding-left: {{indent}}px"><span><b>{{name}}</b><id>{{id}}</id>{{text}}</span></div><br>
-      </template>
+      <div id="title">Components</div>
+      <div id="tree">
+        <template repeat="{{components}}">
+          <div class="{{selected}}" style="padding-left: {{indent}}px"><span><b>{{name}}</b><id>{{id}}</id>{{text}}</span></div>
+        </template>
+      </div>
     </div>
   </template>
   <script>
@@ -72,7 +79,7 @@ license that can be found in the LICENSE file.
         subtree(this.element, 0);
       },
       tap: function(e) {
-        var nodes = this.$.interior.children;
+        var nodes = this.$.tree.children;
         var selected = nodes[Toolkit.findDistributedTarget(e.target, nodes)];
         if (selected) {
           this.selected = selected.templateInstance.model.element;

@@ -21,10 +21,10 @@ license that can be found in the LICENSE file.
       }
     </style>
     <div id="interior">
-      <g-icon-button src="assets/ic_cancel_darkalt.png" on-click="deleteElement"
+      <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"
           style="vertical-align: middle;"></g-icon-button>
       <b>{{name}}</b>
-      <g-icon-button src="assets/ic_home_darkreg.png" on-click="selectParentElement"
+      <g-icon-button src="assets/ic_delete_darkreg.png" on-click="deleteElement"
           style="vertical-align: middle; float: right"></g-icon-button>
       <hr/>
       <div style="padding-right: 16px;">
@@ -58,20 +58,22 @@ license that can be found in the LICENSE file.
     <style>
       @host {
         *{
+          display: block;
           white-space: nowrap;
+          margin-bottom: 12px;
         }
       }
       .property-name {
-        display: inline-block;
-        width: 50%;
-        padding: 4px;
-        text-align: right;
         text-overflow: ellipsis;
-        vertical-align: middle;
         overflow: hidden;
+        color: #949494;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-bottom: 8px;
       }
     </style>
-    <span class="property-name">{{property.name}}: </span><content></content>
+    <div class="property-name">{{property.name}}:</div>
+    <content></content>
   </template>
   <script>
     Toolkit.register(this, {
@@ -125,7 +127,17 @@ license that can be found in the LICENSE file.
 
 <element name="tk-string-property-editor" extends="tk-abstract-property-editor">
   <template>
-    <input type="{{type}}" value="{{inputValue}}" on-change="inputChange" style="width: 40%; -webkit-user-select: all; -moz-user-select: all;"><br/>
+    <style>
+      input {
+        padding: 6px;
+        margin-left: 0;
+        width: 95%; 
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
+    <input type="{{type}}" value="{{inputValue}}" on-change="inputChange">
   </template>
   <script>
     Toolkit.register(this, {
@@ -157,6 +169,17 @@ license that can be found in the LICENSE file.
 
 <element name="tk-select-property-editor" extends="tk-abstract-property-editor">
   <template>
+    <style>
+      select {
+        padding: 6px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 95%; 
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
     <select id="select" on-change="inputChange">
       <template repeat="{{options}}">
         <option>{{}}</option>
@@ -179,7 +202,18 @@ license that can be found in the LICENSE file.
 
 <element name="tk-text-property-editor" extends="tk-abstract-property-editor">
   <template>
-    <textarea id="textarea" on-change="inputChange" cols="14" rows="10" style="overflow: auto; margin: 0; vertical-align: top;"></textarea><br/>
+    <style>
+      textarea {
+        padding: 6px;
+        margin: 0;
+        width: 95%; 
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+        overflow: auto; 
+      }
+    </style>
+    <textarea id="textarea" on-change="inputChange" Xcols="14" rows="10"></textarea>
   </template>
   <script>
     Toolkit.register(this, {
