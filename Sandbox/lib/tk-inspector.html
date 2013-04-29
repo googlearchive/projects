@@ -82,13 +82,13 @@ license that can be found in the LICENSE file.
         this.properties = [];
         if (this.element) {
           var style = this.element.style;
+          var metadata = this.$.metadata.properties;
           this.styleProps.forEach(function(name) {
-            var meta = this.$.metadata.properties[name];
             this.properties.push({
               name: name,
               value: style[name],
               obj: style,
-              meta: meta
+              meta: metadata[name]
             });
           }.bind(this));
         }
@@ -273,6 +273,16 @@ license that can be found in the LICENSE file.
 
 <element name="tk-range-property-editor" extends="tk-abstract-property-editor">
   <template>
+    <style>
+      input {
+        padding: 6px;
+        margin-left: 0;
+        width: 95%; 
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
     <input id="editor" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" step="{{property.meta.step}}"><br/>
   </template>
   <script>
