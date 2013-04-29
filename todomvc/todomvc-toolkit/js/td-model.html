@@ -1,0 +1,47 @@
+<element name="td-model">
+  <script>
+    Toolkit.register(this, {
+      publish: {
+        items: [],
+        activeCount: 0,
+        completedCount: 0
+      },
+      itemsChanged: function() {
+        var active = 0;
+        var completed = 0;
+        this.items.forEach(function(item) {
+          if (item.completed) {
+            completed += 1;
+          } else {
+            active += 1;
+          }
+        });
+        this.activeCount = active;
+        this.completedCount = completed;
+      },
+      addItem: function(inValue) {
+        this.items.push({
+          completed: false,
+          value: inValue
+        });
+      },
+      removeItem: function(inItem) {
+        var index = this.items.indexOf(inItem);
+        this.items.splice(index, 1);
+        this.itemsChanged();
+      },
+      toggleAllCompleted: function(inCompleted) {
+        this.items.forEach(function(item) {
+          item.completed = inCompleted;
+        });
+        this.itemsChanged();
+      },
+      clearCompleted: function() {
+        var active = this.items.filter(function(item) {
+          return !item.completed;
+        });
+        this.items = active;
+      }
+    });
+  </script>
+</element>
