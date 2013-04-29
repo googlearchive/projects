@@ -31,6 +31,7 @@ license that can be found in the LICENSE file.
         <template repeat="{{properties}}">
           <tk-property-editor property="{{}}"></tk-property-editor>
         </template>
+        <tk-style-inspector element="{{element}}"></tk-style-inspector>
       </div>
     </div>
   </template>
@@ -48,6 +49,37 @@ license that can be found in the LICENSE file.
       },
       selectParentElement: function() {
         this.send('parent-element');
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-style-inspector" attributes="element">
+  <template>
+    <template repeat="{{properties}}">
+      <tk-property-editor property="{{}}"></tk-property-editor>
+    </template>
+    <tk-meta id="metadata">
+      <property name="opacity" kind="range" min="0" max="1" step="0.1" defaultvalue="1"></property>
+    </tk-meta>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      styleProps: ['width', 'height', 'border', 'opacity'],
+      elementChanged: function() {
+        this.properties = [];
+        if (this.element) {
+          var style = this.element.style;
+          this.styleProps.forEach(function(name) {
+            var meta = this.$.metadata.properties[name];
+            this.properties.push({
+              name: name,
+              value: style[name],
+              obj: style,
+              meta: meta
+            });
+          }.bind(this));
+        }
       }
     });
   </script>
@@ -87,6 +119,7 @@ license that can be found in the LICENSE file.
         'text': 'tk-text-property-editor',
         'id-select': 'tk-id-select-property-editor',
         'speech': 'tk-speech-property-editor',
+        'range': 'tk-range-property-editor',
         any: 'tk-string-property-editor'
       },
       propertyChanged: function() {
@@ -221,6 +254,21 @@ license that can be found in the LICENSE file.
       propertyChanged: function() {
         this.super();
         this.$.textarea.textContent = this.liveValue;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-range-property-editor" extends="tk-abstract-property-editor">
+  <template>
+    <input id="editor" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" step="{{property.meta.step}}"><br/>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      liveValueChanged: function() {
+        if (this.liveValue === null || this.liveValue === '') {
+          this.$.editor.value = this.property.meta.defaultvalue;
+        }
       }
     });
   </script>

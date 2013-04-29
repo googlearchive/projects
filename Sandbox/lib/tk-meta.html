@@ -6,16 +6,16 @@
         return this.querySelector('template');
       },
       get properties() {
-        var ps = this.querySelectorAll('property');
         var props = {};
+        var ps = this.querySelectorAll('property');
         ps && Array.prototype.forEach.call(ps, function(p) {
-          var n = p.getAttribute('name');
-          var k = p.getAttribute('kind');
-          var o = p.getAttribute('options');
-          props[n] = {
-            kind: k,
-            options: o && o.split(',')
-          };
+          var o = {};
+          forEach(p.attributes, function(a) {
+            var v = a.value;
+            v = v.indexOf(',') > 0 ? v.split(',') : v;
+            o[a.name] = v;
+          });
+          props[o.name] = o;
         });
         return props;
       },
