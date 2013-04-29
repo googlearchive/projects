@@ -43,18 +43,22 @@ license that can be found in the LICENSE file.
       }
     </style>
     
-    <g-toolbar><g-togglebutton value="{{designMode}}"></g-togglebutton></g-toolbar>
+    <g-toolbar>
+      <g-selector selected="{{selectedMode}}">
+        <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
+        <g-icon-button name="source" src="assets/code.png"></g-icon-button>
+      </g-selector>
+      <!--<g-togglebutton value="{{designMode}}"></g-togglebutton>-->
+    </g-toolbar>
+
     <div id="main">
 
-  <!--    <g-tabs id="tabs" selected="{{selectedTabName}}">
+<!--
+      <g-tabs id="tabs" selected="{{selectedMode}}">
         <div name="designer">Design</div>
         <div name="source">Source</div>
       </g-tabs>
-    
-      <div id="mode-tool">
-        <g-togglebutton value="{{designMode}}"></g-togglebutton>
-      </div>-->
-
+-->
       <tk-designer 
           id="designer"
           selected="{{selected}}"
@@ -81,16 +85,16 @@ license that can be found in the LICENSE file.
   <script>
     Toolkit.register(this, {
       selected: null,
-      selectedTabName: '',
+      selectedMode: '',
       designMode: true,
       ready: function() {
-        this.selectedTabName = 'designer';
+        this.selectedMode = 'designer';
       },
       designModeChanged: function () {
-        this.selectedTabName = this.designMode ? "designer" : "source";
+        this.selectedMode = this.designMode ? "designer" : "source";
       },
-      selectedTabNameChanged: function(oldTabName) {
-        this.classFollows(this.$[this.selectedTabName], this.$[oldTabName], 
+      selectedModeChanged: function (oldTabName) {
+        this.classFollows(this.$[this.selectedMode], this.$[oldTabName],
           'tab-selected');
       },
       designChanged: function() {
