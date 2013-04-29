@@ -42,6 +42,7 @@
   <template>
     <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
   </template>
+  <property name="textContent" kind="speech"></property>
 </tk-meta>
 
 <tk-meta id="chart-js" label="Chart.js">
@@ -139,5 +140,17 @@
 <tk-meta id="run-pixi-run" label="Run Pixi Run">
   <template>
     <iframe style="width: 400px; height: 300px;" src="http://www.goodboydigital.com/runpixierun/"></iframe>
+  </template>
+</tk-meta>
+
+<tk-meta id="yt-video" label="Youtube">
+  <template>
+    <yt-video videoid="H1ni1lQBEXg" style="width: 400px; height: 300px;"></yt-video>
+  </template>
+</tk-meta>
+
+<tk-meta id="speech-transcript" label="Speech Transcript">
+  <template>
+    <speech-transcript style="width: 400px; height: 300px; font-size: 24px; overflow: auto;"></speech-transcript>
   </template>
 </tk-meta>
