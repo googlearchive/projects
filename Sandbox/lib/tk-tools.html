@@ -28,14 +28,7 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       update: function() {
         this.$.tree.update();
-      }/*,
-      selectedChanged: function () {
-        // job inspector selection to avoid slowing down selection
-        // this is as opposed to simply binding element to {{selected}}
-        this.inspectJob = this.job(this.inspectJob, function () {
-          this.$.inspector.element = this.selected;
-        }, 150);
-      }*/
+      }
     });
   </script>
 </element>

@@ -99,7 +99,16 @@ license that can be found in the LICENSE file.
       },
       deleteElement: function() {
         this.$.designer.deleteElement();
-      }
+      }/*,
+      // TODO(sjmiles): to enable job-effect, first remove {{selected}} 
+      // binding from `tools`, then uncomment this code
+      selectedChanged: function () {
+        // job inspector selection to avoid slowing down selection
+        // this is as opposed to simply binding element to {{selected}}
+        this.selectJob = this.job(this.selectJob, function () {
+          this.$.tools.selected = this.selected;
+        }, 150);
+      }*/
     });
   </script>
 </element>
