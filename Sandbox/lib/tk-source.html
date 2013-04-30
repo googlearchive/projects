@@ -34,7 +34,7 @@ license that can be found in the LICENSE file.
           elt = elt.nextElementSibling;
         }
       },
-      dump: function() {
+      dump: function(startIndent) {
         var html = '';
         function subtree(root, indent) {
           var e = root.firstElementChild;
@@ -49,7 +49,7 @@ license that can be found in the LICENSE file.
             html += '>';
             if (e.firstElementChild) {
               html += '\n';
-              subtree(e, indent + '    ');
+              subtree(e, indent + '  ');
               html += indent;
             } else {
               html += e.textContent;
@@ -58,7 +58,18 @@ license that can be found in the LICENSE file.
             e = e.nextElementSibling;
           }
         }
-        subtree(this.element, '');
+        subtree(this.element, startIndent || '');
+        return html;
+      },
+      dumpElement: function() {
+        var html = '<element name="user-element">\n' +
+          '  <template>\n';
+        html += this.dump('    ');
+        html += '  </template>\n' +
+          '  <script>\n' +
+          '    Toolkit.register(this);\n' +
+          '  </s' + 'cript>\n'+
+          '</element>';
         return html;
       },
       update: function() {
@@ -66,7 +77,7 @@ license that can be found in the LICENSE file.
         dirtyCheck();
         this.publishPropertiesToAttributes();
         //var html = this.element.innerHTML;
-        var html = this.dump()
+        var html = this.dumpElement();
         html = html
           .replace(/ style="[^"]*"/g, '')
           .replace(/( )?selected-element/g, '')
