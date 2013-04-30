@@ -4,86 +4,27 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <element name="tk-app" on-keyup="keyup" on-design-changed="designChanged">
+  <link rel="stylesheet" href="css/tk-app.css">
   <template>
-    <style>
-      #tabs {
-        position: absolute;
-        top: 0px;
-        padding: 4px;
-        right: 0;
-        left: 0px;
-        height: 34px;
-        background-color: white;
-        overflow: hidden;
-      }
-      #main {
-        position: absolute;
-        top: 61px;
-        right: 0;
-        bottom: 0;
-        left: 0;
-      }
-      #designer, #source {
-        position: absolute;
-        top: 0;
-        right: 350px;
-        bottom: 0;
-        left: 0;
-      }
-      #tools {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 350px;
-        overflow: auto;
-      }
-      .tab-selected {
-        z-index: 100;
-      }
-    </style>
-    
     <g-toolbar>
       <g-selector selected="{{selectedMode}}">
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
       </g-selector>
-      <!--<g-togglebutton value="{{designMode}}"></g-togglebutton>-->
     </g-toolbar>
-
     <div id="main">
-
-<!--
-      <g-tabs id="tabs" selected="{{selectedMode}}">
-        <div name="designer">Design</div>
-        <div name="source">Source</div>
-      </g-tabs>
--->
-      <tk-designer 
-          id="designer"
-          selected="{{selected}}"
-      ></tk-designer>
-    
-      <tk-source 
-          id="source"
-          fontSize="18px"
-          element="{{$.designer.$.canvas}}"
-      ></tk-source>
-    
-      <tk-tools 
-          id="tools" 
-          selected="{{selected}}"
-          element="{{$.designer.$.canvas}}"
+      <tk-designer id="designer" selected="{{selected}}" element="{{element}}"></tk-designer>
+      <tk-source id="source" fontSize="18px" element="{{element}}"></tk-source> 
+      <tk-tools id="tools" selected="{{selected}}" element="{{element}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
           on-property-changed="designChanged"
       ></tk-tools>
-
     </div>
   </template>
-  
   <script>
     Toolkit.register(this, {
+      element: null,
       selected: null,
       selectedMode: '',
       designMode: true,
@@ -91,34 +32,23 @@ license that can be found in the LICENSE file.
         this.selectedMode = 'designer';
       },
       designModeChanged: function () {
-        this.selectedMode = this.designMode ? "designer" : "source";
+        this.selectedMode = this.designMode ? 'designer' : 'source';
       },
       selectedModeChanged: function (oldTabName) {
         this.classFollows(this.$[this.selectedMode], this.$[oldTabName],
           'tab-selected');
       },
       designChanged: function() {
-        //this.designJob = this.job(this.designJob, function () {
-          this.$.source.update();
-          this.$.tools.update();
-          this.$.designer.update();
-        //}, 150);
+        this.$.source.update();
+        this.$.tools.update();
+        this.$.designer.update();
       },
       selectParentElement: function() {
         this.$.designer.selectParentElement();
       },
       deleteElement: function() {
         this.$.designer.deleteElement();
-      }/*,
-      // TODO(sjmiles): to enable job-effect, first remove {{selected}} 
-      // binding from `tools`, then uncomment this code
-      selectedChanged: function () {
-        // job inspector selection to avoid slowing down selection
-        // this is as opposed to simply binding element to {{selected}}
-        this.selectJob = this.job(this.selectJob, function () {
-          this.$.tools.selected = this.selected;
-        }, 150);
-      }*/
+      }
     });
   </script>
 </element>

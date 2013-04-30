@@ -6,12 +6,12 @@
 
 (function() {
 
-function reflect(element, name) {
+function reflect(element, name, meta) {
   return {
     obj: element,
     name: name,
     value: element[name],
-    meta: element.meta && element.meta.properties[name]
+    meta: meta && meta[name]
   };
 }
 
@@ -55,18 +55,32 @@ function reflectProperties(element) {
       more.push('textContent');
     }
     more.push('id');
+    //
+    var meta = element.meta && element.meta.properties;
     more.forEach(function(k) {
       var v = element[k];
       if (typeof v !== 'function' && typeof v !== 'object') {
-        props.push(reflect(element, k));
+        props.push(reflect(element, k, meta));
       }
     });
   }
   return props;
 }
 
+function reflectStyles(element, meta) {
+  var props = [];
+  if (element) {
+    var style = element.style;
+    Object.keys(meta).forEach(function(name) {
+      props.push(reflect(style, name, meta));
+    });
+  }
+  return props;
+}
+
 window.Reflection = {
-  properties: reflectProperties
+  properties: reflectProperties,
+  styles: reflectStyles
 };
 
 })();

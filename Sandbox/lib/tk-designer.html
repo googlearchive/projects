@@ -3,7 +3,7 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-designer" on-keyup="keyup" attributes="selected">
+<element name="tk-designer" on-keyup="keyup" attributes="element selected">
   <template>
     <style>
       #palette {
@@ -45,18 +45,17 @@ license that can be found in the LICENSE file.
     <tk-canvas id="canvas" tabIndex="-1"
         on-tap="canvasTap"
         on-pointerup="canvasDrop"
-        designElement="{{$.designElement}}"
     ><tk-element id="designElement"></tk-element></tk-canvas>
+    <tk-meta id="meta"></tk-meta>
   </template>
   <script>
     Toolkit.register(this, {
+      element: null,
       selected: null,
       selectedTab: 'design',
       ready: function() {
-        this.metadata = document
-          .querySelector('[href$="metadata.html"]').content;
-        this.elements = Array.prototype.slice.call(
-            this.metadata.querySelectorAll('tk-meta'));
+        this.elements = this.$.meta.list;
+        this.element = this.$.canvas;
       },
       selectedChanged: function(inOld) {
         this.classFollows(this.selected, inOld, 'selected-element');
@@ -66,19 +65,18 @@ license that can be found in the LICENSE file.
         this.send('design-changed');
       },
       createNew: function(tag) {
-        var meta = this.metadata.querySelector('#' + tag);
+        var meta = this.$.meta.byId(tag);
         var neo = meta.createElement();
         neo.id = this.makeUniqueId(tag.replace(/^g-/, ''));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
+        // meta-data attached here
         neo.meta = meta;
         this.$.designElement.appendChild(neo);
         this.neo = neo;
       },
       update: function() {
-        Toolkit.marshalNodeReferences.call(this.$.designElement, this.$.designElement);
-        Toolkit.bindModel.call(this.$.designElement, this.$.designElement);
-        // TODO(sorvell): events...
+        this.$.designElement.update();
       },
       makeUniqueId: function(id, suffix) {
         var uId = id + (suffix || '');

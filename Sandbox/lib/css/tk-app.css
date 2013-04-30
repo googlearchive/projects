@@ -1,0 +1,45 @@
+/*
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+*/
+
+#tabs {
+  position: absolute;
+  top: 0px;
+  padding: 4px;
+  right: 0;
+  left: 0px;
+  height: 34px;
+  background-color: white;
+  overflow: hidden;
+}
+
+#main {
+  position: absolute;
+  top: 61px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+#designer, #source {
+  position: absolute;
+  top: 0;
+  right: 350px;
+  bottom: 0;
+  left: 0;
+}
+
+#tools {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 350px;
+  overflow: auto;
+}
+
+.tab-selected {
+  z-index: 100;
+}

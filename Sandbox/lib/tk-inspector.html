@@ -71,27 +71,19 @@ license that can be found in the LICENSE file.
     <template repeat="{{properties}}">
       <tk-property-editor property="{{}}"></tk-property-editor>
     </template>
-    <tk-meta id="metadata">
+    <tk-meta id="meta">
+      <property name="backgroundColor" kind="color"></property>
       <property name="opacity" kind="range" min="0" max="1" step="0.1" defaultvalue="1"></property>
+      <property name="border"></property>
+      <property name="width"></property>
+      <property name="height"></property>
     </tk-meta>
   </template>
   <script>
     Toolkit.register(this, {
-      styleProps: ['width', 'height', 'border', 'opacity'],
+      properties: null,
       elementChanged: function() {
-        this.properties = [];
-        if (this.element) {
-          var style = this.element.style;
-          var metadata = this.$.metadata.properties;
-          this.styleProps.forEach(function(name) {
-            this.properties.push({
-              name: name,
-              value: style[name],
-              obj: style,
-              meta: metadata[name]
-            });
-          }.bind(this));
-        }
+        this.properties = Reflection.styles(this.element, this.$.meta.properties);
       }
     });
   </script>

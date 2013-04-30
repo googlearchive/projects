@@ -5,14 +5,17 @@ license that can be found in the LICENSE file.
 -->
 <element name="tk-element">
   <script>
-    // TODO(sorvell): this may go away... it's just a simple element with 
-    // some test stuff on the prototype...
     Toolkit.register(this, {
       test: 'Test!!',
       selected: 1,
       tap: function() {
         console.log('Tap!!!');
-      }
+      },
+      update: function() {
+        Toolkit.marshalNodeReferences.call(this, this);
+        Toolkit.bindModel.call(this, this);
+        // TODO(sorvell): events...
+     }
     })
   </script>  
 </element>

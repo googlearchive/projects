@@ -1,8 +1,21 @@
 <element name="tk-meta" attributes="label isContainer isHidden">
   <script>
+    var metaData = {}, metaArray = [];
     Toolkit.register(this, {
       isContainer: false,
       isHidden: false,
+      ready: function() {
+        if (this.id && this.id !== 'meta') {
+          metaData[this.id] = this;
+          metaArray.push(this);
+        }
+      },
+      get list() {
+        return metaArray;
+      },
+      byId: function(id) {
+        return metaData[id];
+      },
       get archetype() {
         return this.querySelector('template');
       },

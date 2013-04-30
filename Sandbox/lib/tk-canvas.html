@@ -4,7 +4,7 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <element name="tk-canvas" on-pointerup="up" on-trackstart="trackStart" 
-         on-track="track" on-trackend="trackEnd" attributes="designElement">
+         on-track="track" on-trackend="trackEnd">
   <template>
     <style>
       @host {
@@ -28,7 +28,9 @@ license that can be found in the LICENSE file.
   <script>
     Toolkit.register(this, {
       grid: 10,
-      designElement: null,
+      ready: function() {
+        this.designElement = this.firstElementChild;
+      },
       snap: function(inX, inY) {
         return {
           x: Math.round(inX / this.grid) * this.grid,
