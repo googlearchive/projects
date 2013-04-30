@@ -3,7 +3,8 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-canvas" on-pointerup="up" on-trackstart="trackStart" on-track="track" on-trackend="trackEnd">
+<element name="tk-canvas" on-pointerup="up" on-trackstart="trackStart" 
+         on-track="track" on-trackend="trackEnd" attributes="designElement">
   <template>
     <style>
       @host {
@@ -27,6 +28,7 @@ license that can be found in the LICENSE file.
   <script>
     Toolkit.register(this, {
       grid: 10,
+      designElement: null,
       snap: function(inX, inY) {
         return {
           x: Math.round(inX / this.grid) * this.grid,
@@ -35,10 +37,10 @@ license that can be found in the LICENSE file.
       },
       trackStart: function(event) {
         var elt = event.target;
-        while (elt && elt.parentNode && elt.parentNode !== this && elt !== this) {
+        while (elt && elt.parentNode && elt.parentNode !== this.designElement && elt !== this.designElement) {
           elt = elt.parentNode;
         }
-        if (elt === this) {
+        if (elt === this.designElement) {
           elt = null;
         }
         this.tracking = elt;

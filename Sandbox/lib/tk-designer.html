@@ -22,6 +22,13 @@ license that can be found in the LICENSE file.
         background-color: white;
         overflow: hidden;
       }
+      #designElement {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
       .selected-element {
         outline: solid 12px rgba(72, 154, 254, 0.30);
         outline-offset: -10px;
@@ -38,7 +45,8 @@ license that can be found in the LICENSE file.
     <tk-canvas id="canvas" tabIndex="-1"
         on-tap="canvasTap"
         on-pointerup="canvasDrop"
-    ></tk-canvas>
+        designElement="{{$.designElement}}"
+    ><tk-element id="designElement"></tk-element></tk-canvas>
   </template>
   <script>
     Toolkit.register(this, {
@@ -64,8 +72,13 @@ license that can be found in the LICENSE file.
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
         neo.meta = meta;
-        this.$.canvas.appendChild(neo);
+        this.$.designElement.appendChild(neo);
         this.neo = neo;
+      },
+      update: function() {
+        Toolkit.marshalNodeReferences.call(this.$.designElement, this.$.designElement);
+        Toolkit.bindModel.call(this.$.designElement, this.$.designElement);
+        // TODO(sorvell): events...
       },
       makeUniqueId: function(id, suffix) {
         var uId = id + (suffix || '');
@@ -74,10 +87,10 @@ license that can be found in the LICENSE file.
           uId;
       },
       paletteDragStart: function(event, detail) {
-        var rect = this.getBoundingClientRect();
+       var rect = this.$.designElement.getBoundingClientRect();
         this.origin = {
-          x: rect.left + this.$.canvas.offsetLeft,
-          y: rect.top + this.$.canvas.offsetTop
+          x: rect.left,
+          y: rect.top
         };
         this.dragType = detail;
         this.createNew(detail);
