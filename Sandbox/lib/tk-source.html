@@ -17,6 +17,10 @@ license that can be found in the LICENSE file.
           if (p$) {
             Object.keys(p$).forEach(function(n) {
               var v = elt[n];
+              // don't replace bindings
+              if (elt.hasAttribute(n) && elt.getAttribute(n).match(Toolkit.bindPattern)) {
+                return;
+              }
               if (v && (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean')) {
                 /*if (typeof v === 'boolean') {
                   v = n;

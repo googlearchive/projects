@@ -186,11 +186,69 @@ license that can be found in the LICENSE file.
     <input type="{{type}}" value="{{inputValue}}" on-change="inputChange">
   </template>
   <script>
+    // TODO(sorvell): promote to toolkit and integrate with Element.unbind
+    Toolkit.unbindProperty = function(inA, inProperty) {
+      Object.defineProperty(inA, inProperty, {
+        value: inA[inProperty],
+        enumerable: true,
+        writable: true,
+        configurable: true
+      });
+    }
+    
     Toolkit.register(this, {
       type: "text",
+      propertyChanged: function() {
+        // if bound, the inspector should reflect binding value (attribute),
+        // not the property value
+        var bindingValue = this.getBindingValue();
+        if (bindingValue && bindingValue.match(Toolkit.bindPattern)) {
+          this.liveValue = bindingValue;
+        } else {
+          this.super();
+        }
+      },
       liveValueChanged: function() {
+        if (String(this.liveValue).match(Toolkit.bindPattern)) {
+          // unbind inspector from object.
+          Toolkit.unbindProperty(this, 'liveValue');
+          this.setBindingValue(this.liveValue);
+          this.send('property-changed');
+        // if there was a binding, unbind object property
+        } else {
+          var attrValue = this.getBindingValue();
+          if (attrValue && attrValue.match(Toolkit.bindPattern)) {
+            // unbind... 
+            this.property.obj.unbind(this.property.name);
+            // TODO(sorvell): remove when element.unbind unbinds correctly 
+            // for property bindings
+            Toolkit.unbindProperty(this.property.obj, this.property.name);
+            // set value ex post facto to handle inability set textContent
+            // when unbinding
+            this.property.obj[this.property.name] = this.liveValue;
+            this.setBindingValue(null);
+            // rebind liveValue
+            this.propertyChanged();
+          }
+        }
         this.inputValue = this.liveValue;
         this.super();
+      },
+      getBindingValue: function() {
+        return (this.property.obj.__bindings && 
+          this.property.obj.__bindings[this.property.name]) ||
+          (this.property.obj.getAttribute && 
+          this.property.obj.getAttribute(this.property.name));
+      },
+      setBindingValue: function(value) {
+        this.property.obj.__bindings = this.property.obj.__bindings || {};
+        this.property.obj.__bindings[this.property.name] = value;
+        if (value) {
+          this.property.obj.setAttribute(this.property.name, value);
+        } else {
+          this.property.obj.removeAttribute(this.property.name);
+        }
+        
       }
     });
   </script>
