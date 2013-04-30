@@ -130,6 +130,7 @@ license that can be found in the LICENSE file.
         'color': 'tk-color-property-editor',
         'text': 'tk-text-property-editor',
         'id-select': 'tk-id-select-property-editor',
+        'target-select': 'tk-target-select-property-editor',
         'speech': 'tk-speech-property-editor',
         'range': 'tk-range-property-editor',
         any: 'tk-string-property-editor'
@@ -357,6 +358,7 @@ license that can be found in the LICENSE file.
 <element name="tk-id-select-property-editor" extends="tk-select-property-editor">  
   <script>
     Toolkit.register(this, {
+      idPrefix: '',
       propertyChanged: function() {
         var o = [];
         var p = this.property.obj.parentNode;
@@ -364,11 +366,19 @@ license that can be found in the LICENSE file.
           p = p.parentNode;
         }
         Array.prototype.forEach.call(p.querySelectorAll('[id]'), function(n) {
-          o.push(n.id);
-        });
+          o.push(this.idPrefix + n.id);
+        }, this);
         this.property.meta.options = o;
         this.super();
       }
+    });
+  </script>
+</element>
+
+<element name="tk-target-select-property-editor" extends="tk-id-select-property-editor">
+  <script>
+    Toolkit.register(this, {
+      idPrefix: '#'
     });
   </script>
 </element>
