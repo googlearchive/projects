@@ -184,7 +184,7 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <input type="{{type}}" value="{{inputValue}}" on-change="inputChange">
+    <input id="input" type="{{type}}" value="{{inputValue}}" on-change="inputChange">
   </template>
   <script>
     // TODO(sorvell): promote to toolkit and integrate with Element.unbind
@@ -249,7 +249,6 @@ license that can be found in the LICENSE file.
         } else {
           this.property.obj.removeAttribute(this.property.name);
         }
-        
       }
     });
   </script>
@@ -258,7 +257,12 @@ license that can be found in the LICENSE file.
 <element name="tk-color-property-editor" extends="tk-string-property-editor">
   <script>
     Toolkit.register(this, {
-      type: 'color'
+      type: 'color',
+      ready: function() {
+        // TODO(dfreedm): Workaround for http://crbug.com/234801, colorpicker
+        // does not update swatch when in shadowdom because of focus issues
+        this.$.input.tabindex = -1;
+      }
     });
   </script>
 </element>
