@@ -38,6 +38,11 @@ license that can be found in the LICENSE file.
         border: 1px solid #D3D2D2;
         border-radius: 5px;
       }
+      [ishidden=true] {
+        display: none;
+      }
+      
+      
     </style>
     <!--<div id="title">Palette</div>-->
     <div id="list" 
@@ -46,7 +51,7 @@ license that can be found in the LICENSE file.
         on-track="track" 
         on-trackend="trackEnd">
       <template repeat="{{elements}}">
-        <div class="item" tag="{{id}}">{{label}}</div>
+        <div class="item" tag="{{id}}" ishidden="{{isHidden}}">{{label}}</div>
       </template>
    </div>
   </template>

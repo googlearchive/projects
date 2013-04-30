@@ -1,7 +1,8 @@
-<element name="tk-meta" attributes="label isContainer">
+<element name="tk-meta" attributes="label isContainer isHidden">
   <script>
     Toolkit.register(this, {
       isContainer: false,
+      isHidden: false,
       get archetype() {
         return this.querySelector('template');
       },
