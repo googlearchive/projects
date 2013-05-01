@@ -14,6 +14,9 @@ license that can be found in the LICENSE file.
       },
       inputChange: function(e) {
         this.liveValue = e.target.value;
+        this.firePropertyChanged();
+      },
+      firePropertyChanged: function() {
         this.send('property-changed');
       },
       focus: function() {
@@ -93,7 +96,7 @@ license that can be found in the LICENSE file.
 
 <element name="tk-boolean-editor" extends="tk-abstract-editor">
   <template>
-    <input id="input" type="checkbox" checked="{{liveValue}}" on-change="inputChange">
+    <input id="input" type="checkbox" checked="{{liveValue}}" on-change="firePropertyChanged">
   </template>
   <script>
     Toolkit.register(this);
