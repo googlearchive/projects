@@ -217,6 +217,11 @@
   overflow: hidden;
 }
 
+.column .source {
+  position: relative;
+  padding: 20px 0;
+}
+
 .column #more {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
