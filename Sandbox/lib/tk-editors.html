@@ -12,11 +12,6 @@ license that can be found in the LICENSE file.
         Toolkit.bindProperties(this, 'liveValue', this.property.obj, 
           this.property.name);
       },
-      liveValueChanged: function() {
-        if (this.liveValue !== this.property.obj[this.property.name]) {
-          //this.send('property-changed');
-        }
-      },
       inputChange: function(e) {
         this.liveValue = e.target.value;
         this.send('property-changed');
@@ -57,7 +52,6 @@ license that can be found in the LICENSE file.
       type: "text",
       liveValueChanged: function() {
         this.inputValue = this.liveValue;
-        this.super();
       }
     });
   </script>
