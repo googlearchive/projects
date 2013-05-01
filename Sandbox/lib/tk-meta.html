@@ -1,3 +1,8 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
 <element name="tk-meta" attributes="label isContainer isHidden list">
   <script>
     var metaData = {}, metaArray = [];
@@ -10,8 +15,16 @@
       },
       idChanged: function(inOld) {
         if (this.id && this.id !== 'meta') {
+          this.unregister(this, inOld);
           metaData[this.id] = this;
           metaArray.push(this);
+        }
+      },
+      unregister: function(meta, id) {
+        delete metaData[id || meta.id];
+        var i = metaArray.indexOf(meta);
+        if (i >= 0) {
+          metaArray.splice(i, 1);
         }
       },
       get list() {
