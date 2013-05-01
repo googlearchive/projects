@@ -1,10 +1,15 @@
-<element name="tk-meta" attributes="label isContainer isHidden">
+<element name="tk-meta" attributes="label isContainer isHidden list">
   <script>
     var metaData = {}, metaArray = [];
     Toolkit.register(this, {
       isContainer: false,
       isHidden: false,
       ready: function() {
+        this.idChanged();
+        this.archetype = this.querySelector('template');
+        this.updateProperties();
+      },
+      idChanged: function(inOld) {
         if (this.id && this.id !== 'meta') {
           metaData[this.id] = this;
           metaArray.push(this);
@@ -16,10 +21,7 @@
       byId: function(id) {
         return metaData[id];
       },
-      get archetype() {
-        return this.querySelector('template');
-      },
-      get properties() {
+      updateProperties: function() {
         var props = {};
         var ps = this.querySelectorAll('property');
         ps && Array.prototype.forEach.call(ps, function(p) {
@@ -31,7 +33,7 @@
           });
           props[o.name] = o;
         });
-        return props;
+        this.properties = props;
       },
       createElement: function() {
         if (this.archetype) {

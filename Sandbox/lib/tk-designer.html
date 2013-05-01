@@ -46,7 +46,7 @@ license that can be found in the LICENSE file.
         on-tap="canvasTap"
         on-pointerup="canvasDrop"
     ><tk-element id="designElement"></tk-element></tk-canvas>
-    <tk-meta id="meta"></tk-meta>
+    <tk-meta id="meta" list="{{elements}}"></tk-meta>
   </template>
   <script>
     Toolkit.register(this, {
@@ -54,7 +54,6 @@ license that can be found in the LICENSE file.
       selected: null,
       selectedTab: 'design',
       ready: function() {
-        this.elements = this.$.meta.list;
         this.element = this.$.canvas;
       },
       selectedChanged: function(inOld) {
