@@ -34,7 +34,7 @@ license that can be found in the LICENSE file.
           elt = elt.nextElementSibling;
         }
       },
-      dump: function(startIndent) {
+      dump: function(element, startIndent) {
         var html = '';
         function subtree(root, indent) {
           var e = root.firstElementChild;
@@ -58,13 +58,41 @@ license that can be found in the LICENSE file.
             e = e.nextElementSibling;
           }
         }
-        subtree(this.element, startIndent || '');
+        subtree(element || this.element, startIndent || '');
         return html;
       },
+      dumpStyle: function(element, startIndent) {
+        var css = startIndent + '<style>\n', tab = '  ';
+        function subtree(root, indent) {
+          var e = root.firstElementChild;
+          while (e) {
+            var parts = e.hasAttribute('style') ? 
+              e.getAttribute('style').split(';') : null;
+            if (parts && e.id) {
+              css += indent + '#' + e.id + ' {\n';
+              parts.forEach(function(p) {
+                if (p) {
+                  css += indent + tab + p.trim() + ';\n';
+                }
+              });
+              css += indent + '}' + '\n';
+            }
+            if (e.firstElementChild) {
+              subtree(e, indent);
+            }
+            e = e.nextElementSibling;
+          }
+        }
+        subtree(element || this.element, (startIndent || '') + tab);
+        css += startIndent + '</style>\n';
+        return css;
+      },
       dumpElement: function() {
+        var elt = this.element.firstElementChild;
         var html = '<element name="user-element">\n' +
           '  <template>\n';
-        html += this.dump('    ');
+        html += this.dumpStyle(elt, '    ');
+        html += this.dump(elt, '    ');
         html += '  </template>\n' +
           '  <script>\n' +
           '    Toolkit.register(this);\n' +
