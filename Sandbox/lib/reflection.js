@@ -15,7 +15,7 @@ function reflect(element, name, meta) {
   };
 }
 
-function reflectProperty(element, name) {
+function reflectProperty(element, name, meta) {
   var v = element[name];
   if (v !== null
       && v !== undefined
@@ -23,7 +23,7 @@ function reflectProperty(element, name) {
       && typeof v !== 'object'
       //&& element.propertyIsEnumerable(k)
       && !reflectProperty.blacklist[name]) {
-    var prop = reflect(element, name);
+    var prop = reflect(element, name, meta);
   }
   return prop;
 }
@@ -35,13 +35,14 @@ function reflectProperties(element) {
   if (element) {
     var found = {};
     var p = element.__proto__;
+    var meta = element.meta && element.meta.properties;
     while (p && p !== HTMLElement.prototype/*&& p.isToolkitElement*/) {
       var k = Object.keys(p);
       k.forEach(function(k) {
         if (found[k]) {
           return;
         }
-        var prop = reflectProperty(element, k);
+        var prop = reflectProperty(element, k, meta);
         if (prop) {
           props.push(prop);
           found[k] = true;
@@ -55,8 +56,6 @@ function reflectProperties(element) {
       more.push('textContent');
     }
     more.push('id');
-    //
-    var meta = element.meta && element.meta.properties;
     more.forEach(function(k) {
       var v = element[k];
       if (typeof v !== 'function' && typeof v !== 'object') {
