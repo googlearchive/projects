@@ -114,15 +114,23 @@ license that can be found in the LICENSE file.
         display: inline-block;
         width: 92%;
       }
+      #icon {
+        opacity: 0.3;
+        vertical-align: middle;
+      }
+      #icon.bound {
+        opacity: 1;
+      }
     </style>
     <div class="property-name">{{property.name}}:</div>
-    <div id="container"><content></content><tk-string-editor id="binder" hidden></tk-string-editor></div><g-icon src="assets/link.png" size="16" on-click="linkTap"></g-icon>
+    <div id="container"><content></content><tk-string-editor id="binder"></tk-string-editor></div><g-icon id="icon" src="assets/link_dark.png" size="16" on-click="linkTap"></g-icon>
     <g-flip id="flip" targetSelector="#container" on-complete="flipComplete"></g-flip>
   </template>
   <script>
     Toolkit.register(this, {
       property: null,
       editor: null,
+      active: null,
       bound: null,
       editorTypes: {
         'boolean': 'tk-boolean-editor',
@@ -144,6 +152,13 @@ license that can be found in the LICENSE file.
         var type = this.editorTypes[m && m.kind || typeof this.property.value] || (m && m.kind);
         this.editor = document.createElement(type || this.editorTypes.any);
         this.editor.property = this.property;
+        //
+        var bindingProperty = document.createElement('tk-binding-property');
+        bindingProperty.property = this.property;
+        this.$.binder.property = bindingProperty;
+        // really hide the binder
+        this.$.binder.style.display = 'none';
+        this.active = this.editor;
       },
       editorChanged: function(inOld) {
         if (inOld) {
@@ -160,9 +175,95 @@ license that can be found in the LICENSE file.
         this.bound = !this.bound;
       },
       boundChanged: function() {
-        this.editor.style.display = this.bound ? 'none' : null;
-        this.$.binder.style.display = !this.bound ? 'none' : null;
+        this.active = this.bound ? this.$.binder : this.editor;
+        this.$.icon.classList.toggle('bound', this.bound);
+      },
+      activeChanged: function(oldValue) {
+        if (oldValue) {
+          oldValue.style.display = 'none';
+        }
+        this.active.style.display = null;
+        this.active.focus();
       }
     });
+  </script>
+</element>
+
+<!-- manager for binding properties -->
+<element name="tk-binding-property" attributes="property value">
+  <script>
+    Toolkit.register(this, {
+      name: 'value',
+      value: null,
+      obj: null,
+      meta: null,
+      model: null,
+      ready: function() {
+        this.obj = this;
+      },
+      propertyChanged: function() {
+        this.meta = this.property.meta;
+        this.value = calcBoundValue(this.property.obj, this.property.name);
+      },
+      valueChanged: function(oldValue) {
+        if (oldValue === null) {
+          return;
+        }
+        if (isBound(oldValue)) {
+          removeBinding(this.property.obj, this.property.name);
+        }
+        if (isBound(this.value)) {
+          makeBinding(this.property.obj, this.property.name, this.value);
+        }
+      }
+    });
+    
+    // TODO(sorvell): promote to toolkit and integrate with Element.unbind
+    Toolkit.unbindProperty = function(inA, inProperty) {
+      Object.defineProperty(inA, inProperty, {
+        value: inA[inProperty],
+        enumerable: true,
+        writable: true,
+        configurable: true
+      });
+    }
+    function isBound(value) {
+      return value.match(Toolkit.bindPattern);
+    }
+    function calcBoundValue(obj, name) {
+      value = '';
+      if (obj.__bindings && obj.__bindings[name]) {
+        value = obj.__bindings[name];
+      } else if (obj.hasAttribute && obj.hasAttribute(name)) {
+        var attr = obj.getAttribute(name);
+        if (isBound(attr)) {
+          value = attr;
+        }
+      }
+      return value;
+    }
+    // NOTE: store binding info on the object so we can tell
+    // if the object has a binding.
+    function makeBinding(obj, name, value) {
+      obj.__bindings = obj.__bindings || {};
+      obj.__bindings[name] = value;
+      obj.setAttribute(name, value);
+      // for textContent
+      obj[name] = value;
+      //obj.bind(name, model, value);
+      // TODO(sorvell): apply binding here? need access to model to do so...
+    }
+    function removeBinding(obj, name) {
+      obj.__bindings = obj.__bindings || {};
+      obj.__bindings[name] = null;
+      obj.removeAttribute(name);
+      // TODO(sorvell): shouldn't unbind here and bind elsewhere!
+      obj.unbind(name);
+      // TODO(sorvell): remove when toolkit supports unbind for special bindings
+      Toolkit.unbindProperty(obj, name);
+      // set value ex post facto to handle inability set textContent
+      // when unbinding
+      obj[name] = obj[name];
+    }
   </script>
 </element>
