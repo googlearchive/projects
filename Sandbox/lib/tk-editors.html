@@ -14,11 +14,17 @@ license that can be found in the LICENSE file.
       },
       liveValueChanged: function() {
         if (this.liveValue !== this.property.obj[this.property.name]) {
-          this.send('property-changed');
+          //this.send('property-changed');
         }
       },
       inputChange: function(e) {
         this.liveValue = e.target.value;
+        this.send('property-changed');
+      },
+      focus: function() {
+        if (this.$.input) {
+          this.$.input.focus();
+        }
       }
     });
   </script>
@@ -47,67 +53,11 @@ license that can be found in the LICENSE file.
     <input id="input" type="{{type}}" value="{{inputValue}}" on-change="inputChange">
   </template>
   <script>
-    // TODO(sorvell): promote to toolkit and integrate with Element.unbind
-    Toolkit.unbindProperty = function(inA, inProperty) {
-      Object.defineProperty(inA, inProperty, {
-        value: inA[inProperty],
-        enumerable: true,
-        writable: true,
-        configurable: true
-      });
-    }
     Toolkit.register(this, {
       type: "text",
-      propertyChanged: function() {
-        // if bound, the inspector should reflect binding value (attribute),
-        // not the property value
-        var bindingValue = this.getBindingValue();
-        if (bindingValue && bindingValue.match(Toolkit.bindPattern)) {
-          this.liveValue = bindingValue;
-        } else {
-          this.super();
-        }
-      },
       liveValueChanged: function() {
-        if (String(this.liveValue).match(Toolkit.bindPattern)) {
-          // unbind inspector from object.
-          Toolkit.unbindProperty(this, 'liveValue');
-          this.setBindingValue(this.liveValue);
-          this.send('property-changed');
-        // if there was a binding, unbind object property
-        } else {
-          var attrValue = this.getBindingValue();
-          if (attrValue && attrValue.match(Toolkit.bindPattern)) {
-            // unbind... 
-            this.property.obj.unbind(this.property.name);
-            // TODO(sorvell): remove when element.unbind unbinds correctly 
-            // for property bindings
-            Toolkit.unbindProperty(this.property.obj, this.property.name);
-            // set value ex post facto to handle inability set textContent
-            // when unbinding
-            this.property.obj[this.property.name] = this.liveValue;
-            this.setBindingValue(null);
-            // rebind liveValue
-            this.propertyChanged();
-          }
-        }
         this.inputValue = this.liveValue;
         this.super();
-      },
-      getBindingValue: function() {
-        return (this.property.obj.__bindings && 
-          this.property.obj.__bindings[this.property.name]) ||
-          (this.property.obj.getAttribute && 
-          this.property.obj.getAttribute(this.property.name));
-      },
-      setBindingValue: function(value) {
-        this.property.obj.__bindings = this.property.obj.__bindings || {};
-        this.property.obj.__bindings[this.property.name] = value;
-        if (value) {
-          this.property.obj.setAttribute(this.property.name, value);
-        } else {
-          this.property.obj.removeAttribute(this.property.name);
-        }
       }
     });
   </script>
@@ -149,7 +99,7 @@ license that can be found in the LICENSE file.
 
 <element name="tk-boolean-editor" extends="tk-abstract-editor">
   <template>
-    <input type="checkbox" checked="{{liveValue}}">
+    <input id="input" type="checkbox" checked="{{liveValue}}" on-change="inputChange">
   </template>
   <script>
     Toolkit.register(this);
@@ -191,6 +141,9 @@ license that can be found in the LICENSE file.
         this.asyncMethod(function() {
           this.$.select.value = this.liveValue;
         });
+      },
+      focus: function() {
+        this.$.select.focus();
       }
     });
   </script>
@@ -210,13 +163,13 @@ license that can be found in the LICENSE file.
         vertical-align: middle;
       }
     </style>
-    <textarea id="textarea" on-change="inputChange" rows="10"></textarea>
+    <textarea id="input" on-change="inputChange" rows="10"></textarea>
   </template>
   <script>
     Toolkit.register(this, {
       propertyChanged: function() {
         this.super();
-        this.$.textarea.textContent = this.liveValue;
+        this.$.input.textContent = this.liveValue;
       }
     });
   </script>
@@ -243,13 +196,14 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <input id="editor" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" step="{{property.meta.step}}">
+    <input id="input" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" 
+           step="{{property.meta.step}}" on-change="inputChange">
   </template>
   <script>
     Toolkit.register(this, {
       liveValueChanged: function() {
         if (this.liveValue === null || this.liveValue === '') {
-          this.$.editor.value = this.property.meta.defaultvalue;
+          this.$.input.value = this.property.meta.defaultvalue;
         }
       }
     });
@@ -290,14 +244,12 @@ license that can be found in the LICENSE file.
   </script>
 </element>
 
-<element name="tk-speech-editor" extends="tk-abstract-editor">
-  <template>
-    <input type="{{type}}" value="{{liveValue}}" style="width: 40%; -webkit-user-select: all; -moz-user-select: all;">
-    <speech-mic completeTranscript="{{liveValue}}" style="position: relative; top: 15px; left: -10px;"></speech-mic>
-  </template>
+<element name="tk-speech-editor" extends="tk-string-editor">
   <script>
     Toolkit.register(this, {
-      type: "text"
+      ready: function() {
+        this.$.input.setAttribute('x-webkit-speech');
+      }
     });
   </script>
 </element>
