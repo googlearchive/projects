@@ -34,18 +34,18 @@ license that can be found in the LICENSE file.
         vertical-align: middle;
       }
     </style>
-      <div id="header">
-        <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"></g-icon-button>
-        <b>{{name}}</b>
-        <g-icon-button src="assets/ic_delete_darkreg.png" on-click="deleteElement" style="float: right"></g-icon-button>
-      </div>
-      <div id="interior">
-        <template repeat="{{properties}}">
-          <tk-property-editor property="{{}}"></tk-property-editor>
-        </template>
-        <tk-style-inspector element="{{element}}"></tk-style-inspector>
-      </div>
+    <div id="header">
+      <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"></g-icon-button>
+      <b>{{name}}</b>
+      <g-icon-button src="assets/ic_delete_darkreg.png" on-click="deleteElement" style="float: right"></g-icon-button>
     </div>
+    <div id="interior">
+      <template repeat="{{properties}}">
+        <tk-property-editor property="{{}}"></tk-property-editor>
+      </template>
+      <tk-style-inspector element="{{element}}"></tk-style-inspector>
+    </div>
+    <tk-meta id="meta"></tk-meta>
   </template>
   <script>
     Toolkit.register(this, {
@@ -53,6 +53,8 @@ license that can be found in the LICENSE file.
       properties: null,
       name: '',
       elementChanged: function() {
+        // meta-data attached here
+        this.element.meta = this.$.meta.byId(this.element.localName);
         this.properties = Reflection.properties(this.element);
         this.name = this.element && this.element.localName || '';
       },
