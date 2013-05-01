@@ -67,7 +67,7 @@ license that can be found in the LICENSE file.
       createNew: function(tag) {
         var meta = this.$.meta.byId(tag);
         var neo = meta.createElement();
-        neo.id = this.makeUniqueId(tag.replace(/^g-/, ''));
+        neo.id = this.makeUniqueId(tag.replace(/^g-/, '').replace('-', '_'));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
         // meta-data attached here
