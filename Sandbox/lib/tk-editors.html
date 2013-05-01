@@ -1,0 +1,317 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-abstract-editor">
+  <script>
+    Toolkit.register(this, {
+      property: null,
+      liveValue: null,
+      propertyChanged: function() {
+        Toolkit.bindProperties(this, 'liveValue', this.property.obj, 
+          this.property.name);
+      },
+      liveValueChanged: function() {
+        if (this.liveValue !== this.property.obj[this.property.name]) {
+          this.send('property-changed');
+        }
+      },
+      inputChange: function(e) {
+        this.liveValue = e.target.value;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-string-editor" extends="tk-abstract-editor">
+  <template>
+    <style>
+      @host {
+        * {
+          display: inline-block;
+          width: 95%;
+          position: relative;
+        }
+      }
+      input {
+        padding: 6px;
+        margin-left: 0;
+        width: 100%; 
+        box-sizing: border-box;
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
+    <input id="input" type="{{type}}" value="{{inputValue}}" on-change="inputChange">
+  </template>
+  <script>
+    // TODO(sorvell): promote to toolkit and integrate with Element.unbind
+    Toolkit.unbindProperty = function(inA, inProperty) {
+      Object.defineProperty(inA, inProperty, {
+        value: inA[inProperty],
+        enumerable: true,
+        writable: true,
+        configurable: true
+      });
+    }
+    Toolkit.register(this, {
+      type: "text",
+      propertyChanged: function() {
+        // if bound, the inspector should reflect binding value (attribute),
+        // not the property value
+        var bindingValue = this.getBindingValue();
+        if (bindingValue && bindingValue.match(Toolkit.bindPattern)) {
+          this.liveValue = bindingValue;
+        } else {
+          this.super();
+        }
+      },
+      liveValueChanged: function() {
+        if (String(this.liveValue).match(Toolkit.bindPattern)) {
+          // unbind inspector from object.
+          Toolkit.unbindProperty(this, 'liveValue');
+          this.setBindingValue(this.liveValue);
+          this.send('property-changed');
+        // if there was a binding, unbind object property
+        } else {
+          var attrValue = this.getBindingValue();
+          if (attrValue && attrValue.match(Toolkit.bindPattern)) {
+            // unbind... 
+            this.property.obj.unbind(this.property.name);
+            // TODO(sorvell): remove when element.unbind unbinds correctly 
+            // for property bindings
+            Toolkit.unbindProperty(this.property.obj, this.property.name);
+            // set value ex post facto to handle inability set textContent
+            // when unbinding
+            this.property.obj[this.property.name] = this.liveValue;
+            this.setBindingValue(null);
+            // rebind liveValue
+            this.propertyChanged();
+          }
+        }
+        this.inputValue = this.liveValue;
+        this.super();
+      },
+      getBindingValue: function() {
+        return (this.property.obj.__bindings && 
+          this.property.obj.__bindings[this.property.name]) ||
+          (this.property.obj.getAttribute && 
+          this.property.obj.getAttribute(this.property.name));
+      },
+      setBindingValue: function(value) {
+        this.property.obj.__bindings = this.property.obj.__bindings || {};
+        this.property.obj.__bindings[this.property.name] = value;
+        if (value) {
+          this.property.obj.setAttribute(this.property.name, value);
+        } else {
+          this.property.obj.removeAttribute(this.property.name);
+        }
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-color-editor" extends="tk-string-editor">
+  <script>
+    Toolkit.register(this, {
+      type: 'color',
+      ready: function() {
+        // box-sizing: border-box doesn't play nice with color type inputs
+        this.$.input.style.boxSizing = 'content-box';
+        this.$.input.style.width = '95%';
+        this.$.input.style.padding = '5px';
+        // TODO(dfreedm): Workaround for http://crbug.com/234801, colorpicker
+        // does not update swatch when in shadowdom because of focus issues
+        this.$.input.tabindex = -1;
+      },
+      liveValueChanged: function() {
+        this.inputValue = this.toHex(this.liveValue);
+      },
+      toHex: function(color) {
+        if (!color || color.substr(0, 1) === "#") {
+          return color;
+        }
+        var nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
+            r = parseInt(nums[2], 10).toString(16),
+            g = parseInt(nums[3], 10).toString(16),
+            b = parseInt(nums[4], 10).toString(16);
+        return "#"+ (
+            (r.length == 1 ? r + "0" : r) +
+            (g.length == 1 ? g + "0" : g) +
+            (b.length == 1 ? b + "0" : b)
+        );
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-boolean-editor" extends="tk-abstract-editor">
+  <template>
+    <input type="checkbox" checked="{{liveValue}}">
+  </template>
+  <script>
+    Toolkit.register(this);
+  </script>
+</element>
+
+<element name="tk-select-editor" extends="tk-abstract-editor" attributes="options">
+  <template>
+    <style>
+      @host {
+        * {
+          display: inline-block;
+          width: 95%;
+          position: relative;
+        }
+      }
+      select {
+        padding: 6px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%; 
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
+    <select id="select" on-change="inputChange">
+      <template repeat="{{options}}">
+        <option>{{}}</option>
+      </template>
+    </select>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      propertyChanged: function() {
+        this.options = this.property.meta.options;
+        this.super();
+        // allow template to generate options before setting value
+        this.asyncMethod(function() {
+          this.$.select.value = this.liveValue;
+        });
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-text-editor" extends="tk-abstract-editor">
+  <template>
+    <style>
+      textarea {
+        padding: 6px;
+        margin: 0;
+        width: 95%; 
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+        overflow: auto; 
+        vertical-align: middle;
+      }
+    </style>
+    <textarea id="textarea" on-change="inputChange" rows="10"></textarea>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      propertyChanged: function() {
+        this.super();
+        this.$.textarea.textContent = this.liveValue;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-range-editor" extends="tk-abstract-editor">
+  <template>
+    <style>
+      @host {
+        * {
+          display: inline-block;
+          width: 95%;
+          position: relative;
+        }
+      }
+      input {
+        padding: 7px 6px 8px;
+        margin: 0;
+        width: 95%; 
+        box-sizing: border-box;
+        vertical-align: middle;
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
+    <input id="editor" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" step="{{property.meta.step}}">
+  </template>
+  <script>
+    Toolkit.register(this, {
+      liveValueChanged: function() {
+        if (this.liveValue === null || this.liveValue === '') {
+          this.$.editor.value = this.property.meta.defaultvalue;
+        }
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-id-select-editor" extends="tk-select-editor">  
+  <script>
+    Toolkit.register(this, {
+      idPrefix: '',
+      root: null,
+      propertyChanged: function() {
+        this.root = this.property.obj.parentNode;
+        this.super();
+      },
+      rootChanged: function() {
+        var o = [];
+        var p = this.root;
+        if (p) {
+          while (p.parentNode && p.localName !== 'tk-canvas') {
+            p = p.parentNode;
+          }
+          Array.prototype.forEach.call(p.querySelectorAll('[id]'), function(n) {
+            o.push(this.idPrefix + n.id);
+          }, this);
+        }
+        this.options = o;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-target-select-editor" extends="tk-id-select-editor">
+  <script>
+    Toolkit.register(this, {
+      idPrefix: '#'
+    });
+  </script>
+</element>
+
+<element name="tk-speech-editor" extends="tk-abstract-editor">
+  <template>
+    <input type="{{type}}" value="{{liveValue}}" style="width: 40%; -webkit-user-select: all; -moz-user-select: all;">
+    <speech-mic completeTranscript="{{liveValue}}" style="position: relative; top: 15px; left: -10px;"></speech-mic>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      type: "text"
+    });
+  </script>
+</element>
+
+<element name="tk-compound-editor" extends="tk-abstract-editor">
+  <template>
+    <tk-string-editor style="width: 90px;"></tk-string-editor>
+    <tk-select-editor style="width: 70px;" options="{{options}}"></tk-select-editor>
+    <tk-range-editor style="width: 100px;"></tk-range-editor>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      options: ['px', 'pt', '%', 'em', 'rem', '']
+    });
+  </script>
+</element>
+

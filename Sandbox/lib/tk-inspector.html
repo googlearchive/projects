@@ -77,6 +77,7 @@ license that can be found in the LICENSE file.
       <property name="border"></property>
       <property name="width"></property>
       <property name="height"></property>
+      <property name="test" kind="tk-compound-editor"></property>
     </tk-meta>
   </template>
   <script>
@@ -107,29 +108,38 @@ license that can be found in the LICENSE file.
         font-weight: bold;
         margin-bottom: 8px;
       }
+      #container {
+        display: inline-block;
+        width: 92%;
+      }
     </style>
     <div class="property-name">{{property.name}}:</div>
-    <content></content>
+    <div id="container"><content></content><tk-string-editor id="binder" hidden></tk-string-editor></div><g-icon src="assets/link.png" size="16" on-click="linkTap"></g-icon>
+    <g-flip id="flip" targetSelector="#container" on-complete="flipComplete"></g-flip>
   </template>
   <script>
     Toolkit.register(this, {
       property: null,
       editor: null,
+      bound: null,
       editorTypes: {
-        'boolean': 'tk-boolean-property-editor',
-        'string': 'tk-string-property-editor',
-        'select': 'tk-select-property-editor',
-        'color': 'tk-color-property-editor',
-        'text': 'tk-text-property-editor',
-        'id-select': 'tk-id-select-property-editor',
-        'target-select': 'tk-target-select-property-editor',
-        'speech': 'tk-speech-property-editor',
-        'range': 'tk-range-property-editor',
-        any: 'tk-string-property-editor'
+        'boolean': 'tk-boolean-editor',
+        'string': 'tk-string-editor',
+        'select': 'tk-select-editor',
+        'color': 'tk-color-editor',
+        'text': 'tk-text-editor',
+        'id-select': 'tk-id-select-editor',
+        'target-select': 'tk-target-select-editor',
+        'speech': 'tk-speech-editor',
+        'range': 'tk-range-editor',
+        any: 'tk-string-editor'
+      },
+      ready: function() {
+        this.bound = false;
       },
       propertyChanged: function() {
         var m = this.property.meta;
-        var type = this.editorTypes[m && m.kind || typeof this.property.value];
+        var type = this.editorTypes[m && m.kind || typeof this.property.value] || (m && m.kind);
         this.editor = document.createElement(type || this.editorTypes.any);
         this.editor.property = this.property;
       },
@@ -138,272 +148,19 @@ license that can be found in the LICENSE file.
           inOld.parentNode.removeChild(inOld);
         }
         this.appendChild(this.editor);
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-abstract-property-editor">
-  <script>
-    Toolkit.register(this, {
-      property: null,
-      liveValue: null,
-      propertyChanged: function() {
-        Toolkit.bindProperties(this, 'liveValue', this.property.obj, 
-          this.property.name);
+        //this.$.flip.target = this.editor;
+        //this.$.flip.targetSelector = ".property-name";
       },
-      liveValueChanged: function() {
-        if (this.liveValue !== this.property.obj[this.property.name]) {
-          this.send('property-changed');
-        }
+      linkTap: function() {
+        this.$.flip.play();
       },
-      inputChange: function(e) {
-        this.liveValue = e.target.value;
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-string-property-editor" extends="tk-abstract-property-editor">
-  <template>
-    <style>
-      input {
-        padding: 6px;
-        margin-left: 0;
-        width: 95%; 
-        -webkit-user-select: all; 
-        -moz-user-select: all;
-        user-select: all;
-      }
-    </style>
-    <input id="input" type="{{type}}" value="{{inputValue}}" on-change="inputChange">
-  </template>
-  <script>
-    // TODO(sorvell): promote to toolkit and integrate with Element.unbind
-    Toolkit.unbindProperty = function(inA, inProperty) {
-      Object.defineProperty(inA, inProperty, {
-        value: inA[inProperty],
-        enumerable: true,
-        writable: true,
-        configurable: true
-      });
-    }
-    
-    Toolkit.register(this, {
-      type: "text",
-      propertyChanged: function() {
-        // if bound, the inspector should reflect binding value (attribute),
-        // not the property value
-        var bindingValue = this.getBindingValue();
-        if (bindingValue && bindingValue.match(Toolkit.bindPattern)) {
-          this.liveValue = bindingValue;
-        } else {
-          this.super();
-        }
+      flipComplete: function() {
+        this.bound = !this.bound;
       },
-      liveValueChanged: function() {
-        if (String(this.liveValue).match(Toolkit.bindPattern)) {
-          // unbind inspector from object.
-          Toolkit.unbindProperty(this, 'liveValue');
-          this.setBindingValue(this.liveValue);
-          this.send('property-changed');
-        // if there was a binding, unbind object property
-        } else {
-          var attrValue = this.getBindingValue();
-          if (attrValue && attrValue.match(Toolkit.bindPattern)) {
-            // unbind... 
-            this.property.obj.unbind(this.property.name);
-            // TODO(sorvell): remove when element.unbind unbinds correctly 
-            // for property bindings
-            Toolkit.unbindProperty(this.property.obj, this.property.name);
-            // set value ex post facto to handle inability set textContent
-            // when unbinding
-            this.property.obj[this.property.name] = this.liveValue;
-            this.setBindingValue(null);
-            // rebind liveValue
-            this.propertyChanged();
-          }
-        }
-        this.inputValue = this.liveValue;
-        this.super();
-      },
-      getBindingValue: function() {
-        return (this.property.obj.__bindings && 
-          this.property.obj.__bindings[this.property.name]) ||
-          (this.property.obj.getAttribute && 
-          this.property.obj.getAttribute(this.property.name));
-      },
-      setBindingValue: function(value) {
-        this.property.obj.__bindings = this.property.obj.__bindings || {};
-        this.property.obj.__bindings[this.property.name] = value;
-        if (value) {
-          this.property.obj.setAttribute(this.property.name, value);
-        } else {
-          this.property.obj.removeAttribute(this.property.name);
-        }
+      boundChanged: function() {
+        this.editor.style.display = this.bound ? 'none' : null;
+        this.$.binder.style.display = !this.bound ? 'none' : null;
       }
-    });
-  </script>
-</element>
-
-<element name="tk-color-property-editor" extends="tk-string-property-editor">
-  <script>
-    Toolkit.register(this, {
-      type: 'color',
-      ready: function() {
-        // TODO(dfreedm): Workaround for http://crbug.com/234801, colorpicker
-        // does not update swatch when in shadowdom because of focus issues
-        this.$.input.tabindex = -1;
-      },
-      liveValueChanged: function() {
-        this.inputValue = this.toHex(this.liveValue);
-      },
-      toHex: function(color) {
-        if (!color || color.substr(0, 1) === "#") {
-          return color;
-        }
-        var nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
-            r = parseInt(nums[2], 10).toString(16),
-            g = parseInt(nums[3], 10).toString(16),
-            b = parseInt(nums[4], 10).toString(16);
-        return "#"+ (
-            (r.length == 1 ? r + "0" : r) +
-            (g.length == 1 ? g + "0" : g) +
-            (b.length == 1 ? b + "0" : b)
-        );
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-boolean-property-editor" extends="tk-abstract-property-editor">
-  <template>
-    <input type="checkbox" checked="{{liveValue}}"><br/>
-  </template>
-  <script>
-    Toolkit.register(this);
-  </script>
-</element>
-
-<element name="tk-select-property-editor" extends="tk-abstract-property-editor">
-  <template>
-    <style>
-      select {
-        padding: 6px;
-        margin-left: 0;
-        margin-right: 0;
-        width: 95%; 
-        -webkit-user-select: all; 
-        -moz-user-select: all;
-        user-select: all;
-      }
-    </style>
-    <select id="select" on-change="inputChange">
-      <template repeat="{{options}}">
-        <option>{{}}</option>
-      </template>
-    </select><br/>
-  </template>
-  <script>
-    Toolkit.register(this, {
-      propertyChanged: function() {
-        this.options = this.property.meta.options;
-        this.super();
-        // allow template to generate options before setting value
-        this.asyncMethod(function() {
-          this.$.select.value = this.liveValue;
-        });
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-text-property-editor" extends="tk-abstract-property-editor">
-  <template>
-    <style>
-      textarea {
-        padding: 6px;
-        margin: 0;
-        width: 95%; 
-        -webkit-user-select: all; 
-        -moz-user-select: all;
-        user-select: all;
-        overflow: auto; 
-      }
-    </style>
-    <textarea id="textarea" on-change="inputChange" Xcols="14" rows="10"></textarea>
-  </template>
-  <script>
-    Toolkit.register(this, {
-      propertyChanged: function() {
-        this.super();
-        this.$.textarea.textContent = this.liveValue;
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-range-property-editor" extends="tk-abstract-property-editor">
-  <template>
-    <style>
-      input {
-        padding: 6px;
-        margin-left: 0;
-        width: 95%; 
-        -webkit-user-select: all; 
-        -moz-user-select: all;
-        user-select: all;
-      }
-    </style>
-    <input id="editor" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" step="{{property.meta.step}}"><br/>
-  </template>
-  <script>
-    Toolkit.register(this, {
-      liveValueChanged: function() {
-        if (this.liveValue === null || this.liveValue === '') {
-          this.$.editor.value = this.property.meta.defaultvalue;
-        }
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-id-select-property-editor" extends="tk-select-property-editor">  
-  <script>
-    Toolkit.register(this, {
-      idPrefix: '',
-      propertyChanged: function() {
-        var o = [];
-        var p = this.property.obj.parentNode;
-        while (p.parentNode && p.localName !== 'tk-canvas') {
-          p = p.parentNode;
-        }
-        Array.prototype.forEach.call(p.querySelectorAll('[id]'), function(n) {
-          o.push(this.idPrefix + n.id);
-        }, this);
-        this.property.meta.options = o;
-        this.super();
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-target-select-property-editor" extends="tk-id-select-property-editor">
-  <script>
-    Toolkit.register(this, {
-      idPrefix: '#'
-    });
-  </script>
-</element>
-
-<element name="tk-speech-property-editor" extends="tk-abstract-property-editor">
-  <template>
-    <input type="{{type}}" value="{{liveValue}}" style="width: 40%; -webkit-user-select: all; -moz-user-select: all;">
-    <speech-mic completeTranscript="{{liveValue}}" style="position: relative; top: 15px; left: -10px;"></speech-mic><br>
-  </template>
-  <script>
-    Toolkit.register(this, {
-      type: "text"
     });
   </script>
 </element>
