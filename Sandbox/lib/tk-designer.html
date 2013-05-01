@@ -69,8 +69,6 @@ license that can be found in the LICENSE file.
         neo.id = this.makeUniqueId(tag.replace(/^g-/, '').replace('-', '_'));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
-        // meta-data attached here
-        neo.meta = meta;
         this.$.designElement.appendChild(neo);
         this.neo = neo;
       },
