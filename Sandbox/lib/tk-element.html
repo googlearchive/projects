@@ -15,7 +15,35 @@ license that can be found in the LICENSE file.
         Toolkit.marshalNodeReferences.call(this, this);
         Toolkit.bindModel.call(this, this);
         // TODO(sorvell): events...
-     }
-    })
+      },
+      publishElement: function() {
+        this.register();
+        this.createMeta();
+      },
+      // TODO(sorvell): put dumping code here...
+      dump: function() {
+        return app.$.source.$.editor.editor.getValue();
+      },
+      register: function() {
+        this.elementDefinition = new HTMLElementElement(
+          elementFromHTML(this.dump()));
+      },
+      createMeta: function() {
+        this.meta = document.createElement('tk-meta');
+        var tag = this.elementDefinition.getAttribute('name');
+        this.meta.id = tag;
+        this.meta.label = "User Element";
+        var template = document.createElement('template');
+        template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
+          'height: 300px;"></' + tag + '>';
+        this.meta.appendChild(template);
+      }
+    });
+    
+    function elementFromHTML(html) {
+      var d = document.createElement('div');
+      d.innerHTML = html;
+      return d.querySelector('element');
+    }
   </script>  
 </element>
