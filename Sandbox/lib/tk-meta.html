@@ -6,7 +6,6 @@
       isHidden: false,
       ready: function() {
         this.idChanged();
-        this.archetype = this.querySelector('template');
         this.updateProperties();
       },
       idChanged: function(inOld) {
@@ -17,6 +16,9 @@
       },
       get list() {
         return metaArray;
+      },
+      get archetype() {
+        return this.querySelector('template');
       },
       byId: function(id) {
         return metaData[id];
