@@ -146,6 +146,7 @@ license that can be found in the LICENSE file.
       },
       propertyChanged: function() {
         var m = this.property.meta;
+        console.log(this.property, this.property.meta);
         var type = this.editorTypes[m && m.kind || typeof this.property.value] || (m && m.kind);
         this.editor = document.createElement(type || this.editorTypes.any);
         this.editor.property = this.property;

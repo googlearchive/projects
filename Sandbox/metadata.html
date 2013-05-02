@@ -74,7 +74,7 @@
   <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
-<tk-meta id="animation" label="Animation">
+<tk-meta id="animation-picker" label="Animation">
   <template>
     <animation-picker style="border: 1px dotted silver; padding: 8px"></animation-picker>
   </template>
@@ -82,23 +82,29 @@
   <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
-<!--
-<tk-meta id="g-flip-out" label="Flip Out" isContainer>
-  <template>
-    <g-animation-group type="par" style="border: 1px dotted silver; padding: 8px">
-      ParGroup
-      <g-flip duration="0.7" style="border: 1px dotted silver; padding: 8px;">Flip</g-flip>
-      <g-animation duration="0.5" startOffset="0.5" easing="ease-out" style="border: 1px dotted silver; padding: 8px">
-        Fade Out
-        <g-property name="opacity">
-          <g-keyframe value="1"></g-keyframe>
-          <g-keyframe value="0"></g-keyframe>
-        </g-property>
-      </g-animation>
-    </g-animation-group>
-  </template>
+<tk-meta id="g-blink" isHidden>
+  <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
-//-->
+
+<tk-meta id="g-bounce" isHidden>
+  <property name="targetSelector" kind="target-select"></property>
+</tk-meta>
+
+<tk-meta id="g-fadein" isHidden>
+  <property name="targetSelector" kind="target-select"></property>
+</tk-meta>
+
+<tk-meta id="g-fadeout" isHidden>
+  <property name="targetSelector" kind="target-select"></property>
+</tk-meta>
+
+<tk-meta id="g-flip" isHidden>
+  <property name="targetSelector" kind="target-select"></property>
+</tk-meta>
+
+<tk-meta id="g-shake" isHidden>
+  <property name="targetSelector" kind="target-select"></property>
+</tk-meta>
 
 <tk-meta id="x-stock" label="Stock">
   <template>
