@@ -41,14 +41,13 @@ license that can be found in the LICENSE file.
       [ishidden=true] {
         display: none;
       }
-      
-      
+
     </style>
     <!--<div id="title">Palette</div>-->
-    <div id="list" 
-        touch-action="user" 
-        on-trackstart="trackStart" 
-        on-track="track" 
+    <div id="list"
+        touch-action="pan-y"
+        on-trackstart="trackStart"
+        on-track="track"
         on-trackend="trackEnd">
       <template repeat="{{elements}}">
         <div class="item" tag="{{id}}" ishidden="{{isHidden}}">{{label}}</div>
