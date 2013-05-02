@@ -57,6 +57,10 @@ license that can be found in the LICENSE file.
         this.element = this.$.canvas;
       },
       selectedChanged: function(inOld) {
+        if (this.selected) {
+          // meta-data attached here
+          this.selected.meta = this.$.meta.byId(this.selected.localName);
+        }
         this.classFollows(this.selected, inOld, 'selected-element');
         this.canvasChange();
       },

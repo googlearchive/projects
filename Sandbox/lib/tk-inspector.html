@@ -45,7 +45,6 @@ license that can be found in the LICENSE file.
       </template>
       <tk-style-inspector element="{{element}}"></tk-style-inspector>
     </div>
-    <tk-meta id="meta"></tk-meta>
   </template>
   <script>
     Toolkit.register(this, {
@@ -53,8 +52,6 @@ license that can be found in the LICENSE file.
       properties: null,
       name: '',
       elementChanged: function() {
-        // meta-data attached here
-        this.element.meta = this.$.meta.byId(this.element.localName);
         this.properties = Reflection.properties(this.element);
         this.name = this.element && this.element.localName || '';
       },
