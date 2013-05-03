@@ -209,20 +209,18 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <input id="input" type="range" value="{{workingValue}}" min="{{min}}" max="{{max}}" step="{{step}}" on-change="inputChange">
+    <input id="input" type="range" value="{{workingValue}}" min="{{min}}" max="{{max}}" step="{{step}}" on-change="commit">
   </template>
   <script>
     Toolkit.register(this, {
+      meta: null,
       metaChanged: function() {
         if (this.meta) {
           this.min = this.meta.min;
           this.max = this.meta.max;
           this.step = this.meta.step;
-          this.defaultValue = this.meta.defaultValue;
+          this.defaultValue = this.meta.defaultvalue;
         }
-      },
-      valueChanged: function() {
-        this.workingValue = this.value;
       },
       workingValueChanged: function() {
         if (this.workingValue === null || this.workingValue === '') {
