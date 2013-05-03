@@ -59,7 +59,7 @@ license that can be found in the LICENSE file.
         var html = indent + '<element name="' + this.elementName +'">\n' +
           indent + tab + '<template>\n';
         html += indent + dumpStyle(this, indent + tab + tab, tab);
-        Array.prototype.forEach.call(this.childNodes, function(c) {
+        Array.prototype.forEach.call(this.children, function(c) {
           html += dumpTag(c, indent + tab + tab);
         });
         html += indent + tab + '</template>\n' +
@@ -71,6 +71,10 @@ license that can be found in the LICENSE file.
         html = html
           .replace(/ style="[^"]*"/g, '')
           .replace(/( )?selected-element/g, '')
+          // TODO(sorvell): need a better way to remove empty class and 
+          // selected class...
+          .replace(/( )?class=""/g, '')
+          .replace(/( )? class="selected"/g, '')
           ;
         return html;
       },

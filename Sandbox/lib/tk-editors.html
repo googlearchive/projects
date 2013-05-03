@@ -71,7 +71,7 @@ license that can be found in the LICENSE file.
         this.$.input.tabindex = -1;
       },
       format: function(value) {
-        return this.toHex(value);
+        return toHex(value);
       }
     });
     function toHex(color) {
@@ -93,10 +93,15 @@ license that can be found in the LICENSE file.
 
 <element name="tk-boolean-editor" extends="tk-abstract-editor">
   <template>
-    <input id="input" type="checkbox" checked="{{workingValue}}" on-change="commit">
+    <input id="input" type="checkbox" checked="{{workingValue}}" on-change="inputChange">
   </template>
   <script>
-    Toolkit.register(this);
+    Toolkit.register(this, {
+      inputChange: function(event) {
+        this.workingValue = event.target.checked;
+        this.commit();
+      }
+    });
   </script>
 </element>
 
