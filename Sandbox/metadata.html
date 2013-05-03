@@ -151,14 +151,30 @@
   </template>
 </tk-meta>
 
-<tk-meta id="yt-video" label="Youtube">
+<tk-meta id="yt-search-video" label="Youtube">
   <template>
-    <yt-video videoid="H1ni1lQBEXg" style="width: 400px; height: 300px;"></yt-video>
+    <yt-search-video query="chrome commercial" style="width: 400px; height: 300px;"></yt-search-video>
   </template>
 </tk-meta>
 
 <tk-meta id="speech-transcript" label="Speech Transcript">
   <template>
-    <speech-transcript style="width: 400px; height: 300px; font-size: 24px; overflow: auto;"></speech-transcript>
+    <speech-transcript style="width: 300px; height: 140px; font-size: 24px; overflow: auto; padding: 4px; background: white; border: 1px solid #ddd;"></speech-transcript>
+  </template>
+</tk-meta>
+
+<tk-meta id="input" label="Speech Input">
+  <template>
+    <input x-webkit-speech style="height: 20px; padding: 4px;" />
+  </template>
+  <property name="value"></property>
+</tk-meta>
+
+<tk-meta id="pi-app" label="Pica">
+  <template>
+    <pi-app></pi-app>
+  </template>
+  <template id="imports">
+    <link rel="import" href="../../projects/pica/components/pi-app.html">
   </template>
 </tk-meta>
