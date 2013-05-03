@@ -10,8 +10,16 @@
       },
       idChanged: function(inOld) {
         if (this.id && this.id !== 'meta') {
+          this.unregister(this, inOld);
           metaData[this.id] = this;
           metaArray.push(this);
+        }
+      },
+      unregister: function(meta, id) {
+        delete metaData[id || meta.id];
+        var i = metaArray.indexOf(meta);
+        if (i >= 0) {
+          metaArray.splice(i, 1);
         }
       },
       get list() {
@@ -38,10 +46,25 @@
         this.properties = props;
       },
       createElement: function() {
+        this.loadImports();
         if (this.archetype) {
           return this.archetype.createInstance().querySelector('*');
         } else {
           return document.createElement(this.id);
+        }
+      },
+      loadImports: function() {
+        var t = this.querySelector('#imports');
+        if (t) {
+          var links = t.content.querySelectorAll('link');
+          Array.prototype.forEach.call(links, function(link) {
+            if (!link.content) {
+              // FIXME(ffu): HTMLImports should provide an API to parse link directly
+              HTMLImports.load(t.content, function() {
+                CustomElements.parser.parse(link.content);
+              });
+            }
+          });
         }
       }
     });
