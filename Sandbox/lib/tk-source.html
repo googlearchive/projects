@@ -5,115 +5,52 @@ license that can be found in the LICENSE file.
 -->
 <element name="tk-source" attributes="element fontSize">
   <template>
-    <ajaxorg-ace id="editor" mode="html" theme="chrome" 
+    <ajaxorg-ace id="editor" mode="html" theme="chrome" tabSize="2"
         fontSize="{{fontSize}}" readonly wrap></ajaxorg-ace>
   </template>
   <script>
     Toolkit.register(this, {
-      publishPropertiesToAttributes: function() {
-        var elt = this.element.firstElementChild;
-        while (elt) {
-          var p$ = elt.__published;
-          if (p$) {
-            Object.keys(p$).forEach(function(n) {
-              var v = elt[n];
-              // don't replace bindings
-              if (elt.hasAttribute(n) && elt.getAttribute(n).match(Toolkit.bindPattern)) {
-                return;
-              }
-              if (v && (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean')) {
-                /*if (typeof v === 'boolean') {
-                  v = n;
-                }*/
-                elt.setAttribute(n, v);
-              } else {
-                elt.removeAttribute(n);
-              }
-            });
-          }
-          elt = elt.nextElementSibling;
-        }
-      },
-      dump: function(element, startIndent) {
-        var html = '';
-        function subtree(root, indent) {
-          var e = root.firstElementChild;
-          while (e) {
-            html += indent + '<' + e.localName;
-            for (var i=0, a; (a = e.attributes[i]); i++) {
-              if (a.name !== 'class' || a.value != '') {
-                html += ' ' + a.name + 
-                    (a.value != '' ? '="' + a.value + '"': '');
-              }
-            }
-            html += '>';
-            if (e.firstElementChild) {
-              html += '\n';
-              subtree(e, indent + '  ');
-              html += indent;
-            } else {
-              html += e.textContent;
-            }
-            html += '</' + e.localName + '>\n';
-            e = e.nextElementSibling;
-          }
-        }
-        subtree(element || this.element, startIndent || '');
-        return html;
-      },
-      dumpStyle: function(element, startIndent) {
-        var css = startIndent + '<style>\n', tab = '  ';
-        function subtree(root, indent) {
-          var e = root.firstElementChild;
-          while (e) {
-            var parts = e.hasAttribute('style') ? 
-              e.getAttribute('style').split(';') : null;
-            if (parts && e.id) {
-              css += indent + '#' + e.id + ' {\n';
-              parts.forEach(function(p) {
-                if (p) {
-                  css += indent + tab + p.trim() + ';\n';
-                }
-              });
-              css += indent + '}' + '\n';
-            }
-            if (e.firstElementChild) {
-              subtree(e, indent);
-            }
-            e = e.nextElementSibling;
-          }
-        }
-        subtree(element || this.element, (startIndent || '') + tab);
-        css += startIndent + '</style>\n';
-        return css;
-      },
-      dumpElement: function() {
-        var elt = this.element.firstElementChild;
-        var html = '<element name="user-element">\n' +
-          '  <template>\n';
-        html += this.dumpStyle(elt, '    ');
-        html += this.dump(elt, '    ');
-        html += '  </template>\n' +
-          '  <script>\n' +
-          '    Toolkit.register(this);\n' +
-          '  </s' + 'cript>\n'+
-          '</element>';
-        return html;
-      },
       update: function() {
         // force components to update before dumping source
         dirtyCheck();
-        this.publishPropertiesToAttributes();
-        //var html = this.element.innerHTML;
-        var html = this.dumpElement();
-        html = html
-          .replace(/ style="[^"]*"/g, '')
-          .replace(/( )?selected-element/g, '')
-          ;
-        //html = html_beautify(html);
-        this.$.editor.value = html;
-        //console.log(html);
+        // given async effects a chance to apply to dom.
+        this.asyncMethod('_update');
+      },
+      _update: function() {
+        this.$.editor.value = dumpTag(this.element.firstElementChild, '');
+        //this.$.editor.foldTag('style');
       }
     });
+    
+    var TAB = '  ';
+    function dumpTag(e, indent) {
+      if (e.dumpTag) {
+        return e.dumpTag(dumpTag, indent, TAB);
+      }
+      if (e.nodeType == Node.TEXT_NODE) {
+        return e.textContent;
+      }
+      var html = '';
+      html += indent + '<' + e.localName;
+      for (var i=0, a; (a = e.attributes[i]); i++) {
+        if (a.name !== 'class' || a.value != '') {
+          html += ' ' + a.name + (a.value != '' ? '="' + a.value + '"': '');
+        }
+      }
+      html += '>';
+      var end = '</' + e.localName + '>\n';
+      if (e.firstElementChild) {
+        Array.prototype.forEach.call(e.children, function(c, i) {
+          if (i == 0) {
+            html += '\n';
+          }
+          html += dumpTag(c, indent + TAB);
+        });
+        html += indent + end;
+      } else {
+        html += e.textContent + end;
+      }
+      return html;
+    }
   </script>
 </element>

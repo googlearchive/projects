@@ -8,9 +8,8 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       test: 'Test!!',
       selected: 1,
-      tap: function() {
-        console.log('Tap!!!');
-      },
+      elementName: 'user-element',
+      elementLabel: 'User Element',
       update: function() {
         Toolkit.marshalNodeReferences.call(this, this);
         Toolkit.bindModel.call(this, this);
@@ -20,19 +19,15 @@ license that can be found in the LICENSE file.
         this.register();
         this.createMeta();
       },
-      // TODO(sorvell): put dumping code here...
-      dump: function() {
-        return app.$.source.$.editor.editor.getValue();
-      },
       register: function() {
-        this.elementDefinition = new HTMLElementElement(
-          elementFromHTML(this.dump()));
+        var elt = elementFromHTML(app.$.source.$.editor.editor.getValue());
+        this.elementDefinition = new HTMLElementElement(elt);
       },
       createMeta: function() {
         this.meta = document.createElement('tk-meta');
         var tag = this.elementDefinition.getAttribute('name');
         this.meta.id = tag;
-        this.meta.label = "User Element";
+        this.meta.label = this.elementLabel;
         var template = document.createElement('template');
         template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
           'height: 300px;"></' + tag + '>';
@@ -53,6 +48,27 @@ license that can be found in the LICENSE file.
         if (path) {
           target.bind(name, this, path);
         }
+      },
+      dumpTag: function(dumpTag, indent, tab) {
+        // resolve properties to attributes before dumping
+        publishPropertiesToAttributes(this);
+        var html = indent + '<element name="' + this.elementName +'">\n' +
+          indent + tab + '<template>\n';
+        html += indent + dumpStyle(this, indent + tab + tab, tab);
+        Array.prototype.forEach.call(this.childNodes, function(c) {
+          html += dumpTag(c, indent + tab + tab);
+        });
+        html += indent + tab + '</template>\n' +
+          indent + tab +'<script>\n' +
+          indent + tab + tab + 'Toolkit.register(this);\n' +
+          indent + tab +'</s' + 'cript>\n'+
+          indent + '</element>';
+        // remove inline styles
+        html = html
+          .replace(/ style="[^"]*"/g, '')
+          .replace(/( )?selected-element/g, '')
+          ;
+        return html;
       }
     });
     
@@ -60,6 +76,59 @@ license that can be found in the LICENSE file.
       var d = document.createElement('div');
       d.innerHTML = html;
       return d.querySelector('element');
+    }
+    
+    function publishPropertiesToAttributes(element) {
+      var elt = element && element.firstElementChild;
+      while (elt) {
+        var p$ = elt.__published;
+        if (p$) {
+          Object.keys(p$).forEach(function(n) {
+            var v = elt[n];
+            // don't replace bindings
+            if (elt.hasAttribute(n) && elt.getAttribute(n).match(Toolkit.bindPattern)) {
+              return;
+            }
+            if (v && (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean')) {
+              /*if (typeof v === 'boolean') {
+                v = n;
+              }*/
+              elt.setAttribute(n, v);
+            } else {
+              elt.removeAttribute(n);
+            }
+          });
+        }
+        publishPropertiesToAttributes(elt);
+        elt = elt.nextElementSibling;
+      }
+    }
+    
+    function dumpStyle(element, startIndent, tab) {
+      var css = startIndent + '<style>\n';
+      function subtree(root, indent) {
+        var e = root.firstElementChild;
+        while (e) {
+          var parts = e.hasAttribute('style') ? 
+            e.getAttribute('style').split(';') : null;
+          if (parts && e.id) {
+            css += indent + '#' + e.id + ' {\n';
+            parts.forEach(function(p) {
+              if (p) {
+                css += indent + tab + p.trim() + ';\n';
+              }
+            });
+            css += indent + '}' + '\n';
+          }
+          if (e.firstElementChild) {
+            subtree(e, indent);
+          }
+          e = e.nextElementSibling;
+        }
+      }
+      subtree(element || this.element, (startIndent || '') + tab);
+      css += startIndent + '</style>\n';
+      return css;
     }
   </script>  
 </element>
