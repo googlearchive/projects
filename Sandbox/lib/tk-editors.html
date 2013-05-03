@@ -174,6 +174,10 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       workingValueChanged: function() {
         this.$.input.textContent = this.workingValue;
+      },
+      commit: function() {
+        this.workingValue = this.$.input.value;
+        this.super();
       }
     });
   </script>
