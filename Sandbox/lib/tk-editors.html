@@ -3,26 +3,23 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-abstract-editor">
+<element name="tk-abstract-editor" attributes="value">
   <script>
     Toolkit.register(this, {
-      property: null,
-      liveValue: null,
-      propertyChanged: function() {
-        Toolkit.bindProperties(this, 'liveValue', this.property.obj, 
-          this.property.name);
+      value: null,
+      workingValue: null,
+      valueChanged: function() {
+        this.workingValue = this.value;
       },
-      inputChange: function(e) {
-        this.liveValue = e.target.value;
-        this.firePropertyChanged();
+      commit: function() {
+        this.value = this.format(this.workingValue);
+        // it's critical to have an event from the editor UI so we know when
+        // a user has changed a value, vs some other form of alteration
+        // for the same reason, we float our own changed event
+        this.send('editor-value-changed');
       },
-      firePropertyChanged: function() {
-        this.send('property-changed');
-      },
-      focus: function() {
-        if (this.$.input) {
-          this.$.input.focus();
-        }
+      format: function(value) {
+        return value;
       }
     });
   </script>
@@ -35,7 +32,6 @@ license that can be found in the LICENSE file.
         * {
           display: inline-block;
           width: 95%;
-          position: relative;
         }
       }
       input {
@@ -48,13 +44,13 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <input id="input" type="{{type}}" value="{{inputValue}}" on-change="inputChange">
+    <input id="input" type="{{type}}" value="{{workingValue}}" on-change="commit">
   </template>
   <script>
     Toolkit.register(this, {
       type: "text",
-      liveValueChanged: function() {
-        this.inputValue = this.liveValue;
+      focus: function() {
+        this.$.input.focus();
       }
     });
   </script>
@@ -65,7 +61,8 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       type: 'color',
       ready: function() {
-        // box-sizing: border-box doesn't play nice with color type inputs
+        // TODO(sjmiles): box-sizing: border-box doesn't play nice with color inputs
+        // TODO(sjmiles): is there a way to effect these styles via stylesheet?
         this.$.input.style.boxSizing = 'content-box';
         this.$.input.style.width = '95%';
         this.$.input.style.padding = '5px';
@@ -73,30 +70,30 @@ license that can be found in the LICENSE file.
         // does not update swatch when in shadowdom because of focus issues
         this.$.input.tabindex = -1;
       },
-      liveValueChanged: function() {
-        this.inputValue = this.toHex(this.liveValue);
-      },
-      toHex: function(color) {
-        if (!color || color.substr(0, 1) === "#") {
-          return color;
-        }
-        var nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
-            r = parseInt(nums[2], 10).toString(16),
-            g = parseInt(nums[3], 10).toString(16),
-            b = parseInt(nums[4], 10).toString(16);
-        return "#"+ (
-            (r.length == 1 ? r + "0" : r) +
-            (g.length == 1 ? g + "0" : g) +
-            (b.length == 1 ? b + "0" : b)
-        );
+      format: function(value) {
+        return this.toHex(value);
       }
     });
+    function toHex(color) {
+      if (!color || color.substr(0, 1) === "#") {
+        return color;
+      }
+      var nums = /(.*?)rgb\((\d+),\s*(\d+),\s*(\d+)\)/i.exec(color),
+          r = parseInt(nums[2], 10).toString(16),
+          g = parseInt(nums[3], 10).toString(16),
+          b = parseInt(nums[4], 10).toString(16);
+      return "#"+ (
+          (r.length == 1 ? r + "0" : r) +
+          (g.length == 1 ? g + "0" : g) +
+          (b.length == 1 ? b + "0" : b)
+      );
+    }
   </script>
 </element>
 
 <element name="tk-boolean-editor" extends="tk-abstract-editor">
   <template>
-    <input id="input" type="checkbox" checked="{{liveValue}}" on-change="firePropertyChanged">
+    <input id="input" type="checkbox" checked="{{workingValue}}" on-change="commit">
   </template>
   <script>
     Toolkit.register(this);
@@ -123,7 +120,7 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <select id="select" on-change="inputChange">
+    <select id="select" on-change="selectChange">
       <template repeat="{{options}}">
         <option>{{}}</option>
       </template>
@@ -131,13 +128,24 @@ license that can be found in the LICENSE file.
   </template>
   <script>
     Toolkit.register(this, {
-      propertyChanged: function() {
-        this.options = this.property.meta.options;
-        this.super();
+      meta: null,
+      metaChanged: function() {
+        this.options = this.meta.options;
         // allow template to generate options before setting value
         this.asyncMethod(function() {
-          this.$.select.value = this.liveValue;
+          this.$.select.value = this.workingValue;
         });
+      },
+      optionsChanged: function() {
+        this.asyncMethod(function() {
+          if (this.workingValue !== this.$.select.value) {
+            this.selectChange();
+          }
+        });
+      },
+      selectChange: function() {
+        this.workingValue = this.$.select.value;
+        this.commit();
       },
       focus: function() {
         this.$.select.focus();
@@ -160,19 +168,18 @@ license that can be found in the LICENSE file.
         vertical-align: middle;
       }
     </style>
-    <textarea id="input" on-change="inputChange" rows="10"></textarea>
+    <textarea id="input" on-change="commit" rows="10"></textarea>
   </template>
   <script>
     Toolkit.register(this, {
-      propertyChanged: function() {
-        this.super();
-        this.$.input.textContent = this.liveValue;
+      workingValueChanged: function() {
+        this.$.input.textContent = this.workingValue;
       }
     });
   </script>
 </element>
 
-<element name="tk-range-editor" extends="tk-abstract-editor">
+<element name="tk-range-editor" extends="tk-abstract-editor" attributes="min max step defaultValue">
   <template>
     <style>
       @host {
@@ -193,50 +200,26 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <input id="input" type="range" value="{{liveValue}}" min="{{property.meta.min}}" max="{{property.meta.max}}" 
-           step="{{property.meta.step}}" on-change="inputChange">
+    <input id="input" type="range" value="{{workingValue}}" min="{{min}}" max="{{max}}" step="{{step}}" on-change="inputChange">
   </template>
   <script>
     Toolkit.register(this, {
-      liveValueChanged: function() {
-        if (this.liveValue === null || this.liveValue === '') {
-          this.$.input.value = this.property.meta.defaultvalue;
+      metaChanged: function() {
+        if (this.meta) {
+          this.min = this.meta.min;
+          this.max = this.meta.max;
+          this.step = this.meta.step;
+          this.defaultValue = this.meta.defaultValue;
         }
-      }
-    });
-  </script>
-</element>
-
-<element name="tk-id-select-editor" extends="tk-select-editor">  
-  <script>
-    Toolkit.register(this, {
-      idPrefix: '',
-      root: null,
-      propertyChanged: function() {
-        this.root = this.property.obj.parentNode;
-        this.super();
       },
-      rootChanged: function() {
-        var o = [];
-        var p = this.root;
-        if (p) {
-          while (p.parentNode && p.localName !== 'tk-canvas') {
-            p = p.parentNode;
-          }
-          Array.prototype.forEach.call(p.querySelectorAll('[id]'), function(n) {
-            o.push(this.idPrefix + n.id);
-          }, this);
+      valueChanged: function() {
+        this.workingValue = this.value;
+      },
+      workingValueChanged: function() {
+        if (this.workingValue === null || this.workingValue === '') {
+          this.workingValue = this.defaultValue || this.min || 0;
         }
-        this.options = o;
       }
-    });
-  </script>
-</element>
-
-<element name="tk-target-select-editor" extends="tk-id-select-editor">
-  <script>
-    Toolkit.register(this, {
-      idPrefix: '#'
     });
   </script>
 </element>

@@ -1,0 +1,263 @@
+<element name="tk-property-inspector" attributes="property" 
+    on-editor-value-changed="valueChangedEvent">
+  <template>
+    <style>
+      @host {
+        * {
+          display: block;
+          white-space: nowrap;
+          margin-bottom: 12px;
+        }
+      }
+      .property-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        color: #949494;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+      #container {
+        display: inline-block;
+        width: 92%;
+      }
+      #icon {
+        opacity: 0.3;
+        vertical-align: middle;
+      }
+      #icon.binding {
+        opacity: 1;
+      }
+    </style>
+    <div class="property-name">{{property.name}}:</div>
+    <span id="container"><content></content></span>
+    <g-icon id="icon" src="assets/link_dark.png" size="16" on-click="linkTap"></g-icon>
+    <g-flip-out id="animOut" targetSelector="#container" on-complete="animOutComplete"></g-flip-out>
+    <g-flip-in id="animIn" targetSelector="#container"></g-flip-in>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      property: null,
+      editor: null,
+      propertyValue: null,
+      bindingMode: null,
+      binding: null,
+      //active: null,
+      //bound: null,
+      editorTags: {
+        'boolean': 'tk-boolean-editor',
+        'string': 'tk-string-editor',
+        'number': 'tk-string-editor',
+        'select': 'tk-select-editor',
+        'color': 'tk-color-editor',
+        'text': 'tk-text-editor',
+        'id-select': 'tk-id-select-editor',
+        'target-select': 'tk-target-select-editor',
+        'speech': 'tk-speech-editor',
+        'range': 'tk-range-editor',
+        any: 'tk-string-editor'
+      },
+      ready: function() {
+      },
+      propertyChanged: function() {
+        // discover binding
+        this.binding = Toolkit.getBinding(this.property.obj, 
+            this.property.name);
+        // discover editorTag
+        var type = (this.property.meta || 0).kind || typeof this.property.value;
+        this.editorTag = this.editorTags[type || typeof this.property.value] 
+            || type;
+      },
+      bindingChanged: function() {
+        this.bindingMode = Boolean(this.binding);
+      },
+      bindingModeChanged: function() {
+        this.$.icon.classList.toggle('binding', this.bindingMode);
+        this.makeEditor(this.bindingMode ? 'tk-binding-editor' 
+            : 'tk-property-editor');
+      },
+      makeEditor: function(tag) {
+        this.editor = document.createElement(tag);
+        this.editor.meta = {
+          property: this.property,
+          editorTag: this.editorTag,
+          binding: this.binding
+        };
+      },
+      editorChanged: function(inOld) {
+        if (inOld) {
+          inOld.parentNode.removeChild(inOld);
+        }
+        this.appendChild(this.editor);
+      },
+      // it's critical to have an event from the editor UI so we know when
+      // a user has changed a value, vs some other form of alteration
+      // for the same reason, we float our own changed event
+      valueChangedEvent: function(event) {
+        event.stopPropagation();
+        this.send('property-changed');
+      },
+      linkTap: function() {
+        // start animation
+        this.$.animOut.play();
+        //this.animOutComplete();
+      },
+      animOutComplete: function() {
+        // after the first animation, effect the changes
+        this.$.container.selected = this.bindingMode ? 1 : 0;
+        this.bindingMode = !this.bindingMode;
+        // we are animating, flush now
+        dirtyCheck();
+        // ending animation
+        this.$.animIn.play();
+      }
+    });
+  </script>
+</element>
+
+<element name="g-flip-out" extends="g-animation">
+  <script>
+    Toolkit.register(this, {
+      duration: 0.2,
+      fillMode: 'none',
+      properties: {
+        transform: [{
+          easing: 'ease-in',
+          offset: 0,
+          value: 'perspective(400px) translateZ(0px) rotateX(0deg) scale(1)'
+        }, {
+          offset: 1,
+          value: 'perspective(400px) translateZ(0px) rotateX(90deg) scale(1)'
+        }]
+      }
+    });
+  </script>
+</element>
+
+<element name="g-flip-in" extends="g-flip-out">
+  <script>
+     Toolkit.register(this, {
+      properties: {
+        transform: [{
+          easing: 'ease-out',
+          offset: 0,
+          value: 'perspective(400px) translateZ(0px) rotateY(270deg) scale(1)'
+        }, {
+          offset: 1,
+          value: 'perspective(400px) translateZ(0px) rotateY(360deg) scale(1)'
+        }]
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-property-editor" attributes="editorTag">
+  <template>
+    <style>
+      @host {
+        * {
+          display: block;
+          white-space: nowrap;
+          margin-bottom: 12px;
+        }
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      meta: null,
+      metaChanged: function(type) {
+        // create polymorphic editor
+        this.editor = document.createElement(this.meta.editorTag);
+        this.appendChild(this.editor);
+        // bind propertyValue to property
+        var p = this.meta.property;
+        Toolkit.bindProperties(this, 'propertyValue', p.obj, p.name);
+        // bind this.editor.value to propertyValue
+        // (imperative form of <editor value="{{editorValue}}">)
+        Toolkit.bindProperties(this.editor, 'value', this, 'propertyValue');
+        // update editor meta from property
+        this.updateEditorMeta();
+      },
+      updateEditorMeta: function() {
+        if (this.editor && this.property) {
+          this.editor.meta = this.property.meta || {};
+          this.editor.meta.obj = this.property.obj;
+        }
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-binding-editor" extends="tk-abstract-editor">
+  <template>
+    <!--<tk-id-select-editor id="idSelect" style="width: 145px;" options="{{elements}}" value="{{target}}"></tk-id-select-editor>
+    <tk-select-editor style="width: 145px;" options="{{properties}}"></tk-select-editor> -->
+    {{<tk-string-editor on-editor-value-changed="editorValueChanged" value="{{workingValue}}"></tk-string-editor>}}
+  </template>
+  <script>
+    Toolkit.register(this, {
+      target: null,
+      meta: null,
+      metaChanged: function() {
+        this.workingValue = this.meta.binding;
+      },
+      editorValueChanged: function(event) {
+        event.stopPropagation();
+        this.commit();
+      },
+      valueChanged: function() {
+        this.send('bind-property', {
+          obj: this.meta.property.obj,
+          name: this.meta.property.name,
+          path: this.value
+        });
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-id-select-editor" extends="tk-select-editor">  
+  <script>
+    Toolkit.register(this, {
+      root: null,
+      idPrefix: '',
+      metaChanged: function() {
+        this.root = this.findRoot(this.meta.root);
+      },
+      rootChanged: function() {
+        this.buildOptions();
+      },
+      findRoot: function(node) {
+        while (node && node.id !== 'designElement') {
+          node = node.parentNode;
+        }
+        return node;
+      },
+      buildOptions: function() {
+        var o = [];
+        if (this.root) {
+          var pre = this.idPrefix;
+          Array.prototype.forEach.call(this.root.querySelectorAll('[id]'), 
+            function(n) {
+              o.push(pre + n.id);
+            });
+        }
+        this.options = o;
+      },
+      get selectedNode() {
+        return this.root && this.value 
+            && this.root.querySelector('#' + this.value);
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-target-select-editor" extends="tk-id-select-editor">
+  <script>
+    Toolkit.register(this, {
+      idPrefix: '#'
+    });
+  </script>
+</element>

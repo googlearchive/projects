@@ -37,6 +37,22 @@ license that can be found in the LICENSE file.
         template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
           'height: 300px;"></' + tag + '>';
         this.meta.appendChild(template);
+      },
+      bindProperty: function(target, name, path) {
+        if (name === 'textContent') {
+          if (path) {
+            target.textContent = ' ';
+            target = target.firstChild;
+          } else {
+            target.firstChild.unbind(name);
+          }
+        } else {
+          target.unbind(name);
+          target.removeAttribute(name);
+        }
+        if (path) {
+          target.bind(name, this, path);
+        }
       }
     });
     

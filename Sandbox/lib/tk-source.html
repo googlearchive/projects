@@ -10,8 +10,8 @@ license that can be found in the LICENSE file.
   </template>
   <script>
     Toolkit.register(this, {
-      publishPropertiesToAttributes: function(element) {
-        var elt = element && element.firstElementChild;
+      publishPropertiesToAttributes: function() {
+        var elt = this.element.firstElementChild;
         while (elt) {
           var p$ = elt.__published;
           if (p$) {
@@ -31,7 +31,6 @@ license that can be found in the LICENSE file.
               }
             });
           }
-          this.publishPropertiesToAttributes(elt);
           elt = elt.nextElementSibling;
         }
       },
@@ -104,11 +103,7 @@ license that can be found in the LICENSE file.
       update: function() {
         // force components to update before dumping source
         dirtyCheck();
-        // dom is not ready until end of micro-task!
-        this.asyncMethod('_update');
-      },
-      _update: function() {
-        this.publishPropertiesToAttributes(this.element);
+        this.publishPropertiesToAttributes();
         //var html = this.element.innerHTML;
         var html = this.dumpElement();
         html = html
