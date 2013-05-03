@@ -181,9 +181,9 @@
         this.updateEditorMeta();
       },
       updateEditorMeta: function() {
-        if (this.editor && this.property) {
-          this.editor.meta = this.property.meta || {};
-          this.editor.meta.obj = this.property.obj;
+        if (this.editor) {
+          this.editor.meta = this.meta.property.meta || {};
+          this.editor.meta.obj = this.meta.property.obj;
         }
       }
     });
@@ -224,7 +224,7 @@
       root: null,
       idPrefix: '',
       metaChanged: function() {
-        this.root = this.findRoot(this.meta.root);
+        this.root = this.findRoot(this.meta.obj);
       },
       rootChanged: function() {
         this.buildOptions();
