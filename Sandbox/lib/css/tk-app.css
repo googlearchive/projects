@@ -18,6 +18,7 @@ license that can be found in the LICENSE file.
   right: 350px;
   bottom: 0;
   left: 0;
+  -webkit-transition: right 0.4s;
 }
 
 #tools {
@@ -29,6 +30,10 @@ license that can be found in the LICENSE file.
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-transition: right 0.4s;
+}
+
+.tk-app-mazimized #designer, .tk-app-mazimized #source {
+  right: 0px;
 }
 
 .tk-app-mazimized #tools {
