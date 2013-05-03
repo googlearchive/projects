@@ -7,10 +7,10 @@ license that can be found in the LICENSE file.
   <template>
     <style>
       #title {
-        font-size: 16px;
-        padding: 8px 0 14px;
+        background-color: #E0E0E0;
         border-bottom: 1px solid silver;
-        margin-bottom: 4px;
+        padding: 12px;
+        font-size: 16px;
       }
       #interior {
         border: 1px solid silver;
@@ -19,12 +19,11 @@ license that can be found in the LICENSE file.
         right: 0;
         bottom: 0;
         left: 0;
-        padding: 8px;
         overflow-x: hidden;
         overflow-y: auto;
         cursor: pointer;
       }
-      b {
+      #caption {
         color: blue;
       }
       id {
@@ -33,8 +32,12 @@ license that can be found in the LICENSE file.
       }
       #tree {
         display: inline-block;
+        padding: 8px;
       }
-      .selected span {
+      #tree div {
+        padding: 2px;
+      }
+      .selected {
         background: lightblue;
       }
     </style>
@@ -42,7 +45,7 @@ license that can be found in the LICENSE file.
       <div id="title">Components</div>
       <div id="tree">
         <template repeat="{{components}}">
-          <div class="{{selected}}" style="padding-left: {{indent}}px"><span><b>{{name}}</b><id>{{id}}</id>{{text}}</span></div>
+          <div class="{{selected}}" style="padding-left: {{indent}}px"><span>{{name}}<id>{{id}}</id><span id="caption">{{text}}</span></span></div>
         </template>
       </div>
     </div>

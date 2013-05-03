@@ -4,17 +4,6 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 */
 
-#tabs {
-  position: absolute;
-  top: 0px;
-  padding: 4px;
-  right: 0;
-  left: 0px;
-  height: 34px;
-  background-color: white;
-  overflow: hidden;
-}
-
 #main {
   position: absolute;
   top: 61px;
@@ -37,9 +26,15 @@ license that can be found in the LICENSE file.
   right: 0;
   bottom: 0;
   width: 350px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-transition: right 0.4s;
 }
 
-.tab-selected {
+.tk-app-mazimized #tools {
+  right: -350px;
+}
+
+.selected-panel {
   z-index: 100;
 }

@@ -11,10 +11,11 @@ license that can be found in the LICENSE file.
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
       </g-selector>
+      <g-icon-button on-tap="toggleSize" src="assets/menu.png"></g-icon-button>
     </g-toolbar>
     <div id="main">
       <tk-designer id="designer" selected="{{selected}}" element="{{element}}"></tk-designer>
-      <tk-source id="source" fontSize="48px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
+      <tk-source id="source" fontSize="24px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
       <tk-tools id="tools" selected="{{selected}}" element="{{element}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
@@ -31,13 +32,17 @@ license that can be found in the LICENSE file.
       designMode: true,
       ready: function() {
         this.selectedMode = 'designer';
+        this.$.source.update();
+      },
+      toggleSize: function() {
+        this.$.main.classList.toggle('tk-app-mazimized');
       },
       designModeChanged: function () {
         this.selectedMode = this.designMode ? 'designer' : 'source';
       },
-      selectedModeChanged: function (oldTabName) {
-        this.classFollows(this.$[this.selectedMode], this.$[oldTabName],
-          'tab-selected');
+      selectedModeChanged: function (oldMode) {
+         this.classFollows(this.$[this.selectedMode], this.$[oldMode],
+           'selected-panel');
       },
       designChanged: function() {
         this.$.source.update();

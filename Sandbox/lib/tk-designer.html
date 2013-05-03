@@ -166,8 +166,12 @@ license that can be found in the LICENSE file.
       },
       applySource: function(source) {
         this.$.designElement.applySource(source);
-        this.selected = (this.selected && this.$.designElement.querySelector('#' +
-            this.selected.id)) || this.$.designElement;
+        // reselect selection
+        var selected = this.selected;
+        if (selected && selected.id) {
+          selected = this.$.designElement.querySelector('#' + selected.id)
+        }
+        this.selected = selected || null;
       }
     });
   </script>
