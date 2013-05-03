@@ -56,6 +56,13 @@ function reflectProperties(element) {
       more.push('textContent');
     }
     more.push('id');
+    //
+    meta && Object.keys(meta).forEach(function(n) {
+      if (!found[n] && more.indexOf(n) === -1) {
+        more.push(n);
+      }
+    });
+    //
     more.forEach(function(k) {
       var v = element[k];
       if (typeof v !== 'function' && typeof v !== 'object') {
