@@ -20,8 +20,10 @@ license that can be found in the LICENSE file.
         this.createMeta();
       },
       register: function() {
-        var elt = elementFromHTML(app.$.source.$.editor.editor.getValue());
-        this.elementDefinition = new HTMLElementElement(elt);
+        if (this.sourceInfo) {
+          var elt = elementFromHTML(this.sourceInfo.source, 'element');
+          this.elementDefinition = new HTMLElementElement(elt);
+        }
       },
       createMeta: function() {
         this.meta = document.createElement('tk-meta');
@@ -52,6 +54,8 @@ license that can be found in the LICENSE file.
       dumpTag: function(dumpTag, indent, tab) {
         // resolve properties to attributes before dumping
         publishPropertiesToAttributes(this);
+        var script = this.sourceInfo ? this.sourceInfo.script :
+          'Toolkit.register(this);';
         var html = indent + '<element name="' + this.elementName +'">\n' +
           indent + tab + '<template>\n';
         html += indent + dumpStyle(this, indent + tab + tab, tab);
@@ -60,7 +64,7 @@ license that can be found in the LICENSE file.
         });
         html += indent + tab + '</template>\n' +
           indent + tab +'<script>\n' +
-          indent + tab + tab + 'Toolkit.register(this);\n' +
+          indent + tab + tab + script + '\n' +
           indent + tab +'</s' + 'cript>\n'+
           indent + '</element>';
         // remove inline styles
@@ -69,13 +73,47 @@ license that can be found in the LICENSE file.
           .replace(/( )?selected-element/g, '')
           ;
         return html;
+      },
+      applySource: function(source) {
+        var templateHtml = tagInnerHTMLFromSource(source, 'template');
+        this.sourceInfo = {
+          source: source,
+          style: tagInnerHTMLFromSource(templateHtml,'style'),
+          html: templateHtml.replace(regExpForTag('style'), '').trim(),
+          script: tagInnerHTMLFromSource(source, 'script').trim()
+        }
+        //console.log(this.sourceInfo.html);
+        this.innerHTML = this.sourceInfo.html;
+        this.applyStyle(this.sourceInfo.style);
+      },
+      styleRe: /(#[^{]*){([^}]*)}/g,
+      applyStyle: function(style) {
+        var matches, node;
+        while (matches = this.styleRe.exec(style)) {
+          node = this.querySelector(matches[1].trim());
+          if (node) {
+            node.style.cssText = matches[2];
+          }
+        }
       }
     });
-    
-    function elementFromHTML(html) {
+
+    function tagInnerHTMLFromSource(source, tag) {
+      var matches = source.match(regExpForTag(tag));
+      if (matches) {
+        return matches[1];
+      }
+      return '';
+    }
+
+    function regExpForTag(tag) {
+      return new RegExp('<' + tag + '>([\\S\\s]*)<\/' + tag + '>');
+    }
+
+    function elementFromHTML(html, selector) {
       var d = document.createElement('div');
       d.innerHTML = html;
-      return d.querySelector('element');
+      return d.querySelector(selector);
     }
     
     function publishPropertiesToAttributes(element) {
@@ -84,12 +122,11 @@ license that can be found in the LICENSE file.
         var p$ = elt.__published;
         if (p$) {
           Object.keys(p$).forEach(function(n) {
-            var v = elt[n];
-            // don't replace bindings
-            if (elt.hasAttribute(n) && elt.getAttribute(n).match(Toolkit.bindPattern)) {
-              return;
-            }
-            if (v && (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean')) {
+            var v = elt[n], binding = Toolkit.getBinding(elt, n);
+            if (binding) {
+              elt.setAttribute(n, '{{ ' + binding + ' }}');
+            } else if (v && (typeof v === 'string' || typeof v === 'number' ||
+                typeof v === 'boolean')) {
               /*if (typeof v === 'boolean') {
                 v = n;
               }*/

@@ -6,7 +6,7 @@ license that can be found in the LICENSE file.
 <element name="tk-source" attributes="element fontSize">
   <template>
     <ajaxorg-ace id="editor" mode="html" theme="chrome" tabSize="2"
-        fontSize="{{fontSize}}" readonly wrap></ajaxorg-ace>
+        fontSize="{{fontSize}}" wrap on-editor-change="editorChange"></ajaxorg-ace>
   </template>
   <script>
     Toolkit.register(this, {
@@ -19,6 +19,9 @@ license that can be found in the LICENSE file.
       _update: function() {
         this.$.editor.value = dumpTag(this.element.firstElementChild, '');
         //this.$.editor.foldTag('style');
+      },
+      editorChange: function(event, detail) {
+        this.send('source-changed', detail);
       }
     });
     

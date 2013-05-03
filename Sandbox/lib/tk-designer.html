@@ -163,6 +163,11 @@ license that can be found in the LICENSE file.
       },
       bindProperty: function(obj, name, path) {
         this.$.designElement.bindProperty(obj, name, path);  
+      },
+      applySource: function(source) {
+        this.$.designElement.applySource(source);
+        this.selected = (this.selected && this.$.designElement.querySelector('#' +
+            this.selected.id)) || this.$.designElement;
       }
     });
   </script>
