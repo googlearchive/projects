@@ -11,11 +11,11 @@ license that can be found in the LICENSE file.
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
       </g-selector>
-      <g-icon-button on-tap="toggleSize" src="assets/menu.png"></g-icon-button>
+      <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/menu.png"></g-icon-button>
     </g-toolbar>
     <div id="main">
-      <tk-designer id="designer" selected="{{selected}}" element="{{element}}"></tk-designer>
-      <tk-source id="source" fontSize="24px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
+      <tk-designer id="designer" selected="{{selected}}" element="{{element}}" maximized="{{maximized}}"></tk-designer>
+      <tk-source id="source" fontSize="20px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
       <tk-tools id="tools" selected="{{selected}}" element="{{element}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
@@ -30,12 +30,20 @@ license that can be found in the LICENSE file.
       selected: null,
       selectedMode: '',
       designMode: true,
+      maximized: false,
       ready: function() {
         this.selectedMode = 'designer';
         this.$.source.update();
       },
       toggleSize: function() {
-        this.$.main.classList.toggle('tk-app-mazimized');
+        this.maximized = !this.maximized;
+      },
+      maximizedChanged: function() {
+        this.$.toggle.active = this.maximized;
+        this.$.main.classList.toggle('tk-app-maximized', this.maximized);
+        this.asyncMethod(function() {
+          this.$.source.$.editor.editor.resize();
+        }, null, 500);
       },
       designModeChanged: function () {
         this.selectedMode = this.designMode ? 'designer' : 'source';

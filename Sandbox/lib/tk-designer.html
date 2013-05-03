@@ -3,7 +3,7 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-designer" on-keyup="keyup" attributes="element selected">
+<element name="tk-designer" on-keyup="keyup" attributes="element selected maximized">
   <template>
     <style>
       #palette {
@@ -12,6 +12,7 @@ license that can be found in the LICENSE file.
         width: 264px;
         bottom: 0;
         left: 0;
+        -webkit-transition: left 0.4s;
       }
       #canvas {
         position: absolute;
@@ -21,6 +22,7 @@ license that can be found in the LICENSE file.
         left: 264px;
         background-color: white;
         overflow: hidden;
+        -webkit-transition: left 0.4s;
       }
       #designElement {
         position: absolute;
@@ -35,6 +37,12 @@ license that can be found in the LICENSE file.
       }
       .tab-selected {
         z-index: 100;
+      }
+      #palette.maximized {
+        left: -264px;
+      }
+      #canvas.maximized {
+        left: 0px;
       }
     </style>
     <tk-palette id="palette" elements="{{elements}}"
@@ -53,8 +61,13 @@ license that can be found in the LICENSE file.
       element: null,
       selected: null,
       selectedTab: 'design',
+      maximized: false,
       ready: function() {
         this.element = this.$.canvas;
+      },
+      maximizedChanged: function() {
+        this.$.palette.classList.toggle('maximized', this.maximized);  
+        this.$.canvas.classList.toggle('maximized', this.maximized);  
       },
       selectedChanged: function(inOld) {
         this.classFollows(this.selected, inOld, 'selected-element');
