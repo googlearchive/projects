@@ -33,6 +33,9 @@ license that can be found in the LICENSE file.
       g-icon-button {
         vertical-align: middle;
       }
+      tk-property-inspector[hidden=true] {
+        display: none !important;
+      }
     </style>
     <div id="header">
       <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"></g-icon-button>
@@ -41,7 +44,7 @@ license that can be found in the LICENSE file.
     </div>
     <div id="interior">
       <template repeat="{{properties}}">
-        <tk-property-inspector property="{{}}"></tk-property-inspector>
+        <tk-property-inspector property="{{}}" hidden="{{meta.hidden}}"></tk-property-inspector>
       </template>
       <!--<tk-style-inspector element="{{element}}"></tk-style-inspector>-->
     </div>
