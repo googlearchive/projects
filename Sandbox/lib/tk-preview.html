@@ -1,0 +1,58 @@
+<element name="tk-preview" attributes="htmlContent">
+  <script>
+    Toolkit.register(this, {
+      htmlContent: '',
+      writeToDoc: function(doc) {
+        // put base href in head
+        var h = '<base href="' + document.baseURI + '">\n';
+        var s = this.makeOutputHTML(h, this.htmlContent);
+        doc.open('text/html', '');
+        doc.write(s);
+        doc.close();
+      },
+      makeOutputHTML: function(head, body) {
+        var html = '<!DOCTYPE html>\n';
+        html += '<head>\n';
+        html += '<title>Sandbox Preview</title>\n'
+        html += head || '';
+        // include base scripts
+        html += '<script src="https://www.google.com/jsapi"></s' + 'cript>\n';
+        html += '<script src="../../toolkit/toolkit.min.js"></s' + 'cript>\n';
+        html += '<link rel="import" href="lib/components.html">';
+        html += '<link rel="import" href="../pica/components/pi-app.html">';
+        html += '</head>\n<body>\n';
+        // include content
+        html += body || '';
+        html += '</body>\n</html>';
+        return html;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-preview-iframe" extends="tk-preview">
+  <template>
+    <iframe id="output" style="width: 100%; height: 100%;"></iframe>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      htmlContentChanged: function() {
+        this.$.output.src = '';
+        this.asyncMethod(function() {
+          this.writeToDoc(this.$.output.contentDocument);
+        });
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-preview-window" extends="tk-preview" on-click="open">
+  <script>
+    Toolkit.register(this, {
+      open: function() {
+        this.window = window.open('', '', null, false);
+        this.writeToDoc(this.window.document);
+      }
+    });
+  </script>
+</element>
