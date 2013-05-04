@@ -35,13 +35,28 @@ license that can be found in the LICENSE file.
         }
       }
       input {
-        padding: 6px;
-        margin-left: 0;
-        width: 100%; 
+        border: 1px solid #e4e4e4;
+        border-top-color: #cecece;
+        color: #333;
+        background: #fff;
+        padding: 9px 8px;
+        margin: 0;
+        width: 100%;
+        font-size: 14pt;
+        font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
         box-sizing: border-box;
-        -webkit-user-select: all; 
+        -webkit-user-select: all;
         -moz-user-select: all;
         user-select: all;
+      }
+      input:focus {
+        outline: 1px solid #448afd;
+      }
+      input:invalid {
+        outline: 1px solid #d84437;
+      }
+      input:active {
+        background: #ededed;
       }
     </style>
     <input id="input" type="{{type}}" value="{{workingValue}}" on-change="commit">
@@ -93,6 +108,11 @@ license that can be found in the LICENSE file.
 
 <element name="tk-boolean-editor" extends="tk-abstract-editor">
   <template>
+    <style>
+      input {
+        font-size: 14pt;
+      }
+    </style>
     <input id="input" type="checkbox" checked="{{workingValue}}" on-change="inputChange">
   </template>
   <script>
@@ -120,6 +140,8 @@ license that can be found in the LICENSE file.
         margin-left: 0;
         margin-right: 0;
         width: 100%; 
+        font-size: 14pt;
+        font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
         -webkit-user-select: all; 
         -moz-user-select: all;
         user-select: all;

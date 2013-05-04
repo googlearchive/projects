@@ -43,3 +43,8 @@ license that can be found in the LICENSE file.
 .selected-panel {
   z-index: 100;
 }
+
+tk-app, input {
+  font-size: 14pt;
+  font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+}
