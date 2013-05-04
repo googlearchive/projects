@@ -224,6 +224,7 @@
       root: null,
       idPrefix: '',
       metaChanged: function() {
+        this.super();
         this.root = this.findRoot(this.meta.obj);
       },
       rootChanged: function() {
