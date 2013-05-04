@@ -25,7 +25,10 @@
         vertical-align: middle;
       }
       #icon.binding {
-        opacity: 1;
+        opacity: 0.6;
+        border-radius: 12px;
+        background-color: lightblue;
+        -webkit-box-shadow: 0px 0px 14px 3px lightblue;
       }
     </style>
     <div class="property-name">{{property.name}}:</div>
@@ -41,8 +44,6 @@
       propertyValue: null,
       bindingMode: null,
       binding: null,
-      //active: null,
-      //bound: null,
       editorTags: {
         'boolean': 'tk-boolean-editor',
         'string': 'tk-string-editor',
@@ -55,8 +56,6 @@
         'speech': 'tk-speech-editor',
         'range': 'tk-range-editor',
         any: 'tk-string-editor'
-      },
-      ready: function() {
       },
       propertyChanged: function() {
         // discover binding
@@ -115,6 +114,36 @@
 </element>
 
 <element name="g-flip-out" extends="g-animation">
+  <template>
+    <g-property name="transform">
+      <g-keyframe value="perspective(400px) translateZ(0px) rotateX(0deg) scale(1)"></g-keyframe>
+      <g-keyframe value="perspective(400px) translateZ(0px) rotateX(90deg) scale(1)"></g-keyframe>
+    </g-property>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      duration: 0.2,
+      fillMode: 'none',
+      easing: 'ease-in'
+    });
+  </script>
+</element>
+
+<element name="g-flip-in" Xextends="g-animation" extends="g-flip-out">
+  <template>
+    <g-property name="transform">
+      <g-keyframe value="perspective(400px) translateZ(0px) rotateY(270deg) scale(1)"></g-keyframe>
+      <g-keyframe value="perspective(400px) translateZ(0px) rotateY(360deg) scale(1)"></g-keyframe>
+    </g-property>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      easing: 'ease-out'
+    });
+  </script>
+</element>
+
+<!-- <element name="g-flip-out" extends="g-animation">
   <script>
     Toolkit.register(this, {
       duration: 0.2,
@@ -148,7 +177,7 @@
       }
     });
   </script>
-</element>
+</element> -->
 
 <element name="tk-property-editor" attributes="editorTag">
   <template>
@@ -190,9 +219,9 @@
 
 <element name="tk-binding-editor" extends="tk-abstract-editor">
   <template>
-    <!--<tk-id-select-editor id="idSelect" style="width: 145px;" options="{{elements}}" value="{{target}}"></tk-id-select-editor>
-    <tk-select-editor style="width: 145px;" options="{{properties}}"></tk-select-editor> -->
-    {{<tk-string-editor on-editor-value-changed="editorValueChanged" value="{{workingValue}}"></tk-string-editor>}}
+    <tk-id-select-editor id="idSelect" style="width: 145px;" options="{{elements}}" value="{{target}}"></tk-id-select-editor>
+    <!-- <tk-select-editor style="width: 145px;" options="{{properties}}"></tk-select-editor> -->
+    <tk-string-editor style="width: 145px;" on-editor-value-changed="editorValueChanged" value="{{workingValue}}"></tk-string-editor>
   </template>
   <script>
     Toolkit.register(this, {
@@ -200,6 +229,7 @@
       meta: null,
       metaChanged: function() {
         this.workingValue = this.meta.binding;
+        this.$.idSelect.meta = {obj: this.meta.property.obj };
       },
       editorValueChanged: function(event) {
         event.stopPropagation();
