@@ -14,10 +14,11 @@ license that can be found in the LICENSE file.
         // force components to update before dumping source
         dirtyCheck();
         // given async effects a chance to apply to dom.
-        this.asyncMethod('_update');
+        this.asyncMethod('updateImmediate');
       },
-      _update: function() {
-        this.$.editor.value = dumpTag(this.element.firstElementChild, '');
+      updateImmediate: function() {
+        this.value = dumpTag(this.element.firstElementChild, '')
+        this.$.editor.value = this.value;
         //this.$.editor.foldTag('style');
       },
       editorChange: function(event, detail) {
