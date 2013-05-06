@@ -74,11 +74,45 @@
   <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
+<!--
 <tk-meta id="animation-picker" label="Animation">
   <template>
     <animation-picker style="border: 1px dotted silver; padding: 8px"></animation-picker>
   </template>
   <property name="animationType" kind="select" options="blink,bounce,fadein,fadeout,flip,shake"></property>
+  <property name="targetLabel" hidden="true"></property>
+</tk-meta>
+//-->
+
+<tk-meta id="animation-blink" label="Blink">
+  <template>
+    <animation-picker animationType="blink" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+  </template>
+  <property name="animationType" hidden="true"></property>
+  <property name="targetLabel" hidden="true"></property>
+</tk-meta>
+
+<tk-meta id="animation-bounce" label="Bounce">
+  <template>
+    <animation-picker animationType="bounce" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+  </template>
+  <property name="animationType" hidden="true"></property>
+  <property name="targetLabel" hidden="true"></property>
+</tk-meta>
+
+<tk-meta id="animation-flip" label="Flip">
+  <template>
+    <animation-picker animationType="flip" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+  </template>
+  <property name="animationType" hidden="true"></property>
+  <property name="targetLabel" hidden="true"></property>
+</tk-meta>
+
+<tk-meta id="animation-picker" label="Shake">
+  <template>
+    <animation-picker animationType="shake" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+  </template>
+  <property name="animationType" hidden="true"></property>
   <property name="targetLabel" hidden="true"></property>
 </tk-meta>
 
