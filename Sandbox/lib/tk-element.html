@@ -32,7 +32,7 @@ license that can be found in the LICENSE file.
         publishPropertiesToHTML(this);
         var proto = dumpProto(this, indent + tab + tab, tab);
         var script = 'Toolkit.register(this, ' + proto + ');';
-        var html = indent + '<element name="' + elementName +'">\n' +
+        var html = indent + '<element name="' + publishName +'">\n' +
           indent + tab + '<template>\n';
         html += indent + dumpStyle(this, indent + tab + tab, tab);
         Array.prototype.forEach.call(this.children, function(c) {
@@ -56,41 +56,40 @@ license that can be found in the LICENSE file.
           ;
         return html;
       },
-      publishElement: function() {
-        var detail = {};
-        this.send("request-publish", detail);
-        if (detail.source) {
-          registerFromSource(detail.source);
-          createMeta(elementName);
-        }
-      },
       nodeFromSource: function(source) {
-        updateElementName(source);
-        var templateHtml = tagInnerHTMLFromSource(source, 'template');
-        var style = tagInnerHTMLFromSource(templateHtml,'style');
-        var html = templateHtml;
+        updatePublishName(source);
+        var html = tagInnerHTMLFromSource(source, 'template');
         var script = tagInnerHTMLFromSource(source, 'script').trim();
         // re-define design-element with user source
-        var name = this.localName;
-        var eltSource = '<element name="' + name + '" extends="tk-element">' +
-          '<script>' + script + '</s' + 'cript></element>';
+        var eltSource = '<element name="' + this.localName + 
+          '" extends="tk-element">' + '<script>' + script + '</s' + 
+          'cript></element>';
         registerFromSource(eltSource);
-        var de = document.createElement(name);
+        var de = document.createElement(this.localName);
         de.id = 'designElement';
         de.innerHTML = html;
         requestAnimationFrame(function() {
           applyStyle(de);
         });
         return de;
+      },
+      publishElement: function() {
+        var detail = {};
+        this.send("request-publish", detail);
+        if (detail.source) {
+          updatePublishName(detail.source);
+          registerFromSource(detail.source);
+          createMeta(publishName);
+        }
       }
     });
     
     // publishing
-    var elementName = 'user-element';
-    function updateElementName(source) {
+    var publishName = 'user-element';
+    function updatePublishName(source) {
       var match = source.match('<element[^>]*?name.*?=.*?["|\']([^"\']*)?["|\']');
       if (match) {
-        elementName = match[1];
+        publishName = match[1];
       }
     }
     
@@ -105,7 +104,7 @@ license that can be found in the LICENSE file.
       if (!meta.byId(name)) {
         var tag = name;
         meta.id = tag;
-        meta.label = elementName;
+        meta.label = name;
         var template = document.createElement('template');
         template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
           'height: 300px;"></' + tag + '>';
