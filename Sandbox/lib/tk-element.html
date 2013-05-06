@@ -35,11 +35,13 @@ license that can be found in the LICENSE file.
         var html = indent + '<element name="' + publishName +'">\n' +
           indent + tab + '<template>\n';
         html += indent + dumpStyle(this, indent + tab + tab, tab);
+        var children = '';
         Array.prototype.forEach.call(this.children, function(c) {
           if (c.localName != 'style') {
-            html += dumpTag(c, indent + tab + tab);
+            children += dumpTag(c, indent + tab + tab);
           }
         });
+        html += children || (indent + tab + tab + '\n');
         html += indent + tab + '</template>\n' +
           indent + tab +'<script>\n' +
           indent + tab + tab + script + '\n' +
@@ -70,6 +72,7 @@ license that can be found in the LICENSE file.
         de.innerHTML = html;
         requestAnimationFrame(function() {
           applyStyle(de);
+          ensureChildStyling(de);
         });
         return de;
       },
@@ -118,6 +121,15 @@ license that can be found in the LICENSE file.
       if (style && style.sheet) {
         applyIdCssRules(style.sheet.cssRules, node, style.sheet);
       }
+    }
+    
+    function ensureChildStyling(node) {
+      Array.prototype.forEach.call(node.children, function(n) {
+        if (!n.style.position) {
+          n.style.position = 'absolute';
+          n.style.left = n.style.top = '0px';
+        }
+      });
     }
 
     function applyIdCssRules(rules, root, sheet) {
