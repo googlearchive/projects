@@ -82,7 +82,8 @@ license that can be found in the LICENSE file.
         if (detail.source) {
           updatePublishName(detail.source);
           registerFromSource(detail.source);
-          createMeta(publishName);
+          var size = calcIntrinsicSize(this);
+          createMeta(publishName, size.width, size.height);
         }
       }
     });
@@ -102,17 +103,24 @@ license that can be found in the LICENSE file.
         new HTMLElementElement(elt);
       }
     }
-    function createMeta(name) {
+    function createMeta(name, width, height) {
       var meta = document.createElement('tk-meta');
       if (!meta.byId(name)) {
         var tag = name;
         meta.id = tag;
         meta.label = name;
         var template = document.createElement('template');
-        template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
-          'height: 300px;"></' + tag + '>';
+        template.innerHTML = '<' + tag + ' style="display: block; width: ' +
+          width + 'px; ' + 'height: ' + height + 'px;"></' + tag + '>';
         meta.appendChild(template);
       }
+    }
+    
+    function calcIntrinsicSize(node) {
+      node.style.right = node.style.bottom = 'auto';
+      var size = {width: node.scrollWidth, height: node.scrollHeight};
+      node.style.right = node.style.bottom = null;
+      return size;
     }
     
     // round-tripping *from* source
