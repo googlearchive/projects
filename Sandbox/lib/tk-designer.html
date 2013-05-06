@@ -178,7 +178,7 @@ license that can be found in the LICENSE file.
         this.$.designElement.bindProperty(obj, name, path);  
       },
       applySource: function(source) {
-        var node = this.$.designElement.applySource(source);
+        var node = this.$.designElement.nodeFromSource(source);
         this.updateDesignElement(node);
         // reselect selection
         var selected = this.selected;

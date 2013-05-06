@@ -6,34 +6,10 @@ license that can be found in the LICENSE file.
 <element name="tk-element">
   <script>
     Toolkit.register(this, {
-      test: 'Test!!',
-      selected: 1,
-      elementName: 'user-element',
-      elementLabel: 'User Element',
       update: function() {
         Toolkit.marshalNodeReferences.call(this, this);
         Toolkit.bindModel.call(this, this);
         // TODO(sorvell): events...
-      },
-      publishElement: function() {
-        this.register();
-        this.createMeta();
-      },
-      register: function() {
-        if (this.sourceInfo) {
-          var elt = elementFromHTML(this.sourceInfo.source, 'element');
-          this.elementDefinition = new HTMLElementElement(elt);
-        }
-      },
-      createMeta: function() {
-        this.meta = document.createElement('tk-meta');
-        var tag = this.elementDefinition.getAttribute('name');
-        this.meta.id = tag;
-        this.meta.label = this.elementLabel;
-        var template = document.createElement('template');
-        template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
-          'height: 300px;"></' + tag + '>';
-        this.meta.appendChild(template);
       },
       bindProperty: function(target, name, path) {
         if (name === 'textContent') {
@@ -53,14 +29,16 @@ license that can be found in the LICENSE file.
       },
       dumpTag: function(dumpTag, indent, tab) {
         // resolve properties to attributes before dumping
-        publishPropertiesToAttributes(this);
-        var script = this.sourceInfo ? this.sourceInfo.script :
-          'Toolkit.register(this);';
-        var html = indent + '<element name="' + this.elementName +'">\n' +
+        publishPropertiesToHTML(this);
+        var proto = dumpProto(this, indent + tab + tab, tab);
+        var script = 'Toolkit.register(this, ' + proto + ');';
+        var html = indent + '<element name="' + elementName +'">\n' +
           indent + tab + '<template>\n';
         html += indent + dumpStyle(this, indent + tab + tab, tab);
         Array.prototype.forEach.call(this.children, function(c) {
-          html += dumpTag(c, indent + tab + tab);
+          if (c.localName != 'style') {
+            html += dumpTag(c, indent + tab + tab);
+          }
         });
         html += indent + tab + '</template>\n' +
           indent + tab +'<script>\n' +
@@ -78,29 +56,84 @@ license that can be found in the LICENSE file.
           ;
         return html;
       },
-      applySource: function(source) {
-        var templateHtml = tagInnerHTMLFromSource(source, 'template');
-        this.sourceInfo = {
-          source: source,
-          style: tagInnerHTMLFromSource(templateHtml,'style'),
-          html: templateHtml.replace(regExpForTag('style'), '').trim(),
-          script: tagInnerHTMLFromSource(source, 'script').trim()
+      publishElement: function() {
+        var detail = {};
+        this.send("request-publish", detail);
+        if (detail.source) {
+          registerFromSource(detail.source);
+          createMeta(elementName);
         }
-        //console.log(this.sourceInfo.html);
-        this.innerHTML = this.sourceInfo.html;
-        this.applyStyle(this.sourceInfo.style);
       },
-      styleRe: /(#[^{]*){([^}]*)}/g,
-      applyStyle: function(style) {
-        var matches, node;
-        while (matches = this.styleRe.exec(style)) {
-          node = this.querySelector(matches[1].trim());
-          if (node) {
-            node.style.cssText = matches[2];
-          }
-        }
+      nodeFromSource: function(source) {
+        updateElementName(source);
+        var templateHtml = tagInnerHTMLFromSource(source, 'template');
+        var style = tagInnerHTMLFromSource(templateHtml,'style');
+        var html = templateHtml;
+        var script = tagInnerHTMLFromSource(source, 'script').trim();
+        // re-define design-element with user source
+        var name = this.localName;
+        var eltSource = '<element name="' + name + '" extends="tk-element">' +
+          '<script>' + script + '</s' + 'cript></element>';
+        registerFromSource(eltSource);
+        var de = document.createElement(name);
+        de.id = 'designElement';
+        de.innerHTML = html;
+        requestAnimationFrame(function() {
+          applyStyle(de);
+        });
+        return de;
       }
     });
+    
+    // publishing
+    var elementName = 'user-element';
+    function updateElementName(source) {
+      var match = source.match('<element[^>]*?name.*?=.*?["|\']([^"\']*)?["|\']');
+      if (match) {
+        elementName = match[1];
+      }
+    }
+    
+    function registerFromSource(source) {
+      if (source) {
+        var elt = elementFromHTML(source, 'element');
+        new HTMLElementElement(elt);
+      }
+    }
+    function createMeta(name) {
+      var meta = document.createElement('tk-meta');
+      if (!meta.byId(name)) {
+        var tag = name;
+        meta.id = tag;
+        meta.label = elementName;
+        var template = document.createElement('template');
+        template.innerHTML = '<' + tag + ' style="display: block; width: 400px; ' +
+          'height: 300px;"></' + tag + '>';
+        meta.appendChild(template);
+      }
+    }
+    
+    // round-tripping *from* source
+    function applyStyle(node) {
+      var style = node.querySelector('style');
+      if (style && style.sheet) {
+        applyIdCssRules(style.sheet.cssRules, node, style.sheet);
+      }
+    }
+
+    function applyIdCssRules(rules, root, sheet) {
+      for (var i=0, rule; i < rules.length; i++) {
+        rule = rules[i];
+        if (rule.selectorText.match(/^#[^, ]*$/) && rule.style) {
+          var node = root.querySelector(rule.selectorText);
+          if (node) {
+            node.style.cssText = rule.style.cssText;
+          }
+        } else if (rule.cssRules) {
+          applyIdCssRules(rules.cssRules, root, sheet);
+        }
+      }
+    }
 
     function tagInnerHTMLFromSource(source, tag) {
       var matches = source.match(regExpForTag(tag));
@@ -120,7 +153,8 @@ license that can be found in the LICENSE file.
       return d.querySelector(selector);
     }
     
-    function publishPropertiesToAttributes(element) {
+    // round tripping *to* source: dumping
+    function publishPropertiesToHTML(element) {
       var elt = element && element.firstElementChild;
       while (elt) {
         var p$ = elt.__published;
@@ -140,13 +174,24 @@ license that can be found in the LICENSE file.
             }
           });
         }
-        publishPropertiesToAttributes(elt);
+        // handle textContent specially
+        /*if (!elt.firstElementChild) {
+          var textContentBinding = Toolkit.getBinding(elt.firstChild, 'textContent');
+          if (textContentBinding) {
+            elt.textContent = '{{ ' + textContentBinding + ' }}';
+          }
+        }*/
+        publishPropertiesToHTML(elt);
         elt = elt.nextElementSibling;
       }
     }
     
     function dumpStyle(element, startIndent, tab) {
       var css = startIndent + '<style>\n';
+      var style = element.querySelector('style');
+      if (style && style.sheet) {
+        css += cssTextFromSheet(element, style.sheet, startIndent, tab) || '';
+      }
       function subtree(root, indent) {
         var e = root.firstElementChild;
         while (e) {
@@ -171,5 +216,69 @@ license that can be found in the LICENSE file.
       css += startIndent + '</style>\n';
       return css;
     }
+
+    function cssTextFromSheet(element, sheet, startIndent, tab) {
+      if (sheet) {
+        var rules = sheet.cssRules;
+        for (var i=0, css=[]; i < rules.length; i++) {
+          if (!(ignoreSelector(element, rules[i].selectorText))) {
+            css.push(dumpRule(rules[i], startIndent + tab, tab));
+          }
+        }
+        return css.join('');
+      }
+    }
+    // ignore id selectors
+    function ignoreSelector(element, selector) {
+      return selector.match(/^#[^, ]*$/) && element.querySelector(selector);
+    }
+
+    function dumpRule(rule, indent, tab) {
+      indent = indent || '';
+      // format
+      var css = rule.cssText
+        .replace(/{ /g, '{')
+        .replace(/; /g, ';')
+        .replace(/(^.*{)/g, indent + '$&\n' + indent + tab)
+        .replace(/;/g, ';\n' + indent + tab)
+        .replace(new RegExp(indent + tab + '}', 'g'), indent + '}\n')
+        .replace(/\n[^;]*:[^;]*initial[^;]*;/g, '');
+      return css;
+    }
+
+    var propBlackList = ["super", "isToolkitElement", "readyCallback",
+      "bind", "unbind", "job", "asyncMethod", "dispatch", "send", "asend",
+      "classFollows", "elementElement", "resolvePath", "installTemplate",
+      "eventDelegates", "__published", "setAttribute", "removeAttribute"];
+
+    function dumpProto(node, indent, tab) {
+      var dump = '{\n';
+      var props = Object.keys(node.__proto__).filter(function(p) {
+        return (propBlackList.indexOf(p) < 0);
+      });
+      if (!props.length) {
+        dump += indent + tab;
+      }
+      props.forEach(function(k, i) {
+        var value = node.__proto__[k], nodeValue = node[k];
+        dump += indent + tab + k + ': ';
+        if (typeof value == 'function') {
+          dump += value.toString();
+        } else {
+          dump += (typeof value == 'string' ? '\'' + nodeValue +
+            '\'' : nodeValue);
+        }
+        dump += (i <  props.length-1 ? ',\n' : '');
+      });
+      dump += '\n' + indent + '}';
+      return dump;
+    }
+
   </script>  
+</element>
+
+<element name="design-element" extends="tk-element">
+  <script>
+    Toolkit.register(this);
+  </script>
 </element>
