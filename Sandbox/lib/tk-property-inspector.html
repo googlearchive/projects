@@ -61,6 +61,12 @@
         // discover binding
         this.binding = Toolkit.getBinding(this.property.obj, 
             this.property.name);
+        /*
+        if (this.property.name == 'textContent') {
+          this.binding = Toolkit.getBinding(this.property.obj.firstChild,
+            this.property.name);
+        }
+        */
         // discover editorTag
         var type = (this.property.meta || 0).kind || typeof this.property.value;
         this.editorTag = this.editorTags[type || typeof this.property.value] 
@@ -113,7 +119,7 @@
   </script>
 </element>
 
-<element name="g-flip-out" extends="g-animation">
+<!--<element name="g-flip-out" extends="g-animation">
   <template>
     <g-property name="transform">
       <g-keyframe value="perspective(400px) translateZ(0px) rotateX(0deg) scale(1)"></g-keyframe>
@@ -141,9 +147,9 @@
       easing: 'ease-out'
     });
   </script>
-</element>
+</element>-->
 
-<!-- <element name="g-flip-out" extends="g-animation">
+ <element name="g-flip-out" extends="g-animation">
   <script>
     Toolkit.register(this, {
       duration: 0.2,
@@ -177,7 +183,7 @@
       }
     });
   </script>
-</element> -->
+</element> 
 
 <element name="tk-property-editor" attributes="editorTag">
   <template>
@@ -290,3 +296,19 @@
     });
   </script>
 </element>
+
+<!--<element name="tk-action-editor" extends="tk-abstract-editor">
+  <template>
+    <button on-click="buttonClick">{{meta.label}}</button>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      buttonClick: function() {
+        var action = this.meta.action;
+        if (this.meta.obj[action]) {
+          this.meta.obj[action]();
+        }
+      }
+    });
+  </script>
+</element>-->
