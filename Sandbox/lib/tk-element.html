@@ -156,35 +156,33 @@ license that can be found in the LICENSE file.
     function publishPropertiesToHTML(element) {
       var elt = element && element.firstElementChild;
       while (elt) {
-        var p$ = elt.__published;
-        if (p$) {
-          Object.keys(p$).forEach(function(n) {
-            var v = elt[n], binding = Toolkit.getBinding(elt, n);
-            if (binding) {
-              elt.setAttribute(n, '{{ ' + binding + ' }}');
-            } else if (v && (typeof v === 'string' || typeof v === 'number' ||
-                typeof v === 'boolean')) {
-              /*if (typeof v === 'boolean') {
-                v = n;
-              }*/
-              elt.setAttribute(n, v);
-            } else {
-              elt.removeAttribute(n);
-            }
-          });
-        }
+        //var p$ = elt.__published;
+        var p$ = Reflection.properties(elt);
+        p$.forEach(function(p) {
+          var v = p.value, n = p.name, binding = Toolkit.getBinding(elt, n);
+          if (binding) {
+            elt.setAttribute(n, '{{ ' + binding + ' }}');
+          } else if (v && (typeof v === 'string' || typeof v === 'number' ||
+              typeof v === 'boolean')) {
+            elt.setAttribute(n, v);
+          } else {
+            elt.removeAttribute(n);
+          }
+        });
         // handle textContent specially
-        /*if (!elt.firstElementChild) {
+        /*
+        if (!elt.firstElementChild) {
           var textContentBinding = Toolkit.getBinding(elt.firstChild, 'textContent');
           if (textContentBinding) {
             elt.textContent = '{{ ' + textContentBinding + ' }}';
           }
-        }*/
+        }
+        */
         publishPropertiesToHTML(elt);
         elt = elt.nextElementSibling;
       }
     }
-    
+   
     function dumpStyle(element, startIndent, tab) {
       var css = startIndent + '<style>\n';
       var style = element.querySelector('style');
