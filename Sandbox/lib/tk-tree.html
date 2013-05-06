@@ -35,7 +35,7 @@ license that can be found in the LICENSE file.
         padding: 8px;
       }
       #tree div {
-        padding: 2px;
+        padding: 4px;
       }
       .selected {
         background: lightblue;
@@ -79,7 +79,7 @@ license that can be found in the LICENSE file.
             e = e.nextElementSibling;
           }
         }
-        subtree(this.element, 0);
+        subtree(this.element, 4);
       },
       tap: function(e) {
         var nodes = this.$.tree.children;

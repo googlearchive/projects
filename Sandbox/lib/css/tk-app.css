@@ -4,6 +4,25 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 */
 
+@host {
+  * {
+    font-size: 14px;
+    font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+  }
+}
+
+/*
+input, select {
+  font-size: 14px;
+  font-family: 'Comic Sans MS', 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+  font-style: italic;
+}
+*/
+
+input[type=checkbox] {
+  /* no love for sizing */
+}
+
 #main {
   position: absolute;
   top: 61px;
@@ -44,7 +63,3 @@ license that can be found in the LICENSE file.
   z-index: 100;
 }
 
-tk-app, input {
-  font-size: 14px;
-  font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
-}

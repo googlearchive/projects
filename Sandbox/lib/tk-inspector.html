@@ -6,47 +6,22 @@ license that can be found in the LICENSE file.
 <script src="reflection.js"></script>
 
 <element name="tk-inspector" attributes="element">
+  <link rel="stylesheet" href="css/tk-inspector.css" />
   <template>
-    <style>
-      @host {
-        * {
-          border: 1px solid silver;
-        }
-      }
-      #header {
-        background-color: #E0E0E0;
-        border-bottom: 1px solid silver;
-        padding-top: 4px;
-        height: 44px;
-        /*line-height: 60px;*/
-      }
-      #interior {
-        position: absolute;
-        top: 62px;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        padding: 8px;
-        overflow-x: hidden;
-        overflow-y: auto;
-      }
-      g-icon-button {
-        vertical-align: middle;
-      }
-      tk-property-inspector[hidden=true] {
-        display: none !important;
-      }
-    </style>
     <div id="header">
-      <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement"></g-icon-button>
-      <b>{{name}}</b>
+      <div id="crumbList" style="display:inline-block; width: 80%; overflow:hidden">
+        <template repeat="{{crumbs}}">
+          <g-icon-button src="assets/ic_chevron_left_darkreg.png" on-click="selectParentElement" hidden="{{top}}"></g-icon-button>
+          <b>{{name}}</b>
+        </template>
+      </div>
       <g-icon-button src="assets/ic_delete_darkreg.png" on-click="deleteElement" style="float: right"></g-icon-button>
     </div>
     <div id="interior">
       <template repeat="{{properties}}">
         <tk-property-inspector property="{{}}" hidden="{{meta.hidden}}"></tk-property-inspector>
       </template>
-      <!--<tk-style-inspector element="{{element}}"></tk-style-inspector>-->
+      <tk-style-inspector element="{{element}}"></tk-style-inspector>
     </div>
     <tk-meta id="meta"></tk-meta>
   </template>
@@ -54,17 +29,43 @@ license that can be found in the LICENSE file.
     Toolkit.register(this, {
       element: null,
       properties: null,
-      name: '',
+      crumbs: [],
       elementChanged: function() {
         // meta-data attached here
         if (this.element) {
           this.element.meta = this.$.meta.byId(this.element.localName);
           this.properties = Reflection.properties(this.element);
-          this.name = this.element && this.element.localName || '';
+          this.crumbs = this.listCrumbs();
         } else {
-          this.properties = [];
           this.name = '';
+          this.properties = [];
+          this.crumbs = [];
         }
+        // right-align crumbs
+        this.asyncMethod(function() {
+          this.$.crumbList.scrollLeft = 9999;
+        });
+      },
+      listCrumbs: function() {
+        var crumbs = [];
+        var elt = this.element;
+        if (elt.id === 'designElement') {
+          return [{
+            name: 'component',
+            top: true
+          }]
+        }
+        var crumb = {};
+        while (elt && elt.id !== 'designElement') {
+          //crumb.top = false;
+          crumb = {
+            name: elt.localName//,
+            //top: false
+          };
+          crumbs.unshift(crumb);
+          elt = elt.parentNode;
+        }
+        return crumbs;
       },
       deleteElement: function() {
         this.send('delete-element');

@@ -43,8 +43,7 @@ license that can be found in the LICENSE file.
         padding: 9px 8px;
         margin: 0;
         width: 100%;
-        font-size: 14px;
-        font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+        font: inherit;
         box-sizing: border-box;
         -webkit-user-select: all;
         -moz-user-select: all;
@@ -111,8 +110,7 @@ license that can be found in the LICENSE file.
   <template>
     <style>
       input {
-        font-size: 14px;
-        height: 30px;
+        font: inherit;
       }
     </style>
     <input id="input" type="checkbox" checked="{{workingValue}}" on-change="inputChange">
@@ -142,8 +140,7 @@ license that can be found in the LICENSE file.
         margin-left: 0;
         margin-right: 0;
         width: 100%; 
-        font-size: 14pt;
-        font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+        font: inherit;
         -webkit-user-select: all; 
         -moz-user-select: all;
         user-select: all;
@@ -165,11 +162,14 @@ license that can be found in the LICENSE file.
         });
       },
       optionsChanged: function() {
+        this.$.select.value = this.workingValue;
+        /*
         this.asyncMethod(function() {
           if (this.workingValue !== this.$.select.value) {
             this.selectChange();
           }
         });
+        */
       },
       selectChange: function() {
         this.workingValue = this.$.select.value;

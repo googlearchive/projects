@@ -14,7 +14,7 @@
         overflow: hidden;
         color: #919191;
         font-weight: bold;
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
       }
       #container {
         display: inline-block;
@@ -225,23 +225,58 @@
 
 <element name="tk-binding-editor" extends="tk-abstract-editor">
   <template>
-    <tk-id-select-editor id="idSelect" style="width: 145px;" options="{{elements}}" value="{{target}}"></tk-id-select-editor>
+    <style>
+      @host {
+        * {
+          display: block;
+          white-space: nowrap;
+        }
+      }
+    </style>
+    <tk-id-select-editor id="idSelect" style="width: 112px;" options="{{elements}}" value="{{target}}" on-editor-value-changed="editorValueChanged" ></tk-id-select-editor>
     <!-- <tk-select-editor style="width: 145px;" options="{{properties}}"></tk-select-editor> -->
-    <tk-string-editor style="width: 145px;" on-editor-value-changed="editorValueChanged" value="{{workingValue}}"></tk-string-editor>
+    <tk-string-editor style="width: 165px;" value="{{workingValue}}" on-editor-value-changed="editorValueChanged" ></tk-string-editor>
   </template>
   <script>
     Toolkit.register(this, {
       target: null,
       meta: null,
       metaChanged: function() {
-        this.workingValue = this.meta.binding;
         this.$.idSelect.meta = {obj: this.meta.property.obj };
+        this.value = this.meta.binding || '';
       },
       editorValueChanged: function(event) {
         event.stopPropagation();
         this.commit();
       },
+      format: function(value) {
+        var path = [];
+        if (this.target == this.meta.property.obj.id) {
+          this.target = '';
+        }
+        if (this.target) {
+          path.push('$', this.target);
+        }
+        if (value) {
+          path.push(value);
+        }
+        path = path.join('.');
+        console.log(path);
+        return path;
+      },
       valueChanged: function() {
+        if (this.value[0] == '$') {
+          var values = this.value.split('.');
+          values.shift(); // remove $
+          this.target = values.shift() // get object id
+          this.workingValue = values.join('.');
+        } else {
+          this.workingValue = this.value;
+        }
+      },
+      commit: function() {
+        this.super();
+        //console.log('binding-editor.bind-property: %s - %s', this.meta.property.name, this.value);
         this.send('bind-property', {
           obj: this.meta.property.obj,
           name: this.meta.property.name,
@@ -252,7 +287,29 @@
   </script>
 </element>
 
-<element name="tk-id-select-editor" extends="tk-select-editor">  
+<element name="tk-id-select-editor" extends="tk-select-editor">
+  <template>
+    <style>
+      @host {
+        * {
+          display: inline-block;
+          width: 95%;
+          position: relative;
+        }
+      }
+      select {
+        padding: 6px;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%; 
+        font: inherit;
+        -webkit-user-select: all; 
+        -moz-user-select: all;
+        user-select: all;
+      }
+    </style>
+    <shadow></shadow>
+  </template>
   <script>
     Toolkit.register(this, {
       root: null,
@@ -271,7 +328,7 @@
         return node;
       },
       buildOptions: function() {
-        var o = [];
+        var o = [''];
         if (this.root) {
           var pre = this.idPrefix;
           Array.prototype.forEach.call(this.root.querySelectorAll('[id]'), 
