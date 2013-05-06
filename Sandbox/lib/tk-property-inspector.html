@@ -61,12 +61,11 @@
         // discover binding
         this.binding = Toolkit.getBinding(this.property.obj, 
             this.property.name);
-        /*
+        // special handling for textContent
         if (this.property.name == 'textContent') {
           this.binding = Toolkit.getBinding(this.property.obj.firstChild,
             this.property.name);
         }
-        */
         // discover editorTag
         var type = (this.property.meta || 0).kind || typeof this.property.value;
         this.editorTag = this.editorTags[type || typeof this.property.value] 
