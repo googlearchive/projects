@@ -60,22 +60,24 @@ license that can be found in the LICENSE file.
         function subtree(root, indent) {
           var e = root.firstElementChild;
           while (e) {
-            var text = e.children.length == 0 ? e.textContent.trim() : '';
-            if (text) {
-              if (text.length > 12) {
-                text = text.slice(0, 12) + "...";
+            if (elementBlackList.indexOf(e.localName) < 0) {
+              var text = e.children.length == 0 ? e.textContent.trim() : '';
+              if (text) {
+                if (text.length > 12) {
+                  text = text.slice(0, 12) + "...";
+                }
+                text = ' "' + text + '"';
               }
-              text = ' "' + text + '"';
+              components.push({
+                indent: indent,
+                name: e.localName,
+                element: e,
+                id: e.id ? ' #' + e.id + '': '',
+                text: text,
+                selected: (e == selected) ? 'selected' : ''
+              });
+              subtree(e, indent + tabsize);
             }
-            components.push({
-              indent: indent,
-              name: e.localName,
-              element: e,
-              id: e.id ? ' #' + e.id + '': '',
-              text: text,
-              selected: (e == selected) ? 'selected' : ''
-            });
-            subtree(e, indent + tabsize);
             e = e.nextElementSibling;
           }
         }
@@ -89,5 +91,7 @@ license that can be found in the LICENSE file.
         }
       }
     });
+    
+    var elementBlackList = ['style'];
   </script>
 </element>
