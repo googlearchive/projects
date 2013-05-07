@@ -209,7 +209,7 @@ license that can be found in the LICENSE file.
           }
           if (binding) {
             elt.setAttribute(n, '{{ ' + binding + ' }}');
-          } else if (v && (typeof v === 'string' || typeof v === 'number' ||
+          } else if ((v || v === 0) && (typeof v === 'string' || typeof v === 'number' ||
               typeof v === 'boolean')) {
             elt.setAttribute(n, v);
           } else {
