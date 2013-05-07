@@ -85,6 +85,18 @@ license that can be found in the LICENSE file.
           var size = calcIntrinsicSize(this);
           createMeta(publishName, size.width, size.height);
         }
+      },
+      previewElement: function() {
+        var detail = {};
+        this.send("request-preview", detail);
+        if (detail.source) {
+          updatePublishName(detail.source);
+          var html = detail.source;
+          html += '\n<' + publishName + '></' + publishName + '>';
+          var preview = document.createElement('tk-preview-window');
+          preview.htmlContent = html;
+          preview.open();
+        }
       }
     });
     

@@ -3,7 +3,8 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" on-request-publish="requestPublish">
+<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" 
+    on-request-publish="requestPublish" on-request-preview="requestPreview">
   <link rel="stylesheet" href="css/tk-app.css">
   <template>
     <g-toolbar>
@@ -70,6 +71,10 @@ license that can be found in the LICENSE file.
         this.$.designer.applySource(detail.value);
       },
       requestPublish: function(event, detail) {
+        this.$.source.updateImmediate();
+        detail.source = this.$.source.value;
+      },
+      requestPreview: function(event, detail) {
         this.$.source.updateImmediate();
         detail.source = this.$.source.value;
       }
