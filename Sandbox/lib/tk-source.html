@@ -23,6 +23,14 @@ license that can be found in the LICENSE file.
       },
       editorChange: function(event, detail) {
         this.send('source-changed', detail);
+      },
+      shown: function() {
+        this.$.editor.focus();
+        var pos = this.$.editor.find('</style>', {start: 0});
+        if (pos) {
+          this.$.editor.gotoLine(pos.end.row + 2, 1e9);
+        }
+        //this.$.editor.foldTag('style');
       }
     });
     
