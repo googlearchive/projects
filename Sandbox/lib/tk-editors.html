@@ -85,6 +85,9 @@ license that can be found in the LICENSE file.
         // does not update swatch when in shadowdom because of focus issues
         this.$.input.tabindex = -1;
       },
+      valueChanged: function() {
+        this.workingValue = toHex(this.value);
+      },
       format: function(value) {
         return toHex(value);
       }
