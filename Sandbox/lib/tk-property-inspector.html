@@ -355,7 +355,7 @@
 
 <element name="tk-action-editor" extends="tk-abstract-editor">
   <template>
-    <button on-click="buttonClick">{{meta.label}}</button>
+    <button touch-action="user" on-pointerup="buttonClick">{{meta.label}}</button>
   </template>
   <script>
     Toolkit.register(this, {
