@@ -63,3 +63,8 @@ input[type=checkbox] {
   z-index: 5;
 }
 
+g-toolbar[responsive=true] {
+  z-index: 10;
+}
+
+
