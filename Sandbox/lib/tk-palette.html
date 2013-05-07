@@ -57,8 +57,11 @@ license that can be found in the LICENSE file.
   <script>
     Toolkit.register(this, {
       trackStart: function(event) {
-        this.send('palette-drag-start', event.target.getAttribute('tag'));
-        event.stopPropagation();
+        var tag = event.target.getAttribute('tag');
+        if (tag) {
+          this.send('palette-drag-start', tag);
+          event.stopPropagation();
+        }
       },
       track: function(event) {
         this.send('palette-drag', {x: event.pageX, y: event.pageY});
