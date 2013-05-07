@@ -6,6 +6,9 @@ license that can be found in the LICENSE file.
 <element name="tk-element">
   <script>
     Toolkit.register(this, {
+      ready: function() {
+        this.preview = document.createElement('tk-preview-window');
+      },
       update: function() {
         Toolkit.marshalNodeReferences.call(this, this);
         Toolkit.bindModel.call(this, this);
@@ -91,9 +94,8 @@ license that can be found in the LICENSE file.
         if (detail.source) {
           var html = detail.source;
           html += '\n<' + publishInfo.name + '></' + publishInfo.name + '>';
-          var preview = document.createElement('tk-preview-window');
-          preview.htmlContent = html;
-          preview.open();
+          this.preview.htmlContent = html;
+          this.preview.open();
         }
       }
     });
