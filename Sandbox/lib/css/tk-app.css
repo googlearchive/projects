@@ -60,6 +60,6 @@ input[type=checkbox] {
 }
 
 .selected-panel {
-  z-index: 100;
+  z-index: 5;
 }
 
