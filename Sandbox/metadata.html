@@ -73,21 +73,26 @@
 
 <tk-meta id="animation-group" label="Animation Group" isContainer>
   <template>
-    <animation-group style="border: 1px dotted silver; padding: 8px"></animation-group>
+    <animation-group style="border: 1px dotted silver; padding: 8px">
+      <animation-picker animationType="bounce" targetSelector="#div" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+      <animation-picker animationType="flip" targetSelector="#div1" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+      <animation-picker animationType="shake" targetSelector="#div2" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+    </animation-group>
   </template>
   <property name="type" kind="select" options="par,seq"></property>
   <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
+<tk-meta id="animation-picker" label="Animation" isHidden>
 <!--
-<tk-meta id="animation-picker" label="Animation">
   <template>
     <animation-picker style="border: 1px dotted silver; padding: 8px"></animation-picker>
   </template>
+//-->
   <property name="animationType" kind="select" options="blink,bounce,fadein,fadeout,flip,shake"></property>
   <property name="targetLabel" hidden="true"></property>
+  <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
-//-->
 
 <tk-meta id="animation-blink" label="Blink">
   <template>
