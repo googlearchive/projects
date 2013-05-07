@@ -19,18 +19,17 @@ license that can be found in the LICENSE file.
       updateImmediate: function() {
         this.value = dumpTag(this.element.firstElementChild, '')
         this.$.editor.value = this.value;
-        //this.$.editor.foldTag('style');
       },
       editorChange: function(event, detail) {
         this.send('source-changed', detail);
       },
       shown: function() {
         this.$.editor.focus();
+        this.$.editor.foldTag('style');
         var pos = this.$.editor.find('</style>', {start: 0});
         if (pos) {
           this.$.editor.gotoLine(pos.end.row + 2, 1e9);
         }
-        //this.$.editor.foldTag('style');
       }
     });
     
