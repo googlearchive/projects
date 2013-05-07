@@ -14,9 +14,9 @@ license that can be found in the LICENSE file.
       <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/fullscreen.png"></g-icon-button>
       <div class="flex"></div>
       <g-toolbar responsive="true">
-        <g-menu-button responsive="true" src="assets/menu.png" valign="right" on-activate="menuActivate">
+        <g-menu-button responsive="true" selectedClass="" src="assets/menu.png" valign="right" on-activate="menuActivate">
           <g-menu-item src="assets/settings.png" on-tap="publishElement">Publish</g-menu-item>
-          <g-menu-item src="assets/settings.png" on-tap="previewElement">Preview</g-menu-item>
+          <g-menu-item src="assets/settings.png" on-click="previewElement">Preview</g-menu-item>
           <g-menu-item src="assets/settings.png" on-tap="clearElement">Clear</g-menu-item>
         </g-menu-button>
       </g-toolbar>
@@ -91,17 +91,13 @@ license that can be found in the LICENSE file.
         this.$.source.updateImmediate();
         return this.$.source.value;
       },
-      menuActivate: function(event, detail, sender) {
-        // unselect menu selection
-        sender.selected = -1;
-      },
       publishElement: function() {
         this.$.designer.publishElement(this.getSource());
       },
       previewElement: function() {
-        this.asyncMethod(function() {
+        //this.asyncMethod(function() {
           this.$.designer.previewElement(this.getSource());
-        });
+        //});
       },
       clearElement: function() {
         this.$.designer.clearElement();
