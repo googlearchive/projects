@@ -34,7 +34,8 @@ license that can be found in the LICENSE file.
       maximized: false,
       ready: function() {
         this.selectedMode = 'designer';
-        this.$.source.update();
+        //this.selectedMode = 'source';
+        //this.maximized = true;
       },
       toggleSize: function() {
         this.maximized = !this.maximized;
@@ -52,6 +53,9 @@ license that can be found in the LICENSE file.
       selectedModeChanged: function (oldMode) {
          this.classFollows(this.$[this.selectedMode], this.$[oldMode],
            'selected-panel');
+         if (this.$[this.selectedMode]['shown']) {
+           this.$[this.selectedMode]['shown']();
+         }
       },
       designChanged: function() {
         this.$.source.update();
