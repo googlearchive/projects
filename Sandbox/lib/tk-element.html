@@ -37,7 +37,7 @@ license that can be found in the LICENSE file.
         html += indent + dumpStyle(this, indent + tab + tab, tab);
         var children = '';
         Array.prototype.forEach.call(this.children, function(c) {
-          if (c.localName != 'style') {
+          if (elementBlackList.indexOf(c.localName) < 0) {
             children += dumpTag(c, indent + tab + tab);
           }
         });
@@ -78,7 +78,7 @@ license that can be found in the LICENSE file.
       },
       publishElement: function() {
         var detail = {};
-        this.send("request-publish", detail);
+        this.send('request-publish', detail);
         if (detail.source) {
           updatePublishName(detail.source);
           registerFromSource(detail.source);
@@ -88,7 +88,7 @@ license that can be found in the LICENSE file.
       },
       previewElement: function() {
         var detail = {};
-        this.send("request-preview", detail);
+        this.send('request-preview', detail);
         if (detail.source) {
           updatePublishName(detail.source);
           var html = detail.source;
@@ -145,11 +145,19 @@ license that can be found in the LICENSE file.
     
     function ensureChildStyling(node) {
       Array.prototype.forEach.call(node.children, function(n) {
-        if (!n.style.position) {
+        if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
           n.style.position = 'absolute';
           n.style.left = n.style.top = '0px';
+          n.id = makeUniqueId(n, n.localName);
         }
       });
+    }
+    
+    function makeUniqueId(node, id, suffix) {
+      var uId = id + (suffix || '');
+      return node.querySelector('#' + uId) ?
+        makeUniqueId(id, suffix ? ++suffix : 1) :
+        uId;
     }
 
     function applyIdCssRules(rules, root, sheet) {
@@ -214,6 +222,8 @@ license that can be found in the LICENSE file.
         elt = elt.nextElementSibling;
       }
     }
+    
+    var elementBlackList = ['style'];
    
     function dumpStyle(element, startIndent, tab) {
       var css = startIndent + '<style>\n';
