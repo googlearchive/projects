@@ -80,7 +80,7 @@ license that can be found in the LICENSE file.
 <element name="tk-style-inspector" attributes="element">
   <template>
     <template repeat="{{properties}}">
-      <tk-property-editor property="{{}}"></tk-property-editor>
+      <tk-property-inspector property="{{}}"></tk-property-inspector>
     </template>
     <tk-meta id="meta">
       <property name="backgroundColor" kind="color"></property>
@@ -88,7 +88,7 @@ license that can be found in the LICENSE file.
       <property name="border"></property>
       <property name="width"></property>
       <property name="height"></property>
-      <property name="test" kind="tk-compound-editor"></property>
+      <!-- <property name="test" kind="tk-compound-editor"></property> -->
     </tk-meta>
   </template>
   <script>
