@@ -32,7 +32,7 @@ license that can be found in the LICENSE file.
         publishPropertiesToHTML(this);
         var proto = dumpProto(this, indent + tab + tab, tab);
         var script = 'Toolkit.register(this, ' + proto + ');';
-        var html = indent + '<element name="' + publishName +'">\n' +
+        var html = indent + publishInfo.source + '\n' +
           indent + tab + '<template>\n';
         html += indent + dumpStyle(this, indent + tab + tab, tab);
         var children = '';
@@ -59,7 +59,7 @@ license that can be found in the LICENSE file.
         return html;
       },
       nodeFromSource: function(source) {
-        updatePublishName(source);
+        updatePublishInfo(source);
         var html = tagInnerHTMLFromSource(source, 'template');
         var script = tagInnerHTMLFromSource(source, 'script').trim();
         // re-define design-element with user source
@@ -80,19 +80,17 @@ license that can be found in the LICENSE file.
         var detail = {};
         this.send('request-publish', detail);
         if (detail.source) {
-          updatePublishName(detail.source);
           registerFromSource(detail.source);
           var size = calcIntrinsicSize(this);
-          createMeta(publishName, size.width, size.height);
+          createMeta(publishInfo.name, size.width, size.height);
         }
       },
       previewElement: function() {
         var detail = {};
         this.send('request-preview', detail);
         if (detail.source) {
-          updatePublishName(detail.source);
           var html = detail.source;
-          html += '\n<' + publishName + '></' + publishName + '>';
+          html += '\n<' + publishInfo.name + '></' + publishInfo.name + '>';
           var preview = document.createElement('tk-preview-window');
           preview.htmlContent = html;
           preview.open();
@@ -101,11 +99,17 @@ license that can be found in the LICENSE file.
     });
     
     // publishing
-    var publishName = 'user-element';
-    function updatePublishName(source) {
-      var match = source.match('<element[^>]*?name.*?=.*?["|\']([^"\']*)?["|\']');
+    var DEFAULT_PUBLISH_NAME = 'user-element';
+    var publishInfo = {name: DEFAULT_PUBLISH_NAME, source: '<element name="' +
+        DEFAULT_PUBLISH_NAME + '">'};
+    function updatePublishInfo(source) {
+      var match = source.match('<element[^>]*>');
       if (match) {
-        publishName = match[1];
+        publishInfo.source = match[0];
+        var nameMatch = publishInfo.source.match('name.*?=.*?["|\']([^"\']*)?["|\']');
+        if (nameMatch) {
+          publishInfo.name = nameMatch[1];
+        }
       }
     }
     
@@ -200,6 +204,9 @@ license that can be found in the LICENSE file.
         var p$ = Reflection.properties(elt);
         p$.forEach(function(p) {
           var v = p.value, n = p.name, binding = Toolkit.getBinding(elt, n);
+          if (n == 'textContent') {
+            return;
+          }
           if (binding) {
             elt.setAttribute(n, '{{ ' + binding + ' }}');
           } else if (v && (typeof v === 'string' || typeof v === 'number' ||
