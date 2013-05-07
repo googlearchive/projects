@@ -145,8 +145,12 @@ license that can be found in the LICENSE file.
       deleteElement: function() {
         var e = this.selected;
         if (e) {
-          e.parentNode.removeChild(e);
-          this.selected = null;
+          if (e === this.$.designElement) {
+            e.textContent = '';
+          } else {
+            e.parentNode.removeChild(e);
+            this.selected = null;
+          }
           this.canvasChange();
         }
       },
