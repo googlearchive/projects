@@ -54,7 +54,7 @@
         {name: 'Youtube App', file: 'samples/yt-app.html'},
         {name: 'Pica', file: 'samples/pica.html'},
         {name: 'Panels', file: 'samples/panels.html'},
-        {name: 'Cats', file: 'samples/cats.html'},
+        //{name: 'Cats', file: 'samples/cats.html'},
         {name: 'Playground', file: 'samples/pg-app-sample.html'}
       ],
       selectedSample: null,
@@ -78,21 +78,18 @@
         this.arrowImageSrc = this.resolvePath('images/arrow_' + (this.isOutputFullScreen ? 'right' : 'left')  + '.png');
       },
       fileResponse: function(e, inDetail) {
-        this.$.ace.value = inDetail.response;
+        this.$.ace.value = this.makeOutputHTML('', inDetail.response);
         dirtyCheck();
         this.run();
       },
       run: function() {
         this.$.output.src = '';
-        setTimeout(function() {
+        this.asyncMethod(function() {
           var doc = this.$.output.contentDocument;
-          // put base href in head
-          var h = '<base href="' + document.baseURI + '">\n';
-          var s = this.makeOutputHTML(h, '');
           doc.open('text/html', '');
-          doc.write(s);
+          doc.write(this.$.ace.editor.getValue());
           doc.close();
-        }.bind(this), 0);
+        });
       },
       makeOutputHTML: function(head, body) {
         var html = '<!DOCTYPE html>\n';
@@ -102,9 +99,8 @@
         html += '<script src="../../toolkit/toolkit.js"></s' + 'cript>\n';
         html += '</head>\n<body>\n';
         // include content
-        html += (this.$.ace.editor.getValue());
         html += body || '';
-        html += '</body>\n</html>';
+        html += '\n</body>\n</html>';
         return html;
       }
     });
