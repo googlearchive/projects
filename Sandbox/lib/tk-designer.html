@@ -146,7 +146,7 @@ license that can be found in the LICENSE file.
         var e = this.selected;
         if (e) {
           if (e === this.$.designElement) {
-            e.textContent = '';
+            this.clearElement();
           } else {
             e.parentNode.removeChild(e);
             this.selected = null;
@@ -197,6 +197,15 @@ license that can be found in the LICENSE file.
         parent.removeChild(this.$.designElement);
         parent.appendChild(designElement);
         this.$.designElement = designElement;
+      },
+      publishElement: function(source) {
+        this.$.designElement.publishElement(source);
+      },
+      previewElement: function(source) {
+        this.$.designElement.previewElement(source);
+      },
+      clearElement: function() {
+        this.$.designElement.textContent = '';
       }
     });
   </script>

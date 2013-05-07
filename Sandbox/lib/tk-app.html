@@ -3,8 +3,7 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" 
-    on-request-publish="requestPublish" on-request-preview="requestPreview">
+<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged">
   <link rel="stylesheet" href="css/tk-app.css">
   <template>
     <g-toolbar>
@@ -15,9 +14,9 @@ license that can be found in the LICENSE file.
       <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/menu.png"></g-icon-button>
       <div class="flex"></div>
       <g-menu-button responsive="true" src="assets/add.png" valign="right" on-activate="menuActivate">
-        <g-menu-item src="assets/settings.png">Publish</g-menu-item>
-        <g-menu-item src="assets/settings.png">Preview</g-menu-item>
-        <g-menu-item src="assets/settings.png">Clear</g-menu-item>
+        <g-menu-item src="assets/settings.png" on-tap="publishElement">Publish</g-menu-item>
+        <g-menu-item src="assets/settings.png" on-tap="previewElement">Preview</g-menu-item>
+        <g-menu-item src="assets/settings.png" on-tap="clearElement">Clear</g-menu-item>
       </g-menu-button>
     </g-toolbar>
     <div id="main">
@@ -38,13 +37,19 @@ license that can be found in the LICENSE file.
       selectedMode: '',
       designMode: true,
       maximized: false,
+      demoMode: false,
       ready: function() {
         this.selectedMode = 'designer';
-        //this.selectedMode = 'source';
-        //this.maximized = true;
+        this.demoMode = (window.location.search.indexOf('demo') >= 0);
       },
       toggleSize: function() {
         this.maximized = !this.maximized;
+      },
+      demoModeChanged: function() {
+        if (this.demoMode) {
+          this.selectedMode = 'source';
+          this.maximized = true;
+        }
       },
       maximizedChanged: function() {
         this.$.toggle.active = this.maximized;
@@ -80,17 +85,22 @@ license that can be found in the LICENSE file.
       sourceChanged: function(event, detail) {
         this.$.designer.applySource(detail.value);
       },
-      requestPublish: function(event, detail) {
+      getSource: function() {
         this.$.source.updateImmediate();
-        detail.source = this.$.source.value;
-      },
-      requestPreview: function(event, detail) {
-        this.$.source.updateImmediate();
-        detail.source = this.$.source.value;
+        return this.$.source.value;
       },
       menuActivate: function(event, detail, sender) {
         // unselect menu selection
         sender.selected = -1;
+      },
+      publishElement: function() {
+        this.$.designer.publishElement(this.getSource());
+      },
+      previewElement: function() {
+        this.$.designer.previewElement(this.getSource());
+      },
+      clearElement: function() {
+        this.$.designer.clearElement();
       }
     });
   </script>

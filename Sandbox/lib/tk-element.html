@@ -6,9 +6,6 @@ license that can be found in the LICENSE file.
 <element name="tk-element">
   <script>
     Toolkit.register(this, {
-      ready: function() {
-        this.preview = document.createElement('tk-preview-window');
-      },
       update: function() {
         Toolkit.marshalNodeReferences.call(this, this);
         Toolkit.bindModel.call(this, this);
@@ -79,25 +76,26 @@ license that can be found in the LICENSE file.
         });
         return de;
       },
-      publishElement: function() {
-        var detail = {};
-        this.send('request-publish', detail);
-        if (detail.source) {
-          registerFromSource(detail.source);
+      publishElement: function(source) {
+        if (source) {
+          registerFromSource(source);
           var size = calcIntrinsicSize(this);
           createMeta(publishInfo.name, size.width, size.height);
         }
       },
-      previewElement: function() {
-        var detail = {};
-        this.send('request-preview', detail);
-        if (detail.source) {
-          var html = detail.source;
+      previewElement: function(source) {
+        if (source) {
+          var html = source;
           html += '\n<' + publishInfo.name + '></' + publishInfo.name + '>';
-          this.preview.htmlContent = html;
-          this.preview.open();
+          preview.htmlContent = html;
+          preview.open();
         }
       }
+    });
+    
+    var preview;
+    document.addEventListener('WebComponentsReady', function() {
+      preview = document.createElement('tk-preview-window');
     });
     
     // publishing
@@ -149,6 +147,20 @@ license that can be found in the LICENSE file.
       }
     }
     
+    function applyIdCssRules(rules, root, sheet) {
+      for (var i=0, rule; i < rules.length; i++) {
+        rule = rules[i];
+        if (rule.selectorText.match(/^#[^, ]*$/) && rule.style) {
+          var node = root.querySelector(rule.selectorText);
+          if (node) {
+            node.style.cssText = rule.style.cssText;
+          }
+        } else if (rule.cssRules) {
+          applyIdCssRules(rules.cssRules, root, sheet);
+        }
+      }
+    }
+    
     function ensureChildStyling(node) {
       Array.prototype.forEach.call(node.children, function(n) {
         if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
@@ -166,20 +178,7 @@ license that can be found in the LICENSE file.
         uId;
     }
 
-    function applyIdCssRules(rules, root, sheet) {
-      for (var i=0, rule; i < rules.length; i++) {
-        rule = rules[i];
-        if (rule.selectorText.match(/^#[^, ]*$/) && rule.style) {
-          var node = root.querySelector(rule.selectorText);
-          if (node) {
-            node.style.cssText = rule.style.cssText;
-          }
-        } else if (rule.cssRules) {
-          applyIdCssRules(rules.cssRules, root, sheet);
-        }
-      }
-    }
-
+    
     function tagInnerHTMLFromSource(source, tag) {
       var matches = source.match(regExpForTag(tag));
       if (matches) {
