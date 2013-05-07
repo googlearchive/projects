@@ -184,7 +184,7 @@ license that can be found in the LICENSE file.
         // reselect selection
         var selected = this.selected;
         if (selected && selected.id) {
-          selected = this.$.designElement.querySelector('#' + selected.id)
+          selected = this.$.canvas.querySelector('#' + selected.id)
         }
         this.selected = selected || null;
       },
