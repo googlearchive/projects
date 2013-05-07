@@ -12,18 +12,19 @@ license that can be found in the LICENSE file.
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
       </g-selector>
       <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/fullscreen.png"></g-icon-button>
+      <g-icon-button src="assets/ic_refresh_darkreg.png" on-tap="clearElement"></g-icon-button>
       <div class="flex"></div>
       <g-toolbar responsive="true">
         <g-menu-button responsive="true" selectedClass="" src="assets/menu.png" valign="right" on-activate="menuActivate">
           <g-menu-item src="assets/settings.png" on-click="previewElement">Preview</g-menu-item>
           <g-menu-item src="assets/settings.png" on-tap="publishElement">Publish</g-menu-item>
-          <g-menu-item src="assets/settings.png" on-tap="clearElement">Clear</g-menu-item>
+          <g-menu-item src="assets/ic_refresh_darkreg.png" on-tap="clearElement">Clear</g-menu-item>
         </g-menu-button>
       </g-toolbar>
     </g-toolbar>
     <div id="main">
       <tk-designer id="designer" selected="{{selected}}" element="{{element}}" maximized="{{maximized}}"></tk-designer>
-      <tk-source id="source" fontSize="20px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
+      <tk-source id="source" fontSize="16px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
       <tk-tools id="tools" selected="{{selected}}" element="{{element}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
