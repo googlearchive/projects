@@ -18,12 +18,19 @@
         // include base scripts
         html += '<script src="https://www.google.com/jsapi"></s' + 'cript>\n';
         html += '<script src="../../toolkit/toolkit.min.js"></s' + 'cript>\n';
-        html += '<link rel="import" href="lib/components.html">';
-        html += '<link rel="import" href="../pica/components/pi-app.html">';
+        html += '<link rel="import" href="lib/components.html">\n';
+        html += '<link rel="import" href="../pica/components/pi-app.html">\n';
+        // style
+        html += '<style>\n';
+        html += '  body {\n';
+        html += '    font-size: 14px;\n';
+        html += '    font-family: "Helvetica Neue", "Roboto", "Arial", sans-serif;\n';
+        html += '  }\n';
+        html += '</style>\n';
         html += '</head>\n<body>\n';
         // include content
         html += body || '';
-        html += '</body>\n</html>';
+        html += '\n</body>\n</html>';
         return html;
       }
     });
@@ -46,12 +53,16 @@
   </script>
 </element>
 
-<element name="tk-preview-window" extends="tk-preview" on-click="open">
+<element name="tk-preview-window" extends="tk-preview">
   <script>
+    var previewWindow;
     Toolkit.register(this, {
       open: function() {
-        this.window = window.open('', '', null, false);
-        this.writeToDoc(this.window.document);
+        if (previewWindow) {
+          previewWindow.close();
+        }
+        previewWindow = window.open('', '', null, false);
+        this.writeToDoc(previewWindow.document);
       }
     });
   </script>
