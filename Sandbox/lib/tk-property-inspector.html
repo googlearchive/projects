@@ -1,4 +1,4 @@
-<element name="tk-property-inspector" attributes="property" 
+<element name="tk-property-inspector" attributes="property nobind" 
     on-editor-value-changed="valueChangedEvent">
   <template>
     <style>
@@ -30,10 +30,13 @@
         background-color: lightblue;
         -webkit-box-shadow: 0px 0px 14px 3px lightblue;
       }
+      [nodisplay=true] {
+        display: none !important;
+      }
     </style>
     <div class="property-name">{{property.name}}:</div>
     <span id="container"><content></content></span>
-    <g-icon id="icon" src="assets/link_dark.png" size="16" on-click="linkTap"></g-icon>
+    <g-icon id="icon" src="assets/link_dark.png" size="16" on-click="linkTap" nodisplay="{{nobind}}"></g-icon>
     <g-flip-out id="animOut" targetSelector="#container" on-complete="animOutComplete"></g-flip-out>
     <g-flip-in id="animIn" targetSelector="#container"></g-flip-in>
   </template>
@@ -44,6 +47,7 @@
       propertyValue: null,
       bindingMode: null,
       binding: null,
+      nobind: false,
       editorTags: {
         'boolean': 'tk-boolean-editor',
         'string': 'tk-string-editor',

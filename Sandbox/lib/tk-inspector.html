@@ -80,7 +80,7 @@ license that can be found in the LICENSE file.
 <element name="tk-style-inspector" attributes="element">
   <template>
     <template repeat="{{properties}}">
-      <tk-property-inspector property="{{}}"></tk-property-inspector>
+      <tk-property-inspector property="{{}}" nobind></tk-property-inspector>
     </template>
     <tk-meta id="meta">
       <property name="backgroundColor" kind="color"></property>
