@@ -64,6 +64,7 @@ license that can be found in the LICENSE file.
       trackEnd: function(event) {
         this.tracking = null;
         event.stopPropagation();
+        this.send('design-changed');
       }
     });
   </script>
