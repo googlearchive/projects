@@ -57,10 +57,8 @@ license that can be found in the LICENSE file.
         }
         var crumb = {};
         while (elt && elt.id !== 'designElement') {
-          //crumb.top = false;
           crumb = {
-            name: elt.localName//,
-            //top: false
+            name: elt.localName
           };
           crumbs.unshift(crumb);
           elt = elt.parentNode;
