@@ -217,22 +217,13 @@ license that can be found in the LICENSE file.
             elt.removeAttribute(n);
           }
         });
-        // handle textContent specially
-        /*
-        if (!elt.firstElementChild) {
-          var textContentBinding = Toolkit.getBinding(elt.firstChild, 'textContent');
-          if (textContentBinding) {
-            elt.textContent = '{{ ' + textContentBinding + ' }}';
-          }
-        }
-        */
         publishPropertiesToHTML(elt);
         elt = elt.nextElementSibling;
       }
     }
     
     var elementBlackList = ['style'];
-   
+
     function dumpStyle(element, startIndent, tab) {
       var css = startIndent + '<style>\n';
       var style = element.querySelector('style');

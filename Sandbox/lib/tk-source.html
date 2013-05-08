@@ -39,7 +39,7 @@ license that can be found in the LICENSE file.
         return e.dumpTag(dumpTag, indent, TAB);
       }
       if (e.nodeType == Node.TEXT_NODE) {
-        return e.textContent;
+        return dumpTextNode(e);
       }
       var html = '';
       html += indent + '<' + e.localName;
@@ -58,10 +58,15 @@ license that can be found in the LICENSE file.
           html += dumpTag(c, indent + TAB);
         });
         html += indent + end;
-      } else {
-        html += e.textContent + end;
+      } else if (e.firstChild) {
+        html += dumpTextNode(e.firstChild) + end;
       }
       return html;
+    }
+    
+    function dumpTextNode(e) {
+      var binding = Toolkit.getBinding(e, 'textContent');
+      return binding ? '{{ ' + binding + ' }}' : e.textContent;
     }
   </script>
 </element>
