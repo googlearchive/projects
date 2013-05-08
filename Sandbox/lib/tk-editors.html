@@ -149,13 +149,15 @@ license that can be found in the LICENSE file.
         user-select: all;
       }
     </style>
-    <select id="select" on-change="selectChange">
-      <template repeat="{{options}}">
-        <option>{{}}</option>
-      </template>
-    </select>
+    <select id="select" on-change="selectChange"></select>
+    
   </template>
   <script>
+    // TODO(sorvell): Template repeat functions specially inside a select
+    // by using <option template repeat="{{options}}">{{}}</option>
+    // However, this creates an extra space in the select; see
+    // due to https://github.com/toolkitchen/mdv/issues/56.
+    // For that reason, we're manually iterating these nodes.
     Toolkit.register(this, {
       metaChanged: function() {
         this.options = this.meta.options;
@@ -166,6 +168,12 @@ license that can be found in the LICENSE file.
       },
       optionsChanged: function() {
         this.$.select.value = this.workingValue;
+        this.$.select.textContent = '';
+        this.options.forEach(function(o) {
+          var option = document.createElement('option');
+          option.textContent = o;
+          this.$.select.appendChild(option);
+        }, this);
         /*
         this.asyncMethod(function() {
           if (this.workingValue !== this.$.select.value) {
