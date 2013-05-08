@@ -27,6 +27,7 @@ license that can be found in the LICENSE file.
   padding: 8px;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 g-icon-button {

@@ -48,6 +48,7 @@ input[type=checkbox] {
   width: 350px;
   overflow-x: hidden;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   -webkit-transition: right 0.4s;
   z-index: 6;
   box-shadow: -5px 0 8px rgba(0, 0, 0, 0.16);

@@ -20,6 +20,7 @@ license that can be found in the LICENSE file.
         bottom: 0;
         left: 0;
         overflow: auto;
+        -webkit-overflow-scrolling: touch;
         cursor: pointer;
       }
       #caption {
@@ -41,7 +42,7 @@ license that can be found in the LICENSE file.
         background: lightblue;
       }
     </style>
-    <div id="interior" touch-action="none" on-tap="tap">
+    <div id="interior" touch-action="scroll" on-tap="tap">
       <div id="title">Elements</div>
       <div id="tree">
         <template repeat="{{components}}">
