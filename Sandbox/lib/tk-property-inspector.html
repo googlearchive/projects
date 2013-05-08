@@ -24,6 +24,15 @@
         opacity: 0.3;
         vertical-align: middle;
       }
+      #iconContainer {
+        position: relative;
+        left: -10px;
+        padding: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+      
       #icon.binding {
         opacity: 0.6;
         border-radius: 12px;
@@ -36,7 +45,9 @@
     </style>
     <div class="property-name">{{property.name}}:</div>
     <span id="container"><content></content></span>
-    <g-icon id="icon" src="assets/link_dark.png" size="16" on-click="linkTap" nodisplay="{{nobind}}"></g-icon>
+    <div id="iconContainer" on-click="linkTap" nodisplay="{{nobind}}">
+      <g-icon id="icon" src="assets/link_dark.png" size="16"></g-icon>
+    </div>  
     <g-flip-out id="animOut" targetSelector="#container" on-complete="animOutComplete"></g-flip-out>
     <g-flip-in id="animIn" targetSelector="#container"></g-flip-in>
   </template>
@@ -238,7 +249,7 @@
     </style>
     <tk-id-select-editor id="idSelect" style="width: 112px;" options="{{elements}}" value="{{target}}" on-editor-value-changed="editorValueChanged" ></tk-id-select-editor>
     <!-- <tk-select-editor style="width: 145px;" options="{{properties}}"></tk-select-editor> -->
-    <tk-string-editor style="width: 165px;" value="{{workingValue}}" on-editor-value-changed="editorValueChanged" ></tk-string-editor>
+    <tk-string-editor style="width: 161px;" value="{{workingValue}}" on-editor-value-changed="editorValueChanged" ></tk-string-editor>
   </template>
   <script>
     Toolkit.register(this, {

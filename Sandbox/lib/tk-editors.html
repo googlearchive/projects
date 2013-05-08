@@ -45,6 +45,7 @@ license that can be found in the LICENSE file.
         width: 100%;
         font: inherit;
         box-sizing: border-box;
+        -moz-box-sizing: border-box;
         -webkit-user-select: all;
         -moz-user-select: all;
         user-select: all;
@@ -59,7 +60,8 @@ license that can be found in the LICENSE file.
         background: #ededed;
       }
     </style>
-    <input id="input" type="{{type}}" value="{{workingValue}}" on-change="commit">
+    <input id="input" type="{{type}}" value="{{workingValue}}" autocapitalize="off"
+      autocorrect="off" on-change="commit">
   </template>
   <script>
     Toolkit.register(this, {
