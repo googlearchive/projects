@@ -74,80 +74,50 @@
 <tk-meta id="animation-group" label="Animation Group" isContainer>
   <template>
     <animation-group style="border: 1px dotted silver; padding: 8px">
-      <animation-picker animationType="bounce" targetSelector="#div" style="border: 1px dotted silver;"></animation-picker>
-      <animation-picker animationType="flip" targetSelector="#div1" style="border: 1px dotted silver;"></animation-picker>
-      <animation-picker animationType="shake" targetSelector="#div2" style="border: 1px dotted silver;"></animation-picker>
+      <tk-bounce targetSelector="#toolbar"></tk-bounce>
+      <tk-flip targetSelector="#menu"></tk-flip>
+      <tk-shake targetSelector="#x_stock"></tk-shake>
     </animation-group>
   </template>
   <property name="type" kind="select" options="par,seq"></property>
-  <property name="targetSelector" kind="target-select"></property>
+  <property name="targetSelector" hidden="true"></property>
 </tk-meta>
 
-<tk-meta id="animation-picker" label="Animation" isHidden>
-<!--
+<tk-meta id="tk-blink" label="Blink">
   <template>
-    <animation-picker style="border: 1px dotted silver; padding: 8px"></animation-picker>
+    <tk-blink></tk-blink>
   </template>
-//-->
-  <property name="animationType" kind="select" options="blink,bounce,fadein,fadeout,flip,shake"></property>
+  <property name="animationName" hidden="true"></property>
   <property name="targetLabel" hidden="true"></property>
   <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
-<tk-meta id="animation-blink" label="Blink">
+<tk-meta id="tk-bounce" label="Bounce">
   <template>
-    <animation-picker animationType="blink" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+    <tk-bounce></tk-bounce>
   </template>
-  <property name="animationType" hidden="true"></property>
+  <property name="animationName" hidden="true"></property>
   <property name="targetLabel" hidden="true"></property>
+  <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
-<tk-meta id="animation-bounce" label="Bounce">
+<tk-meta id="tk-flip" label="Flip">
   <template>
-    <animation-picker animationType="bounce" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+    <tk-flip></tk-flip>
   </template>
-  <property name="animationType" hidden="true"></property>
+  <property name="animationName" hidden="true"></property>
   <property name="targetLabel" hidden="true"></property>
+  <property name="targetSelector" kind="target-select"></property>
 </tk-meta>
 
-<tk-meta id="animation-flip" label="Flip">
+<tk-meta id="tk-shake" label="Shake">
   <template>
-    <animation-picker animationType="flip" style="border: 1px dotted silver; padding: 8px"></animation-picker>
+    <tk-shake></tk-shake>
   </template>
-  <property name="animationType" hidden="true"></property>
+  <property name="animationName" hidden="true"></property>
   <property name="targetLabel" hidden="true"></property>
-</tk-meta>
-
-<tk-meta id="animation-picker" label="Shake">
-  <template>
-    <animation-picker animationType="shake" style="border: 1px dotted silver; padding: 8px"></animation-picker>
-  </template>
-  <property name="animationType" hidden="true"></property>
-  <property name="targetLabel" hidden="true"></property>
-</tk-meta>
-
-<tk-meta id="g-blink" isHidden>
   <property name="targetSelector" kind="target-select"></property>
-</tk-meta>
-
-<tk-meta id="g-bounce" isHidden>
-  <property name="targetSelector" kind="target-select"></property>
-</tk-meta>
-
-<tk-meta id="g-fadein" isHidden>
-  <property name="targetSelector" kind="target-select"></property>
-</tk-meta>
-
-<tk-meta id="g-fadeout" isHidden>
-  <property name="targetSelector" kind="target-select"></property>
-</tk-meta>
-
-<tk-meta id="g-flip" isHidden>
-  <property name="targetSelector" kind="target-select"></property>
-</tk-meta>
-
-<tk-meta id="g-shake" isHidden>
-  <property name="targetSelector" kind="target-select"></property>
+  <property name="type" hidden="true"></property>
 </tk-meta>
 
 <tk-meta id="x-stock" label="Stock">
