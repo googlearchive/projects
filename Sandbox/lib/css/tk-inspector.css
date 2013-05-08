@@ -18,6 +18,18 @@ license that can be found in the LICENSE file.
   white-space: nowrap;
 }
 
+#crumbList {
+  display: inline-block;
+  width: 80%;
+  vertical-align: middle;
+  overflow: hidden;
+  float: left;
+}
+
+#deleteIcon {
+  float: right;
+}
+
 #interior {
   position: absolute;
   top: 62px;
