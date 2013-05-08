@@ -62,9 +62,9 @@
       ready: function() {
         this.super();
         this.$.ace.editor.getSession().setTabSize(2);
-        setTimeout(function() {
+        this.asyncMethod(function() {
           this.$.menu.selected = this.sampleData[0].name;
-        }.bind(this), 0);
+        });
         this.isOutputFullScreenChanged();
       },
       toggle: function() {
