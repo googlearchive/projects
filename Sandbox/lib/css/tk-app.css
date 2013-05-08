@@ -38,6 +38,7 @@ input[type=checkbox] {
   bottom: 0;
   left: 0;
   -webkit-transition: right 0.4s;
+  transition: right 0.4s;
 }
 
 #tools {
@@ -50,6 +51,7 @@ input[type=checkbox] {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   -webkit-transition: right 0.4s;
+  transition: right 0.4s;
   z-index: 6;
   box-shadow: -5px 0 8px rgba(0, 0, 0, 0.16);
 }
