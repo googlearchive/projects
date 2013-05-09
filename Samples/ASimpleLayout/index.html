@@ -1,0 +1,65 @@
+﻿<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<!DOCTYPE html>
+<html class="aux-full-bleed">
+<head>
+  <title>Simple Layout</title>
+  <script src="../../../toolkit/toolkit.js"></script>
+  <!-- -->
+  <link rel="import" href="../../../toolkit-elements/toolkit-layout/toolkit-layout.html">
+  <link rel="import" href="../../../toolkit-elements/toolkit-layout/toolkit-slide.html">
+  <!-- -->
+  <link rel="stylesheet" href="../../../aux-elements/basic.css">
+  <link rel="import" href="../../../aux-elements/aux-toolbar/aux-toolbar.html">
+  <link rel="import" href="../../../aux-elements/aux-icon-button/aux-icon-button.html">
+  <!-- -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="aux-full-bleed aux-body-text no-transitions">
+  
+  <div id="left" class="aux-gradient">
+    <div id="logo" class="aux-gradient">
+      Logo
+    </div> 
+    <!-- fit attribute makes this div elastic under toolkit-layout -->
+    <div fit id="primary">
+      Primary Tray
+    </div> 
+    <!-- use toolkit-layout for simple tesselation -->
+    <toolkit-layout vertical></toolkit-layout>
+  </div>
+  <!-- use toolkit-slide for simple dynamics -->
+  <toolkit-slide id="slideLeft" targetid="left"></toolkit-slide>
+  
+  <div id="main" fit class="aux-bg-gray">
+
+    <aux-toolbar>
+      <aux-icon-button onclick="drawerAction('slideLeft')" src="assets/ic_drawer_darkreg.png"></aux-icon-button>
+      <aux-icon-button src="assets/ic_refresh_darkreg.png"></aux-icon-button>
+      <aux-icon-button src="assets/ic_mail_darkreg.png"></aux-icon-button>
+      <!-- aux-toolbar uses toolkit-layout internally -->
+      <span fit></span>
+      <aux-icon-button onclick="drawerAction('slideRight')" src="assets/ic_settings_lg_darkreg.png"></aux-icon-button>
+    </aux-toolbar>
+
+    <div id="content" fit>Body Text</div>
+    <toolkit-layout vertical></toolkit-layout>
+  </div>
+  
+  <div id="right" class="aux-header-gray"></div>
+  <toolkit-layout></toolkit-layout>
+  <toolkit-slide id="slideRight" targetid="right" closed></toolkit-slide>
+
+  <script>
+    addEventListener('WebComponentsReady', function() {
+      document.body.classList.remove('no-transitions');
+    });
+    function drawerAction(id) {
+      document.querySelector('#' + id).toggle();
+    };
+  </script>
+</body>
+</html>

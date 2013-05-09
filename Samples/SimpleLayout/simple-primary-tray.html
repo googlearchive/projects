@@ -1,0 +1,44 @@
+﻿<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="simple-primary-tray">
+  <template>
+    <style>
+      @host {
+        * {
+          display: block;
+        }
+      }
+      .gradient {
+        background: -webkit-linear-gradient(-60deg, #3d3d3d, #353535);
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 1px 0px rgba(0, 0, 0, 0.05);
+      }
+      #logo {
+        padding: 16px 14px;
+        color: #eaeaea;
+        font-size: 21px;
+      }
+      #content {
+        color: #7f7f7f;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 14px;
+      }
+    </style>
+    <div id="logo" class="gradient">
+        Logo
+    </div> 
+    <div fit id="content" class="gradient">
+        <content></content>
+    </div> 
+    <!-- use toolkit-layout for simple tesselation -->
+    <toolkit-layout vertical></toolkit-layout>
+  </template>
+  <script>
+    Toolkit.register(this, {
+    });
+  </script>
+</element>
