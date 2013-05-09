@@ -34,7 +34,7 @@
 
 <tk-meta id="g-menu" label="Menu" isContainer>
   <template>
-    <g-menu selected="0">
+    <g-menu selected="0" style="background-color: #fff;">
       <g-menu-item src="images/comment.png">Post a Comment</g-menu-item>
       <g-menu-item src="images/hangout.png">Share Link</g-menu-item>
       <g-menu-item src="images/mail.png">Email Link</g-menu-item>
@@ -122,11 +122,15 @@
 
 <tk-meta id="x-stock" label="Stock">
   <template>
-    <x-stock symbol="GOOG"></x-stock>
+    <x-stock symbol="GOOG" style="background-color: #fff"></x-stock>
   </template>
 </tk-meta>
 
-<tk-meta id="wu-weather" label="Weather"></tk-meta>
+<tk-meta id="wu-weather" label="Weather">
+  <template>
+    <wu-weather style="background-color: #fff"></wu-weather>
+  </template>
+</tk-meta>
 
 <tk-meta id="tk-app" label="Sandbox App">
   <template>
