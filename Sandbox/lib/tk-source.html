@@ -1,0 +1,72 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-source" attributes="element fontSize">
+  <template>
+    <ajaxorg-ace id="editor" mode="html" theme="chrome" tabSize="2"
+        fontSize="{{fontSize}}" on-editor-change="editorChange"></ajaxorg-ace>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      update: function() {
+        // force components to update before dumping source
+        dirtyCheck();
+        // given async effects a chance to apply to dom.
+        this.asyncMethod('updateImmediate');
+      },
+      updateImmediate: function() {
+        this.value = dumpTag(this.element.firstElementChild, '')
+        this.$.editor.value = this.value;
+      },
+      editorChange: function(event, detail) {
+        this.send('source-changed', detail);
+      },
+      shown: function() {
+        this.$.editor.focus();
+        this.$.editor.foldTag('style');
+        var pos = this.$.editor.find('</style>', {start: 0});
+        if (pos) {
+          this.$.editor.gotoLine(pos.end.row + 2, 1e9);
+        }
+      }
+    });
+    
+    var TAB = '  ';
+    function dumpTag(e, indent) {
+      if (e.dumpTag) {
+        return e.dumpTag(dumpTag, indent, TAB);
+      }
+      if (e.nodeType == Node.TEXT_NODE) {
+        return dumpTextNode(e);
+      }
+      var html = '';
+      html += indent + '<' + e.localName;
+      for (var i=0, a; (a = e.attributes[i]); i++) {
+        if (a.name !== 'class' || a.value != '') {
+          html += ' ' + a.name + (a.value != '' ? '="' + a.value + '"': '');
+        }
+      }
+      html += '>';
+      var end = '</' + e.localName + '>\n';
+      if (e.firstElementChild) {
+        Array.prototype.forEach.call(e.children, function(c, i) {
+          if (i == 0) {
+            html += '\n';
+          }
+          html += dumpTag(c, indent + TAB);
+        });
+        html += indent + end;
+      } else {
+        html += e.firstChild ? dumpTextNode(e.firstChild) + end : end;
+      }
+      return html;
+    }
+    
+    function dumpTextNode(e) {
+      var binding = Toolkit.getBinding(e, 'textContent');
+      return binding ? '{{ ' + binding + ' }}' : e.textContent;
+    }
+  </script>
+</element>

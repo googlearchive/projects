@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit/components/g-toolbar.html">
+<link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html">
 <link rel="import" href="../../../pantry/Youtube/yt-video.html"/>
 <element name="yt-videopanel" attributes="video">
   <template>
@@ -19,6 +19,7 @@
         position: relative;
     	  -webkit-box-flex: 1;
     	  -webkit-flex: 1;
+        flex: 1;
     	  min-height: 0;
     	}
     </style>
@@ -31,7 +32,7 @@
       </div>
       <content select="*"></content>
     </g-toolbar>
-    <yt-video videoid="{{video.media$group.yt$videoid.$t}}"></yt-video>
+    <yt-video videoEntry="{{video}}"></yt-video>
   </template>
   <script>
     Toolkit.register(this, {

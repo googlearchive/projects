@@ -1,0 +1,328 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-element">
+  <script>
+    Toolkit.register(this, {
+      update: function() {
+        Toolkit.marshalNodeReferences.call(this, this);
+        Toolkit.bindModel.call(this, this);
+        // TODO(sorvell): events...
+      },
+      bindProperty: function(target, name, path) {
+        if (name === 'textContent') {
+          if (path) {
+            target.textContent = ' ';
+            target = target.firstChild;
+          } else {
+            target.firstChild.unbind(name);
+          }
+        } else {
+          target.unbind(name);
+          target.removeAttribute(name);
+        }
+        if (path) {
+          target.bind(name, this, path);
+        }
+      },
+      dumpTag: function(dumpTag, indent, tab) {
+        // resolve properties to attributes before dumping
+        publishPropertiesToHTML(this);
+        var proto = dumpProto(this, indent + tab + tab, tab);
+        var script = 'Toolkit.register(this, ' + proto + ');';
+        var html = indent + publishInfo.source + '\n' +
+          indent + tab + '<template>\n';
+        html += indent + dumpStyle(this, indent + tab + tab, tab);
+        var children = '';
+        Array.prototype.forEach.call(this.children, function(c) {
+          if (elementBlackList.indexOf(c.localName) < 0) {
+            children += dumpTag(c, indent + tab + tab);
+          }
+        });
+        html += children || (indent + tab + tab + '\n');
+        html += indent + tab + '</template>\n' +
+          indent + tab +'<script>\n' +
+          indent + tab + tab + script + '\n' +
+          indent + tab +'</s' + 'cript>\n'+
+          indent + '</element>';
+        // remove inline styles
+        html = html
+          .replace(/ style="[^"]*"/g, '')
+          .replace(/( )?selected-element/g, '')
+          // TODO(sorvell): need a better way to remove empty class and 
+          // selected class...
+          .replace(/( )?class=""/g, '')
+          .replace(/( )? class="selected"/g, '')
+          ;
+        return html;
+      },
+      applySource: function(source) {
+        updatePublishInfo(source);
+        var html = tagInnerHTMLFromSource(source, 'template');
+        var script = tagInnerHTMLFromSource(source, 'script').trim();
+        // re-define design-element with user source
+        var eltSource = '<element name="' + this.localName + 
+          '" extends="tk-element">' + '<script>' + script + '</s' + 
+          'cript></element>';
+        registerFromSource(eltSource);
+        var de = document.createElement(this.localName);
+        de.id = 'designElement';
+        de.innerHTML = html;
+        // replace self in parent
+        var parent = this.parentNode;
+        parent.removeChild(this);
+        parent.appendChild(de);
+        //
+        requestAnimationFrame(function() {
+          applyStyle(de);
+          ensureChildStyling(de);
+          this.send('source-applied', de);
+        }.bind(this));
+        return de;
+      },
+      publishElement: function(source) {
+        if (source) {
+          registerFromSource(source);
+          var size = calcIntrinsicSize(this);
+          createMeta(publishInfo.name, size.width, size.height);
+        }
+      },
+      previewElement: function(source) {
+        if (source) {
+          var html = source;
+          html += '\n<' + publishInfo.name + '></' + publishInfo.name + '>';
+          preview.htmlContent = html;
+          preview.open();
+        }
+      }
+    });
+    
+    var preview;
+    document.addEventListener('WebComponentsReady', function() {
+      preview = document.createElement('tk-preview-window');
+    });
+    
+    // publishing
+    var DEFAULT_PUBLISH_NAME = 'user-element';
+    var publishInfo = {name: DEFAULT_PUBLISH_NAME, source: '<element name="' +
+        DEFAULT_PUBLISH_NAME + '">'};
+    function updatePublishInfo(source) {
+      var match = source.match('<element[^>]*>');
+      if (match) {
+        publishInfo.source = match[0];
+        var nameMatch = publishInfo.source.match('name.*?=.*?["|\']([^"\']*)?["|\']');
+        if (nameMatch) {
+          publishInfo.name = nameMatch[1];
+        }
+      }
+    }
+    
+    function registerFromSource(source) {
+      if (source) {
+        var elt = elementFromHTML(source, 'element');
+        new HTMLElementElement(elt);
+      }
+    }
+    function createMeta(name, width, height) {
+      var meta = document.createElement('tk-meta');
+      if (!meta.byId(name)) {
+        var tag = name;
+        meta.id = tag;
+        meta.label = name;
+        var template = document.createElement('template');
+        template.innerHTML = '<' + tag + ' style="display: block; width: ' +
+          width + 'px; ' + 'height: ' + height + 'px;"></' + tag + '>';
+        meta.appendChild(template);
+      }
+    }
+    
+    function calcIntrinsicSize(node) {
+      node.style.right = node.style.bottom = 'auto';
+      var size = {width: node.scrollWidth, height: node.scrollHeight};
+      node.style.right = node.style.bottom = null;
+      return size;
+    }
+    
+    // round-tripping *from* source
+    function applyStyle(node) {
+      var style = node.querySelector('style');
+      if (style && style.sheet) {
+        applyIdCssRules(style.sheet.cssRules, node, style.sheet);
+      }
+    }
+    
+    function applyIdCssRules(rules, root, sheet) {
+      for (var i=0, rule; i < rules.length; i++) {
+        rule = rules[i];
+        if (rule.selectorText.match(/^#[^, ]*$/) && rule.style) {
+          var node = root.querySelector(rule.selectorText);
+          if (node) {
+            node.style.cssText = rule.style.cssText;
+          }
+        } else if (rule.cssRules) {
+          applyIdCssRules(rules.cssRules, root, sheet);
+        }
+      }
+    }
+    
+    function ensureChildStyling(node) {
+      Array.prototype.forEach.call(node.children, function(n) {
+        if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
+          n.style.position = 'absolute';
+          n.style.left = n.style.top = '0px';
+          n.id = makeUniqueId(n, n.localName);
+        }
+      });
+    }
+    
+    function makeUniqueId(node, id, suffix) {
+      var uId = id + (suffix || '');
+      return node.querySelector('#' + uId) ?
+        makeUniqueId(id, suffix ? ++suffix : 1) :
+        uId;
+    }
+
+    
+    function tagInnerHTMLFromSource(source, tag) {
+      var matches = source.match(regExpForTag(tag));
+      if (matches) {
+        return matches[1];
+      }
+      return '';
+    }
+
+    function regExpForTag(tag) {
+      return new RegExp('<' + tag + '>([\\S\\s]*)<\/' + tag + '>');
+    }
+
+    function elementFromHTML(html, selector) {
+      var d = document.createElement('div');
+      d.innerHTML = html;
+      return d.querySelector(selector);
+    }
+    
+    // round tripping *to* source: dumping
+    function publishPropertiesToHTML(element) {
+      var elt = element && element.firstElementChild;
+      while (elt) {
+        //var p$ = elt.__published;
+        var p$ = Reflection.properties(elt);
+        p$.forEach(function(p) {
+          var v = p.value, n = p.name, binding = Toolkit.getBinding(elt, n);
+          if (n == 'textContent') {
+            return;
+          }
+          if (binding) {
+            elt.setAttribute(n, '{{ ' + binding + ' }}');
+          } else if ((v || v === 0) && (typeof v === 'string' || typeof v === 'number' ||
+              typeof v === 'boolean')) {
+            elt.setAttribute(n, v);
+          } else {
+            elt.removeAttribute(n);
+          }
+        });
+        publishPropertiesToHTML(elt);
+        elt = elt.nextElementSibling;
+      }
+    }
+    
+    var elementBlackList = ['style'];
+
+    function dumpStyle(element, startIndent, tab) {
+      var css = startIndent + '<style>\n';
+      var style = element.querySelector('style');
+      if (style && style.sheet) {
+        css += cssTextFromSheet(element, style.sheet, startIndent, tab) || '';
+      }
+      function subtree(root, indent) {
+        var e = root.firstElementChild;
+        while (e) {
+          var parts = e.hasAttribute('style') ? 
+            e.getAttribute('style').split(';') : null;
+          if (parts && e.id) {
+            css += indent + '#' + e.id + ' {\n';
+            parts.forEach(function(p) {
+              if (p) {
+                css += indent + tab + p.trim() + ';\n';
+              }
+            });
+            css += indent + '}' + '\n';
+          }
+          if (e.firstElementChild) {
+            subtree(e, indent);
+          }
+          e = e.nextElementSibling;
+        }
+      }
+      subtree(element || this.element, (startIndent || '') + tab);
+      css += startIndent + '</style>\n';
+      return css;
+    }
+
+    function cssTextFromSheet(element, sheet, startIndent, tab) {
+      if (sheet) {
+        var rules = sheet.cssRules;
+        for (var i=0, css=[]; i < rules.length; i++) {
+          if (!(ignoreSelector(element, rules[i].selectorText))) {
+            css.push(dumpRule(rules[i], startIndent + tab, tab));
+          }
+        }
+        return css.join('');
+      }
+    }
+    // ignore id selectors
+    function ignoreSelector(element, selector) {
+      return selector.match(/^#[^, ]*$/) && element.querySelector(selector);
+    }
+
+    function dumpRule(rule, indent, tab) {
+      indent = indent || '';
+      // format
+      var css = rule.cssText
+        .replace(/{ /g, '{')
+        .replace(/; /g, ';')
+        .replace(/(^.*{)/g, indent + '$&\n' + indent + tab)
+        .replace(/;/g, ';\n' + indent + tab)
+        .replace(new RegExp(indent + tab + '}', 'g'), indent + '}\n')
+        .replace(/\n[^;]*:[^;]*initial[^;]*;/g, '');
+      return css;
+    }
+
+    var propBlackList = ["super", "isToolkitElement", "readyCallback",
+      "bind", "unbind", "job", "asyncMethod", "dispatch", "send", "asend",
+      "classFollows", "elementElement", "resolvePath", "installTemplate",
+      "eventDelegates", "__published", "setAttribute", "removeAttribute"];
+
+    function dumpProto(node, indent, tab) {
+      var dump = '{\n';
+      var props = Object.keys(node.__proto__).filter(function(p) {
+        return (propBlackList.indexOf(p) < 0);
+      });
+      if (!props.length) {
+        dump += indent + tab;
+      }
+      props.forEach(function(k, i) {
+        var value = node.__proto__[k], nodeValue = node[k];
+        dump += indent + tab + k + ': ';
+        if (typeof value == 'function') {
+          dump += value.toString();
+        } else {
+          dump += (typeof value == 'string' ? '\'' + nodeValue +
+            '\'' : nodeValue);
+        }
+        dump += (i <  props.length-1 ? ',\n' : '');
+      });
+      dump += '\n' + indent + '}';
+      return dump;
+    }
+
+  </script>  
+</element>
+
+<element name="design-element" extends="tk-element">
+  <script>
+    Toolkit.register(this);
+  </script>
+</element>

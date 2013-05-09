@@ -1,0 +1,72 @@
+<element name="tk-preview" attributes="htmlContent">
+  <script>
+    Toolkit.register(this, {
+      htmlContent: '',
+      writeToDoc: function(doc) {
+        doc.open('text/html', '');
+        doc.write(this.outputSource());
+        doc.close();
+      },
+      outputSource: function() {
+        // put base href in head
+        var h = '<base href="' + document.baseURI + '">\n';
+        return this.makeOutputHTML(h, this.htmlContent);
+      },
+      makeOutputHTML: function(head, body) {
+        var html = '<!DOCTYPE html>\n';
+        html += '<head>\n';
+        html += '<title>Sandbox Preview</title>\n'
+        html += head || '';
+        // include base scripts
+        html += '<script src="https://www.google.com/jsapi"></s' + 'cript>\n';
+        html += '<script src="../../toolkit/toolkit.min.js"></s' + 'cript>\n';
+        html += '<link rel="import" href="lib/components.html">\n';
+        html += '<link rel="import" href="../pica/components/pi-app.html">\n';
+        // style
+        html += '<style>\n';
+        html += '  body {\n';
+        html += '    font-size: 14px;\n';
+        html += '    font-family: "Helvetica Neue", "Roboto", "Arial", sans-serif;\n';
+        html += '    -webkit-tap-highlight-color: rgba(0,0,0,0);\n';
+        html += '  }\n';
+        html += '</style>\n';
+        html += '</head>\n<body>\n';
+        // include content
+        html += body || '';
+        html += '\n</body>\n</html>';
+        return html;
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-preview-iframe" extends="tk-preview">
+  <template>
+    <iframe id="output" style="width: 100%; height: 100%;"></iframe>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      htmlContentChanged: function() {
+        this.$.output.src = '';
+        this.asyncMethod(function() {
+          this.writeToDoc(this.$.output.contentDocument);
+        });
+      }
+    });
+  </script>
+</element>
+
+<element name="tk-preview-window" extends="tk-preview">
+  <script>
+    var previewWindow;
+    Toolkit.register(this, {
+      open: function() {
+        if (previewWindow) {
+          previewWindow.close();
+        }
+        previewWindow = window.open('', '', null, false);
+        this.writeToDoc(previewWindow.document);
+      }
+    });
+  </script>
+</element>
