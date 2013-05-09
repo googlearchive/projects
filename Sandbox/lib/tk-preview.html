@@ -3,12 +3,14 @@
     Toolkit.register(this, {
       htmlContent: '',
       writeToDoc: function(doc) {
+        doc.open('text/html', '');
+        doc.write(this.outputSource());
+        doc.close();
+      },
+      outputSource: function() {
         // put base href in head
         var h = '<base href="' + document.baseURI + '">\n';
-        var s = this.makeOutputHTML(h, this.htmlContent);
-        doc.open('text/html', '');
-        doc.write(s);
-        doc.close();
+        return this.makeOutputHTML(h, this.htmlContent);
       },
       makeOutputHTML: function(head, body) {
         var html = '<!DOCTYPE html>\n';
