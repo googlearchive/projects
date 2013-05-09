@@ -1,0 +1,98 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-tree" attributes="element selected">
+  <template>
+    <style>
+      #title {
+        background-color: #E0E0E0;
+        border-bottom: 1px solid silver;
+        padding: 12px;
+        font-size: 16px;
+      }
+      #interior {
+        border: 1px solid silver;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        cursor: pointer;
+      }
+      #caption {
+        color: blue;
+      }
+      id {
+        font-style: italic;
+        color: #804C00;
+      }
+      #tree {
+        display: inline-block;
+        padding: 8px;
+      }
+      #tree div {
+        padding: 4px;
+        white-space: nowrap;
+      }
+      .selected {
+        background: lightblue;
+      }
+    </style>
+    <div id="interior" touch-action="scroll" on-tap="tap">
+      <div id="title">Elements</div>
+      <div id="tree">
+        <template repeat="{{components}}">
+          <div class="{{selected}}" style="padding-left: {{indent}}px"><span>{{name}}<id>{{id}}</id><span id="caption">{{text}}</span></span></div>
+        </template>
+      </div>
+    </div>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      components: null,
+      update: function() {
+        var selected = this.selected;
+        var tabsize = 32;
+        var components = this.components = [];
+        function subtree(root, indent) {
+          var e = root.firstElementChild;
+          while (e) {
+            if (elementBlackList.indexOf(e.localName) < 0) {
+              var text = e.children.length == 0 ? e.textContent.trim() : '';
+              if (text) {
+                if (text.length > 12) {
+                  text = text.slice(0, 12) + "...";
+                }
+                text = ' "' + text + '"';
+              }
+              components.push({
+                indent: indent,
+                name: e.localName,
+                element: e,
+                id: e.id ? ' #' + e.id + '': '',
+                text: text,
+                selected: (e == selected) ? 'selected' : ''
+              });
+              subtree(e, indent + tabsize);
+            }
+            e = e.nextElementSibling;
+          }
+        }
+        subtree(this.element, 4);
+      },
+      tap: function(e) {
+        var nodes = this.$.tree.children;
+        var selected = nodes[Toolkit.findDistributedTarget(e.target, nodes)];
+        if (selected) {
+          this.selected = selected.templateInstance.model.element;
+        }
+      }
+    });
+    
+    var elementBlackList = ['style'];
+  </script>
+</element>

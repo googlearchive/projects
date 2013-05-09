@@ -5,8 +5,8 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit/components/g-icon.html"/>
-<link rel="import" href="../../../pantry/Speech/g-speech-mic.html"/>
+<link rel="import" href="../../../toolkit-ui/elements/g-icon.html"/>
+<link rel="import" href="../../../pantry/Speech/speech-mic.html"/>
 <link rel="import" href="pi-gfeeds.html"/>
 <link rel="import" href="pi-feed-viewer.html"/>
 <element name="pi-explore" attributes="panel topic canprevious">
@@ -16,14 +16,17 @@
         * {
           display: -webkit-box;
           display: -webkit-flex;
+          display: flex;
           -webkit-box-orient: vertical;
           -webkit-flex-flow: column;
+          flex-direction: column;
         }
       }
       
       pi-feed-viewer#viewer {
         -webkit-box-flex: 1;
         -webkit-flex: 1;
+        flex: 1;
       }
       
       #searchBox {
@@ -36,9 +39,9 @@
       #searchInput {
         position: absolute;
         top: 0;
-        right: 0;
-        bottom: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
         margin: 0 1px;
         padding: 0 0 0 40px;
         border: 0;

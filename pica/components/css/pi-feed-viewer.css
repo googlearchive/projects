@@ -7,12 +7,14 @@
   * {
     display: -webkit-box;
     display: -webkit-flex;
+    display: flex;
   }
 }
 
 .feed-viewer-panels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
+  flex: 1;
   position: relative;
 }
 
