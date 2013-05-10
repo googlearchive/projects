@@ -260,7 +260,7 @@ license that can be found in the LICENSE file.
           this.defaultValue = this.meta.defaultvalue;
         }
       },
-      workingValueChanged: function() {
+      defaultValueChanged: function() {
         if (this.workingValue === null || this.workingValue === '') {
           this.workingValue = this.defaultValue || this.min || 0;
         }
