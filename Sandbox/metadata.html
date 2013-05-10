@@ -17,6 +17,20 @@
   </template>
 </tk-meta>
 
+<tk-meta id="tk-toolbar" label="Aux Toolbar" isContainer>
+  <template>
+    <tk-toolbar theme="aux-toolbar-bg-0" style="height: 60px; right: 0px; left: 0px;"></tk-toolbar>
+  </template>
+  <property name="theme" kind="select" options=" ,aux-toolbar-bg-0,aux-toolbar-bg-1,aux-toolbar-bg-2,aux-toolbar-bg-3"></property>
+</tk-meta>
+
+<tk-meta id="g-icon-button" label="Icon Button">
+  <template>
+    <g-icon-button src="images/mail.png"></g-icon-button>
+  </template>
+  <property name="src" kind="select" options="images/mail.png,images/add.png,images/comment.png,images/menu.png"></property>
+</tk-meta>
+
 <tk-meta id="g-tabs" label="Tabs" isContainer>
   <template>
     <g-tabs selected="0">
@@ -27,6 +41,22 @@
     </g-tabs>
   </template>
 </tk-meta>
+
+<tk-meta id="section" label="Panel" isContainer>
+  <template>
+    <section style="background-color: whitesmoke; border: 1px solid silver; min-width: 300px; min-height: 300px;"></section>
+  </template>
+</tk-meta>
+
+<tk-meta id="tk-color-editor" label="Color Editor"></tk-meta>
+<tk-meta id="tk-range-editor" label="Range Editor"></tk-meta>
+
+<!-- <tk-meta id="content" label="Insertion Point">
+  <template>
+    <content><content>
+  </template>
+  <property name="select"></property>
+</tk-meta> -->
 
 <tk-meta id="g-ratings" label="Ratings"></tk-meta>
 
@@ -205,3 +235,4 @@
   <property name="textContent" hidden="true"></property>
   <property name="id" hidden="true"></property>
 </tk-meta>
+

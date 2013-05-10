@@ -1,0 +1,33 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-toolbar" attributes="theme">
+  <template>
+    <style>
+      @host {
+        * {
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          height: 60px;
+          line-height: 60px;
+          Xpadding: 8px 7px 9px;
+          background-color: whitesmoke;
+          box-shadow: inset 0px 0px 3px rgba(255, 255, 255, 1);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.28);        
+        }
+      }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Toolkit.register(this, {
+      theme: '',
+      themeChanged: function(old) {
+        old && this.classList.remove(old);
+        this.classList.add(this.theme);
+      }
+    });
+  </script>
+</element>
