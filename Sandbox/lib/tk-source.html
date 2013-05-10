@@ -10,26 +10,33 @@ license that can be found in the LICENSE file.
   </template>
   <script>
     Toolkit.register(this, {
-      update: function() {
+      update: function(positionCursor) {
         // force components to update before dumping source
-        dirtyCheck();
+        Platform.flush();
         // given async effects a chance to apply to dom.
-        this.asyncMethod('updateImmediate');
+        this.asyncMethod('updateImmediate', [positionCursor]);
       },
-      updateImmediate: function() {
-        this.value = dumpTag(this.element.firstElementChild, '')
+      updateImmediate: function(positionCursor) {
+        this.value = dumpTag(this.element.firstElementChild, '');
         this.$.editor.value = this.value;
+        Platform.flush();
+        if (positionCursor) {
+          this.positionCursor();
+        }
       },
       editorChange: function(event, detail) {
         this.send('source-changed', detail);
       },
-      shown: function() {
+      positionCursor: function() {
         this.$.editor.focus();
         this.$.editor.foldTag('style');
         var pos = this.$.editor.find('</style>', {start: 0});
         if (pos) {
-          this.$.editor.gotoLine(pos.end.row + 2, 1e9);
+          this.$.editor.gotoLine(pos.end.row + 2);
         }
+      },
+      shown: function() {
+        this.positionCursor();
       }
     });
     
