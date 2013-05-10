@@ -115,6 +115,7 @@ license that can be found in the LICENSE file.
           var x = detail.x - this.origin.x - 24;
           var y = detail.y - this.origin.y - 24;
           var p = this.$.canvas.snap(x, y);
+          this.$.canvas.scrollTop = 0;
           this.neo.style.left = p.x + 'px';
           this.neo.style.top = p.y + 'px';
         }
