@@ -71,6 +71,14 @@ license that can be found in the LICENSE file.
          if (this.$[this.selectedMode]['shown']) {
            this.$[this.selectedMode]['shown']();
          }
+         // update mode icons
+         this.$.modeSelector.items.forEach(function(mode) {
+           mode.src = mode.getAttribute('src');
+         });
+         var s = this.$.modeSelector.selection;
+         var src = s.getAttribute('src');
+         var i = src.lastIndexOf('.');
+         s.src = src.substring(0, i) + '_selected' + src.substring(i);
       },
       designChanged: function() {
         this.$.source.update();
