@@ -254,6 +254,10 @@ license that can be found in the LICENSE file.
             css += indent + '#' + e.id + ' {\n';
             parts.forEach(function(p) {
               if (p) {
+                p = p.trim();
+                if (p === 'position: absolute') {
+                  p = p + ' !important';
+                }
                 css += indent + tab + p.trim() + ';\n';
               }
             });
