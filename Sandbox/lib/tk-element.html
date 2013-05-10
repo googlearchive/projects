@@ -91,10 +91,14 @@ license that can be found in the LICENSE file.
       },
       previewElement: function(source) {
         if (source) {
-          var html = source;
-          html += '\n<' + publishInfo.name + '></' + publishInfo.name + '>';
-          preview.htmlContent = html;
+          preview.htmlContent = outputPreviewSource(source);
           preview.open();
+        }
+      },
+      previewElementSource: function(source) {
+        if (source) {
+          preview.htmlContent = outputPreviewSource(source);
+          preview.openSource();
         }
       }
     });
@@ -103,6 +107,10 @@ license that can be found in the LICENSE file.
     document.addEventListener('WebComponentsReady', function() {
       preview = document.createElement('tk-preview-window');
     });
+    
+    function outputPreviewSource(source) {
+      return source + '\n<' + publishInfo.name + '></' + publishInfo.name + '>';
+    }
     
     // publishing
     var DEFAULT_PUBLISH_NAME = 'user-element';
