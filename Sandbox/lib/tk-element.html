@@ -180,9 +180,9 @@ license that can be found in the LICENSE file.
     function ensureChildStyling(node) {
       Array.prototype.forEach.call(node.children, function(n) {
         if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
-          n.style.position = 'absolute';
+          n.style.position = 'absolute !important';
           n.style.left = n.style.top = '0px';
-          n.id = makeUniqueId(n, n.localName);
+          n.id = makeUniqueId(node, n.localName);
         }
       });
     }
@@ -190,7 +190,7 @@ license that can be found in the LICENSE file.
     function makeUniqueId(node, id, suffix) {
       var uId = id + (suffix || '');
       return node.querySelector('#' + uId) ?
-        makeUniqueId(id, suffix ? ++suffix : 1) :
+        makeUniqueId(node, id, suffix ? ++suffix : 1) :
         uId;
     }
 
