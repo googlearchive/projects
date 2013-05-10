@@ -3,7 +3,7 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-designer" on-keyup="keyup" attributes="element selected maximized">
+<element name="tk-designer" on-keyup="keyup" on-source-applied="sourceApplied" attributes="element selected maximized">
   <link rel="stylesheet" href="../../../aux-elements/basic.css">
   <template>
     <style>
@@ -189,8 +189,10 @@ license that can be found in the LICENSE file.
         this.$.designElement.bindProperty(obj, name, path);  
       },
       applySource: function(source) {
-        var node = this.$.designElement.nodeFromSource(source);
-        this.updateDesignElement(node);
+        this.$.designElement = this.$.designElement.applySource(source);
+        //this.sourceApplied(null, node);
+      },
+      sourceApplied: function(event, node) {
         // reselect selection
         var selected = this.selected;
         if (selected && selected.id) {
@@ -198,12 +200,7 @@ license that can be found in the LICENSE file.
         }
         this.selected = selected || null;
       },
-      updateDesignElement: function(designElement) {
-        var parent = this.$.designElement.parentNode;
-        parent.removeChild(this.$.designElement);
-        parent.appendChild(designElement);
-        this.$.designElement = designElement;
-      },
+      
       publishElement: function(source) {
         this.$.designElement.publishElement(source);
       },

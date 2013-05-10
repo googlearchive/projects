@@ -64,7 +64,7 @@
 
 <tk-meta id="g-menu" label="Menu" isContainer>
   <template>
-    <g-menu selected="0">
+    <g-menu selected="0" style="background-color: #fff;">
       <g-menu-item src="images/comment.png">Post a Comment</g-menu-item>
       <g-menu-item src="images/hangout.png">Share Link</g-menu-item>
       <g-menu-item src="images/mail.png">Email Link</g-menu-item>
@@ -73,44 +73,23 @@
   </template>
 </tk-meta>
 
+<tk-meta id="x-stock" label="Stock">
+  <template>
+    <x-stock symbol="GOOG" style="background-color: #fff"></x-stock>
+  </template>
+</tk-meta>
+
+<tk-meta id="wu-weather" label="Weather">
+  <template>
+    <wu-weather style="background-color: #fff"></wu-weather>
+  </template>
+</tk-meta>
+
 <tk-meta id="div" label="Caption" isContainer>
   <template>
     <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
   </template>
   <property name="textContent" kind="speech"></property>
-</tk-meta>
-
-<tk-meta id="chart-js" label="Chart.js">
-  <property name="kind" kind="select" options="Bar,Line,Radar,Pie,PolarArea,Doughnut"></property>
-  <property name="color" kind="color"></property>
-  <property name="ajax" kind="id-select"></property>
-</tk-meta>
-
-<tk-meta id="ajaxorg-ace" label="Ace Editor">
-  <template>
-    <ajaxorg-ace style="border: 1px dotted silver; width: 300px; height: 200px;"></ajaxorg-ace>
-  </template>
-</tk-meta>
-
-<tk-meta id="x-coolclock" label="CoolClock"></tk-meta>
-
-<tk-meta id="g-ajax" label="Ajax">
-  <template>
-    <g-ajax style="border: 1px dotted silver; padding: 8px;">Ajax</g-ajax>
-  </template>
-  <property name="handleAs" kind="select" options="json,text,xml"></property>
-</tk-meta>
-
-<tk-meta id="animation-group" label="Animation Group" isContainer>
-  <template>
-    <animation-group style="border: 1px dotted silver; padding: 8px">
-      <tk-bounce targetSelector="#toolbar"></tk-bounce>
-      <tk-flip targetSelector="#menu"></tk-flip>
-      <tk-shake targetSelector="#x_stock"></tk-shake>
-    </animation-group>
-  </template>
-  <property name="type" kind="select" options="par,seq"></property>
-  <property name="targetSelector" hidden="true"></property>
 </tk-meta>
 
 <tk-meta id="tk-blink" label="Blink">
@@ -150,13 +129,44 @@
   <property name="type" hidden="true"></property>
 </tk-meta>
 
-<tk-meta id="x-stock" label="Stock">
+<tk-meta id="animation-group" label="Animation Group" isContainer>
   <template>
-    <x-stock symbol="GOOG"></x-stock>
+    <animation-group style="border: 1px dotted silver; padding: 8px">
+      <tk-bounce targetSelector="#toolbar"></tk-bounce>
+      <tk-flip targetSelector="#menu"></tk-flip>
+      <tk-shake targetSelector="#x_stock"></tk-shake>
+    </animation-group>
+  </template>
+  <property name="type" kind="select" options="par,seq"></property>
+  <property name="targetSelector" hidden="true"></property>
+</tk-meta>
+
+<tk-meta id="pdf-js" label="PDF Reader">
+  <template>
+    <pdf-js src="chaucer.pdf"></pdf-js>
   </template>
 </tk-meta>
 
-<tk-meta id="wu-weather" label="Weather"></tk-meta>
+<tk-meta id="chart-js" label="Chart.js">
+  <property name="kind" kind="select" options="Bar,Line,Radar,Pie,PolarArea,Doughnut"></property>
+  <property name="color" kind="color"></property>
+  <property name="ajax" kind="id-select"></property>
+</tk-meta>
+
+<tk-meta id="ajaxorg-ace" label="Ace Editor">
+  <template>
+    <ajaxorg-ace style="border: 1px dotted silver; width: 300px; height: 200px;"></ajaxorg-ace>
+  </template>
+</tk-meta>
+
+<tk-meta id="x-coolclock" label="CoolClock"></tk-meta>
+
+<tk-meta id="g-ajax" label="Ajax">
+  <template>
+    <g-ajax style="border: 1px dotted silver; padding: 8px;">Ajax</g-ajax>
+  </template>
+  <property name="handleAs" kind="select" options="json,text,xml"></property>
+</tk-meta>
 
 <tk-meta id="tk-app" label="Sandbox App">
   <template>
@@ -170,12 +180,6 @@
   </template>
   <property name="theme" kind="select" options="jackedup,bigbox,boldlight,libnotify,original"></property>
   <property name="textContent" kind="text"></property>
-</tk-meta>
-
-<tk-meta id="pdf-js" label="PDF Reader">
-  <template>
-    <pdf-js src="chaucer.pdf"></pdf-js>
-  </template>
 </tk-meta>
 
 <tk-meta id="smoothie-chart" label="Smoothie Chart"></tk-meta>

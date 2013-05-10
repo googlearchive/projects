@@ -58,7 +58,7 @@ license that can be found in the LICENSE file.
           ;
         return html;
       },
-      nodeFromSource: function(source) {
+      applySource: function(source) {
         updatePublishInfo(source);
         var html = tagInnerHTMLFromSource(source, 'template');
         var script = tagInnerHTMLFromSource(source, 'script').trim();
@@ -70,10 +70,16 @@ license that can be found in the LICENSE file.
         var de = document.createElement(this.localName);
         de.id = 'designElement';
         de.innerHTML = html;
+        // replace self in parent
+        var parent = this.parentNode;
+        parent.removeChild(this);
+        parent.appendChild(de);
+        //
         requestAnimationFrame(function() {
           applyStyle(de);
           ensureChildStyling(de);
-        });
+          this.send('source-applied', de);
+        }.bind(this));
         return de;
       },
       publishElement: function(source) {
