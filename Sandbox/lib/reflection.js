@@ -16,27 +16,41 @@ function reflect(element, name, meta) {
 }
 
 function reflectProperty(element, name, meta) {
-  var v = element[name];
-  if (v !== null
-      && v !== undefined
-      && typeof v !== 'function'
-      && typeof v !== 'object'
-      //&& element.propertyIsEnumerable(k)
-      && !reflectProperty.blacklist[name]) {
-    var prop = reflect(element, name, meta);
+  try {
+    var v = element[name];
+    if (v !== null
+        && v !== undefined
+        && typeof v !== 'function'
+        && typeof v !== 'object'
+        //&& element.propertyIsEnumerable(k)
+        && !reflectProperty.blacklist[name]) {
+      var prop = reflect(element, name, meta);
+    }
+  } catch(x) {
+    // squelch
   }
-  return prop;
+  return prop;   
 }
 
 reflectProperty.blacklist = {isToolkitElement: 1};
+
+// ShadowDOMPolyfill hack
+var basePrototype = HTMLElement.prototype;
+if (window.ShadowDOMPolyfill) {
+  basePrototype = Object.getPrototypeOf(
+     Object.getPrototypeOf(
+       unwrap(document.createElement('div'))
+     )
+  );
+}
 
 function reflectProperties(element) {
   var props = [];
   if (element) {
     var found = {};
-    var p = element.__proto__;
+    var p = unwrap(element).__proto__;
     var meta = element.meta && element.meta.properties;
-    while (p && p !== HTMLElement.prototype/*&& p.isToolkitElement*/) {
+    while (p && p !== basePrototype /*&& p != HTMLInputElement.prototype*/ /*&& p.isToolkitElement*/) {
       var k = Object.keys(p);
       k.forEach(function(k) {
         if (found[k]) {

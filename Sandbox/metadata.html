@@ -48,8 +48,17 @@
   </template>
 </tk-meta>
 
-<tk-meta id="tk-color-editor" label="Color Editor"></tk-meta>
-<tk-meta id="tk-range-editor" label="Range Editor"></tk-meta>
+<tk-meta id="tk-color-editor" label="Color Editor">
+  <template>
+    <tk-color-editor style="width: 200px;"></tk-color-editor>
+  </template>
+</tk-meta>
+
+<tk-meta id="tk-range-editor" label="Range Editor">
+  <template>
+    <tk-range-editor style="width: 200px;"></tk-range-editor>
+  </template>
+</tk-meta>
 
 <!-- <tk-meta id="content" label="Insertion Point">
   <template>
@@ -236,3 +245,39 @@
   <property name="id" hidden="true"></property>
 </tk-meta>
 
+<!-- x-tags -->
+
+<tk-meta id="x-switch" label="X-Switch">
+  <template>
+    <x-switch onText="✔" offText=" "></x-switch>
+  </template>
+</tk-meta>
+
+<tk-meta id="x-spinner" label="X-Spinner">
+  <template>
+    <x-spinner label="Wait..."></x-spinner>
+  </template>
+</tk-meta>
+
+<tk-meta id="x-toggle-group" label="X-Toggle Checks">
+  <template>
+    <x-toggle-group>
+      <x-toggle label="Alpha" group="group1" checked></x-toggle>
+      <x-toggle label="Beta" group="group1"></x-toggle>
+      <x-toggle label="Gamma" group="group1"></x-toggle>
+      <x-toggle label="Delta" group="group1"></x-toggle>
+      <x-toggle label="Epsilon" group="group1"></x-toggle>
+    </x-toggle-group>
+  </template>
+</tk-meta>
+
+<tk-meta id="form" label="X-Toggle Radios">
+  <template>
+    <form>
+      <x-toggle label="One" name="test2" checked></x-toggle>
+      <x-toggle label="Two" name="test2"></x-toggle>
+      <x-toggle label="Three" name="test2"></x-toggle>
+    </form>  
+  </template>
+  <property name="checked" type="boolean"></property>
+</tk-meta>
