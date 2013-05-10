@@ -73,4 +73,13 @@ g-toolbar[responsive=true] {
   z-index: 10;
 }
 
+#modeSelector {
+  display: inline-block;
+  border-right: 1px solid rgba(0, 0, 0, 0.16);
+  padding-right: 10px;
+  margin: 0 10px;
+}
 
+#modeSelector > * {
+  margin: 0 10px;
+}
