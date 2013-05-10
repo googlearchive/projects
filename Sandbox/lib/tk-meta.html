@@ -1,10 +1,11 @@
-<element name="tk-meta" attributes="label isContainer isHidden list">
+<element name="tk-meta" attributes="label isContainer isHidden list shouldPrepend">
   <script>
     var metaData = {}, metaArray = [];
     Toolkit.register(this, {
       isContainer: false,
       isHidden: false,
       properties: null,
+      shouldPrepend: false,
       ready: function() {
         this.idChanged();
         this.updateProperties();
@@ -13,7 +14,11 @@
         if (this.id && this.id !== 'meta') {
           this.unregister(this, inOld);
           metaData[this.id] = this;
-          metaArray.push(this);
+          if (this.shouldPrepend) {
+            metaArray.unshift(this);
+          } else {
+            metaArray.push(this);
+          }
         }
       },
       unregister: function(meta, id) {

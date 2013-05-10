@@ -137,6 +137,7 @@ license that can be found in the LICENSE file.
       var meta = document.createElement('tk-meta');
       if (!meta.byId(name)) {
         var tag = name;
+        meta.shouldPrepend = true;
         meta.id = tag;
         meta.label = name;
         meta.isContainer = true;
