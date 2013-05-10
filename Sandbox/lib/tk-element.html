@@ -78,7 +78,7 @@ license that can be found in the LICENSE file.
         requestAnimationFrame(function() {
           applyStyle(de);
           ensureChildStyling(de);
-          this.send('source-applied', de);
+          de.send('source-applied', de);
         }.bind(this));
         return de;
       },
