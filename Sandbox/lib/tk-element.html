@@ -125,6 +125,7 @@ license that can be found in the LICENSE file.
         var tag = name;
         meta.id = tag;
         meta.label = name;
+        meta.isContainer = true;
         var template = document.createElement('template');
         template.innerHTML = '<' + tag + ' style="display: block; width: ' +
           width + 'px; ' + 'height: ' + height + 'px;"></' + tag + '>';

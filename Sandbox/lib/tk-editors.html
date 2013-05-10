@@ -6,7 +6,7 @@ license that can be found in the LICENSE file.
 <element name="tk-abstract-editor" attributes="value">
   <script>
     Toolkit.register(this, {
-      value: null,
+      value: '',
       meta: null,
       workingValue: null,
       valueChanged: function() {
@@ -249,6 +249,10 @@ license that can be found in the LICENSE file.
   </template>
   <script>
     Toolkit.register(this, {
+      min: 0,
+      max: 0,
+      step: 0,
+      defaultValue: 0,
       metaChanged: function() {
         if (this.meta) {
           this.min = this.meta.min;
