@@ -33,7 +33,6 @@ license that can be found in the LICENSE file.
       elementChanged: function() {
         // meta-data attached here
         if (this.element) {
-          this.element.meta = this.$.meta.byId(this.element.localName);
           this.properties = Reflection.properties(this.element);
           this.crumbs = this.listCrumbs();
         } else {
