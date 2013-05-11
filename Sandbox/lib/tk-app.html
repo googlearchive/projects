@@ -39,7 +39,6 @@ license that can be found in the LICENSE file.
       element: null,
       selected: null,
       selectedMode: '',
-      designMode: true,
       maximized: false,
       demoMode: false,
       ready: function() {
@@ -61,9 +60,6 @@ license that can be found in the LICENSE file.
         this.asyncMethod(function() {
           this.$.source.$.editor.editor.resize();
         }, null, 500);
-      },
-      designModeChanged: function () {
-        this.selectedMode = this.designMode ? 'designer' : 'source';
       },
       selectedModeChanged: function (oldMode) {
          this.classFollows(this.$[this.selectedMode], this.$[oldMode],
