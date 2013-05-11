@@ -167,8 +167,21 @@ license that can be found in the LICENSE file.
       inspectTarget: function(event) {
         var t = event.target;
         if (t) {
-          this.selected = (t === this.$.canvas ? null : t);
-          dirtyCheck();
+          if (t === this.$.canvas) {
+            this.selected = null;
+          } else {
+            // don't allow selection within a node with meta.hideSubtree
+            var n = t;
+            while (n) {
+              if (n.meta && n.meta.hideSubtree) {
+                t = n;
+                break;
+              }
+              n = n.parentNode;
+            }
+            this.selected = t;
+          }
+          Platform.flush();
         }
       },
       selectParentElement: function() {
@@ -193,6 +206,7 @@ license that can be found in the LICENSE file.
         this.$.designElement = this.$.designElement.applySource(source);
       },
       sourceApplied: function(event, node) {
+        this.$.meta.ensureMeta(node);
         // reselect selection
         var selected = this.selected;
         if (selected && selected.id) {
