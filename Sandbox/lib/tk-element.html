@@ -29,7 +29,6 @@ license that can be found in the LICENSE file.
       },
       dumpTag: function(dumpTag, indent, tab) {
         // resolve properties to attributes before dumping
-        publishPropertiesToHTML(this);
         var proto = dumpProto(this, indent + tab + tab, tab);
         var script = 'Toolkit.register(this, ' + proto + ');';
         var html = indent + publishInfo.source + '\n' +
@@ -180,7 +179,7 @@ license that can be found in the LICENSE file.
     function ensureChildStyling(node) {
       Array.prototype.forEach.call(node.children, function(n) {
         if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
-          n.style.position = 'absolute !important';
+          n.style.position = 'absolute';
           n.style.left = n.style.top = '0px';
           n.id = makeUniqueId(node, n.localName);
         }
@@ -211,31 +210,6 @@ license that can be found in the LICENSE file.
       var d = document.createElement('div');
       d.innerHTML = html;
       return d.querySelector(selector);
-    }
-    
-    // round tripping *to* source: dumping
-    function publishPropertiesToHTML(element) {
-      var elt = element && element.firstElementChild;
-      while (elt) {
-        //var p$ = elt.__published;
-        var p$ = Reflection.properties(elt);
-        p$.forEach(function(p) {
-          var v = p.value, n = p.name, binding = Toolkit.getBinding(elt, n);
-          if (n == 'textContent') {
-            return;
-          }
-          if (binding) {
-            elt.setAttribute(n, '{{ ' + binding + ' }}');
-          } else if ((v || v === 0) && (typeof v === 'string' || typeof v === 'number' ||
-              typeof v === 'boolean')) {
-            elt.setAttribute(n, v);
-          } else {
-            elt.removeAttribute(n);
-          }
-        });
-        publishPropertiesToHTML(elt);
-        elt = elt.nextElementSibling;
-      }
     }
     
     var elementBlackList = ['style'];
