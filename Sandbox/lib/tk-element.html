@@ -103,8 +103,11 @@ license that can be found in the LICENSE file.
     });
     
     var preview;
+    var propBlackList = [];
     document.addEventListener('WebComponentsReady', function() {
       preview = document.createElement('tk-preview-window');
+      var node = document.createElement('tk-element-blacklist');
+      propBlackList = Object.keys(node.__proto__);
     });
     
     function outputPreviewSource(source) {
@@ -277,12 +280,7 @@ license that can be found in the LICENSE file.
         .replace(/\n[^;]*:[^;]*initial[^;]*;/g, '');
       return css;
     }
-
-    var propBlackList = ["super", "isToolkitElement", "readyCallback",
-      "bind", "unbind", "job", "asyncMethod", "dispatch", "send", "asend",
-      "classFollows", "elementElement", "resolvePath", "installTemplate",
-      "eventDelegates", "__published", "setAttribute", "removeAttribute"];
-
+    
     function dumpProto(node, indent, tab) {
       var dump = '{\n';
       var props = Object.keys(node.__proto__).filter(function(p) {
@@ -307,6 +305,13 @@ license that can be found in the LICENSE file.
     }
 
   </script>  
+</element>
+
+<element name="tk-element-blacklist">
+  <script>
+    // note: this element exists to generate a property black list for tk-element
+    Toolkit.register(this);
+  </script>
 </element>
 
 <element name="design-element" extends="tk-element">
