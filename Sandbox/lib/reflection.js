@@ -34,23 +34,13 @@ function reflectProperty(element, name, meta) {
 
 reflectProperty.blacklist = {isToolkitElement: 1};
 
-// ShadowDOMPolyfill hack
-var basePrototype = HTMLElement.prototype;
-if (window.ShadowDOMPolyfill) {
-  basePrototype = Object.getPrototypeOf(
-     Object.getPrototypeOf(
-       unwrap(document.createElement('div'))
-     )
-  );
-}
-
 function reflectProperties(element) {
   var props = [];
   if (element) {
     var found = {};
-    var p = unwrap(element).__proto__;
+    var p = element.__proto__;
     var meta = element.meta && element.meta.properties;
-    while (p && p !== basePrototype /*&& p != HTMLInputElement.prototype*/ /*&& p.isToolkitElement*/) {
+    while (p && p != HTMLElement.prototype && p != HTMLInputElement.prototype) {
       var k = Object.keys(p);
       k.forEach(function(k) {
         if (found[k]) {
