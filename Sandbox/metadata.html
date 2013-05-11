@@ -1,3 +1,10 @@
+<tk-meta id="div" label="Caption" isContainer>
+  <template>
+    <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
+  </template>
+  <property name="textContent" kind="speech"></property>
+</tk-meta>
+
 <tk-meta id="g-toolbar" label="Toolbar" isContainer>
   <template>
     <g-toolbar style="right: 0px; left: 0px;">
@@ -180,13 +187,6 @@
   </template>
 </tk-meta>
 
-<tk-meta id="div" label="Caption" isContainer>
-  <template>
-    <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
-  </template>
-  <property name="textContent" kind="speech"></property>
-</tk-meta>
-
 <tk-meta id="x-coolclock" label="CoolClock"></tk-meta>
 
 <tk-meta id="g-ajax" label="Ajax">
@@ -247,14 +247,16 @@
 
 <!-- x-tags -->
 
-<tk-meta id="x-switch" label="X-Switch">
+<tk-meta id="x-switch" label="X-Switch" hideSubtree="true">
   <template>
     <x-switch onText="✔" offText=" "></x-switch>
   </template>
   <property name="checked"></property>
+  <property name="onText"></property>
+  <property name="offText"></property>
 </tk-meta>
 
-<tk-meta id="x-spinner" label="X-Spinner">
+<tk-meta id="x-spinner" label="X-Spinner" hideSubtree="true">
   <template>
     <x-spinner label="Wait..."></x-spinner>
   </template>
@@ -281,4 +283,10 @@
     </form>  
   </template>
   <property name="checked" type="boolean"></property>
+</tk-meta>
+
+<tk-meta id="x-toggle" isHidden hideSubtree="true">
+  <property name="checked" type="boolean"></property>
+  <property name="name"></property>
+  <property name="label"></property>
 </tk-meta>
