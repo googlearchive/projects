@@ -50,12 +50,13 @@ license that can be found in the LICENSE file.
       }
       var html = '';
       html += indent + '<' + e.localName;
-      var attrs = dumpAttributes(e);
-      for (var i=0, a; (a = attrs[i]); i++) {
-        if (a.name !== 'class' || a.value != '') {
-          html += ' ' + a.name + (a.value != '' ? '="' + a.value + '"': '');
-        }
-      }
+      var attributes = dumpAttributes(e);
+      Object.keys(attributes).forEach(function(k) {
+        var v = attributes[k];
+        //if (k !== 'class' || v != '') {
+          html += ' ' + k + (v !== '' ? '="' + v + '"': '');
+        //}
+      })
       html += '>';
       var end = '</' + e.localName + '>\n';
       if (e.meta && e.meta.hideSubtree) {
@@ -78,7 +79,7 @@ license that can be found in the LICENSE file.
     
     function dumpAttributes(node) {
       var p$ = Reflection.properties(node);
-      var attrs = [];
+      var attributes = {};
       p$.forEach(function(p) {
         var v = p.value, n = p.name, binding = Toolkit.getBinding(node, n);
         if (n == 'textContent') {
@@ -91,10 +92,15 @@ license that can be found in the LICENSE file.
           v = null;
         }
         if (v != null) {
-          attrs.push({name: n, value: v});
+          attributes[n] = v;
         }
       });
-      return attrs;
+      for (var i=0, a; (a = node.attributes[i]); i++) {
+        if (attributes[a.name] === undefined) {
+          attributes[a.name] = a.value;
+        }
+      }
+      return attributes;
     }
     
     function dumpTextNode(e) {
