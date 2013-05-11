@@ -50,25 +50,51 @@ license that can be found in the LICENSE file.
       }
       var html = '';
       html += indent + '<' + e.localName;
-      for (var i=0, a; (a = e.attributes[i]); i++) {
+      var attrs = dumpAttributes(e);
+      for (var i=0, a; (a = attrs[i]); i++) {
         if (a.name !== 'class' || a.value != '') {
           html += ' ' + a.name + (a.value != '' ? '="' + a.value + '"': '');
         }
       }
       html += '>';
       var end = '</' + e.localName + '>\n';
-      if (e.firstElementChild) {
-        Array.prototype.forEach.call(e.children, function(c, i) {
-          if (i == 0) {
-            html += '\n';
-          }
-          html += dumpTag(c, indent + TAB);
-        });
-        html += indent + end;
+      if (e.meta && e.meta.hideSubtree) {
+        html += end;
       } else {
-        html += e.firstChild ? dumpTextNode(e.firstChild) + end : end;
+        if (e.firstElementChild) {
+          Array.prototype.forEach.call(e.children, function(c, i) {
+            if (i == 0) {
+              html += '\n';
+            }
+            html += dumpTag(c, indent + TAB);
+          });
+          html += indent + end;
+        } else {
+          html += e.firstChild ? dumpTextNode(e.firstChild) + end : end;
+        }
       }
       return html;
+    }
+    
+    function dumpAttributes(node) {
+      var p$ = Reflection.properties(node);
+      var attrs = [];
+      p$.forEach(function(p) {
+        var v = p.value, n = p.name, binding = Toolkit.getBinding(node, n);
+        if (n == 'textContent') {
+          return;
+        }
+        if (binding) {
+          v = '{{ ' + binding + ' }}';
+        } else if (!((v || v === 0) && (typeof v === 'string' || typeof v === 'number' ||
+            typeof v === 'boolean'))) {
+          v = null;
+        }
+        if (v != null) {
+          attrs.push({name: n, value: v});
+        }
+      });
+      return attrs;
     }
     
     function dumpTextNode(e) {
