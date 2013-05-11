@@ -77,7 +77,9 @@ license that can be found in the LICENSE file.
                 text: text,
                 selected: (e == selected) ? 'selected' : ''
               });
-              subtree(e, indent + tabsize);
+              if (!(e.meta && e.meta.hideSubtree)) {
+                subtree(e, indent + tabsize);
+              }
             }
             e = e.nextElementSibling;
           }
