@@ -3,10 +3,16 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-designer" on-keyup="keyup" on-source-applied="sourceApplied" attributes="element selected maximized">
+<element name="tk-designer" on-source-applied="sourceApplied" attributes="element selected maximized">
   <link rel="stylesheet" href="../../../pantry/x-tags/x-tag/demo/x-tag-components.css">
   <template>
     <style>
+      @host {
+        * {
+          outline: 0;
+        }
+      }
+      
       #palette {
         position: absolute !important;
         top: 0;
@@ -58,6 +64,7 @@ license that can be found in the LICENSE file.
     <tk-canvas id="canvas" tabIndex="-1"
         on-tap="canvasTap"
         on-pointerup="canvasDrop"
+        on-keydown="canvasKeydown"
         designElement="{{$.designElement}}"
     ><design-element id="designElement"></design-element></tk-canvas>
     <tk-meta id="meta" list="{{elements}}"></tk-meta>
@@ -149,6 +156,9 @@ license that can be found in the LICENSE file.
             container = container.parentNode;
           }
           this.selected = this.neo;
+          var focusNode = nodeIsEditor(this.selected) ? this.selected : 
+            this.$.canvas;
+          focusNode.focus();
         }
         this.neo = null;
       },
@@ -166,6 +176,20 @@ license that can be found in the LICENSE file.
       },
       canvasTap: function(event) {
         this.inspectTarget(event);
+      },
+      canvasKeydown: function(event) {
+        switch(event.keyCode) {
+          case 27:
+            this.selectParentElement();
+            break;
+          case 8:
+          case 46:
+            if (!nodeIsEditor(event.target)) {
+              this.deleteElement();
+              event.preventDefault();
+            }
+            break;
+        }
       },
       inspectTarget: function(event) {
         var t = event.target;
@@ -195,11 +219,6 @@ license that can be found in the LICENSE file.
             e = null;
           }
           this.selected = e;
-        }
-      },
-      keyup: function(event) {
-        if (event.keyCode === 27) {
-          this.selectParentElement();
         }
       },
       bindProperty: function(obj, name, path) {
@@ -236,5 +255,10 @@ license that can be found in the LICENSE file.
         this.applySource(this.$.designElement.defaultSource);
       }
     });
+    
+    var editorElements = ['input', 'select', 'textarea'];
+    function nodeIsEditor(node) {
+      return node.isEditor || (editorElements.indexOf(node.localName) >= 0);
+    }
   </script>
 </element>
