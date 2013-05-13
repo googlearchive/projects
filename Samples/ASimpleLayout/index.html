@@ -18,7 +18,7 @@ license that can be found in the LICENSE file.
   <!-- -->
   <link rel="stylesheet" href="index.css">
 </head>
-<body class="aux-full-bleed aux-body-text no-transitions">
+<body class="aux-full-bleed aux-body-text aux-card-theme no-transitions">
   
   <div id="left" class="aux-gradient">
     <div id="logo" class="aux-gradient">
@@ -38,7 +38,7 @@ license that can be found in the LICENSE file.
 
     <aux-toolbar>
       <aux-icon-button onclick="drawerAction('slideLeft')" src="assets/ic_drawer_darkreg.png"></aux-icon-button>
-      <aux-icon-button src="assets/ic_refresh_darkreg.png"></aux-icon-button>
+      <aux-icon-button index="7"></aux-icon-button>
       <aux-icon-button src="assets/ic_mail_darkreg.png"></aux-icon-button>
       <!-- aux-toolbar uses toolkit-layout internally -->
       <span fit></span>
@@ -55,7 +55,10 @@ license that can be found in the LICENSE file.
 
   <script>
     addEventListener('WebComponentsReady', function() {
-      document.body.classList.remove('no-transitions');
+      Platform.flush();
+      setTimeout(function() {
+        document.body.classList.remove('no-transitions');
+      }, 1);
     });
     function drawerAction(id) {
       document.querySelector('#' + id).toggle();
