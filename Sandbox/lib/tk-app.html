@@ -6,7 +6,7 @@ license that can be found in the LICENSE file.
 <element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" attributes="startMode">
   <link rel="stylesheet" href="css/tk-app.css">
   <template>
-    <g-toolbar>
+    <g-toolbar id="toolbar">
       <g-selector id="modeSelector" selected="{{selectedMode}}">
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
