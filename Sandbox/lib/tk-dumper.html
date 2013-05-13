@@ -110,7 +110,7 @@ license that can be found in the LICENSE file.
         var html = '';
         if (node.elementAttributes) {
           Object.keys(node.elementAttributes).forEach(function(a) {
-            html += ' ' + a + '="' + node.elementAttributes[a].value + '"';
+            html += ' ' + a + '="' + node.elementAttributes[a] + '"';
           });
         }
         return html;

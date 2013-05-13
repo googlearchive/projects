@@ -5,17 +5,16 @@ license that can be found in the LICENSE file.
 -->
 <element name="tk-element">
   <script>
+    var DEFAULT_PUBLISH_NAME = 'my-element';
     Toolkit.register(this, {
       elementAttributes: {
-        name: {name: 'name', value: 'my-element'}
+        name: DEFAULT_PUBLISH_NAME
       },
-      /*
       defaultSource: '<element name="' + DEFAULT_PUBLISH_NAME + '">' +
         '<template></template>' +
         '<script>Toolkit.register(this, {});' +
         '</s' + 'cript>' +
       '</element>',
-      */
       update: function() {
         Toolkit.marshalNodeReferences.call(this, this);
         Toolkit.bindModel.call(this, this);
@@ -54,7 +53,7 @@ license that can be found in the LICENSE file.
         var parent = this.parentNode;
         parent.removeChild(this);
         parent.appendChild(de);
-        //
+        // asynchronously, update styling
         requestAnimationFrame(function() {
           applyStyle(de);
           ensureChildStyling(de);
@@ -78,9 +77,8 @@ license that can be found in the LICENSE file.
         parts.forEach(function(p) {
           var pair = p.trim().split('=');
           if (pair.length == 2) {
-            var attr = {name: pair[0].trim(), value: pair[1].trim()
-              .slice(1, -1)};
-            attributes[attr.name] = attr;
+            var name = pair[0].trim(), value = pair[1].trim().slice(1, -1);
+            attributes[name] = value;
           }
         });
       }

@@ -220,7 +220,7 @@ license that can be found in the LICENSE file.
         this.$.publisher.publishElement(source);
       },
       dumpPreviewSource: function(source) {
-        var n = this.$.designElement.elementAttributes.name.value;
+        var n = this.$.designElement.elementAttributes.name;
         source = source + '\n<' + n + '></' + n + '>';
         return source;
       },
