@@ -1,0 +1,59 @@
+<!--
+Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-publisher" attributes="element">
+  <script>
+    Toolkit.register(this, {
+      element: null,
+      publishElement: function(source) {
+        if (source) {
+          this.register(source);
+          this.makeMeta();
+        }
+      },
+      register: function(source) {
+        if (source) {
+          var elt = elementFromHTML(source, 'element');
+          var eltElt = new HTMLElementElement(elt);
+          this.elementName = eltElt.attributes.name.value;
+          return eltElt;
+        }
+      },
+      makeMeta: function() {
+        var meta = document.createElement('tk-meta');
+        if (!meta.byId(this.elementName)) {
+          meta.shouldPrepend = true;
+          meta.id = this.elementName;
+          meta.label = this.elementName;
+          meta.isContainer = true;
+          var template = document.createElement('template');
+          template.innerHTML = this.makeArchetypeHTML();
+          meta.appendChild(template);
+        }
+      },
+      makeArchetypeHTML: function(name) {
+        var size = this.calcSize();
+        return '<' + this.elementName + ' style="display: block; width: ' +
+            size.width + 'px; ' + 'height: ' + size.height + 'px;">' +
+            '</' + this.elementName + '>'
+      },
+      calcSize: function() {
+        this.element.style.right = this.element.style.bottom = 'auto';
+        var size = {
+          width: this.element.scrollWidth,
+          height: this.element.scrollHeight
+        };
+        this.element.style.right = this.element.style.bottom = null;
+        return size;
+      }
+    });
+
+    function elementFromHTML(html, selector) {
+      var d = document.createElement('div');
+      d.innerHTML = html;
+      return d.querySelector(selector);
+    }
+  </script>  
+</element>

@@ -7,6 +7,7 @@ license that can be found in the LICENSE file.
   <template>
     <ajaxorg-ace id="editor" mode="html" theme="chrome" tabSize="2"
         fontSize="{{fontSize}}" on-editor-change="editorChange"></ajaxorg-ace>
+    <tk-element-dumper id="dumper"></tk-element-dumper>
   </template>
   <script>
     Toolkit.register(this, {
@@ -17,7 +18,8 @@ license that can be found in the LICENSE file.
         this.asyncMethod('updateImmediate', [positionCursor]);
       },
       updateImmediate: function(positionCursor) {
-        this.value = dumpTag(this.element.firstElementChild, '');
+        this.value = this.$.dumper.dumpElement(this.element.firstElementChild,
+          '');
         this.$.editor.value = this.value;
         Platform.flush();
         if (positionCursor) {
@@ -39,73 +41,5 @@ license that can be found in the LICENSE file.
         this.positionCursor();
       }
     });
-    
-    var TAB = '  ';
-    function dumpTag(e, indent) {
-      if (e.dumpTag) {
-        return e.dumpTag(dumpTag, indent, TAB);
-      }
-      if (e.nodeType == Node.TEXT_NODE) {
-        return dumpTextNode(e);
-      }
-      var html = '';
-      html += indent + '<' + e.localName;
-      var attributes = dumpAttributes(e);
-      Object.keys(attributes).forEach(function(k) {
-        var v = attributes[k];
-        //if (k !== 'class' || v != '') {
-          html += ' ' + k + (v !== '' ? '="' + v + '"': '');
-        //}
-      })
-      html += '>';
-      var end = '</' + e.localName + '>\n';
-      if (e.meta && e.meta.hideSubtree) {
-        html += end;
-      } else {
-        if (e.firstElementChild) {
-          Array.prototype.forEach.call(e.children, function(c, i) {
-            if (i == 0) {
-              html += '\n';
-            }
-            html += dumpTag(c, indent + TAB);
-          });
-          html += indent + end;
-        } else {
-          html += e.firstChild ? dumpTextNode(e.firstChild) + end : end;
-        }
-      }
-      return html;
-    }
-    
-    function dumpAttributes(node) {
-      var p$ = Reflection.properties(node);
-      var attributes = {};
-      p$.forEach(function(p) {
-        var v = p.value, n = p.name, binding = Toolkit.getBinding(node, n);
-        if (n == 'textContent') {
-          return;
-        }
-        if (binding) {
-          v = '{{ ' + binding + ' }}';
-        } else if (!((v || v === 0) && (typeof v === 'string' || typeof v === 'number' ||
-            typeof v === 'boolean'))) {
-          v = null;
-        }
-        if (v != null) {
-          attributes[n] = v;
-        }
-      });
-      for (var i=0, a; (a = node.attributes[i]); i++) {
-        if (attributes[a.name] === undefined) {
-          attributes[a.name] = a.value;
-        }
-      }
-      return attributes;
-    }
-    
-    function dumpTextNode(e) {
-      var binding = Toolkit.getBinding(e, 'textContent');
-      return binding ? '{{ ' + binding + ' }}' : e.textContent;
-    }
   </script>
 </element>

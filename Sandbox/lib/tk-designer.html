@@ -61,6 +61,8 @@ license that can be found in the LICENSE file.
         designElement="{{$.designElement}}"
     ><design-element id="designElement"></design-element></tk-canvas>
     <tk-meta id="meta" list="{{elements}}"></tk-meta>
+    <tk-preview-window id="preview"></tk-preview-window>
+    <tk-publisher id="publisher" element="{{$.designElement}}"></tk-publisher>
   </template>
   <script>
     Toolkit.register(this, {
@@ -213,20 +215,24 @@ license that can be found in the LICENSE file.
           selected = this.$.canvas.querySelector('#' + selected.id)
         }
         this.selected = selected || null;
-      },
-      
+      },      
       publishElement: function(source) {
-        this.$.designElement.publishElement(source);
+        this.$.publisher.publishElement(source);
+      },
+      dumpPreviewSource: function(source) {
+        var n = this.$.designElement.elementAttributes.name.value;
+        source = source + '\n<' + n + '></' + n + '>';
+        return source;
       },
       previewElement: function(source) {
-        this.$.designElement.previewElement(source);
+        this.$.preview.open(this.dumpPreviewSource(source));
       },
       previewElementSource: function(source) {
-        this.$.designElement.previewElementSource(source);
+        this.$.preview.openSource(this.dumpPreviewSource(source));
       },
       clearElement: function() {
-        this.$.designElement.textContent = '';
-        this.canvasChange();
+        Platform.flush();
+        this.applySource(this.$.designElement.defaultSource);
       }
     });
   </script>

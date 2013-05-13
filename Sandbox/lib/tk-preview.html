@@ -98,11 +98,13 @@
         }
         previewWindow = window.open('', '', null, false);
       },
-      open: function() {
+      open: function(source) {
+        this.htmlContent = source;
         this.prepareWindow();
         this.writeToDoc(previewWindow.document);
       },
-      openSource: function() {
+      openSource: function(source) {
+        this.htmlContent = source;
         this.prepareWindow();
         this.writeSourceToDoc(previewWindow.document);
       }
