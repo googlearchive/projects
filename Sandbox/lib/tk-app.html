@@ -113,5 +113,22 @@ license that can be found in the LICENSE file.
         this.$.designer.clearElement();
       }
     });
+    
+    document.addEventListener('WebComponentsReady', function() {
+      // prevent backspace from navigating away from document.
+      document.addEventListener('keydown', function(e) {
+        if (e.keyCode == 8) {
+          promptForUnload();
+        }
+      });
+      function promptForUnload() {
+        window.onbeforeunload = function() {
+          return ' ';
+        }
+        setTimeout(function() {
+          window.onbeforeunload = null;
+        }, 0);
+      }
+    });
   </script>
 </element>
