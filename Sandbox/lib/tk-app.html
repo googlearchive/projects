@@ -3,7 +3,7 @@ Copyright 2013 The Toolkitchen Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged">
+<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" attributes="startMode">
   <link rel="stylesheet" href="css/tk-app.css">
   <template>
     <g-toolbar>
@@ -40,16 +40,19 @@ license that can be found in the LICENSE file.
       selected: null,
       selectedMode: '',
       maximized: false,
-      demoMode: false,
+      startMode: '',
       ready: function() {
         this.selectedMode = 'designer';
-        this.demoMode = (window.location.search.indexOf('demo') >= 0);
+        if (!this.startMode) {
+          this.startMode = (window.location.search.indexOf('demo') >= 0) ? 
+            'demo' : '';
+        }
       },
       toggleSize: function() {
         this.maximized = !this.maximized;
       },
-      demoModeChanged: function() {
-        if (this.demoMode) {
+      startModeChanged: function() {
+        if (this.startMode == 'demo') {
           this.selectedMode = 'source';
           this.maximized = true;
         }
