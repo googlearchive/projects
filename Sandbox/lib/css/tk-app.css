@@ -8,6 +8,8 @@ license that can be found in the LICENSE file.
   * {
     font-size: 14px;
     font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+    overflow: hidden;
+    background-color: whitesmoke;
   }
 }
 
