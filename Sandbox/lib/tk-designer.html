@@ -230,11 +230,10 @@ license that can be found in the LICENSE file.
       sourceApplied: function(event, node) {
         this.$.meta.ensureMeta(node);
         // reselect selection
-        var selected = this.selected;
-        if (selected && selected.id) {
-          selected = this.$.canvas.querySelector('#' + selected.id)
+        if (this.selected && this.selected.id) {
+          var selected = this.$.canvas.querySelector('#' + this.selected.id);
         }
-        this.selected = selected || null;
+        this.selected = selected || this.$.designElement;
       },      
       publishElement: function(source) {
         this.$.publisher.publishElement(source);
