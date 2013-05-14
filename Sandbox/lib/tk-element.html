@@ -112,16 +112,9 @@ license that can be found in the LICENSE file.
         if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
           n.style.position = 'absolute';
           n.style.left = n.style.top = '0px';
-          n.id = makeUniqueId(node, n.localName);
+          n.id = Platform.makeUniqueId(node, n.localName);
         }
       });
-    }
-    
-    function makeUniqueId(node, id, suffix) {
-      var uId = id + (suffix || '');
-      return node.querySelector('#' + uId) ?
-        makeUniqueId(node, id, suffix ? ++suffix : 1) :
-        uId;
     }
     
     function tagInnerHTMLFromSource(source, tag) {
