@@ -99,10 +99,10 @@ license that can be found in the LICENSE file.
       createNew: function(tag) {
         var meta = this.$.meta.byId(tag);
         var neo = meta.createElement();
-        neo.id = Platform.makeUniqueId(this.$.canvas, tag.replace(/^g-/, '').replace(/-/g, '_'));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
         this.$.designElement.appendChild(neo);
+        this.$.designElement.childAdded(neo);
         this.neo = neo;
       },
       paletteDragStart: function(event, detail) {
@@ -252,17 +252,6 @@ license that can be found in the LICENSE file.
     var editorElements = ['input', 'select', 'textarea'];
     function nodeIsEditor(node) {
       return node.isEditor || (editorElements.indexOf(node.localName) >= 0);
-    }
-    
-    // make a uniqueId in a ShadowDOM polyfill safe way.
-    Platform.makeUniqueId = function(node, id, suffix) {
-      var uId = id + (suffix || '');
-      var query = window.ShadowDOMPolyfill ? node.impl.querySelector :
-        node.querySelector;
-      var scope = window.ShadowDOMPolyfill ? document.body : node;
-      return query.call(scope, '#' + uId) ?
-        Platform.makeUniqueId(node, id, suffix ? ++suffix : 1) :
-        uId;
     }
   </script>
 </element>
