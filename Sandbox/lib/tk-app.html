@@ -6,7 +6,7 @@ license that can be found in the LICENSE file.
 <element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" attributes="startMode">
   <link rel="stylesheet" href="css/tk-app.css">
   <template>
-    <g-toolbar id="toolbar">
+    <g-toolbar>
       <g-selector id="modeSelector" selected="{{selectedMode}}">
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
@@ -14,7 +14,7 @@ license that can be found in the LICENSE file.
       <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/fullscreen.png"></g-icon-button>
       <g-icon-button src="assets/ic_refresh_darkreg.png" on-tap="clearElement"></g-icon-button>
       <div class="flex"></div>
-      <g-toolbar responsive="true">
+      <g-toolbar id="innerToolbar" responsive="true">
         <g-menu-button responsive="true" selectedClass="" src="assets/menu.png" valign="right" on-activate="menuActivate">
           <g-menu-item src="assets/settings.png" on-click="previewElement">Preview</g-menu-item>
           <g-menu-item src="assets/settings.png" on-click="previewElementSource">Preview Source</g-menu-item>

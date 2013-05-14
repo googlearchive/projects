@@ -71,7 +71,7 @@ input[type=checkbox] {
   z-index: 5;
 }
 
-#toolbar > g-toolbar[responsive=true] {
+#innerToolbar[responsive=true] {
   z-index: 10;
 }
 
