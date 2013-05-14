@@ -99,7 +99,7 @@ license that can be found in the LICENSE file.
       createNew: function(tag) {
         var meta = this.$.meta.byId(tag);
         var neo = meta.createElement();
-        neo.id = Platform.makeUniqueId(this.$.canvas, tag.replace(/^g-/, '').replace('-', '_'));
+        neo.id = Platform.makeUniqueId(this.$.canvas, tag.replace(/^g-/, '').replace(/-/g, '_'));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
         this.$.designElement.appendChild(neo);
