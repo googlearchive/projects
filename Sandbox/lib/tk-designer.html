@@ -4,7 +4,7 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <element name="tk-designer" on-source-applied="sourceApplied" attributes="element selected maximized">
-  <link rel="stylesheet" href="../../../pantry/x-tags/x-tag/demo/x-tag-components.css">
+  <link rel="stylesheet" href="../../../pantry-elements/x-tags/x-tag/demo/x-tag-components.css">
   <template>
     <style>
       @host {
@@ -72,7 +72,7 @@ license that can be found in the LICENSE file.
     <tk-publisher id="publisher" element="{{$.designElement}}"></tk-publisher>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       element: null,
       selected: null,
       selectedTab: 'design',

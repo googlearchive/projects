@@ -12,7 +12,7 @@
 <link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html">
 <link rel="import" href="../../../toolkit-ui/elements/g-ribbon.html">
 <link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html">
-<link rel="import" href="../../../pantry/Ace/Ace.html">
+<link rel="import" href="../../../pantry-elements/Ace/Ace.html">
 <element name="pg-app" extends="g-app">
   <link rel="stylesheet" href="css/pg-app.css" />
   <template>
@@ -46,7 +46,7 @@
     <g-ajax auto on-response="fileResponse" url="{{selectedSample.file}}"></ajax>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       sampleData: [
         {name: 'NameTag', file: 'samples/nametag.html'},
         {name: 'Echo', file: 'samples/echo.html'},
@@ -96,7 +96,7 @@
         html += '<head>\n';
         html += head || '';
         // include base scripts
-        html += '<script src="../../toolkit/toolkit.js"></s' + 'cript>\n';
+        html += '<script src="../../polymer/polymer.js"></s' + 'cript>\n';
         html += '</head>\n<body>\n';
         // include content
         html += body || '';

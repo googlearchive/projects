@@ -52,7 +52,7 @@ license that can be found in the LICENSE file.
     </div>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       components: null,
       update: function() {
         var selected = this.selected;
@@ -88,7 +88,7 @@ license that can be found in the LICENSE file.
       },
       tap: function(e) {
         var nodes = this.$.tree.children;
-        var selected = nodes[Toolkit.findDistributedTarget(e.target, nodes)];
+        var selected = nodes[Polymer.findDistributedTarget(e.target, nodes)];
         if (selected) {
           this.selected = selected.templateInstance.model.element;
         }

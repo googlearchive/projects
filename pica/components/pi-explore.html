@@ -6,7 +6,7 @@
  */
 -->
 <link rel="import" href="../../../toolkit-ui/elements/g-icon.html"/>
-<link rel="import" href="../../../pantry/Speech/speech-mic.html"/>
+<link rel="import" href="../../../pantry-elements/Speech/speech-mic.html"/>
 <link rel="import" href="pi-gfeeds.html"/>
 <link rel="import" href="pi-feed-viewer.html"/>
 <element name="pi-explore" attributes="panel topic canprevious">
@@ -72,7 +72,7 @@
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       publish: {
         layout: 'list'
       },

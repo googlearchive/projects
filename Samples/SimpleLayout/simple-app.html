@@ -4,18 +4,18 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 
-<link rel="import" href="../../../toolkit-elements/toolkit-layout/toolkit-layout.html">
-<link rel="import" href="../../../toolkit-elements/toolkit-layout/toolkit-slide.html">
+<link rel="import" href="../../../polymer-elements/polymer-layout/polymer-layout.html">
+<link rel="import" href="../../../polymer-elements/polymer-layout/polymer-slide.html">
 <!-- -->
-<link rel="import" href="../../../aux-elements/aux-toolbar/aux-toolbar.html">
-<link rel="import" href="../../../aux-elements/aux-icon-button/aux-icon-button.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
 <!-- -->
 <link rel="import" href="simple-main.html">
 <link rel="import" href="simple-toolbar.html">
 <link rel="import" href="simple-primary-tray.html">
 
 <element name="simple-app">
-  <link rel="stylesheet" href="../../../aux-elements/basic.css">
+  <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
   <template>
 
     <style>
@@ -33,31 +33,31 @@ license that can be found in the LICENSE file.
     </style>
 
     <simple-primary-tray id="left">Primary Tray</simple-primary-tray>
-    <!-- use toolkit-slide for simple dynamics -->
-    <toolkit-slide id="primaryTraySlider" targetid="left" closed></toolkit-slide>
+    <!-- use polymer-slide for simple dynamics -->
+    <polymer-slide id="primaryTraySlider" targetid="left" closed></polymer-slide>
 
-    <!-- fit attribute makes this element elastic under toolkit-layout -->
-    <div id="main" fit class="aux-bg-gray">
-      <aux-toolbar>       
-        <aux-icon-button on-tap="primaryTrayAction" src="assets/ic_drawer_darkreg.png" active="{{$.primaryTraySlider.open}}"></aux-icon-button>
-        <aux-icon-button src="assets/ic_refresh_darkreg.png"></aux-icon-button>
-        <aux-icon-button src="assets/ic_mail_darkreg.png"></aux-icon-button>
+    <!-- fit attribute makes this element elastic under polymer-layout -->
+    <div id="main" fit class="polymer-ui-bg-gray">
+      <polymer-ui-toolbar>       
+        <polymer-ui-icon-button on-tap="primaryTrayAction" src="assets/ic_drawer_darkreg.png" active="{{$.primaryTraySlider.open}}"></polymer-ui-icon-button>
+        <polymer-ui-icon-button src="assets/ic_refresh_darkreg.png"></polymer-ui-icon-button>
+        <polymer-ui-icon-button src="assets/ic_mail_darkreg.png"></polymer-ui-icon-button>
         <span fit></span>
-        <aux-icon-button on-tap="secondaryTrayAction" src="assets/ic_settings_lg_darkreg.png" active="{{$.secondaryTraySlider.open}}"></aux-icon-button>
-      </aux-toolbar> 
+        <polymer-ui-icon-button on-tap="secondaryTrayAction" src="assets/ic_settings_lg_darkreg.png" active="{{$.secondaryTraySlider.open}}"></polymer-ui-icon-button>
+      </polymer-ui-toolbar> 
       <simple-main fit>Contentful</simple-main>
-      <!-- use toolkit-layout for simple tesselation -->
-      <toolkit-layout vertical></toolkit-layout>
+      <!-- use polymer-layout for simple tesselation -->
+      <polymer-layout vertical></polymer-layout>
     </div>
 
-    <div id="right" class="aux-header-gray"></div>
-    <toolkit-slide id="secondaryTraySlider" targetid="right" closed></toolkit-slide>
+    <div id="right" class="polymer-ui-header-gray"></div>
+    <polymer-slide id="secondaryTraySlider" targetid="right" closed></polymer-slide>
 
-    <toolkit-layout></toolkit-layout>
+    <polymer-layout></polymer-layout>
 
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       ready: function() {
         this.asyncMethod(function() {
           this.style.webkitTransition = 'all 0.3s';

@@ -8,14 +8,14 @@ license that can be found in the LICENSE file.
   <head>
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="../../toolkit/toolkit.js"></script>
+    <script src="../../polymer/polymer.js"></script>
     <link rel="import" href="../../toolkit-ui/elements/g-app.html">
     <link rel="import" href="../../toolkit-ui/elements/g-toolbar.html">
     <link rel="import" href="../../toolkit-ui/elements/g-panels.html">
     <link rel="import" href="../../toolkit-ui/elements/g-menu-item.html">
     <link rel="import" href="../../toolkit-ui/elements/g-ribbon.html">
     <link rel="import" href="../../toolkit-ui/elements/g-icon-button.html">
-    <link rel="import" href="../../pantry/Ace/Ace.html">
+    <link rel="import" href="../../pantry-elements/Ace/Ace.html">
   </head>
   <body>
     <ace-app>function foo(items) {
@@ -49,7 +49,7 @@ license that can be found in the LICENSE file.
         </g-panels>
       </template>
       <script>
-        Toolkit.register(this, {
+        Polymer.register(this, {
           ready: function() {
             this.super();
             this.$.ace.value = this.textContent;

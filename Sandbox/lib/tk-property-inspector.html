@@ -57,7 +57,7 @@ license that can be found in the LICENSE file.
     <g-flip-in id="animIn" targetSelector="#container"></g-flip-in>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       property: null,
       editor: null,
       propertyValue: null,
@@ -79,11 +79,11 @@ license that can be found in the LICENSE file.
       },
       propertyChanged: function() {
         // discover binding
-        this.binding = Toolkit.getBinding(this.property.obj, 
+        this.binding = Polymer.getBinding(this.property.obj, 
             this.property.name);
         // special handling for textContent
         if (this.property.name == 'textContent') {
-          this.binding = Toolkit.getBinding(this.property.obj.firstChild,
+          this.binding = Polymer.getBinding(this.property.obj.firstChild,
             this.property.name);
         }
         // discover editorTag
@@ -146,7 +146,7 @@ license that can be found in the LICENSE file.
     </g-property>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       duration: 0.2,
       fillMode: 'none',
       easing: 'ease-in'
@@ -162,7 +162,7 @@ license that can be found in the LICENSE file.
     </g-property>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       easing: 'ease-out'
     });
   </script>
@@ -170,7 +170,7 @@ license that can be found in the LICENSE file.
 
  <element name="g-flip-out" extends="g-animation">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       duration: 0.2,
       fillMode: 'none',
       properties: {
@@ -189,7 +189,7 @@ license that can be found in the LICENSE file.
 
 <element name="g-flip-in" extends="g-flip-out">
   <script>
-     Toolkit.register(this, {
+     Polymer.register(this, {
       properties: {
         transform: [{
           easing: 'ease-out',
@@ -217,7 +217,7 @@ license that can be found in the LICENSE file.
     <content></content>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       meta: null,
       metaChanged: function(type) {
         // create polymorphic editor
@@ -225,10 +225,10 @@ license that can be found in the LICENSE file.
         this.appendChild(this.editor);
         // bind propertyValue to property
         var p = this.meta.property;
-        Toolkit.bindProperties(this, 'propertyValue', p.obj, p.name);
+        Polymer.bindProperties(this, 'propertyValue', p.obj, p.name);
         // bind this.editor.value to propertyValue
         // (imperative form of <editor value="{{editorValue}}">)
-        Toolkit.bindProperties(this.editor, 'value', this, 'propertyValue');
+        Polymer.bindProperties(this.editor, 'value', this, 'propertyValue');
         // update editor meta from property
         this.updateEditorMeta();
       },
@@ -257,7 +257,7 @@ license that can be found in the LICENSE file.
     <tk-string-editor style="width: 161px;" value="{{workingValue}}" on-editor-value-changed="editorValueChanged" ></tk-string-editor>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       target: null,
       meta: null,
       metaChanged: function() {
@@ -310,7 +310,7 @@ license that can be found in the LICENSE file.
     <shadow></shadow>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       root: null,
       idPrefix: '',
       metaChanged: function() {
@@ -347,7 +347,7 @@ license that can be found in the LICENSE file.
 
 <element name="tk-target-select-editor" extends="tk-id-select-editor">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       idPrefix: '#'
     });
   </script>
@@ -358,7 +358,7 @@ license that can be found in the LICENSE file.
     <button touch-action="none" on-pointerup="buttonClick">{{meta.label}}</button>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       buttonClick: function() {
         var action = this.meta.action;
         if (this.meta.obj[action]) {

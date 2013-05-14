@@ -11,8 +11,8 @@
 <link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html">
 <link rel="import" href="../../../toolkit-ui/elements/g-ajax.html">
 <link rel="import" href="../../../toolkit-ui/elements/g-selector.html">
-<link rel="import" href="../../../pantry/Youtube/yt-search.html"/>
-<link rel="import" href="../../../pantry/Speech/speech-mic.html"/>
+<link rel="import" href="../../../pantry-elements/Youtube/yt-search.html"/>
+<link rel="import" href="../../../pantry-elements/Speech/speech-mic.html"/>
 <link rel="import" href="yt-videopanel.html">
 <element name="yt-app" extends="g-app">
   <link rel="stylesheet" href="css/yt-app.css">
@@ -42,7 +42,7 @@
     </g-panels>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       query: 'chrome commercial',
       listToggle: function() {
         this.$.panels.toggleBetween('listPanel', 'videoPanel');

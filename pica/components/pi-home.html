@@ -5,9 +5,9 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../pantry/CoolClock/coolclock.html"/>
-<link rel="import" href="../../../pantry/Stock/stock.html"/>
-<link rel="import" href="../../../pantry/Weather/wu-weather.html"/>
+<link rel="import" href="../../../pantry-elements/CoolClock/coolclock.html"/>
+<link rel="import" href="../../../pantry-elements/Stock/stock.html"/>
+<link rel="import" href="../../../pantry-elements/Weather/wu-weather.html"/>
 <element name="pi-home" attributes="stocks">
   <template>
     <style>
@@ -88,7 +88,7 @@
     </div>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       ready: function() {
         this.asend('ready');
       }

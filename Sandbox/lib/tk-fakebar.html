@@ -30,7 +30,7 @@ license that can be found in the LICENSE file.
     <div id='themeable' class='fit'><content></content></div>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       theme: '',
       themeChanged: function(old) {
         old && this.$.themeable.classList.remove(old);
