@@ -19,7 +19,9 @@ license that can be found in the LICENSE file.
         var attributes = this.dumpAttributes(node);
         Object.keys(attributes).forEach(function(k) {
           var v = attributes[k];
-          html += ' ' + k + (v !== '' ? '="' + v + '"': '');
+          if (v !== null && v !== undefined) {
+            html += ' ' + k + (v !== '' ? '="' + v + '"': '');
+          }
         })
         html += '>';
         var end = '</' + node.localName + '>\n';
@@ -56,15 +58,27 @@ license that can be found in the LICENSE file.
             v = null;
           }
           if (v != null) {
-            attributes[n] = v;
+            attributes[n.toLowerCase()] = v;
           }
         });
-        for (var i=0, a; (a = node.attributes[i]); i++) {
-          if (attributes[a.name] === undefined) {
-            attributes[a.name] = a.value;
+        for (var i=0, a, n; (a = node.attributes[i]); i++) {
+          n = a.name.toLowerCase();
+          if (attributes[n] === undefined) {
+            attributes[n] = a.value;
           }
         }
+        this.filterAttributes(attributes);
         return attributes;
+      },
+      // special handling for certain attributes: style, class
+      filterAttributes: function(attributes) {
+        attributes.style = null;
+        var v = attributes['class'];
+        v = v ? v.replace(/selected-element/g, '') : null;
+        if (v == 'selected') {
+          v = '';
+        }
+        attributes['class'] = v || null;
       },
       dumpTextNode: function(node) {
         var binding = Polymer.getBinding(node, 'textContent');
@@ -102,8 +116,6 @@ license that can be found in the LICENSE file.
           indent + this.tab + this.tab + script + '\n' +
           indent + this.tab +'</s' + 'cript>\n'+
           indent + '</element>';
-        // remove inline styles
-        html = this.cleanHTML(html);
         return html;
       },
       dumpElementAttributes: function(node) {
@@ -113,17 +125,6 @@ license that can be found in the LICENSE file.
             html += ' ' + a + '="' + node.elementAttributes[a] + '"';
           });
         }
-        return html;
-      },
-      cleanHTML: function(html) {
-        html = html
-          .replace(/ style="[^"]*"/g, '')
-          .replace(/( )?selected-element/g, '')
-          // TODO(sorvell): need a better way to remove empty class and
-          // selected class...
-          .replace(/( )?class=""/g, '')
-          .replace(/( )? class="selected"/g, '')
-          ;
         return html;
       },
       dumpProto: function(node, indent) {
