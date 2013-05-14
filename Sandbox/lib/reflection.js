@@ -60,16 +60,18 @@ function reflectProperties(element) {
       more.push('textContent');
     }
     more.push('id');
+    var whitelist = {};
     //
     meta && Object.keys(meta).forEach(function(n) {
       if (!found[n] && more.indexOf(n) === -1) {
         more.push(n);
+        whitelist[n] = true;
       }
     });
     //
     more.forEach(function(k) {
       var v = element[k];
-      if (typeof v !== 'function' && typeof v !== 'object') {
+      if ((typeof v !== 'function' && typeof v !== 'object') || whitelist[k]) {
         props.push(reflect(element, k, meta));
       }
     });
