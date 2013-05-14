@@ -6,12 +6,11 @@ license that can be found in the LICENSE file.
 
 <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-layout.html">
 <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-slide.html">
-<!-- -->
+
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
-<!-- -->
+
 <link rel="import" href="simple-main.html">
-<link rel="import" href="simple-toolbar.html">
 <link rel="import" href="simple-primary-tray.html">
 
 <element name="simple-app">
@@ -34,7 +33,7 @@ license that can be found in the LICENSE file.
 
     <simple-primary-tray id="left">Primary Tray</simple-primary-tray>
     <!-- use polymer-slide for simple dynamics -->
-    <polymer-slide id="primaryTraySlider" targetid="left" closed></polymer-slide>
+    <polymer-slide id="primaryTraySlider" targetid="left"></polymer-slide>
 
     <!-- fit attribute makes this element elastic under polymer-layout -->
     <div id="main" fit class="polymer-ui-bg-gray">
