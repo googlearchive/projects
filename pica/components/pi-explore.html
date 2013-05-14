@@ -48,7 +48,7 @@
         font-size: 16px;
       }
       
-      #searchBox > g-speech-mic {
+      #searchBox > speech-mic {
         position: absolute;
         top: 5px;
         bottom: 0;
@@ -65,7 +65,7 @@
     <div id="searchBox">
       <input id="searchInput" on-input="inputChange"/>
       <g-icon src="../images/search.png"></g-icon>
-      <g-speech-mic id="speech" on-result="speechResult"></g-speech-mic>
+      <speech-mic id="speech" on-result="speechResult"></speech-mic>
     </div>
     <pi-feed-viewer id="viewer" topics="{{topics}}" topic="{{topic}}" panel="{{panel}}"
         layout="{{layout}}" topicslayout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
