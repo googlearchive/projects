@@ -32,7 +32,7 @@ function reflectProperty(element, name, meta) {
   return prop;   
 }
 
-reflectProperty.blacklist = {isToolkitElement: 1};
+reflectProperty.blacklist = {isPolymerElement: 1};
 
 function reflectProperties(element) {
   var props = [];
