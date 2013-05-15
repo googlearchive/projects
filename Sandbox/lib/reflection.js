@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Polymer Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
@@ -16,19 +16,23 @@ function reflect(element, name, meta) {
 }
 
 function reflectProperty(element, name, meta) {
-  var v = element[name];
-  if (v !== null
-      && v !== undefined
-      && typeof v !== 'function'
-      && typeof v !== 'object'
-      //&& element.propertyIsEnumerable(k)
-      && !reflectProperty.blacklist[name]) {
-    var prop = reflect(element, name, meta);
+  try {
+    var v = element[name];
+    if (v !== null
+        && v !== undefined
+        && typeof v !== 'function'
+        && typeof v !== 'object'
+        //&& element.propertyIsEnumerable(k)
+        && !reflectProperty.blacklist[name]) {
+      var prop = reflect(element, name, meta);
+    }
+  } catch(x) {
+    // squelch
   }
-  return prop;
+  return prop;   
 }
 
-reflectProperty.blacklist = {isToolkitElement: 1};
+reflectProperty.blacklist = {isPolymerElement: 1};
 
 function reflectProperties(element) {
   var props = [];
@@ -36,7 +40,7 @@ function reflectProperties(element) {
     var found = {};
     var p = element.__proto__;
     var meta = element.meta && element.meta.properties;
-    while (p && p !== HTMLElement.prototype/*&& p.isToolkitElement*/) {
+    while (p && p != HTMLElement.prototype && p != HTMLInputElement.prototype) {
       var k = Object.keys(p);
       k.forEach(function(k) {
         if (found[k]) {
@@ -56,16 +60,18 @@ function reflectProperties(element) {
       more.push('textContent');
     }
     more.push('id');
+    var whitelist = {};
     //
     meta && Object.keys(meta).forEach(function(n) {
       if (!found[n] && more.indexOf(n) === -1) {
         more.push(n);
+        whitelist[n] = true;
       }
     });
     //
     more.forEach(function(k) {
       var v = element[k];
-      if (typeof v !== 'function' && typeof v !== 'object') {
+      if ((typeof v !== 'function' && typeof v !== 'object') || whitelist[k]) {
         props.push(reflect(element, k, meta));
       }
     });

@@ -1,11 +1,18 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-designer" on-keyup="keyup" on-source-applied="sourceApplied" attributes="element selected maximized">
+<element name="tk-designer" on-source-applied="sourceApplied" attributes="element selected maximized">
+  <link rel="stylesheet" href="../../../more-elements/x-tags/x-tag/demo/x-tag-components.css">
   <template>
     <style>
+      @host {
+        * {
+          outline: 0;
+        }
+      }
+      
       #palette {
         position: absolute !important;
         top: 0;
@@ -57,18 +64,22 @@ license that can be found in the LICENSE file.
     <tk-canvas id="canvas" tabIndex="-1"
         on-tap="canvasTap"
         on-pointerup="canvasDrop"
+        on-keydown="canvasKeydown"
         designElement="{{$.designElement}}"
     ><design-element id="designElement"></design-element></tk-canvas>
     <tk-meta id="meta" list="{{elements}}"></tk-meta>
+    <tk-preview-window id="preview"></tk-preview-window>
+    <tk-publisher id="publisher" element="{{$.designElement}}"></tk-publisher>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       element: null,
       selected: null,
       selectedTab: 'design',
       maximized: false,
       ready: function() {
         this.element = this.$.canvas;
+        this.$.meta.ensureMeta(this.$.designElement);
         this.selected = this.$.designElement;
       },
       update: function() {
@@ -88,17 +99,11 @@ license that can be found in the LICENSE file.
       createNew: function(tag) {
         var meta = this.$.meta.byId(tag);
         var neo = meta.createElement();
-        neo.id = this.makeUniqueId(tag.replace(/^g-/, '').replace('-', '_'));
         neo.style.position = 'absolute';
         neo.style.pointerEvents = 'none';
         this.$.designElement.appendChild(neo);
+        this.$.designElement.childAdded(neo);
         this.neo = neo;
-      },
-      makeUniqueId: function(id, suffix) {
-        var uId = id + (suffix || '');
-        return this.$.canvas.querySelector('#' + uId) ?
-          this.makeUniqueId(id, suffix ? ++suffix : 1) :
-          uId;
       },
       paletteDragStart: function(event, detail) {
        var rect = this.$.designElement.getBoundingClientRect();
@@ -114,6 +119,7 @@ license that can be found in the LICENSE file.
           var x = detail.x - this.origin.x - 24;
           var y = detail.y - this.origin.y - 24;
           var p = this.$.canvas.snap(x, y);
+          this.$.canvas.scrollTop = 0;
           this.neo.style.left = p.x + 'px';
           this.neo.style.top = p.y + 'px';
         }
@@ -144,6 +150,9 @@ license that can be found in the LICENSE file.
             container = container.parentNode;
           }
           this.selected = this.neo;
+          var focusNode = nodeIsEditor(this.selected) ? this.selected : 
+            this.$.canvas;
+          focusNode.focus();
         }
         this.neo = null;
       },
@@ -162,11 +171,38 @@ license that can be found in the LICENSE file.
       canvasTap: function(event) {
         this.inspectTarget(event);
       },
+      canvasKeydown: function(event) {
+        switch(event.keyCode) {
+          case 27:
+            this.selectParentElement();
+            break;
+          case 8:
+          case 46:
+            if (!nodeIsEditor(event.target)) {
+              this.deleteElement();
+              event.preventDefault();
+            }
+            break;
+        }
+      },
       inspectTarget: function(event) {
         var t = event.target;
         if (t) {
-          this.selected = (t === this.$.canvas ? null : t);
-          dirtyCheck();
+          if (t === this.$.canvas) {
+            this.selected = null;
+          } else {
+            // don't allow selection within a node with meta.hideSubtree
+            var n = t;
+            while (n) {
+              if (n.meta && n.meta.hideSubtree) {
+                t = n;
+                break;
+              }
+              n = n.parentNode;
+            }
+            this.selected = t;
+          }
+          Platform.flush();
         }
       },
       selectParentElement: function() {
@@ -179,37 +215,43 @@ license that can be found in the LICENSE file.
           this.selected = e;
         }
       },
-      keyup: function(event) {
-        if (event.keyCode === 27) {
-          this.selectParentElement();
-        }
-      },
       bindProperty: function(obj, name, path) {
         this.$.designElement.bindProperty(obj, name, path);  
       },
       applySource: function(source) {
         this.$.designElement = this.$.designElement.applySource(source);
-        //this.sourceApplied(null, node);
       },
       sourceApplied: function(event, node) {
+        this.$.meta.ensureMeta(node);
         // reselect selection
-        var selected = this.selected;
-        if (selected && selected.id) {
-          selected = this.$.canvas.querySelector('#' + selected.id)
+        if (this.selected && this.selected.id) {
+          var selected = this.$.canvas.querySelector('#' + this.selected.id);
         }
-        this.selected = selected || null;
-      },
-      
+        this.selected = selected || this.$.designElement;
+      },      
       publishElement: function(source) {
-        this.$.designElement.publishElement(source);
+        this.$.publisher.publishElement(source);
+      },
+      dumpPreviewSource: function(source) {
+        var n = this.$.designElement.elementAttributes.name;
+        source = source + '\n<' + n + '></' + n + '>';
+        return source;
       },
       previewElement: function(source) {
-        this.$.designElement.previewElement(source);
+        this.$.preview.open(this.dumpPreviewSource(source));
+      },
+      previewElementSource: function(source) {
+        this.$.preview.openSource(this.dumpPreviewSource(source));
       },
       clearElement: function() {
-        this.$.designElement.textContent = '';
-        this.canvasChange();
+        Platform.flush();
+        this.applySource(this.$.designElement.defaultSource);
       }
     });
+    
+    var editorElements = ['input', 'select', 'textarea'];
+    function nodeIsEditor(node) {
+      return node.isEditor || (editorElements.indexOf(node.localName) >= 0);
+    }
   </script>
 </element>

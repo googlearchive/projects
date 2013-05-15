@@ -1,5 +1,5 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
@@ -7,66 +7,39 @@ license that can be found in the LICENSE file.
   <template>
     <ajaxorg-ace id="editor" mode="html" theme="chrome" tabSize="2"
         fontSize="{{fontSize}}" on-editor-change="editorChange"></ajaxorg-ace>
+    <tk-element-dumper id="dumper"></tk-element-dumper>
   </template>
   <script>
-    Toolkit.register(this, {
-      update: function() {
+    Polymer.register(this, {
+      update: function(positionCursor) {
         // force components to update before dumping source
-        dirtyCheck();
+        Platform.flush();
         // given async effects a chance to apply to dom.
-        this.asyncMethod('updateImmediate');
+        this.asyncMethod('updateImmediate', [positionCursor]);
       },
-      updateImmediate: function() {
-        this.value = dumpTag(this.element.firstElementChild, '')
+      updateImmediate: function(positionCursor) {
+        this.value = this.$.dumper.dumpElement(this.element.firstElementChild,
+          '');
         this.$.editor.value = this.value;
+        Platform.flush();
+        if (positionCursor) {
+          this.positionCursor();
+        }
       },
       editorChange: function(event, detail) {
         this.send('source-changed', detail);
       },
-      shown: function() {
+      positionCursor: function() {
         this.$.editor.focus();
         this.$.editor.foldTag('style');
         var pos = this.$.editor.find('</style>', {start: 0});
         if (pos) {
-          this.$.editor.gotoLine(pos.end.row + 2, 1e9);
+          this.$.editor.gotoLine(pos.end.row + 2);
         }
+      },
+      shown: function() {
+        this.positionCursor();
       }
     });
-    
-    var TAB = '  ';
-    function dumpTag(e, indent) {
-      if (e.dumpTag) {
-        return e.dumpTag(dumpTag, indent, TAB);
-      }
-      if (e.nodeType == Node.TEXT_NODE) {
-        return dumpTextNode(e);
-      }
-      var html = '';
-      html += indent + '<' + e.localName;
-      for (var i=0, a; (a = e.attributes[i]); i++) {
-        if (a.name !== 'class' || a.value != '') {
-          html += ' ' + a.name + (a.value != '' ? '="' + a.value + '"': '');
-        }
-      }
-      html += '>';
-      var end = '</' + e.localName + '>\n';
-      if (e.firstElementChild) {
-        Array.prototype.forEach.call(e.children, function(c, i) {
-          if (i == 0) {
-            html += '\n';
-          }
-          html += dumpTag(c, indent + TAB);
-        });
-        html += indent + end;
-      } else {
-        html += e.firstChild ? dumpTextNode(e.firstChild) + end : end;
-      }
-      return html;
-    }
-    
-    function dumpTextNode(e) {
-      var binding = Toolkit.getBinding(e, 'textContent');
-      return binding ? '{{ ' + binding + ' }}' : e.textContent;
-    }
   </script>
 </element>

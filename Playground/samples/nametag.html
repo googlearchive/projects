@@ -1,5 +1,5 @@
-<!-- Toolkit supports declarative binding of events to methods in 
-the element. The toolkit uses special on-event syntax to trigger 
+<!-- Polymer supports declarative binding of events to methods in 
+the element. The polymer uses special on-event syntax to trigger 
 this binding behavior. -->
 <element name="x-nametag" on-click="makeLarge" attributes="name color">
   <template>
@@ -13,13 +13,13 @@ this binding behavior. -->
       }
     </style>
     
-    <!-- You can bind properties in your element to Toolkit supports 
+    <!-- You can bind properties in your element to Polymer supports 
     declarative data binding using the "double-mustache" syntax ({{}}) 
     from Model Driven Views. -->
     Hello! My name is <span style="color:{{color}}">{{name}}</span>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       color: 'blue',
       makeLarge: function() {
         this.style.fontSize = '40px';
