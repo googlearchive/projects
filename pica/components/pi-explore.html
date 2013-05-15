@@ -1,12 +1,12 @@
 <!--
 /*
- * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Polymer Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 -->
 <link rel="import" href="../../../toolkit-ui/elements/g-icon.html"/>
-<link rel="import" href="../../../pantry/Speech/speech-mic.html"/>
+<link rel="import" href="../../../more-elements/Speech/speech-mic.html"/>
 <link rel="import" href="pi-gfeeds.html"/>
 <link rel="import" href="pi-feed-viewer.html"/>
 <element name="pi-explore" attributes="panel topic canprevious">
@@ -48,7 +48,7 @@
         font-size: 16px;
       }
       
-      #searchBox > g-speech-mic {
+      #searchBox > speech-mic {
         position: absolute;
         top: 5px;
         bottom: 0;
@@ -65,14 +65,14 @@
     <div id="searchBox">
       <input id="searchInput" on-input="inputChange"/>
       <g-icon src="../images/search.png"></g-icon>
-      <g-speech-mic id="speech" on-result="speechResult"></g-speech-mic>
+      <speech-mic id="speech" on-result="speechResult"></speech-mic>
     </div>
     <pi-feed-viewer id="viewer" topics="{{topics}}" topic="{{topic}}" panel="{{panel}}"
         layout="{{layout}}" topicslayout="{{layout}}" loading="{{loading}}" track="false"></pi-feed-viewer>
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       publish: {
         layout: 'list'
       },

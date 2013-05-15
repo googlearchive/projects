@@ -1,10 +1,17 @@
-<element name="tk-meta" attributes="label isContainer isHidden list">
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="tk-meta" attributes="label isContainer isHidden list shouldPrepend hideSubtree">
   <script>
     var metaData = {}, metaArray = [];
-    Toolkit.register(this, {
+    Polymer.register(this, {
       isContainer: false,
       isHidden: false,
       properties: null,
+      shouldPrepend: false,
+      hideSubtree: false,
       ready: function() {
         this.idChanged();
         this.updateProperties();
@@ -13,7 +20,11 @@
         if (this.id && this.id !== 'meta') {
           this.unregister(this, inOld);
           metaData[this.id] = this;
-          metaArray.push(this);
+          if (this.shouldPrepend) {
+            metaArray.unshift(this);
+          } else {
+            metaArray.push(this);
+          }
         }
       },
       unregister: function(meta, id) {
@@ -49,10 +60,18 @@
       createElement: function() {
         this.loadImports();
         if (this.archetype) {
-          return this.archetype.createInstance().querySelector('*');
+          var node = this.archetype.createInstance().querySelector('*');
         } else {
-          return document.createElement(this.id);
+          node = document.createElement(this.id);
         }
+        this.ensureMeta(node);
+        return node;
+      },
+      ensureMeta: function(node) {
+        node.meta = this.byId(node.localName);
+        Array.prototype.forEach.call(node.children, function(n) {
+          this.ensureMeta(n);
+        }, this);
       },
       loadImports: function() {
         var t = this.querySelector('#imports');

@@ -1,16 +1,55 @@
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
 <element name="tk-preview" attributes="htmlContent">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       htmlContent: '',
       writeToDoc: function(doc) {
         doc.open('text/html', '');
-        doc.write(this.outputSource());
+        doc.write(this.outputPreviewHTML());
         doc.close();
       },
-      outputSource: function() {
+      writeSourceToDoc: function(doc) {
+        doc.open('text/html', '');
+        doc.write(this.outputSourceHTML());
+        doc.close();
+      },
+      outputSourceHTML: function() {
+        var html = '<!DOCTYPE html>\n';
+        html += '<head>\n';
+        html += '<title>Sandbox Source Preview</title>\n'
+        html += '<base href="' + document.baseURI + '">\n';
+        // include base scripts
+        // style
+        html += '<style>\n';
+        html += '  body {\n';
+        html += '    margin: 0; height: 100%; background: black;\n';
+        html += '    -webkit-tap-highlight-color: rgba(0,0,0,0);\n';
+        html += '  }\n';
+        html += '</style>\n';
+        html += '<script src="https://google-code-prettify.googlecode.com/' +
+          'svn/loader/run_prettify.js?skin=sunburst"></s' + 'cript>';
+        html += '</head>\n<body>';
+        html += '<pre class="prettyprint" ' +
+          'style="font-size: 16px; margin: 0; border-radius: 0;">';
+        // include content
+        html += this.outputPreviewHTML().replace(/\</g, '&lt;')
+          .replace(/\>/g, '&gt;');
+        html += '\n</pre>';
+        html += '</body>\n</html>';
+        return html;
+      },
+      outputPreviewHTML: function() {
         // put base href in head
         var h = '<base href="' + document.baseURI + '">\n';
         return this.makeOutputHTML(h, this.htmlContent);
+      },
+      makeOutputLink: function() {
+        var dataUrl = 'data:text/html;base64,';
+        return dataUrl + btoa(this.outputSource());
       },
       makeOutputHTML: function(head, body) {
         var html = '<!DOCTYPE html>\n';
@@ -18,10 +57,8 @@
         html += '<title>Sandbox Preview</title>\n'
         html += head || '';
         // include base scripts
-        html += '<script src="https://www.google.com/jsapi"></s' + 'cript>\n';
-        html += '<script src="../../toolkit/toolkit.min.js"></s' + 'cript>\n';
+        html += '<script src="../../polymer/polymer.min.js"></s' + 'cript>\n';
         html += '<link rel="import" href="lib/components.html">\n';
-        html += '<link rel="import" href="../pica/components/pi-app.html">\n';
         // style
         html += '<style>\n';
         html += '  body {\n';
@@ -45,7 +82,7 @@
     <iframe id="output" style="width: 100%; height: 100%;"></iframe>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       htmlContentChanged: function() {
         this.$.output.src = '';
         this.asyncMethod(function() {
@@ -59,13 +96,22 @@
 <element name="tk-preview-window" extends="tk-preview">
   <script>
     var previewWindow;
-    Toolkit.register(this, {
-      open: function() {
+    Polymer.register(this, {
+      prepareWindow: function() {
         if (previewWindow) {
           previewWindow.close();
         }
         previewWindow = window.open('', '', null, false);
+      },
+      open: function(source) {
+        this.htmlContent = source;
+        this.prepareWindow();
         this.writeToDoc(previewWindow.document);
+      },
+      openSource: function(source) {
+        this.htmlContent = source;
+        this.prepareWindow();
+        this.writeSourceToDoc(previewWindow.document);
       }
     });
   </script>

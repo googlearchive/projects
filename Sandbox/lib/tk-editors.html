@@ -1,12 +1,12 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <element name="tk-abstract-editor" attributes="value">
   <script>
-    Toolkit.register(this, {
-      value: null,
+    Polymer.register(this, {
+      value: '',
       meta: null,
       workingValue: null,
       valueChanged: function() {
@@ -64,7 +64,7 @@ license that can be found in the LICENSE file.
       autocorrect="off" on-change="commit">
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       type: "text",
       focus: function() {
         this.$.input.focus();
@@ -75,7 +75,7 @@ license that can be found in the LICENSE file.
 
 <element name="tk-color-editor" extends="tk-string-editor">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       type: 'color',
       ready: function() {
         // TODO(sjmiles): box-sizing: border-box doesn't play nice with color inputs
@@ -121,7 +121,7 @@ license that can be found in the LICENSE file.
     <input id="input" type="checkbox" checked="{{workingValue}}" on-change="inputChange">
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       inputChange: function(event) {
         this.workingValue = event.target.checked;
         this.commit();
@@ -159,7 +159,7 @@ license that can be found in the LICENSE file.
     // However, this creates an extra space in the select; see
     // due to https://github.com/toolkitchen/mdv/issues/56.
     // For that reason, we're manually iterating these nodes.
-    Toolkit.register(this, {
+    Polymer.register(this, {
       metaChanged: function() {
         this.options = this.meta.options;
         // allow template to generate options before setting value
@@ -211,7 +211,7 @@ license that can be found in the LICENSE file.
     <textarea id="input" on-change="commit" rows="10"></textarea>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       workingValueChanged: function() {
         this.$.input.textContent = this.workingValue;
       },
@@ -247,7 +247,11 @@ license that can be found in the LICENSE file.
     <input id="input" type="range" value="{{workingValue}}" min="{{min}}" max="{{max}}" step="{{step}}" on-change="commit">
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
+      min: 0,
+      max: 0,
+      step: 0,
+      defaultValue: 0,
       metaChanged: function() {
         if (this.meta) {
           this.min = this.meta.min;
@@ -256,7 +260,7 @@ license that can be found in the LICENSE file.
           this.defaultValue = this.meta.defaultvalue;
         }
       },
-      workingValueChanged: function() {
+      defaultValueChanged: function() {
         if (this.workingValue === null || this.workingValue === '') {
           this.workingValue = this.defaultValue || this.min || 0;
         }
@@ -267,7 +271,7 @@ license that can be found in the LICENSE file.
 
 <element name="tk-speech-editor" extends="tk-string-editor">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       ready: function() {
         this.$.input.setAttribute('x-webkit-speech');
       }
@@ -282,7 +286,7 @@ license that can be found in the LICENSE file.
     <tk-range-editor style="width: 100px;"></tk-range-editor>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       options: ['px', 'pt', '%', 'em', 'rem', '']
     });
   </script>

@@ -1,22 +1,23 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged">
+<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" attributes="startMode">
   <link rel="stylesheet" href="css/tk-app.css">
   <template>
     <g-toolbar>
-      <g-selector selected="{{selectedMode}}">
+      <g-selector id="modeSelector" selected="{{selectedMode}}">
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
         <g-icon-button name="source" src="assets/code.png"></g-icon-button>
       </g-selector>
       <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/fullscreen.png"></g-icon-button>
       <g-icon-button src="assets/ic_refresh_darkreg.png" on-tap="clearElement"></g-icon-button>
       <div class="flex"></div>
-      <g-toolbar responsive="true">
+      <g-toolbar id="innerToolbar" responsive="true">
         <g-menu-button responsive="true" selectedClass="" src="assets/menu.png" valign="right" on-activate="menuActivate">
           <g-menu-item src="assets/settings.png" on-click="previewElement">Preview</g-menu-item>
+          <g-menu-item src="assets/settings.png" on-click="previewElementSource">Preview Source</g-menu-item>
           <g-menu-item src="assets/settings.png" on-tap="publishElement">Publish</g-menu-item>
           <g-menu-item src="assets/ic_refresh_darkreg.png" on-tap="clearElement">Clear</g-menu-item>
         </g-menu-button>
@@ -24,7 +25,7 @@ license that can be found in the LICENSE file.
     </g-toolbar>
     <div id="main">
       <tk-designer id="designer" selected="{{selected}}" element="{{element}}" maximized="{{maximized}}"></tk-designer>
-      <tk-source id="source" fontSize="16px" element="{{element}}" on-source-changed="sourceChanged"></tk-source>
+      <tk-source id="source" fontSize="{{fontSize}}" element="{{element}}" on-source-changed="sourceChanged" on-keydown="sourceKeydown"></tk-source>
       <tk-tools id="tools" selected="{{selected}}" element="{{element}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
@@ -34,22 +35,28 @@ license that can be found in the LICENSE file.
     </div>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       element: null,
       selected: null,
+      useBigFont: false,
+      normalFontSize: '16px',
+      bigFontSize: '26px',
       selectedMode: '',
-      designMode: true,
       maximized: false,
-      demoMode: false,
+      startMode: '',
       ready: function() {
         this.selectedMode = 'designer';
-        this.demoMode = (window.location.search.indexOf('demo') >= 0);
+        this.fontSize = this.normalFontSize;
+        if (!this.startMode) {
+          this.startMode = (window.location.search.indexOf('demo') >= 0) ? 
+            'demo' : '';
+        }
       },
       toggleSize: function() {
         this.maximized = !this.maximized;
       },
-      demoModeChanged: function() {
-        if (this.demoMode) {
+      startModeChanged: function() {
+        if (this.startMode == 'demo') {
           this.selectedMode = 'source';
           this.maximized = true;
         }
@@ -61,18 +68,23 @@ license that can be found in the LICENSE file.
           this.$.source.$.editor.editor.resize();
         }, null, 500);
       },
-      designModeChanged: function () {
-        this.selectedMode = this.designMode ? 'designer' : 'source';
-      },
       selectedModeChanged: function (oldMode) {
          this.classFollows(this.$[this.selectedMode], this.$[oldMode],
            'selected-panel');
          if (this.$[this.selectedMode]['shown']) {
-           this.$[this.selectedMode]['shown']();
+           this.$[this.selectedMode].asyncMethod('shown');
          }
+         // update mode icons
+         this.$.modeSelector.items.forEach(function(mode) {
+           mode.src = mode.getAttribute('src');
+         });
+         var s = this.$.modeSelector.selection;
+         var src = s.getAttribute('src');
+         var i = src.lastIndexOf('.');
+         s.src = src.substring(0, i) + '_selected' + src.substring(i);
       },
       designChanged: function() {
-        this.$.source.update();
+        this.$.source.update(this.selectedMode == 'source');
         this.$.tools.update();
         this.$.designer.update();
       },
@@ -98,8 +110,36 @@ license that can be found in the LICENSE file.
       previewElement: function() {
         this.$.designer.previewElement(this.getSource());
       },
+      previewElementSource: function() {
+        this.$.designer.previewElementSource(this.getSource());
+      },
       clearElement: function() {
         this.$.designer.clearElement();
+      },
+      sourceKeydown: function(event) {
+        if ((event.keyCode == 192) && event.ctrlKey) {
+          this.useBigFont = !this.useBigFont;
+        }
+      },
+      useBigFontChanged: function() {
+        this.fontSize = this.useBigFont ? this.bigFontSize : this.normalFontSize;
+      }
+    });
+    
+    document.addEventListener('WebComponentsReady', function() {
+      // prevent backspace from navigating away from document.
+      document.addEventListener('keydown', function(e) {
+        if (e.keyCode == 8) {
+          promptForUnload();
+        }
+      });
+      function promptForUnload() {
+        window.onbeforeunload = function() {
+          return ' ';
+        }
+        setTimeout(function() {
+          window.onbeforeunload = null;
+        }, 0);
       }
     });
   </script>

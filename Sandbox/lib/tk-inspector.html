@@ -1,5 +1,5 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
@@ -26,14 +26,13 @@ license that can be found in the LICENSE file.
     <tk-meta id="meta"></tk-meta>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       element: null,
       properties: null,
       crumbs: [],
       elementChanged: function() {
         // meta-data attached here
         if (this.element) {
-          this.element.meta = this.$.meta.byId(this.element.localName);
           this.properties = Reflection.properties(this.element);
           this.crumbs = this.listCrumbs();
         } else {
@@ -90,7 +89,7 @@ license that can be found in the LICENSE file.
     </tk-meta>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       properties: null,
       elementChanged: function() {
         this.properties = Reflection.styles(this.element, this.$.meta.properties);
