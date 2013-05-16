@@ -80,7 +80,7 @@ license that can be found in the LICENSE file.
           Array.prototype.forEach.call(links, function(link) {
             if (!link.content) {
               // FIXME(ffu): HTMLImports should provide an API to parse link directly
-              HTMLImports.load(t.content, function() {
+              HTMLImports.importer.load(t.content, function() {
                 CustomElements.parser.parse(link.content);
               });
             }

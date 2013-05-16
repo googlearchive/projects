@@ -23,15 +23,17 @@ license that can be found in the LICENSE file.
       },
       makeMeta: function() {
         var meta = document.createElement('tk-meta');
-        if (!meta.byId(this.elementName)) {
-          meta.shouldPrepend = true;
-          meta.id = this.elementName;
-          meta.label = this.elementName;
-          meta.isContainer = true;
-          var template = document.createElement('template');
-          template.innerHTML = this.makeArchetypeHTML();
-          meta.appendChild(template);
+        var existingMeta = meta.byId(this.elementName);
+        if (existingMeta) {
+          existingMeta.unregister(existingMeta, existingMeta.id);
         }
+        meta.shouldPrepend = true;
+        meta.id = this.elementName;
+        meta.label = this.elementName;
+        meta.isContainer = true;
+        var template = document.createElement('template');
+        template.innerHTML = this.makeArchetypeHTML();
+        meta.appendChild(template);
       },
       makeArchetypeHTML: function(name) {
         var size = this.calcSize();

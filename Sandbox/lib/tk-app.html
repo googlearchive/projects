@@ -56,7 +56,7 @@ license that can be found in the LICENSE file.
         this.maximized = !this.maximized;
       },
       startModeChanged: function() {
-        if (this.startMode == 'demo') {
+        if (this.startMode === 'demo') {
           this.selectedMode = 'source';
           this.maximized = true;
         }
@@ -69,19 +69,24 @@ license that can be found in the LICENSE file.
         }, null, 500);
       },
       selectedModeChanged: function (oldMode) {
-         this.classFollows(this.$[this.selectedMode], this.$[oldMode],
-           'selected-panel');
-         if (this.$[this.selectedMode]['shown']) {
-           this.$[this.selectedMode].asyncMethod('shown');
-         }
-         // update mode icons
-         this.$.modeSelector.items.forEach(function(mode) {
-           mode.src = mode.getAttribute('src');
-         });
-         var s = this.$.modeSelector.selection;
-         var src = s.getAttribute('src');
-         var i = src.lastIndexOf('.');
-         s.src = src.substring(0, i) + '_selected' + src.substring(i);
+        if (this.selectedMode === 'source') {
+          this.designChanged();
+        }
+        this.asyncMethod(function() {
+          this.classFollows(this.$[this.selectedMode], this.$[oldMode],
+            'selected-panel');
+          if (this.$[this.selectedMode]['shown']) {
+            this.$[this.selectedMode].asyncMethod('shown');
+          }
+          // update mode icons
+          this.$.modeSelector.items.forEach(function(mode) {
+            mode.src = mode.getAttribute('src');
+          });
+          var s = this.$.modeSelector.selection;
+          var src = s.getAttribute('src');
+          var i = src.lastIndexOf('.');
+          s.src = src.substring(0, i) + '_selected' + src.substring(i);
+        });
       },
       designChanged: function() {
         this.$.source.update(this.selectedMode == 'source');
