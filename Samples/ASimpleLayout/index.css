@@ -3,25 +3,18 @@
 }
 
 .no-transitions > * {
+   transition: none !important;
    -webkit-transition: none !important;
 }
 
 #left, #right, #main {
+  transition: all 0.3s;
   -webkit-transition: all 0.3s;
 }
 
 #logo {
   border: 1px solid rgba(0,0,0,0.15);
-}
-
-.gradient {
-  background: -webkit-linear-gradient(-60deg, #3d3d3d, #353535);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.05);
-}
-
-#logo {
-  padding: 16px 14px;
+  padding: 17px 14px;
   color: #eaeaea;
   font-size: 21px;
 }

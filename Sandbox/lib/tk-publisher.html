@@ -1,11 +1,11 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <element name="tk-publisher" attributes="element">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       element: null,
       publishElement: function(source) {
         if (source) {
@@ -23,15 +23,17 @@ license that can be found in the LICENSE file.
       },
       makeMeta: function() {
         var meta = document.createElement('tk-meta');
-        if (!meta.byId(this.elementName)) {
-          meta.shouldPrepend = true;
-          meta.id = this.elementName;
-          meta.label = this.elementName;
-          meta.isContainer = true;
-          var template = document.createElement('template');
-          template.innerHTML = this.makeArchetypeHTML();
-          meta.appendChild(template);
+        var existingMeta = meta.byId(this.elementName);
+        if (existingMeta) {
+          existingMeta.unregister(existingMeta, existingMeta.id);
         }
+        meta.shouldPrepend = true;
+        meta.id = this.elementName;
+        meta.label = this.elementName;
+        meta.isContainer = true;
+        var template = document.createElement('template');
+        template.innerHTML = this.makeArchetypeHTML();
+        meta.appendChild(template);
       },
       makeArchetypeHTML: function(name) {
         var size = this.calcSize();

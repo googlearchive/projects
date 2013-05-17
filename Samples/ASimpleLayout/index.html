@@ -1,61 +1,64 @@
-﻿<!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+﻿<!doctype html>
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<!DOCTYPE html>
-<html class="aux-full-bleed">
+<html class="polymer-ui-full-bleed">
 <head>
   <title>Simple Layout</title>
-  <script src="../../../toolkit/toolkit.js"></script>
+  <script src="../../../polymer/polymer.js"></script>
   <!-- -->
-  <link rel="import" href="../../../toolkit-elements/toolkit-layout/toolkit-layout.html">
-  <link rel="import" href="../../../toolkit-elements/toolkit-layout/toolkit-slide.html">
+  <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-layout.html">
+  <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-slide.html">
   <!-- -->
-  <link rel="stylesheet" href="../../../aux-elements/basic.css">
-  <link rel="import" href="../../../aux-elements/aux-toolbar/aux-toolbar.html">
-  <link rel="import" href="../../../aux-elements/aux-icon-button/aux-icon-button.html">
+  <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
+  <link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
+  <link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
   <!-- -->
   <link rel="stylesheet" href="index.css">
 </head>
-<body class="aux-full-bleed aux-body-text no-transitions">
+<body class="polymer-ui-full-bleed polymer-ui-body-text polymer-ui-card-theme no-transitions">
   
-  <div id="left" class="aux-gradient">
-    <div id="logo" class="aux-gradient">
+  <div id="left">
+    <div id="logo" class="polymer-ui-gradient">
       Logo
     </div> 
-    <!-- fit attribute makes this div elastic under toolkit-layout -->
-    <div fit id="primary">
+    <!-- fit attribute makes this div elastic under polymer-layout -->
+    <div fit id="primary" class="polymer-ui-gradient">
       Primary Tray
     </div> 
-    <!-- use toolkit-layout for simple tesselation -->
-    <toolkit-layout vertical></toolkit-layout>
+    <!-- use polymer-layout for simple tesselation -->
+    <polymer-layout vertical></polymer-layout>
   </div>
-  <!-- use toolkit-slide for simple dynamics -->
-  <toolkit-slide id="slideLeft" targetid="left"></toolkit-slide>
+  <!-- use polymer-slide for simple dynamics -->
+  <polymer-slide id="slideLeft" targetid="left"></polymer-slide>
   
-  <div id="main" fit class="aux-bg-gray">
+  <div id="main" fit class="polymer-ui-bg-gray">
 
-    <aux-toolbar>
-      <aux-icon-button onclick="drawerAction('slideLeft')" src="assets/ic_drawer_darkreg.png"></aux-icon-button>
-      <aux-icon-button src="assets/ic_refresh_darkreg.png"></aux-icon-button>
-      <aux-icon-button src="assets/ic_mail_darkreg.png"></aux-icon-button>
-      <!-- aux-toolbar uses toolkit-layout internally -->
+    <polymer-ui-toolbar>
+      <polymer-ui-icon-button onclick="drawerAction('slideLeft')" src="assets/ic_drawer_darkreg.png"></polymer-ui-icon-button>
+      <polymer-ui-icon-button index="7"></polymer-ui-icon-button>
+      <polymer-ui-icon-button src="assets/ic_mail_darkreg.png"></polymer-ui-icon-button>
+      <!-- polymer-ui-toolbar uses polymer-layout internally -->
       <span fit></span>
-      <aux-icon-button onclick="drawerAction('slideRight')" src="assets/ic_settings_lg_darkreg.png"></aux-icon-button>
-    </aux-toolbar>
+      <polymer-ui-icon-button onclick="drawerAction('slideRight')" src="assets/ic_settings_lg_darkreg.png"></polymer-ui-icon-button>
+    </polymer-ui-toolbar>
 
     <div id="content" fit>Body Text</div>
-    <toolkit-layout vertical></toolkit-layout>
+    <polymer-layout vertical></polymer-layout>
   </div>
   
-  <div id="right" class="aux-header-gray"></div>
-  <toolkit-layout></toolkit-layout>
-  <toolkit-slide id="slideRight" targetid="right" closed></toolkit-slide>
+  <div id="right" class="polymer-ui-header-gray"></div>
+  <polymer-layout></polymer-layout>
+  <polymer-slide id="slideRight" targetid="right" closed></polymer-slide>
 
   <script>
     addEventListener('WebComponentsReady', function() {
-      document.body.classList.remove('no-transitions');
+      Platform.flush();
+      setTimeout(function() {
+        document.body.classList.remove('no-transitions');
+      }, 1);
     });
     function drawerAction(id) {
       document.querySelector('#' + id).toggle();

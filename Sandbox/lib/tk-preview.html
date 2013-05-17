@@ -1,6 +1,11 @@
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
 <element name="tk-preview" attributes="htmlContent">
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       htmlContent: '',
       writeToDoc: function(doc) {
         doc.open('text/html', '');
@@ -52,7 +57,7 @@
         html += '<title>Sandbox Preview</title>\n'
         html += head || '';
         // include base scripts
-        html += '<script src="../../toolkit/toolkit.min.js"></s' + 'cript>\n';
+        html += '<script src="../../polymer/polymer.min.js"></s' + 'cript>\n';
         html += '<link rel="import" href="lib/components.html">\n';
         // style
         html += '<style>\n';
@@ -77,7 +82,7 @@
     <iframe id="output" style="width: 100%; height: 100%;"></iframe>
   </template>
   <script>
-    Toolkit.register(this, {
+    Polymer.register(this, {
       htmlContentChanged: function() {
         this.$.output.src = '';
         this.asyncMethod(function() {
@@ -91,7 +96,7 @@
 <element name="tk-preview-window" extends="tk-preview">
   <script>
     var previewWindow;
-    Toolkit.register(this, {
+    Polymer.register(this, {
       prepareWindow: function() {
         if (previewWindow) {
           previewWindow.close();

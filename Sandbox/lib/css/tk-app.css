@@ -1,5 +1,5 @@
 /*
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 */
@@ -8,6 +8,8 @@ license that can be found in the LICENSE file.
   * {
     font-size: 14px;
     font-family: 'Helvetica Neue', 'Roboto', 'Arial', sans-serif;
+    overflow: hidden;
+    background-color: whitesmoke;
   }
 }
 
@@ -69,7 +71,7 @@ input[type=checkbox] {
   z-index: 5;
 }
 
-g-toolbar[responsive=true] {
+#innerToolbar[responsive=true] {
   z-index: 10;
 }
 

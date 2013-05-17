@@ -1,23 +1,23 @@
 <!--
-Copyright 2013 The Toolkitchen Authors. All rights reserved.
+Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <element name="tk-element">
   <script>
     var DEFAULT_PUBLISH_NAME = 'my-element';
-    Toolkit.register(this, {
+    Polymer.register(this, {
       elementAttributes: {
         name: DEFAULT_PUBLISH_NAME
       },
       defaultSource: '<element name="' + DEFAULT_PUBLISH_NAME + '">' +
         '<template></template>' +
-        '<script>Toolkit.register(this, {});' +
+        '<script>Polymer.register(this, {});' +
         '</s' + 'cript>' +
       '</element>',
       update: function() {
-        Toolkit.marshalNodeReferences.call(this, this);
-        Toolkit.bindModel.call(this, this);
+        Polymer.marshalNodeReferences.call(this, this);
+        Polymer.bindModel.call(this, this);
         // TODO(sorvell): events...
       },
       bindProperty: function(target, name, path) {
@@ -56,10 +56,25 @@ license that can be found in the LICENSE file.
         // asynchronously, update styling
         requestAnimationFrame(function() {
           applyStyle(de);
-          ensureChildStyling(de);
+          de.childrenAdded();
           de.send('source-applied', de);
         }.bind(this));
         return de;
+      },
+      childrenAdded: function() {
+        Array.prototype.filter.call(this.children, function(c) {
+            return !isBlackListed(c);
+          }).forEach(this.childAdded.bind(this));
+      },
+      childAdded: function(node) {
+        if (!node.id) {
+          node.id = Platform.makeUniqueId(this, node.localName
+            .replace(/^g-/, '').replace(/-/g, '_'));
+        }
+        if (!node.style.position) {
+          node.style.position = 'absolute';
+          node.style.left = node.style.top = '0px';
+        }
       }
     });
 
@@ -67,6 +82,17 @@ license that can be found in the LICENSE file.
     document.addEventListener('WebComponentsReady', function() {
       publisher = document.createElement('tk-publisher');
     })
+    
+    // make a uniqueId in a ShadowDOM polyfill safe way.
+    Platform.makeUniqueId = function(node, id, suffix) {
+      var uId = id + (suffix || '');
+      var query = window.ShadowDOMPolyfill ? node.impl.querySelector :
+        node.querySelector;
+      var scope = window.ShadowDOMPolyfill ? document.body : node;
+      return query.call(scope, '#' + uId) ?
+        Platform.makeUniqueId(node, id, suffix ? ++suffix : 1) :
+        uId;
+    }
         
     // round-tripping *from* source
     function parseElementAttributes(source) {
@@ -107,21 +133,8 @@ license that can be found in the LICENSE file.
     }
     
     var elementBlackList = ['style'];
-    function ensureChildStyling(node) {
-      Array.prototype.forEach.call(node.children, function(n) {
-        if (elementBlackList.indexOf(n.localName) < 0 && !n.style.position) {
-          n.style.position = 'absolute';
-          n.style.left = n.style.top = '0px';
-          n.id = makeUniqueId(node, n.localName);
-        }
-      });
-    }
-    
-    function makeUniqueId(node, id, suffix) {
-      var uId = id + (suffix || '');
-      return node.querySelector('#' + uId) ?
-        makeUniqueId(node, id, suffix ? ++suffix : 1) :
-        uId;
+    function isBlackListed(node) {
+      return (elementBlackList.indexOf(node.localName) >= 0);
     }
     
     function tagInnerHTMLFromSource(source, tag) {
@@ -140,6 +153,6 @@ license that can be found in the LICENSE file.
 
 <element name="design-element" extends="tk-element">
   <script>
-    Toolkit.register(this);
+    Polymer.register(this);
   </script>
 </element>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 The Toolkitchen Authors. All rights reserved.
+ * Copyright 2013 The Polymer Authors. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
@@ -32,7 +32,7 @@ function reflectProperty(element, name, meta) {
   return prop;   
 }
 
-reflectProperty.blacklist = {isToolkitElement: 1};
+reflectProperty.blacklist = {isPolymerElement: 1};
 
 function reflectProperties(element) {
   var props = [];
@@ -60,16 +60,18 @@ function reflectProperties(element) {
       more.push('textContent');
     }
     more.push('id');
+    var whitelist = {};
     //
     meta && Object.keys(meta).forEach(function(n) {
       if (!found[n] && more.indexOf(n) === -1) {
         more.push(n);
+        whitelist[n] = true;
       }
     });
     //
     more.forEach(function(k) {
       var v = element[k];
-      if (typeof v !== 'function' && typeof v !== 'object') {
+      if ((typeof v !== 'function' && typeof v !== 'object') || whitelist[k]) {
         props.push(reflect(element, k, meta));
       }
     });
