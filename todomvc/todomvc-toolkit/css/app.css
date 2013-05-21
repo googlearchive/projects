@@ -1,1 +1,4 @@
 /* base.css overrides */
+*[showing="0"] {
+  display: none;
+}

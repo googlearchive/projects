@@ -1,0 +1,74 @@
+<element name="td-list" attributes="items">
+  <link rel="stylesheet" href="../components/todomvc-common/base.css">
+  <template>
+    <ul id="todo-list" on-keypress="onKeypress">
+      <template repeat="{{items}}">
+        <li id="{{id}}" on-dblclick="onDblClick" on-change="onItemChange" on-click="onItemClick">
+          <div class="view">
+            <input type="checkbox" class="toggle" checked="{{completed}}" on-click="onCheckboxClick">
+            <label>{{title}}</label>
+            <button class="destroy"></button>
+          </div>
+          <input class="edit" value="{{title}}"></input>
+        </li>
+      </template>
+    </ul>
+  </template>
+  <script>
+    Polymer.register(this, {
+      items: null,
+      editingItem: null,
+      editingItemChanged: function(old) {
+        if (old) {
+          old.classList.remove('editing');
+          if (old.querySelector('.edit').value === '') {
+            this.send('destroyitem', old.id);
+          }
+        }
+        if (this.editingItem) {
+          this.editingItem.classList.add('editing');
+          this.editingItem.querySelector('.edit').focus(true);
+        }
+      },
+      onItemClick: function(e, detail, sender) {
+        var target = e.target;
+        if (target.localName === 'button') {
+          this.send('destroyitem', sender.id);
+        } else if (target.type === 'checkbox') {
+          if (target.checked) {
+            sender.classList.add('completed');
+          } else {
+            sender.classList.remove('completed');
+          }
+        }
+      },
+      onItemChange: function(e, details, sender) {
+        var target = e.target;
+        if (target.type === 'checkbox') {
+          if (target.checked) {
+            sender.classList.add('completed');
+          } else {
+            sender.classList.remove('completed');
+          }
+        }
+      },
+      onCheckboxClick: function() {
+        // if completed property on an item was modified via the UI
+        // then we notify ancestors
+        // solves the problem of not being able to watch sub-objects
+        // automatically via Object.observe
+        this.send('itemchanged');
+      },
+      onDblClick: function(e, details, sender) {
+        if (e.target.localName === 'label') {
+          this.editingItem = sender;
+        }
+      },
+      onKeypress: function(e) {
+        if (e.keyCode === 13) {
+          this.editingItem = null;
+        }
+      }
+    });
+  </script>
+</element>

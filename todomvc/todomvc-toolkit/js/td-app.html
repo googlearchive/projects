@@ -1,73 +1,64 @@
-<link rel="import" href="td-item.html">
 <link rel="import" href="td-model.html">
+<link rel="import" href="td-list.html">
 <element name="td-app">
   <link rel="stylesheet" href="../components/todomvc-common/base.css">
+  <link rel="stylesheet" href="../css/app.css">
   <template>
     <td-model id="model"></td-model>
     <section id="todoapp">
       <header id="header">
         <h1>todos</h1>
-        <input id="new-todo" placeholder="What needs to be done?" autofocus on-keypress="keypress">
+        <input id="new-todo" placeholder="What needs to be done?" autofocus on-keypress="onKeypress">
       </header>
-      <template if="{{todos.items.length}}" bind="{{todos}}">
-        <section id="main">
-          <input id="toggle-all" type="checkbox" on-change="toggleAllCompleted">
-          <label for="toggle-all">Mark all as complete</label>
-          <ul id="todo-list">
-            <template repeat="{{items}}">
-              <td-item item="{{}}" on-itemchange="updateTodos" on-destroy="destroyTodo"></td-item>
-            </template>
-          </ul>
-        </section>
-        <footer id="footer">
-          <!-- This should be `0 items left` by default -->
-          <span id="todo-count"><strong>{{activeCount}}</strong> item left</span>
-          <!-- Remove this if you don't implement routing -->
-          <!--
-          <ul id="filters">
-            <li>
-              <a class="selected" href="#/">All</a>
-            </li>
-            <li>
-              <a href="#/active">Active</a>
-            </li>
-            <li>
-              <a href="#/completed">Completed</a>
-            </li>
-          </ul>
-          //-->
-          <template if="{{completedCount}}" bind="{{}}">
-            <button id="clear-completed" on-click="clearCompleted">Clear completed ({{completedCount}})</button>
-          </template>
-        </footer>
-      </template>
+      <section id="main" showing="{{$.model.items.length}}">
+        <input id="toggle-all" type="checkbox" on-change="onToggleAllCompleted">
+        <label for="toggle-all">Mark all as complete</label>
+        <td-list items="{{$.model.filtered}}" on-itemchanged="onItemChanged" on-destroyitem="onDestroyItem"></td-list>
+      </section>
+      <footer id="footer">
+        <!-- This should be `0 items left` by default -->
+        <span id="todo-count"><strong>{{$.model.activeCount}}</strong> item left</span>
+        <!-- Remove this if you don't implement routing -->
+        <!--
+        <ul id="filters">
+          <li>
+            <a class="selected" href="#/">All</a>
+          </li>
+          <li>
+            <a href="#/active">Active</a>
+          </li>
+          <li>
+            <a href="#/completed">Completed</a>
+          </li>
+        </ul>
+        //-->
+        <button showing="{{$.model.completedCount}}" id="clear-completed" on-click="onClickClearCompleted">Clear completed ({{$.model.completedCount}})</button>
+        </template>
+      </footer>
     </section>
   </template>
   <script>
     Polymer.register(this, {
-      publish: {
-        todos: null
-      },
-      ready: function() {
-        this.todos = this.$.model;
-      },
-      keypress: function(inEvent, inDetail, inSender) {
-        if (inEvent.keyCode === 13 && inSender.value !== '') {
-          this.todos.addItem(inSender.value);
-          inSender.value = '';
+      onKeypress: function(e, detail, sender) {
+        if (e.keyCode === 13 && sender.value !== '') {
+          this.$.model.newItem(sender.value);
+          sender.value = '';
         }
       },
-      updateTodos: function() {
-        this.todos.itemsChanged();
+      onItemChanged: function() {
+        this.$.model.itemsChanged();
       },
-      destroyTodo: function(inEvent, inDetail) {
-        this.todos.removeItem(inDetail);
+      onDestroyItem: function(e, detail) {
+        this.$.model.destroyItem(detail);
       },
-      toggleAllCompleted: function(inEvent, inDetail, inSender) {
-        this.todos.toggleAllCompleted(inSender.checked);
+      onToggleAllCompleted: function(e, detail, sender) {
+        this.$.model.filtered.forEach(function(item) {
+          item.completed = sender.checked;
+        });
+        this.$.model.itemsChanged();
       },
-      clearCompleted: function() {
-        this.todos.clearCompleted();
+      onClickClearCompleted: function() {
+        this.$.model.clearItems();
       }
     });
   </script>
