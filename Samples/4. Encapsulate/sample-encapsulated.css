@@ -8,6 +8,13 @@
   }
 }
 
+.logo {
+  padding: 14px;
+  color: #eaeaea;
+  font-size: 21px;
+  height: 60px;
+}
+
 footer {
   padding: 8px;
 }
@@ -15,12 +22,6 @@ footer {
 img {
   width: 32px;
   vertical-align: middle;
-}
-
-.logo {
-  padding: 17px 14px;
-  color: #eaeaea;
-  font-size: 21px;
 }
 
 section {

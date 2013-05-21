@@ -11,6 +11,7 @@ license that can be found in the LICENSE file.
   <script src="../../../polymer/polymer.js"></script>
   <!-- import elements -->
   <link rel="import" href="../../../polymer-elements/polymer-page/polymer-page.html">
+  <link rel="import" href="../../../polymer-elements/polymer-view-source-link/polymer-view-source-link.html">
   <!-- regular styling -->
   <link rel="stylesheet" href="index.css">
 </head>
@@ -37,8 +38,7 @@ license that can be found in the LICENSE file.
     <br /><br />
     <a href="../2. Not Just Widgets/">Next</a>
     <br /><br />
-    <script>function sourceUrl() { window.location="view-source:"+window.location }</script>
-    <a href="javascript:sourceUrl()" target="_blank"><i>view source</i></a>
+    <a is="polymer-view-source-link">View Source</a>
   </section>
 </body>
 </html>

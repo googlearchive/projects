@@ -13,6 +13,7 @@ license that can be found in the LICENSE file.
   <link rel="import" href="../../../polymer-elements/polymer-page/polymer-page.html">
   <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-layout.html">
   <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-slide.html">
+  <link rel="import" href="../../../polymer-elements/polymer-view-source-link/polymer-view-source-link.html">
   <!-- regular styling -->
   <link rel="stylesheet" href="index.css">
 </head>
@@ -42,10 +43,10 @@ license that can be found in the LICENSE file.
       can be complicated (a spreadsheet sytem, a report generator),
       and can even be <b>invisible</b>.
       <br /><br />
-      This page uses an invisible <b>layout</b> widget to fit the orange sections 
+      This page uses an invisible <b>layout</b> element to fit the orange sections 
       to whatever screen you are looking at.
       <br /><br />
-      This page uses an invisible <b>panel slider</b> widget to slide the sidebar
+      This page uses an invisible <b>panel slider</b> element to slide the sidebar
       in and out when you hit a <button onclick="document.querySelector('#slide').toggle()">Sidebar</button> button.
     </section>
 
@@ -56,10 +57,7 @@ license that can be found in the LICENSE file.
   </footer>
 
   <footer>
-    <a href="../3. But Widgets/">Next</a><a href="../1. Start Here/" style="float:right;">Previous</a> 
-    <br /><br />
-    <script>function sourceUrl() { window.location="view-source:"+window.location }</script>
-    <a href="javascript:sourceUrl()" target="_blank"><i>view source</i></a>
+    <a href="../3. But Widgets/">Next</a><!--<a href="../1. Start Here/" style="float:right;">Previous</a> --><a is="polymer-view-source-link" style="float:right;">View Source</a>
   </footer>
 
 </body>
