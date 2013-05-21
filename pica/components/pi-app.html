@@ -19,7 +19,7 @@
 <element name="pi-app" extends="g-app" on-keyup="keyupHandler">
   <link rel="stylesheet" href="css/pi-app.css" />
   <template>
-    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect style="display: none;" on-select="panelSelectHandler">
+    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-select="panelSelectHandler">
       <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" on-activate="showMain">
         <g-menu-item label="Home" src="../images/ribbon_home_lightreg.png" iconsize="32"></g-menu-item>
         <g-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="32"></g-menu-item>
@@ -63,11 +63,6 @@
       selectedLayout: '',
       selectedSubPanel: '',
       ready: function() {
-        // TODO(sorvell): avoid intermediate layout by showing app content
-        // only when components are ready.
-        requestAnimationFrame(function() {
-          this.$.panels.style.display = null;
-        }.bind(this));
         this.super();
         // hydrate
         if (location.search.indexOf('hydrate') >= 0) {
