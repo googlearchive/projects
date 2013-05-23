@@ -1,6 +1,6 @@
+<link rel="import" href="../../../../toolkit-ui/elements/g-selector.html">
+<link rel="import" href="td-list.html">
 <element name="td-todos" attributes="items filter count activeCount completedCount">
-  <link rel="components" href="../../../polymer/src/g-selector.html">
-  <link rel="components" href="td-list.html">
   <template>
     <section id="todoapp">
       <header id="header">
@@ -27,11 +27,12 @@
     </section>
   </template>
   <script>
-    this.component({
-      publish: {
-        todos: null,
-        filter: '',
-        activeCount: 0
+    Polymer.register(this, {
+      todos: null,
+      filter: '',
+      activeCount: 0,
+      ready: function() {
+        this.webkitShadowRoot.applyAuthorStyles = true;
       },
       countChanged: function() {
         this.hasItems = Boolean(this.count); 

@@ -1,7 +1,7 @@
 <element name="td-list" attributes="items">
   <template>
     <ul id="todo-list" on-inputEnter="inputEnter">
-      <template iterate="items">
+      <template repeat="{{items}}">
           <li completed="{{completed}}" on-dblclick="editingAction">
             <div class="view">
               <input type="checkbox" class="toggle" checked="{{completed}}" on-click="completedAction">
@@ -14,7 +14,10 @@
     </ul>
   </template>
   <script>
-    this.component({
+    Polymer.register(this, {
+      ready: function() {
+        this.webkitShadowRoot.applyAuthorStyles = true;
+      },
       editingItem: null,
       itemsChanged: function() {
         console.log("td-list.itemsChanged", this.items);
