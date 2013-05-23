@@ -1,10 +1,8 @@
-<element name="td-model" attributes="filter items">
+<element name="td-model" attributes="filter items data">
   <script>
-    this.component({
-      publish: {
-        get data() {
-          return this;
-        }
+    Polymer.register(this, {
+      get data() {
+        return this;
       },
       ready: function() {
         this.items = [];
