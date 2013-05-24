@@ -1,6 +1,6 @@
+<link rel="import" href="../../../../polymer-elements/polymer-selector.html">
+<link rel="import" href="td-list.html">
 <element name="td-todos">
-  <link rel="components" href="../../../polymer/src/g-selector.html">
-  <link rel="components" href="td-list.html">
   <template>
     
     <section id="todoapp">
@@ -17,23 +17,24 @@
       <footer id="footer">
         <span id="todo-count"><strong>{{activeCount}}</strong> {{countText}}</span>
 
-        <g-selector id="filters" selected="{{filter}}">
+        <polymer-selector id="filters" selected="{{filter}}">
           <li name="all"><a href="../#/">All</a></li>
           <li name="active"><a href="../#/active">Active</a></li>
           <li name="completed"><a href="../#/completed">Completed</a></li>
-        </g-selector>
+        </polymer-selector>
 
         <button id="clear-completed" showing="{{hasCompleted}}" on-click="clearAction">Clear completed ({{todos.completedCount}})</button>
       </footer>
     </section>
   </template>
   <script>
-    this.component({
+    Polymer.register(this, {
       publish: {
         todos: null,
         filter: '',
         activeCount: 0
       },
+      applyAuthorStyles: true,
       activeCountChanged: function() {
         this.countText = ' item' + (this.activeCount == 1 ? '' : 's') + ' left';
         this.hasCompleted = Boolean(this.todos.completedCount);

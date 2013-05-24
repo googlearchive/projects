@@ -1,6 +1,6 @@
+<link rel="import" href="../lib/components/g-director.html">
+<link rel="import" href="td-todos.html">
 <element name="td-app">
-  <link rel="components" href="../lib/components/g-director.html">
-  <link rel="components" href="td-todos.html">
   <template>
     <!-- only one url to track per app -->
     <g-director path="/(\w*)" route="{{route}}"></g-director>
@@ -12,8 +12,9 @@
     <td-todos id="t_two" todos="{{two}}" activeCount="{{two.activeCount}}" filter="{{filter}}"></td-todos>
   </template>
   <script>
-    this.component({
-       ready: function() {
+    Polymer.register(this, {
+      applyAuthorStyles: true,
+      ready: function() {
         // instance data model
         this.one = new Todos([
           {id: 5, title: "roux", completed: false},

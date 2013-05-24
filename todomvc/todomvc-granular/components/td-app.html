@@ -18,8 +18,8 @@
   </template>
   <script>
     Polymer.register(this, {
-       ready: function() {
-        this.webkitShadowRoot.applyAuthorStyles = true;
+      applyAuthorStyles: true,
+      ready: function() {
         // instance data model
         this.one = new Todos([
           {id: 5, title: "roux", completed: false},

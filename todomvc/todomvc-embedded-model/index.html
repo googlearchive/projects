@@ -10,8 +10,8 @@
   <!--[if IE]>
   <script src="../assets/ie.js"></script>
   <![endif]-->
-  <!-- polyfill for CustomElements -->
-  <script src="../../../polymer/platform/platform.js" log="xdata,xbind,xwatch,xready"></script>
+  <!-- Load Polymer -->
+  <script src="../../../polymer/polymer.js"></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
 
   <footer id="info">
     <p>Double-click to edit a todo</p>
-    <p>Created by <a href="http://github.com/toolkitchen">Polymer</a></p>
+    <p>Created by <a href="http://github.com/Polymer">Polymer</a></p>
     <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
   </footer>
 
@@ -34,8 +34,7 @@
     <!-- generic data model -->
     <script src="js/todos.js"></script>
     <!-- components -->
-    <link rel="components" href="../../../toolkit-ui/elements/g-component.html">
-    <link rel="components" href="components/td-app.html">
+    <link rel="import" href="components/td-app.html">
   </scripts>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<link rel="import" href="../../../../toolkit-ui/elements/g-selector.html">
+<link rel="import" href="../../../../polymer-elements/polymer-selector.html">
 <link rel="import" href="td-list.html">
 <element name="td-todos" attributes="items filter count activeCount completedCount">
   <template>
@@ -16,11 +16,11 @@
       <footer id="footer" showing="{{hasItems}}">
         <span id="todo-count"><strong>{{activeCount}}</strong> {{countText}}</span>
 
-        <g-selector id="filters" selected="{{filter}}">
+        <polymer-selector id="filters" selected="{{filter}}">
           <li name="all"><a href="../#/">All</a></li>
           <li name="active"><a href="../#/active">Active</a></li>
           <li name="completed"><a href="../#/completed">Completed</a></li>
-        </g-selector>
+        </polymer-selector>
 
         <button id="clear-completed" showing="{{hasCompleted}}" on-click="clearAction">Clear completed ({{completedCount}})</button>
       </footer>
@@ -31,9 +31,7 @@
       todos: null,
       filter: '',
       activeCount: 0,
-      ready: function() {
-        this.webkitShadowRoot.applyAuthorStyles = true;
-      },
+      applyAuthorStyles: true,
       countChanged: function() {
         this.hasItems = Boolean(this.count); 
       },

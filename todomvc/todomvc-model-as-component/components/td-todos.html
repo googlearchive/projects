@@ -29,9 +29,7 @@
   </template>
   <script>
     Polymer.register(this, {
-      ready: function() {
-        this.webkitShadowRoot.applyAuthorStyles = true;
-      },
+      applyAuthorStyles: true,
       todos: null,
       filter: '',
       activeCount: 0,

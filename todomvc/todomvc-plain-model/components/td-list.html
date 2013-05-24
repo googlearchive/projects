@@ -1,7 +1,7 @@
 <element name="td-list" attributes="items">
   <template>
     <ul id="todo-list" on-inputEnter="inputEnter">
-      <template iterate="items">
+      <template repeat="{{items}}">
           <li completed="{{completed}}" on-dblclick="editingAction">
             <div class="view">
               <input type="checkbox" class="toggle" checked="{{completed}}" on-click="completedAction">
@@ -14,8 +14,9 @@
     </ul>
   </template>
   <script>
-    this.component({
+    Polymer.register(this, {
       editingItem: null,
+      applyAuthorStyles: true,
       itemsChanged: function() {
         console.log("td-list.itemsChanged", this.items);
       },
@@ -27,7 +28,7 @@
         this.send('itemchanged');
       },
       destroyAction: function(inEvent, inDetail, inSender) {
-        this.send('destroyitem', inSender.model);
+        this.send('destroyitem', inSender.templateInstance.model);
       },
       editingAction: function(inEvent, inDetail, inSender) {
         this.editingItem = inSender;
@@ -38,8 +39,9 @@
       editingItemChanged: function(inOld) {
         if (inOld) {
           inOld.removeAttribute('editing');
-          if (inOld.model.title == '') {
-            this.send('destroyitem', inOld.model);
+          var m = inOld.templateInstance.model;
+          if (m.title == '') {
+            this.send('destroyitem', m);
           }
         }
         if (this.editingItem) {
