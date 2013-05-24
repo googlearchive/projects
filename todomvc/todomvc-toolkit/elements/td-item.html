@@ -1,0 +1,46 @@
+<element name="td-item" extends="li" attributes="item editing" on-keypress="keypressAction">
+<link rel="stylesheet" href="css/td-item.css">
+  <template>
+    <div class="view" completed?="{{item.completed}}" hidden?="{{editing}}" on-dblclick="editAction">
+      <input type="checkbox" class="toggle" checked="{{item.completed}}" on-click="itemChangeAction">
+      <label>{{item.title}}</label>
+      <button class="destroy" on-click="destroyAction"></button>
+    </div>
+    <input id="edit" class="edit" value="{{item.title}}" hidden?="{{notEditing}}"></input>
+  </template>
+  <script>
+    Polymer.register(this, {
+      publish: {
+        editing: false,
+        notEditing: true
+      },
+      ready: function() {
+        this.webkitShadowRoot.applyAuthorStyles = true;
+      },
+      editingChanged: function() {
+        this.notEditing = !this.editing;
+        if (this.editing) {
+          this.asyncMethod(this.$.edit.focus.bind(this.$.edit, true));
+        }
+      },
+      itemChangeAction: function() {
+        // if completed property on an item was modified via the UI
+        // then we notify ancestors
+        // solves the problem of not being able to watch sub-objects
+        // automatically via Object.observe
+        this.send('itemchanged');
+      },
+      editAction: function() {
+        this.editing = true;
+      },
+      keypressAction: function(e) {
+        if (e.keyCode === 13) {
+          this.editing = false;
+        }
+      },
+      destroyAction: function() {
+        this.send('destroyitem', this.item.id);
+      }
+    });
+  </script>
+</element>
