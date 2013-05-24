@@ -1,19 +1,17 @@
 <link rel="import" href="td-model.html">
 <link rel="import" href="td-list.html">
 <element name="td-app">
-  <link rel="stylesheet" href="../components/todomvc-common/base.css">
-  <link rel="stylesheet" href="../css/app.css">
   <template>
     <td-model id="model"></td-model>
     <section id="todoapp">
       <header id="header">
         <h1>todos</h1>
-        <input id="new-todo" placeholder="What needs to be done?" autofocus on-keypress="onKeypress">
+        <input id="new-todo" placeholder="What needs to be done?" autofocus on-keypress="keypressAction">
       </header>
       <section id="main" showing="{{$.model.items.length}}">
-        <input id="toggle-all" type="checkbox" on-change="onToggleAllCompleted">
+        <input id="toggle-all" type="checkbox" on-change="toggleAllCompletedAction">
         <label for="toggle-all">Mark all as complete</label>
-        <td-list items="{{$.model.filtered}}" on-itemchanged="onItemChanged" on-destroyitem="onDestroyItem"></td-list>
+        <td-list items="{{$.model.filtered}}" on-itemchanged="itemChangedAction" on-destroyitem="destroyItemAction"></td-list>
       </section>
       <footer id="footer">
         <!-- This should be `0 items left` by default -->
@@ -32,32 +30,35 @@
           </li>
         </ul>
         //-->
-        <button showing="{{$.model.completedCount}}" id="clear-completed" on-click="onClickClearCompleted">Clear completed ({{$.model.completedCount}})</button>
+        <button showing="{{$.model.completedCount}}" id="clear-completed" on-click="clearCompletedAction">Clear completed ({{$.model.completedCount}})</button>
         </template>
       </footer>
     </section>
   </template>
   <script>
     Polymer.register(this, {
-      onKeypress: function(e, detail, sender) {
+      ready: function() {
+        this.webkitShadowRoot.applyAuthorStyles = true;
+      },
+      keypressAction: function(e, detail, sender) {
         if (e.keyCode === 13 && sender.value !== '') {
           this.$.model.newItem(sender.value);
           sender.value = '';
         }
       },
-      onItemChanged: function() {
+      itemChangedAction: function() {
         this.$.model.itemsChanged();
       },
-      onDestroyItem: function(e, detail) {
+      destroyItemAction: function(e, detail) {
         this.$.model.destroyItem(detail);
       },
-      onToggleAllCompleted: function(e, detail, sender) {
+      toggleAllCompletedAction: function(e, detail, sender) {
         this.$.model.filtered.forEach(function(item) {
           item.completed = sender.checked;
         });
         this.$.model.itemsChanged();
       },
-      onClickClearCompleted: function() {
+      clearCompletedAction: function() {
         this.$.model.clearItems();
       }
     });

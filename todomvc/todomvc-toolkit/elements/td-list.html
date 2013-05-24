@@ -9,6 +9,10 @@
     </ul>
   </template>
   <script>
-    Polymer.register(this);
+    Polymer.register(this, {
+      ready: function() {
+        this.webkitShadowRoot.applyAuthorStyles = true;
+      }
+    });
   </script>
 </element>
