@@ -1,8 +1,11 @@
-<link rel="import" href="td-model.html">
+<link rel="import" href="polymer-selector.html">
 <link rel="import" href="td-list.html">
-<element name="td-app">
+<link rel="import" href="td-model.html">
+<link rel="import" href="td-router.html">
+<element name="td-app" attributes="route">
   <template>
-    <td-model id="model"></td-model>
+    <td-router route="{{route}}"></td-router>
+    <td-model id="model" filter="{{route}}"></td-model>
     <section id="todoapp">
       <header id="header">
         <h1>todos</h1>
@@ -17,19 +20,17 @@
         <!-- This should be `0 items left` by default -->
         <span id="todo-count"><strong>{{$.model.activeCount}}</strong> item left</span>
         <!-- Remove this if you don't implement routing -->
-        <!--
-        <ul id="filters">
+        <polymer-selector id="filters" selected="0">
           <li>
-            <a class="selected" href="#/">All</a>
+            <a name="all" href="../#/">All</a>
           </li>
           <li>
-            <a href="#/active">Active</a>
+            <a name="active" href="../#/active">Active</a>
           </li>
           <li>
-            <a href="#/completed">Completed</a>
+            <a name="completed" href="../#/completed">Completed</a>
           </li>
-        </ul>
-        //-->
+        </polymer-selector>
         <button showing="{{$.model.completedCount}}" id="clear-completed" on-click="clearCompletedAction">Clear completed ({{$.model.completedCount}})</button>
         </template>
       </footer>
