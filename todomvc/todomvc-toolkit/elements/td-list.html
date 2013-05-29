@@ -1,0 +1,18 @@
+<link rel="import" href="td-item.html">
+<element name="td-list" attributes="items">
+  <link rel="stylesheet" href="../components/todomvc-common/base.css">
+  <template>
+    <ul id="todo-list">
+      <template repeat="{{items}}">
+        <li is="td-item" item="{{}}"></li>
+      </template>
+    </ul>
+  </template>
+  <script>
+    Polymer.register(this, {
+      ready: function() {
+        this.webkitShadowRoot.applyAuthorStyles = true;
+      }
+    });
+  </script>
+</element>
