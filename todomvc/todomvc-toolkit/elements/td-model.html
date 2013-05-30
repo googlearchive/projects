@@ -2,7 +2,6 @@
   <script>
     Polymer.register(this, {
       items: [],
-      itemsMap: {},
       filter: '',
       filtered: null,
       completedCount: 0,
@@ -30,27 +29,18 @@
             completed: false
           };
           this.items.push(item);
-          this.itemsMap[item.id] = item;
           this.itemsChanged();
         }
       },
-      destroyItem: function(id) {
-        var item = this.itemsMap[id];
-        if (item) {
-          var i = this.items.indexOf(item);
-          if (i >= 0) {
-            this.items.splice(i, 1);
-          }
-          delete this.itemsMap[id];
-          this.itemsChanged();
+      destroyItem: function(item) {
+        var i = this.items.indexOf(item);
+        if (i >= 0) {
+          this.items.splice(i, 1);
         }
+        this.itemsChanged();
       },
       clearItems: function(){
-        this.itemsMap = {};
         this.items = this.items.filter(this.filters.active);
-        this.items.forEach(function(item) {
-          this.itemsMap[item.id] = item;
-        }.bind(this));
       },
       filters: {
         active: function(item) {
