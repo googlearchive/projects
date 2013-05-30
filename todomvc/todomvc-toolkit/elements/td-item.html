@@ -1,4 +1,4 @@
-<element name="td-item" extends="li" attributes="item editing" on-keypress="keypressAction">
+<element name="td-item" extends="li" attributes="item editing" on-keypress="keypressAction" on-blur="commitAction">
   <link rel="stylesheet" href="css/td-item.css">
   <template>
     <div class="view" completed?="{{item.completed}}" hidden?="{{editing}}" on-dblclick="editAction">
@@ -6,7 +6,7 @@
       <label>{{item.title}}</label>
       <button class="destroy" on-click="destroyAction"></button>
     </div>
-    <input id="edit" class="edit" value="{{item.title}}" hidden?="{{notEditing}}"></input>
+    <input id="edit" class="edit" value="{{item.title}}" hidden?="{{notEditing}}">
   </template>
   <script>
     Polymer.register(this, {
@@ -30,6 +30,9 @@
       },
       editAction: function() {
         this.editing = true;
+      },
+      commitAction: function() {
+        this.editing = false;
       },
       keypressAction: function(e) {
         if (e.keyCode === 13) {
