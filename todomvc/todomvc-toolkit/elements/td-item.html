@@ -26,7 +26,7 @@
         // then we notify ancestors
         // solves the problem of not being able to watch sub-objects
         // automatically via Object.observe
-        this.send('itemchanged');
+        this.fire('itemchanged');
       },
       editAction: function() {
         this.editing = true;
@@ -37,7 +37,7 @@
         }
       },
       destroyAction: function() {
-        this.send('destroyitem', this.item);
+        this.fire('destroyitem', this.item);
       }
     });
   </script>

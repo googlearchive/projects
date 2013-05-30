@@ -14,7 +14,7 @@
         router.on(/(\w*)/, doRoute);
       },
       routeChanged: function() {
-        this.send('route', this.route);
+        this.fire('route', this.route);
       }
     });
   </script>
