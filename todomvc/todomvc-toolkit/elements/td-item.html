@@ -14,9 +14,7 @@
         editing: false,
         notEditing: true
       },
-      ready: function() {
-        this.webkitShadowRoot.applyAuthorStyles = true;
-      },
+      applyAuthorStyles: true,
       editingChanged: function() {
         this.notEditing = !this.editing;
         if (this.editing) {

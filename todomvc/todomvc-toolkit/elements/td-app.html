@@ -38,9 +38,7 @@
   </template>
   <script>
     Polymer.register(this, {
-      ready: function() {
-        this.webkitShadowRoot.applyAuthorStyles = true;
-      },
+      applyAuthorStyles: true,
       keypressAction: function(e, detail, sender) {
         if (e.keyCode === 13 && sender.value !== '') {
           this.$.model.newItem(sender.value);
