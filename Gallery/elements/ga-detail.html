@@ -12,12 +12,8 @@ license that can be found in the LICENSE file.
         <div class="author">by {{item.author}} on {{item.publishedDate}}</div>
         <div class="image" style="background-image: url({{item.imageUrl}});"></div>
         <div class="buttons">
-          <template if="{{item.sourceUrl}}" bind="{{item}}">
-            <a href="{{sourceUrl}}" target="_blank">Source</a>
-          </template>
-          <template if="{{item.demoUrl}}" bind="{{item}}">
-            <a href="{{demoUrl}}" target="_blank">Demo</a>
-          </template>
+          <a href="{{item.sourceUrl}}" target="_blank" showing?="{{item.sourceUrl}}">Source</a>
+          <a href="{{item.demoUrl}}" target="_blank" showing?="{{item.demoUrl}}">Demo</a>
         </div>
         <div id="description" class="description"></div>
       </div>

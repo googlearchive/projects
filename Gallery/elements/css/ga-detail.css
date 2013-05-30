@@ -53,6 +53,10 @@ license that can be found in the LICENSE file.
   padding-bottom: 20px;
 }
 
+.buttons > a:not([showing]) {
+  display: none;
+}
+
 .buttons > a {
   display: inline-block;
   text-decoration: none !important;
