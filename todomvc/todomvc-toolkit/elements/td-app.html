@@ -5,7 +5,7 @@
 <element name="td-app" attributes="route">
   <template>
     <td-router route="{{route}}"></td-router>
-    <td-model id="model" filter="{{route}}"></td-model>
+    <td-model id="model" filter="{{route}}" on-modelchanged="modelChangedAction"></td-model>
     <section id="todoapp">
       <header id="header">
         <h1>todos</h1>
@@ -18,7 +18,7 @@
       </section>
       <footer id="footer">
         <!-- This should be `0 items left` by default -->
-        <span id="todo-count"><strong>{{$.model.activeCount}}</strong> item left</span>
+        <span id="todo-count"><strong>{{$.model.activeCount}}</strong> {{activeItemLabel}} left</span>
         <!-- Remove this if you don't implement routing -->
         <polymer-selector id="filters" selected="0">
           <li>
@@ -39,11 +39,16 @@
   <script>
     Polymer.register(this, {
       applyAuthorStyles: true,
+      activeItemLabel: 'items',
       keypressAction: function(e, detail, sender) {
         if (e.keyCode === 13 && sender.value !== '') {
           this.$.model.newItem(sender.value);
           sender.value = '';
         }
+      },
+      modelChangedAction: function() {
+        // TODO: is there a better way to do this?
+        this.activeItemLabel = this.$.model.activeCount == 1 ? 'item' : 'items';
       },
       itemChangedAction: function() {
         this.$.model.itemsChanged();

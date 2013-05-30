@@ -15,6 +15,7 @@
         this.activeCount = this.items.length - this.completedCount;
         //console.warn("setting activeCount: ", this.activeCount);
         this.filterItems();
+        this.fire('modelchanged');
       },
       filterItems: function() {
         var fn = this.filters[this.filter];
