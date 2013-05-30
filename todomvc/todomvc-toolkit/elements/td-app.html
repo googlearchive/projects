@@ -16,7 +16,7 @@
         <label for="toggle-all">Mark all as complete</label>
         <td-list items="{{$.model.filtered}}" on-itemchanged="itemChangedAction" on-destroyitem="destroyItemAction"></td-list>
       </section>
-      <footer id="footer">
+      <footer id="footer" showing="{{$.model.items.length}}">
         <!-- This should be `0 items left` by default -->
         <span id="todo-count"><strong>{{$.model.activeCount}}</strong> {{activeItemLabel}} left</span>
         <polymer-selector id="filters" selected="0">
