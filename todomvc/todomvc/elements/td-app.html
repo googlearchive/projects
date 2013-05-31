@@ -40,12 +40,13 @@
     </section>
   </template>
   <script>
+    var ENTER_KEY = 13;
     Polymer.register(this, {
       applyAuthorStyles: true,
       activeItemLabel: 'items',
       allCompleted: false,
       keypressAction: function(e, detail, sender) {
-        if (e.keyCode === 13 && sender.value !== '') {
+        if (e.keyCode === ENTER_KEY && sender.value !== '') {
           this.$.model.newItem(sender.value);
           sender.value = '';
         }
