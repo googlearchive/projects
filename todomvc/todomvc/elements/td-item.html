@@ -19,6 +19,11 @@
           this.asyncMethod(function() {
             this.$.edit.focus();
           });
+        } else {
+          this.item.title = this.item.title.trim();
+          if (this.item.title === '') {
+            this.fire('destroyitem', this.item);
+          }
         }
       },
       itemChangeAction: function() {
