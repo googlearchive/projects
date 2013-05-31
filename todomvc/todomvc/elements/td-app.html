@@ -12,7 +12,7 @@
         <input id="new-todo" placeholder="What needs to be done?" autofocus on-keypress="keypressAction">
       </header>
       <section id="main" showing="{{$.model.items.length}}">
-        <input id="toggle-all" type="checkbox" on-change="toggleAllCompletedAction">
+        <input id="toggle-all" type="checkbox" on-change="toggleAllCompletedAction" checked="{{allCompleted}}">
         <label for="toggle-all">Mark all as complete</label>
         <ul id="todo-list" on-itemchanged="itemChangedAction" on-destroyItem="destroyItemAction">
           <template repeat="{{$.model.filtered}}">
@@ -43,6 +43,7 @@
     Polymer.register(this, {
       applyAuthorStyles: true,
       activeItemLabel: 'items',
+      allCompleted: false,
       keypressAction: function(e, detail, sender) {
         if (e.keyCode === 13 && sender.value !== '') {
           this.$.model.newItem(sender.value);
@@ -52,6 +53,7 @@
       modelChangedAction: function() {
         // TODO: is there a better way to do this?
         this.activeItemLabel = this.$.model.activeCount == 1 ? 'item' : 'items';
+        this.allCompleted = this.$.model.items.length > 0 && this.$.model.completedCount === this.$.model.items.length;
       },
       itemChangedAction: function() {
         this.$.model.itemsChanged();
