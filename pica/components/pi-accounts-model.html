@@ -41,43 +41,46 @@
     var ACCOUNTS_STORAGE_NAME = 'pica-accounts-model-1';
     
     Polymer.register(this, {
-      addTopic: function(inTopic) {
-        this.addItem(this.topics, inTopic);
+      ready: function() {
+        this.load();
+      },
+      addTopic: function(topic) {
+        this.addItem(this.topics, topic);
         this.updateTopics();
       },
-      removeTopic: function(inTopic) {
-        this.removeItem(this.topics, inTopic);
+      removeTopic: function(topic) {
+        this.removeItem(this.topics, topic);
         this.updateTopics();
       },
-      addFeed: function(inFeed) {
+      addFeed: function(feed) {
         for (var i=0, t; t = this.topics[i]; i++) {
-          if (t.title == inFeed.category) {
-            t.feed.push({title: inFeed.title, feed: inFeed.feed});
+          if (t.title === feed.category) {
+            t.feed.push({title: feed.title, feed: feed.feed});
             this.save();
             return;
           }
         }
-        this.addTopic({title: inFeed.category,
-          feed: [{title: inFeed.title, feed: inFeed.feed}]});
+        this.addTopic({title: feed.category,
+          feed: [{title: feed.title, feed: feed.feed}]});
       },
-      removeFeed: function(inFeed) {
+      removeFeed: function(feed) {
         this.topics.forEach(function(t) {
           if (t.feed) {
-            this.removeItem(t.feed, inFeed);
+            this.removeItem(t.feed, feed);
           }
         }.bind(this));
       },
-      addCategory: function(inCategory) {
-        this.addItem(this.categories, inCategory);
+      addCategory: function(category) {
+        this.addItem(this.categories, category);
       },
-      removeCategory: function(inCategory) {
-        this.removeItem(this.categories, inCategory);
+      removeCategory: function(category) {
+        this.removeItem(this.categories, category);
       },
-      addStock: function(inStock) {
-        this.addItem(this.stocks, inStock);
+      addStock: function(stock) {
+        this.addItem(this.stocks, stock);
       },
-      removeStock: function(inStock) {
-        this.removeItem(this.stocks, inStock);
+      removeStock: function(stock) {
+        this.removeItem(this.stocks, stock);
       },
       reset: function() {
         this.topics = DEFAULT_TOPICS.slice(0);
@@ -86,18 +89,14 @@
         this.save();
         this.load();
       },
-      // protected
-      ready: function() {
-        this.load();
-      },
-      addItem: function(inItems, inItem) {
-        inItems.push(inItem);
+      addItem: function(items, item) {
+        items.push(item);
         this.save();
       },
-      removeItem: function(inItems, inItem) {
-        var i = inItems.indexOf(inItem);
+      removeItem: function(items, item) {
+        var i = items.indexOf(item);
         if (i >= 0) {
-          inItems.splice(i, 1);
+          items.splice(i, 1);
         }
         this.save();
       },

@@ -17,38 +17,41 @@
 <body>
   <pi-feed-aggregator></pi-feed-aggregator>
   <pi-feed-tracker></pi-feed-tracker>
+  <div id="countDisplay" style="border-bottom: 1px solid #ccc;"></div>
   <template repeat="{{entries}}">
-    <div>{{source}} - {{title}}</div>
+    <div>[{{source}}] {{title}} <input type="radio" checked="{{read}}" onchange="markRead(event)"/></div>
   </template>
   
   <script>
-    var topic = {feed: [
+    var topic = {title: 'Technology', feed: [
       {feed: 'http://www.theverge.com/rss/index.xml'},
       {feed: 'http://feeds.engadget.com/weblogsinc/engadget'}
     ]};
+    var tracker;
     document.addEventListener('WebComponentsReady', function() {
       var fa = document.querySelector('pi-feed-aggregator');
-      var tracker = document.querySelector('pi-feed-tracker');
+      tracker = document.querySelector('pi-feed-tracker');
       fa.addEventListener("response", 
-        function(inEvent) {
-          var entries = inEvent.detail.entries;
+        function(event) {
+          var entries = event.detail.entries;
           if (entries) {
-            var model = {entries: entries};
-            HTMLTemplateElement.bindTree(wrap(document.body), model);
+            document.querySelector('template').model = {entries: entries};
             tracker.loadStories(entries);
-            // mark 3 stories read
-            tracker.markRead(entries[0]);
-            tracker.markRead(entries[0]);
-            tracker.markRead(entries[1]);
-            tracker.markRead(entries[2]);
-            // check result
-            console.log('readCount: ' + tracker.getReadCountForTopic(topic));
+            updateReadCount();
           }
         }
       );
       fa.count = 50;
       fa.feed = topic.feed;
     });
+    function markRead(event) {
+      tracker.markRead(event.target.templateInstance.model);
+      updateReadCount();
+    }
+    function updateReadCount() {
+      document.querySelector('#countDisplay').textContent = 
+          'Read Count for ' + topic.title + ': ' + tracker.getReadCountForTopic(topic);
+    }
   </script>
 </body>
 </html>

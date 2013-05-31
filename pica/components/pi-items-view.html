@@ -11,10 +11,10 @@
   <link rel="stylesheet" href="css/pi-layout-flex.css" />
   <link rel="stylesheet" href="css/pi-layout.css" />
   <template>
-    <div id="container" loaded="{{loaded}}" class="view {{layout}} {{view}}">
+    <div id="container" loaded="{{loaded}}" class="{{layout}} {{view}}">
       <template repeat="{{viewItems}}">
         <div class="item">
-          <div class="card" on-tap="itemClick">
+          <div class="card" on-tap="selectItem">
             <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
             <div class="info">
               <div class="title">{{title}}
@@ -52,18 +52,16 @@
     }
     
     Polymer.register(this, {
-      publish: {
-        layout: 'grid',
-        loaded: true
-      },
+      layout: 'grid',
+      loaded: true,
       pageSize: 24,
       ready: function() {
         this.setAttribute('touch-action', 'scroll');
         this.updateMoreShowing();
       },
       loadedChanged: function() {
-        if (this.loaded && this.layout == 'grid') {
-          this.cascade();
+        if (this.loaded && this.layout === 'grid') {
+          this.animateCascade();
         }
       },
       itemsChanged: function() {
@@ -89,11 +87,11 @@
         this.viewItems.push.apply(this.viewItems, more);
         this.updateMoreShowing();
       },
-      itemClick: function(inEvent, inDetail, inSender) {
-        this.selected = inSender.templateInstance.model;
+      selectItem: function(event, detail, sender) {
+        this.selected = sender.templateInstance.model;
         this.send('select', {item: this.selected});
       },
-      cascade: function() {
+      animateCascade: function() {
         var container = this.$.container;
         var cards = container.querySelectorAll('.item');
         
