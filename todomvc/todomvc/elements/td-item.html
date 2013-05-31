@@ -1,4 +1,4 @@
-<element name="td-item" extends="li" attributes="item editing" on-keypress="keypressAction" on-blur="commitAction">
+<element name="td-item" extends="li" attributes="item editing" on-keyup="keyupAction" on-blur="commitAction">
   <link rel="stylesheet" href="css/td-item.css">
   <template>
     <div class="view" completed?="{{item.completed}}" hidden?="{{editing}}" on-dblclick="editAction">
@@ -9,6 +9,8 @@
     <input id="edit" class="edit" value="{{item.title}}" hidden?="{{notEditing}}">
   </template>
   <script>
+    var ENTER_KEY = 13;
+    var ESC_KEY = 27;
     Polymer.register(this, {
       applyAuthorStyles: true,
       editing: false,
@@ -17,6 +19,7 @@
         this.notEditing = !this.editing;
         if (this.editing) {
           this.asyncMethod(function() {
+            this.oldTitle = this.item.title;
             this.$.edit.focus();
           });
         } else {
@@ -39,9 +42,13 @@
       commitAction: function() {
         this.editing = false;
       },
-      keypressAction: function(e) {
-        if (e.keyCode === 13) {
+      keyupAction: function(e) {
+        if (e.keyCode === ENTER_KEY) {
           this.editing = false;
+        }
+        if (e.keyCode === ESC_KEY) {
+          this.editing = false;
+          this.item.title = this.oldTitle;
         }
       },
       destroyAction: function() {
