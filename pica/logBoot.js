@@ -26,7 +26,7 @@
     console.time('load event');
   }
   
-  function documentLoadDone() {
+  function domDone() {
     console.timeEnd('load event');
     console.time('process imports');
   }
@@ -34,20 +34,22 @@
   function importsDone() {
     console.timeEnd('process imports');
     console.time('process elements');
+    //console.profile('process elements');
   }
   
   function elementsDone() {
     console.timeEnd('process elements');
     console.time('paint');
+    //console.profileEnd('process elements');
   }
   
   var logBoot = window.location.search.indexOf('logBoot') >= 0;
   if (logBoot) {
     startLogging();
-    window.addEventListener('load', documentLoadDone);
+    document.addEventListener('DOMContentLoaded', domDone);
     document.addEventListener('HTMLImportsLoaded', importsDone);
     document.addEventListener('WebComponentsReady', function() {
-      elementsDone()
+      elementsDone();
       requestAnimationFrame(bootDone);
     });
   }
