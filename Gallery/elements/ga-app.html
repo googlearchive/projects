@@ -6,16 +6,15 @@ license that can be found in the LICENSE file.
 <element name="ga-app" attributes="metadata" on-select-card="showDetail">
   <link rel="stylesheet" href="css/ga-app.css">
   <template>
-    <polymer-layout vertical></polymer-layout>
+    <polymer-flex-layout vertical></polymer-flex-layout>
     <polymer-ui-toolbar theme="polymer-ui-dark-theme">
       <polymer-ui-icon-button icon="menu" hidden="{{mainShowing}}" on-tap="showMain"></polymer-ui-icon-button>
-      <span fit class="toolbar-title">Polymer Gallery</span>
+      <div fit class="toolbar-title">Polymer Gallery</div>
       <polymer-ui-icon-button icon="search" hidden="{{detailShowing}}" on-tap="toggleSearchBox"></polymer-ui-icon-button>
     </polymer-ui-toolbar>
     <div class="panels" fit>
       <div id="main" hidden="{{detailShowing}}">
-        <polymer-layout vertical></polymer-layout>
-        <polymer-slide id="searchSlide" vertical closed="{{searchSlideClosed}}" targetid="searchBox"></polymer-slide>
+        <polymer-flex-layout vertical></polymer-flex-layout>
         <div id="searchBox">
           <input id="input" x-webkit-speech placeholder="Search" on-input="search" />
         </div>
@@ -28,7 +27,7 @@ license that can be found in the LICENSE file.
   <script>
     Polymer.register(this, {
       selectedPanel: 'main',
-      searchSlideClosed: true,
+      searchSlideOpened: false,
       insertedCallback: function() {
         this.selectedPanelChanged();
         this.search();
@@ -44,10 +43,11 @@ license that can be found in the LICENSE file.
         this.detailShowing = this.selectedPanel === 'detail';
       },
       toggleSearchBox: function() {
-        this.$.searchSlide.toggle();
+        this.searchSlideOpened = !this.searchSlideOpened;
       },
-      searchSlideClosedChanged: function() {
-        if (this.searchSlideClosed) {
+      searchSlideOpenedChanged: function() {
+        this.$.main.classList.toggle('slide-opened', this.searchSlideOpened);
+        if (this.searchSlideOpened) {
           this.$.input.value = '';
           this.search();
         } else {

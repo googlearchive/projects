@@ -6,6 +6,7 @@ license that can be found in the LICENSE file.
 
 @host {
   * {
+    display: block;
     background-color: #f2f2ef;
     padding: 10px;
     box-sizing: border-box;

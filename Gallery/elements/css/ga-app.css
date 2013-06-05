@@ -30,9 +30,19 @@ ga-cards, ga-detail {
   -webkit-overflow-scrolling: touch;
 }
 
-#main > * {
+#main {
+  top: -61px;
   -webkit-transition: top 0.3s;
   transition: top 0.3s;
+}
+
+#main.slide-opened {
+  top: 0;
+}
+
+polymer-ui-toolbar {
+  position: relative;
+  z-index: 1;
 }
 
 .toolbar-title {
@@ -47,10 +57,12 @@ ga-cards, ga-detail {
 
 #searchBox > input {
   position: absolute;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   margin: 0 1px;
   padding: 0 14px;
   border: 0;
