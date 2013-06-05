@@ -31,9 +31,7 @@
     google.load('feeds', '1', {callback: feedsReady.bind(this)});
     
     Polymer.register(this, {
-      publish: {
-        count: 24
-      },
+      count: 24,
       feedChanged: function() {
         if (this.feed) {
           this.loading = true;
@@ -50,14 +48,14 @@
         feed.setNumEntries(this.count); // we want this maximum number of entries, if they exist
         feed.load(this.fetchFeedsDone.bind(this));
       },
-      fetchFeedsDone: function(inResult) {
+      fetchFeedsDone: function(results) {
         this.loading = false;
-        if (inResult.error) {
+        if (results.error) {
           this.results = {};
-          this.send('error', {status: inResult.status});
+          this.fire('error', {status: results.status});
         } else {
-          this.results = inResult.feed;
-          this.send('response', {feed: inResult.feed});
+          this.results = results.feed;
+          this.fire('response', {feed: results.feed});
         }
       },
       queryChanged: function() {
@@ -69,12 +67,12 @@
       findFeeds: function() {
         google.feeds.findFeeds(this.query, this.findFeedsDone.bind(this));
       },
-      findFeedsDone: function(inResult) {
+      findFeedsDone: function(results) {
         this.loading = false;
-        if (inResult.error) {
-          this.send('queryerror', {status: inResult.status});
+        if (results.error) {
+          this.fire('queryerror', {status: results.status});
         } else {
-          this.send('queryresponse', {entries: inResult.entries});
+          this.fire('queryresponse', {entries: results.entries});
         }
       }
     });

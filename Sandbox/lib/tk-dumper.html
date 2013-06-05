@@ -75,7 +75,7 @@ license that can be found in the LICENSE file.
         attributes.style = null;
         var v = attributes['class'];
         v = v ? v.replace(/selected-element/g, '') : null;
-        if (v == 'selected') {
+        if (v && (v.trim() == 'selected')) {
           v = '';
         }
         attributes['class'] = v || null;

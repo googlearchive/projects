@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script src="../../../polymer/platform/platform.min.js"></script>
+</head>
+<body>
+  <x-foo></x-foo>
+  <hr>
+  <x-bar></x-bar>
+  
+  <element-element name="x-foo">
+    <template>
+      Hello Light World
+    </template>
+  </element-element>
+  
+  <element-element name="x-bar" extends="x-foo">
+    <template>
+      Hello Lighter World [<shadow></shadow>]
+    </template>
+  </element-element>
+  
+  <script>
+    document.register('element-element', {
+      prototype: Object.create(HTMLElement.prototype, {
+        register: {
+          value: function(api) {
+            var extend = this.getAttribute('extends');
+            var base = extend ? 
+                Object.getPrototypeOf(document.createElement(extend)) :
+                    HTMLElement.prototype;
+            this.prototype = Object.create(base);
+            if (!this.prototype.parseElements) {
+              mixin(this.prototype, boiler);
+            }
+            if (api && api.readyCallback) {
+              api.apiReadyCallback = api.readyCallback;
+              api.readyCallback = boiler.readyCallback;
+            }
+            mixin(this.prototype, api, {element: this});
+            this.ctor = document.register(this.attributes.name.value, {
+              prototype: this.prototype
+            });
+          }          
+        }
+      })
+    });
+    var boiler = {
+      apiReadyCallback: function() {
+      },
+      readyCallback: function() {
+        this.parseElements(this.__proto__);
+        this.apiReadyCallback();
+      },
+      parseElements: function(p) {
+        if (p && p.element) {
+          this.parseElements(p.__proto__);
+          p.parseElement.call(this, p.element);
+        }
+      },
+      parseElement: function(elementElement) {
+        this.createShadowRootFromTemplate(elementElement.firstElementChild); 
+      },
+      createShadowRootFromTemplate: function(template) {
+        this.webkitCreateShadowRoot().appendChild(template.createInstance());
+      }
+    };
+    CustomElements.upgradeDocument(document);    
+  </script>
+  
+  <script>
+    document.querySelector('element-element[name=x-foo]').register({
+      readyCallback: function() {
+        this.style.color = 'lightblue';
+      }
+    });
+    document.querySelector('element-element[name=x-bar]').register({
+      readyCallback: function() {
+        this.style.color = 'orange';
+      },
+      parseElement: function() {
+        this.webkitCreateShadowRoot().appendChild(document.createElement('content'));
+        this.textContent = 'blarg';
+      }
+    });
+  </script>
+</body>
+</html>

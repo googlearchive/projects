@@ -87,8 +87,8 @@
           this.$.symbol.value = '';
         }
       },
-      removeStock: function(inEvent, inDetail, inSender) {
-        this.accounts.removeStock(inSender.templateInstance.model);
+      removeStock: function(event, detail, sender) {
+        this.accounts.removeStock(sender.templateInstance.model);
       },
       addFeed: function() {
         var f = this.$.feed.value;
@@ -97,22 +97,22 @@
           this.feedUrl = f;
         }
       },
-      feedResponse: function(e, inDetail) {
-        var f = inDetail.feed;
+      feedResponse: function(event, detail) {
+        var f = detail.feed;
         if (f) {
           this.accounts.addFeed({title: f.title, feed: f.feedUrl,
             category: this.selectedCategory});
           this.$.feed.value = '';
           this.feedUrl = null;
         } else {
-          console.error('Error trying to add feed', inDetail);
+          console.error('Error trying to add feed', detail);
         }
       },
-      removeFeed: function(inEvent, inDetail, inSender) {
-        this.accounts.removeFeed(inSender.templateInstance.model);
+      removeFeed: function(event, detail, sender) {
+        this.accounts.removeFeed(sender.templateInstance.model);
       },
-      removeTopic: function(inEvent, inDetail, inSender) {
-        var m = inSender.templateInstance.model;
+      removeTopic: function(event, detail, sender) {
+        var m = sender.templateInstance.model;
         this.accounts.removeTopic(m);
         this.removeCategory(m.title);
       },
@@ -123,15 +123,15 @@
           this.$.category.value = '';
         }
       },
-      removeCategory: function(inCategory) {
-        this.accounts.removeCategory(inCategory);
+      removeCategory: function(category) {
+        this.accounts.removeCategory(category);
       },
       reset: function() {
         this.accounts.reset();
       },
-      keyupHandler: function(e, inDetail, inSender) {
-        var op = inSender.getAttribute('operation');
-        if (e.keyCode == ENTER_KEY && op) {
+      keyupHandler: function(e, detail, sender) {
+        var op = sender.getAttribute('operation');
+        if (e.keyCode === ENTER_KEY && op) {
           this[op]();
         }
       }

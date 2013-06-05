@@ -17,7 +17,6 @@ license that can be found in the LICENSE file.
       '</element>',
       update: function() {
         Polymer.marshalNodeReferences.call(this, this);
-        Polymer.bindModel.call(this, this);
         // TODO(sorvell): events...
       },
       bindProperty: function(target, name, path) {
@@ -41,14 +40,11 @@ license that can be found in the LICENSE file.
         var html = tagInnerHTMLFromSource(source, 'template');
         var script = tagInnerHTMLFromSource(source, 'script').trim();
         // re-define design-element with user source
-        var eltSource = '<element name="' + this.localName + 
-          '" extends="tk-element">' + '<script>' + script + '</s' + 
-          'cript></element>';
-        publisher.register(eltSource);
+        registerFromScript(this.localName, script);
         var de = document.createElement(this.localName);
         de.id = this.id;
         de.elementAttributes = this.elementAttributes;
-        de.innerHTML = html;
+        addAndBindHTML(de, html);
         // replace self in parent
         var parent = this.parentNode;
         parent.removeChild(this);
@@ -81,7 +77,22 @@ license that can be found in the LICENSE file.
     var publisher;
     document.addEventListener('WebComponentsReady', function() {
       publisher = document.createElement('tk-publisher');
-    })
+    });
+    
+    function registerFromScript(name, script) {
+      var eltSource = '<element name="' + name + 
+        '" extends="tk-element">' + '<script>' + script + '</s' + 
+        'cript></element>';
+      publisher.register(eltSource);
+    }
+    
+    function addAndBindHTML(node, html) {
+      //node.innerHTML = html;
+      // let Template do make an instance so we get bindings  
+      var template = document.createElement('template');
+      template.innerHTML = html;
+      node.appendChild(template.createInstance(node, 'Polymer'));;
+    }
     
     // make a uniqueId in a ShadowDOM polyfill safe way.
     Platform.makeUniqueId = function(node, id, suffix) {
