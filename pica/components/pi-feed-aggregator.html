@@ -13,8 +13,8 @@
   <script>
     var GET_FAVICON_URL = 'http://s2.googleusercontent.com/s2/favicons?alt=feed&domain_url=';
     
-    var timeSince = function(inDate) {
-      var s = Math.floor(((new Date()) - inDate) / 1000);
+    function timeSince(date) {
+      var s = Math.floor(((new Date()) - date) / 1000);
       var t = Math.floor(s / 31536000);
       if (t > 1) {
         return t + 'y';
@@ -47,22 +47,19 @@
     ];
 
     Polymer.register(this, {
-      publish: {
-        count: 24
-      },
+      count: 24,
       useCache: true,
+      feedResults: null,
+      ready: function() {
+        this.resetCache();
+        this.contentNode = document.createElement('div');
+      },
       reload: function() {
         this.forceLoad = true;
         this.feedChanged();
       },
       resetCache: function() {
-        this.feedCache = {};
-      },
-      // protected
-      feedResults: null,
-      ready: function() {
-        this.resetCache();
-        this.contentNode = document.createElement('div');
+        this.feedResultsCache = {};
       },
       feedChanged: function() {
         if (this.feed) {
@@ -78,8 +75,8 @@
         if (this.feeds && this.feeds.length) {
           // processing feeds one by one
           var f = this.feeds.shift().feed;
-          if (!this.forceLoad && this.useCache && this.feedCache[f]) {
-            this.gotFeedResults(this.feedCache[f]);
+          if (!this.forceLoad && this.useCache && this.feedResultsCache[f]) {
+            this.gotFeedResults(this.feedResultsCache[f]);
           } else {
             // retrive feed data using pi-gfeeds (google Feed API)
             this.loading = true;
@@ -95,12 +92,12 @@
         this.forceLoad = false;
         this.feedUrl = null;
         this.loading = false;
-        this.send('response', {entries: this.entries});
+        this.fire('response', {entries: this.entries});
       },
-      gotFeedResults: function(inResults) {
-        if (inResults && inResults.feedUrl) {
-          this.feedCache[inResults.feedUrl] = inResults;
-          var entries = this.processFeedResults(inResults);
+      gotFeedResults: function(results) {
+        if (results && results.feedUrl) {
+          this.feedResultsCache[results.feedUrl] = results;
+          var entries = this.processFeedResults(results);
           this._entries.push.apply(this._entries, entries);
         }
         // next feed
@@ -121,14 +118,14 @@
         }
         return 0;
       },
-      processFeedResults: function(inResults) {
+      processFeedResults: function(results) {
         var n = this.contentNode;
-        var entries = inResults.entries;
+        var entries = results.entries;
         entries.forEach(function(entry) {
           // feed source
-          entry.source = inResults.title;
-          entry.sourceLink = inResults.link;
-          entry.feedUrl = inResults.feedUrl;
+          entry.source = results.title;
+          entry.sourceLink = results.link;
+          entry.feedUrl = results.feedUrl;
           // scrape image url
           if (!entry.imgSrc && entry.content) {
             var m$ = entry.content.match(/<img[^>]+src="([^">]+)"/);
@@ -140,9 +137,6 @@
             n.innerHTML = entry.contentSnippet;
             n.innerHTML = n.textContent;
             entry.desc = n.textContent.trim();
-            if (!entry.desc) {
-              entry.desc = entry.title;
-            }
           }
           // favicon
           if (entry.sourceLink) {

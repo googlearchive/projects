@@ -23,9 +23,9 @@
     document.addEventListener('WebComponentsReady', function() {
       var gfeeds = document.querySelector('pi-gfeeds');
       gfeeds.addEventListener("response", 
-        function(inEvent) {
-          var model = {entries: inEvent.detail.feed.entries};
-          HTMLTemplateElement.bindTree(wrap(document.body), model);
+        function(event) {
+          var model = {entries: event.detail.feed.entries};
+          document.querySelector('template').model = model;
         }
       );
       gfeeds.feed = 'http://www.theverge.com/rss/index.xml';

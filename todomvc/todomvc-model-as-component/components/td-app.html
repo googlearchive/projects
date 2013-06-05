@@ -1,7 +1,7 @@
+<link rel="import" href="../lib/components/g-director.html">
+<link rel="import" href="td-model.html">
+<link rel="import" href="td-todos.html">
 <element name="td-app">
-  <link rel="components" href="../lib/components/g-director.html">
-  <link rel="components" href="td-model.html">
-  <link rel="components" href="td-todos.html">
   <template>
     <g-director path="/(\w*)" on-route="route"></g-director>
 
@@ -16,7 +16,8 @@
               activeCount="{{$.two.data.activeCount}}"></td-todos>
   </template>
   <script>
-    this.component({
+    Polymer.register(this, {
+      applyAuthorStyles: true,
       oneItems: [
         {id: 5, title: "roux", completed: false},
         {id: 6, title: "rue", completed: true},

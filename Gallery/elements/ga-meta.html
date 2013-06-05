@@ -1,0 +1,44 @@
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+-->
+<element name="ga-meta" attributes="list label author publishedDate description imageUrl sourceUrl demoUrl">
+  <template>
+    <style>
+      @host {   
+        * {
+          display: none;
+        }
+      }
+    </style>
+  </template>
+  <script>
+    var metaData = {}, metaArray = [];
+    Polymer.register(this, {
+      ready: function() {
+        this.idChanged();
+      },
+      idChanged: function(old) {
+        if (this.id && this.id !== 'meta') {
+          this.unregister(this, old);
+          metaData[this.id] = this;
+          metaArray.push(this);
+        }
+      },
+      unregister: function(meta, id) {
+        delete metaData[id || meta.id];
+        var i = metaArray.indexOf(meta);
+        if (i >= 0) {
+          metaArray.splice(i, 1);
+        }
+      },
+      get list() {
+        return metaArray;
+      },
+      byId: function(id) {
+        return metaData[id];
+      }
+    });
+  </script>
+</element>

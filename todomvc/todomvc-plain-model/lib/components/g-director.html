@@ -5,7 +5,7 @@
     window.addEventListener("WebComponentsReady", function() {
       router.init();
     });
-    this.component({
+    Polymer.register(this, {
       routeChanged: function() {
         this.send("route", this.route);
       },

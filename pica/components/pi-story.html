@@ -6,132 +6,19 @@
  */
 -->
 <element name="pi-story" attributes="story">
+  <link rel="stylesheet" href="css/pi-story.css" />
   <template>
-    <style>
-      .story-main {
-        position: absolute;
-        top: 0;
-        bottom: 44px;
-        width: 100%;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      .body {
-        max-width: 770px;
-        margin: 0 auto;
-        font-size: 12px;
-        padding: 40px;
-      }
-       
-      #header {
-        padding-bottom: 20px;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: flex;
-      }
-      
-      #title {
-        font-size: 26px;
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-        flex: 1;
-      }
-      
-      #author {
-        color: #666;
-      }
-      
-      #detail {
-        padding-top: 20px;
-      }
-      
-      #detail img {
-        pointer-events: none;
-      }
-      
-      #detail a:link {
-        text-decoration: none;
-        color: #3c80f6;
-      }
-      
-      .bottom-source-bar {
-        position: absolute;
-        width: 100%;
-        height: 44px;
-        bottom: 0;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        border-top: 1px solid #ddd;
-        padding: 12px;
-      }
-      
-      .bottom-source-bar > * {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      
-      .bottom-source-icon {
-        width: 20px;
-        height: 20px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 100% 100%;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-      }
-      
-      .bottom-source-title {
-        padding-left: 2px;
-        font-weight: 600;
-        font-size: 12px;
-        opacity: .5;
-      }
-      
-      .bottom-source-time {
-        padding-left: 8px;
-        font-weight: 400;
-      }
-      
-      @media screen and (max-width: 1024px) {
-        .body {
-          max-width: 688px;
-        }
-      }
-      
-      @media screen and (max-width: 800px) {
-        .story-main {
-          bottom: 0;
-        }
-        
-        .body {
-          padding: 15px;
-        }
-        
-        #detail img {
-          max-width: 100%;
-          height: auto;
-        }
-        
-        .bottom-source-bar {
-          display: none;
-        }
-      }
-    </style>
-    <div class="story-main" touch-action="pan-y">
+    <div class="main" touch-action="pan-y">
       <div class="body">
-        <div id="header">
-          <div id="title">{{story.title}}</div>
-        </div>
-        <div id="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
-        <div id="detail">
-          <div id="content"></div>
-        </div>
+        <div class="title">{{story.title}}</div>
+        <div class="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
+        <div id="content" class="content"></div>
       </div>
     </div>
-    <div class="bottom-source-bar">
-      <div class="bottom-source-icon" style="background-image: url({{story.sourceIcon}});"></div>
-      <div class="bottom-source-title">{{story.source}}
-        <span class="bottom-source-time">{{story.since}}</span>
+    <div class="source-bar">
+      <div class="source-icon" style="background-image: url({{story.sourceIcon}});"></div>
+      <div class="source-title">{{story.source}}
+        <span class="source-time">{{story.since}}</span>
       </div>
     </div>
   </template>
@@ -144,8 +31,9 @@
         }
       },
       storyChanged: function() {
-        if (this.story && this.story.content) {
-          this.content = this.story.content;
+        var c = this.story && this.story.content;
+        if (c) {
+          this.content = c;
           if (!this.story.publishedLocaleDate) {
             var d = new Date(this.story.publishedDate);
             this.story.publishedLocaleDate = d.toLocaleString();

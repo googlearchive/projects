@@ -57,7 +57,7 @@
 }
 
 @media screen and (max-width: 800px) {
-  #main:not([hideactionbar=true]) #contentPanels {
+  #contentPanels:not([hideactionbar=true]) {
     margin-bottom: 60px;
   }
 }
