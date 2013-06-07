@@ -8,9 +8,7 @@
   
   var registry = {};
   
-  Polymer = {};
-  
-  Polymer.register = function(name, prototype) {
+  Polymer = function(name, prototype) {
     registry[name] = prototype;
   }
   
@@ -61,7 +59,10 @@
       }
     },
     parseElement: function(elementElement) {
-      this.createShadowRootFromTemplate(elementElement.firstElementChild); 
+      var t = elementElement.querySelector('template');
+      if (t) {
+        this.createShadowRootFromTemplate(t); 
+      }
     },
     createShadowRootFromTemplate: function(template) {
       this.webkitCreateShadowRoot().appendChild(template.createInstance());
