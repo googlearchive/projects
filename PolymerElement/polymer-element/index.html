@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <script src="../../../platform/platform.js"></script>
+  <script src="polymer-element.js"></script>
+  <script>
+    Polymer.register('x-foo', {
+      ready: function() {
+        this.style.color = 'blue';
+      }
+    });
+    Polymer.register('x-bar', {
+      ready: function() {
+        this.style.padding = '4px';
+        this.style.backgroundColor = 'orange';
+        this.__proto__.__proto__.ready.call(this);
+      },
+      parseElement: function() {
+        this.webkitCreateShadowRoot().appendChild(document.createElement('content'));
+        this.textContent = 'Override!';
+      }
+    });
+  </script>
+</head>
+<body>
+  
+  <x-foo></x-foo>
+  <hr>
+  <x-bar></x-bar>
+  <hr>
+  <x-zot></x-zot>
+    
+  <polymer-element name="x-foo">
+    <template>
+      Hello Light World
+    </template>
+  </polymer-element>
+  
+  <polymer-element name="x-bar" extends="x-foo">
+    <template>
+      Hello Lighter World [<shadow></shadow>]
+    </template>
+  </polymer-element>
+
+  <polymer-element name="x-zot" extends="x-foo">
+    <template>
+      Hello Lighter World [<shadow></shadow>]
+    </template>
+  </polymer-element>
+
+  <script>
+    addEventListener("WebComponentsReady", function() {
+      CustomElements.upgradeDocument(document);
+    });
+  </script>
+</body>
+</html>

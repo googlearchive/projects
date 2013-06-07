@@ -22,26 +22,39 @@
   </element-element>
   
   <script>
+    document.extendHTMLPrototype(tag) {
+      var base = tag ? 
+          Object.getPrototypeOf(document.createElement(tag)) :
+              HTMLElement.prototype;
+      return Object.create(base);
+    }
     document.register('element-element', {
       prototype: Object.create(HTMLElement.prototype, {
         register: {
           value: function(api) {
-            var extend = this.getAttribute('extends');
-            var base = extend ? 
-                Object.getPrototypeOf(document.createElement(extend)) :
-                    HTMLElement.prototype;
-            this.prototype = Object.create(base);
-            if (!this.prototype.parseElements) {
-              mixin(this.prototype, boiler);
+            var extnds = this.getAttribute('extends');
+            var prototype = document.extendHTMLPrototype(extnds);
+            // insert boilerplate api in inheritance chain (if needed)
+            if (!prototype.parseElements) {
+              mixin(prototype, boiler);
+              prototype = Object.create(prototype);
             }
+            // silently override readyCallback
             if (api && api.readyCallback) {
               api.apiReadyCallback = api.readyCallback;
               api.readyCallback = boiler.readyCallback;
             }
-            mixin(this.prototype, api, {element: this});
-            this.ctor = document.register(this.attributes.name.value, {
-              prototype: this.prototype
+            // combine base api, custom api, and element property
+            Platform.mixin(prototype, api, {element: this});
+            // register the custom type
+            var ctor = document.register(this.attributes.name.value, {
+              prototype: prototype
             });
+            // constructor shenanigans
+            prototype.constructor = ctor;
+            // cache useful stuff
+            this.ctor = ctor;
+            this.prototype = prototype;
           }          
         }
       })
