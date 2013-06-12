@@ -101,6 +101,7 @@ license that can be found in the LICENSE file.
       },
       makeEditor: function(tag) {
         this.editor = document.createElement(tag);
+        this.editor.cancelUnbindAll();
         this.editor.meta = {
           property: this.property,
           editorTag: this.editorTag,

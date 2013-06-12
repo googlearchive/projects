@@ -23,6 +23,7 @@ license that can be found in the LICENSE file.
       },
       makeMeta: function() {
         var meta = document.createElement('tk-meta');
+        meta.cancelUnbindAll();
         var existingMeta = meta.byId(this.elementName);
         if (existingMeta) {
           existingMeta.unregister(existingMeta, existingMeta.id);
