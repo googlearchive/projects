@@ -66,6 +66,7 @@
       inTopics.forEach(function(t) {
         t.imgSrc = '';
         var fa = document.createElement('pi-feed-aggregator');
+        fa.cancelUnbindAll();
         fa.count = 4;
         fa.addEventListener('response', function(e) {
           var ns = e.detail && e.detail.entries || [];
@@ -76,6 +77,7 @@
               return;
             }
           }
+          fa.unbindAll();
         });
         fa.feed = t.feed;
       });
