@@ -34,9 +34,12 @@
           this.outputWindow.close();
         }
         this.outputWindow = window.open('', '', null, false);
-        this.writeToDoc(outputWindow.document);
+        this.writeToDoc(this.outputWindow.document);
       },
       writeToDoc: function(doc) {
+        if (!doc) {
+          return;
+        }
         doc.open('text/html', '');
         doc.write(this.makeOutputHTML('', this.value));
         doc.close();
