@@ -5,11 +5,11 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pg-output" attributes="value launchWindow">
+<polymer-element name="pg-output" attributes="value launchWindow">
   <link rel="stylesheet" href="css/pg-output.css">
   <template></template>
   <script>
-    Polymer.register(this, {
+    Polymer('pg-output', {
       launchWindow: false,
       valueChanged: function() {
         if (this.launchWindow) {
@@ -62,4 +62,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

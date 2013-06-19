@@ -8,9 +8,9 @@
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
 <link rel="import" href="pg-output.html">
 
-<element name="pg-app">
-  <link rel="stylesheet" href="css/pg-app.css" />
+<polymer-element name="pg-app">
   <template>
+    <link rel="stylesheet" href="css/pg-app.css">
     <polymer-flex-layout></polymer-flex-layout>
     <polymer-ui-sidebar-menu id="menu" label="Playground" selectedModel="{{selectedElement}}">
       <template repeat="{{elements}}">
@@ -39,7 +39,7 @@
     <polymer-meta list="{{elements}}"></polymer-meta>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pg-app', {
       maximized: false,
       ready: function() {
         this.asyncMethod(function() {
@@ -65,4 +65,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>
