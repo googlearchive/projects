@@ -5,6 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
+
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
 <link rel="import" href="pg-output.html">
 
@@ -51,8 +52,8 @@
         this.maximized = !this.maximized;
       },
       maximizedChanged: function() {
-        this.arrowImageSrc = this.resolvePath('images/arrow_' + 
-            (this.maximized ? 'right' : 'left')  + '.png');
+        var src = 'arrow_' + (this.maximized ? 'right' : 'left') + '.png';
+        this.arrowImageSrc = this.resolvePath('images/' + src);
       },
       selectedElementChanged: function() {
         var s = this.selectedElement.archetype.innerHTML.trim();
