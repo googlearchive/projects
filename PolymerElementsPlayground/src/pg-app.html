@@ -13,7 +13,7 @@
   <template>
     <link rel="stylesheet" href="css/pg-app.css">
     <polymer-flex-layout></polymer-flex-layout>
-    <polymer-ui-sidebar-menu id="menu" label="Playground" selectedModel="{{selectedElement}}">
+    <polymer-ui-sidebar-menu id="menu" label="Playground" valueattr="label" selectedModel="{{selectedElement}}">
       <template repeat="{{elements}}">
         <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
       </template>
@@ -26,14 +26,14 @@
       </polymer-ui-toolbar>
       <div flex>
         <polymer-flex-layout></polymer-flex-layout>
-        <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" class="{{minimized: maximized}}"></ajaxorg-ace>
+        <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2"></ajaxorg-ace>
         <div flex>
           <polymer-flex-layout vertical></polymer-flex-layout>
           <polymer-ui-toolbar theme="polymer-ui-light-theme">
             <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
             <div>Output</div>
           </polymer-ui-toolbar>
-          <pg-output flex value="{{source}}"></pg-output>
+          <pg-output flex html="{{source}}"></pg-output>
         </div>
       </div>
     </div>
@@ -42,6 +42,7 @@
   <script>
     Polymer('pg-app', {
       maximized: false,
+      selectedElement: null,
       ready: function() {
         this.asyncMethod(function() {
           this.$.menu.selected = this.elements[0].label;
@@ -52,8 +53,9 @@
         this.maximized = !this.maximized;
       },
       maximizedChanged: function() {
-        var src = 'arrow_' + (this.maximized ? 'right' : 'left') + '.png';
-        this.arrowImageSrc = this.resolvePath('images/' + src);
+        this.$.ace.classList.toggle('minimized', this.maximized);
+        this.arrowImageSrc = this.resolvePath('images/arrow_' + 
+            (this.maximized ? 'right' : 'left')  + '.png');
       },
       selectedElementChanged: function() {
         var s = this.selectedElement.archetype.innerHTML.trim();

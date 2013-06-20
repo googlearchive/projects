@@ -1,11 +1,11 @@
-﻿<link rel="import" href="../../../polymer-elements/polymer-page/polymer-page.html">
+<link rel="import" href="../../../polymer-elements/polymer-page/polymer-page.html">
 <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-layout.html">
 <link rel="import" href="../../../polymer-elements/polymer-layout/polymer-slide.html">
 
-<element name="sample-encapsulated">
-  <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
-  <link rel="stylesheet" href="sample-encapsulated.css">
+<polymer-element name="sample-encapsulated">
   <template>
+    <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
+    <link rel="stylesheet" href="sample-encapsulated.css">
     <polymer-layout></polymer-layout>
 
     <section class="sidebar">
@@ -38,10 +38,10 @@
     </section>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('sample-encapsulated', {
       toggle: function() {
         this.$.slide.toggle();
       }
     });
   </script>
-</element>
+</polymer-element>
