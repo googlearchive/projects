@@ -7,7 +7,7 @@
 -->
 <link rel="import" href="../../../toolkit-ui/elements/g-menu-button.html"/>
 <link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html"/>
-<element name="pi-view-button" attributes="layout">
+<polymer-element name="pi-view-button" attributes="layout">
   <template>
     <style>
       g-menu-item.hidden-wide {
@@ -34,13 +34,13 @@
     </g-menu-button>
   </template>
   <script>
-    Polymer.register(this);
+    Polymer('pi-view-button');
   </script>
-</element>
+</polymer-element>
 
 <link rel="import" href="../../../toolkit-ui/elements/g-menu-button.html"/>
 <link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html"/>
-<element name="pi-action-button">
+<polymer-element name="pi-action-button">
   <template>
     <g-menu-button src="../images/plus.png" responsive="true" valign="right">
       <g-menu-item src="../images/comment.png">Post a Comment</g-menu-item>
@@ -50,18 +50,18 @@
     </g-menu-button>
   </template>
   <script>
-    Polymer.register(this);
+    Polymer('pi-action-button');
   </script>
-</element>
+</polymer-element>
 
 <link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html"/>
-<element name="pi-link-button" attributes="link">
+<polymer-element name="pi-link-button" attributes="link">
   <template>
     <a href="{{link}}" target="_blank">
       <g-icon-button src="../images/web.png"></g-icon-button>
     </a>
   </template>
   <script>
-    Polymer.register(this);
+    Polymer('pi-link-button');
   </script>
-</element>
+</polymer-element>

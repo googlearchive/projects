@@ -1,5 +1,5 @@
 <link rel="import" href="samples/nametag.html">
-<element name="x-echo" attributes="value">
+<polymer-element name="x-echo" attributes="value">
   <template>
     <input value="{{value}}">
     <button on-click="clearInput">X</button>
@@ -7,12 +7,12 @@
     <x-nametag name="{{value}}"></x-nametag>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('x-echo', {
       clearInput: function() {
         this.value = ''
       }
     });
   </script>
-</element>
+</polymer-element>
 
 <x-echo value="Bob"></x-echo>

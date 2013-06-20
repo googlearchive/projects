@@ -1,7 +1,7 @@
 <link rel="import" href="../../toolkit-ui/elements/g-animation.html">
 <link rel="import" href="../../labs/animation2/components/x-staggered-group.html">
 <link rel="import" href="../../labs/animation2/components/x-left-right.html">
-<element name="x-cats">
+<polymer-element name="x-cats">
   <template>
     <style>
       @host {
@@ -104,7 +104,7 @@
       return arr;
     }
 
-    Polymer.register(this, {
+    Polymer('x-cats', {
       count: 10,
       loadedCount: 0,
       contents: null,
@@ -246,9 +246,9 @@
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="x-item" attributes="url">
+<polymer-element name="x-item" attributes="url">
   <template>
     <style>
       img {
@@ -259,17 +259,17 @@
     <img id="image" src="{{url}}">
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('x-item', {
       url: null,
       ready: function() {
         this.$.image.onload = this.onLoad.bind(this);
       },
       onLoad: function() {
-        this.send('load');
+        this.fire('load');
       }
     });
   </script>
-</element>
+</polymer-element>
 
 <link rel="stylesheet" type="text/css" href="../../toolkit-ui/elements/css/g-flex-layout.css">
 

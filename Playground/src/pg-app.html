@@ -13,9 +13,9 @@
 <link rel="import" href="../../../toolkit-ui/elements/g-ribbon.html">
 <link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html">
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
-<element name="pg-app" extends="g-app">
-  <link rel="stylesheet" href="css/pg-app.css" />
+<polymer-element name="pg-app" extends="g-app">
   <template>
+    <link rel="stylesheet" href="css/pg-app.css" />
     <g-panels id="panels" class="flex" index="1" transition="flow">
       <g-ribbon id="menu" label="Playground" valueattr="label" on-activate="toggle"
           selectedModel="{{selectedSample}}">
@@ -46,7 +46,7 @@
     <g-ajax auto on-response="fileResponse" url="{{selectedSample.file}}"></ajax>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pg-app', {
       sampleData: [
         {name: 'NameTag', file: 'samples/nametag.html'},
         {name: 'Echo', file: 'samples/echo.html'},
@@ -105,4 +105,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>
