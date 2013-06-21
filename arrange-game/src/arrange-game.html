@@ -101,6 +101,8 @@
             t.invisible = false;
           });
         }
+        // faster response
+        Platform.flush();
       },
       moveTile: function(tile) {
         if (tile.row === this.inviso.row && tile.col === this.inviso.col) {
@@ -111,8 +113,6 @@
         } else if (tile.col === this.inviso.col) {
           this.move(tile, 'col', 'row');
         }
-        // faster response
-        Platform.flush();
       },
       // row == axis
       move: function(tile, axis, offAxis) {
@@ -138,13 +138,5 @@
         e.detail.metrics = this.metrics;
       }
     });
-    
-    //+ Jonas Raoni Soares Silva
-    //@ http://jsfromhell.com/array/shuffle [v1.0]
-    function shuffle(o){ //v1.0
-      for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), 
-          x = o[--i], o[i] = o[j], o[j] = x);
-      return o;
-    };
   </script>
 </element>
