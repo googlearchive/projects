@@ -32,7 +32,8 @@ function reflectProperty(element, name, meta) {
   return prop;   
 }
 
-reflectProperty.blacklist = {isPolymerElement: 1};
+reflectProperty.blacklist = {EVENT_PREFIX: 1, DELEGATES: 1, PUBLISHED: 1,
+    INSTANCE_ATTRIBUTES: 1, PolymerBase: 1, STYLE_SCOPE_ATTRIBUTE: 1};
 
 function reflectProperties(element) {
   var props = [];
