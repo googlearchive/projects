@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="ga-detail" attributes="item">
-  <link rel="stylesheet" href="css/ga-detail.css">
+<polymer-element name="ga-detail" attributes="item">
   <template>
+    <link rel="stylesheet" href="css/ga-detail.css">
     <div class="main" touch-action="pan-y">
       <div class="inner">
         <div class="title">{{item.id}} <span class="label">({{item.label}})</span></div>
@@ -20,10 +20,10 @@ license that can be found in the LICENSE file.
     </div>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('ga-detail', {
       itemChanged: function() {
         this.$.description.innerHTML = this.item.description;
       }
     });
   </script>
-</element>
+</polymer-element>

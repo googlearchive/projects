@@ -8,9 +8,9 @@
 <link rel="import" href="../../../more-elements/CoolClock/coolclock.html"/>
 <link rel="import" href="../../../more-elements/Stock/stock.html"/>
 <link rel="import" href="../../../more-elements/Weather/wu-weather.html"/>
-<element name="pi-home" attributes="stocks">
-  <link rel="stylesheet" href="css/pi-home.css" />
+<polymer-element name="pi-home" attributes="stocks">
   <template>
+    <link rel="stylesheet" href="css/pi-home.css" />
     <div class="widgets">
       <div class="center">
         <x-coolclock></x-coolclock>
@@ -24,10 +24,10 @@
     </div>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pi-home', {
       ready: function() {
-        this.asend('ready');
+        this.asyncFire('ready');
       }
     });
   </script>
-</element>
+</polymer-element>

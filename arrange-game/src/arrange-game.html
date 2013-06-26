@@ -6,7 +6,7 @@
  */
 -->
 <link rel="import" href="arrange-game-tile.html">
-<element name="arrange-game">
+<polymer-element name="arrange-game">
   <template>
     <style>
       @host {
@@ -48,7 +48,7 @@
     </section>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('arrange-game', {
       tiles: null,
       rows: 4,
       cols: 4,
@@ -139,4 +139,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

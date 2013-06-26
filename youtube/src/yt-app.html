@@ -14,9 +14,9 @@
 <link rel="import" href="../../../more-elements/Youtube/yt-search.html"/>
 <link rel="import" href="../../../more-elements/Speech/speech-mic.html"/>
 <link rel="import" href="yt-videopanel.html">
-<element name="yt-app" extends="g-app">
-  <link rel="stylesheet" href="css/yt-app.css">
+<polymer-element name="yt-app" extends="g-app">
   <template>
+    <link rel="stylesheet" href="css/yt-app.css">
     <yt-search id="search" query="{{query}}"
          list="{{list}}">
     </yt-search>
@@ -42,7 +42,7 @@
     </g-panels>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('yt-app', {
       query: 'chrome commercial',
       listToggle: function() {
         this.$.panels.toggleBetween('listPanel', 'videoPanel');
@@ -52,4 +52,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

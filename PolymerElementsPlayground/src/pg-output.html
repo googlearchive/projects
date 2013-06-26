@@ -5,11 +5,12 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pg-output" attributes="html launchWindow">
-  <link rel="stylesheet" href="css/pg-output.css">
-  <template></template>
+<polymer-element name="pg-output" attributes="html launchWindow">
+  <template>
+    <link rel="stylesheet" href="css/pg-output.css">
+  </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pg-output', {
       launchWindow: false,
       htmlChanged: function() {
         if (this.launchWindow) {
@@ -27,7 +28,7 @@
         this.asyncMethod(function() {
           var doc = this.iframe.contentDocument;
           this.writeToDoc(doc);
-        }, null, 100);
+        }, null, 500);
       },
       outputToWindow: function() {
         if (this.outputWindow) {
@@ -62,4 +63,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

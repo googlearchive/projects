@@ -86,35 +86,36 @@
 </polymer-meta>
 
 <polymer-meta id="polymer-ui-sidebar-menu" label="Sidebar Menu">
-  <template>
-    <polymer-ui-sidebar-menu selected="0" label="Polymer" theme="polymer-ui-dark-theme" style="width: 300px; height: 600px;">
-      <polymer-ui-menu-item icon="settings" label="Settings"></polymer-ui-menu-item>
-      <polymer-ui-menu-item icon="dialog" label="Dialog"></polymer-ui-menu-item>
-      <polymer-ui-menu-item icon="search" label="Search"></polymer-ui-menu-item>
-    </polymer-ui-sidebar-menu>
-  </template>
-</polymer-meta>
-
-<polymer-meta id="polymer-ui-sidebar-menu2" label="Sidebar Menu (sub menu)">
-  <template>
-    <polymer-ui-sidebar-menu selected="0" label="Polymer" theme="polymer-ui-dark-theme" style="width: 300px; height: 600px;">
-      <polymer-ui-menu-item icon="settings" label="Topics">
-        <polymer-ui-menu-item label="Topic 1"></polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Topic 2"></polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Topic 3"></polymer-ui-menu-item>
-      </polymer-ui-menu-item>
-      <polymer-ui-menu-item icon="settings" label="Favorites">
-        <polymer-ui-menu-item label="Favorites 1"></polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Favorites 2"></polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Favorites 3"></polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Favorites 4"></polymer-ui-menu-item>
-      </polymer-ui-menu-item>
-      <polymer-ui-menu-item icon="settings" label="Explore">
-        <polymer-ui-menu-item label="Explore 1"></polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Explore 2"></polymer-ui-menu-item>
-      </polymer-ui-menu-item>
-    </polymer-ui-sidebar-menu>
-  </template>
+  <polymer-meta label="Basic">
+    <template>
+      <polymer-ui-sidebar-menu selected="0" label="Polymer" theme="polymer-ui-dark-theme" style="width: 300px; height: 600px;">
+        <polymer-ui-menu-item icon="settings" label="Settings"></polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="dialog" label="Dialog"></polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="search" label="Search"></polymer-ui-menu-item>
+      </polymer-ui-sidebar-menu>
+    </template>
+  </polymer-meta>
+  <polymer-meta label="Nested">
+    <template>
+      <polymer-ui-sidebar-menu selected="0" label="Polymer" theme="polymer-ui-dark-theme" style="width: 300px; height: 600px;">
+        <polymer-ui-menu-item icon="settings" label="Topics">
+          <polymer-ui-menu-item label="Topic 1"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Topic 2"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Topic 3"></polymer-ui-menu-item>
+        </polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="settings" label="Favorites">
+          <polymer-ui-menu-item label="Favorites 1"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Favorites 2"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Favorites 3"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Favorites 4"></polymer-ui-menu-item>
+        </polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="settings" label="Explore">
+          <polymer-ui-menu-item label="Explore 1"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Explore 2"></polymer-ui-menu-item>
+        </polymer-ui-menu-item>
+      </polymer-ui-sidebar-menu>
+    </template>
+  </polymer-meta>
 </polymer-meta>
 
 <polymer-meta id="polymer-collapse" label="Collapsible">

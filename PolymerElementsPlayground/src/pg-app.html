@@ -5,16 +5,21 @@
  * license that can be found in the LICENSE file.
  */
 -->
+
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
 <link rel="import" href="pg-output.html">
 
-<element name="pg-app">
-  <link rel="stylesheet" href="css/pg-app.css" />
+<polymer-element name="pg-app">
   <template>
+    <link rel="stylesheet" href="css/pg-app.css">
     <polymer-flex-layout></polymer-flex-layout>
     <polymer-ui-sidebar-menu id="menu" label="Playground" valueattr="label" selectedModel="{{selectedElement}}">
       <template repeat="{{elements}}">
-        <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
+        <polymer-ui-menu-item label="{{label}}">
+          <template repeat="{{subElements}}">
+            <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
+          </template>
+        </polymer-ui-menu-item>
       </template>
     </polymer-ui-sidebar-menu>
     <div flex>
@@ -39,8 +44,9 @@
     <polymer-meta list="{{elements}}"></polymer-meta>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pg-app', {
       maximized: false,
+      selectedElement: null,
       ready: function() {
         this.asyncMethod(function() {
           this.$.menu.selected = this.elements[0].label;
@@ -56,9 +62,17 @@
             (this.maximized ? 'right' : 'left')  + '.png');
       },
       selectedElementChanged: function() {
-        var s = this.selectedElement.archetype.innerHTML.trim();
-        // remove extra spaces in the beginning of each line
-        this.$.ace.value = s.replace(/^[\s]{0,4}/gm, '');
+        var s = this.selectedElement;
+        if (!s) {
+          return;
+        }
+        s.subElements = Array.prototype.slice.call(
+            s.querySelectorAll('polymer-meta'));
+        var s = this.selectedElement.archetype.innerHTML;
+        var n = s.match(/^\n([  \t]*)/)[1].length;
+        // remove extra spaces/indents at the beginning of each line
+        var regex = new RegExp('^[\\s]{0,' + n + '}', 'gm');
+        this.$.ace.value = s.replace(regex, '').trim();
         this.asyncMethod('run');
       },
       run: function() {
@@ -66,4 +80,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
@@ -13,9 +13,9 @@ license that can be found in the LICENSE file.
 <link rel="import" href="simple-main.html">
 <link rel="import" href="simple-primary-tray.html">
 
-<element name="simple-app">
-  <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
+<polymer-element name="simple-app">
   <template>
+    <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
 
     <style>
       @host {
@@ -56,7 +56,7 @@ license that can be found in the LICENSE file.
 
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('simple-app', {
       ready: function() {
         this.asyncMethod(function() {
           this.style.webkitTransition = 'all 0.3s';
@@ -70,4 +70,4 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>

@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" attributes="startMode">
-  <link rel="stylesheet" href="css/tk-app.css">
+<polymer-element name="tk-app" on-keyup="keyup" on-design-changed="designChanged" attributes="startMode">
   <template>
+    <link rel="stylesheet" href="css/tk-app.css">
     <g-toolbar>
       <g-selector id="modeSelector" selected="{{selectedMode}}">
         <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
@@ -24,19 +24,19 @@ license that can be found in the LICENSE file.
       </g-toolbar>
     </g-toolbar>
     <div id="main">
-      <tk-designer id="designer" selected="{{selected}}" element="{{element}}" maximized="{{maximized}}"></tk-designer>
-      <tk-source id="source" fontSize="{{fontSize}}" element="{{element}}" on-source-changed="sourceChanged" on-keydown="sourceKeydown"></tk-source>
-      <tk-tools id="tools" selected="{{selected}}" element="{{element}}"
+      <tk-designer id="designer" selected="{{selected}}" designElement="{{designElement}}" maximized="{{maximized}}"></tk-designer>
+      <tk-source id="source" fontSize="{{fontSize}}" sourceElement="{{designElement}}" on-source-changed="sourceChanged" on-keydown="sourceKeydown"></tk-source>
+      <tk-tools id="tools" selected="{{selected}}" sourceElement="{{designElement}}"
           on-parent-element="selectParentElement"
           on-delete-element="deleteElement"
           on-property-changed="designChanged"
-          on-bind-property="bindProperty"
+          on-bind-property="applyPropertyBinding"
       ></tk-tools>
     </div>
   </template>
   <script>
-    Polymer.register(this, {
-      element: null,
+    Polymer('tk-app', {
+      designElement: null,
       selected: null,
       useBigFont: false,
       normalFontSize: '16px',
@@ -99,8 +99,8 @@ license that can be found in the LICENSE file.
       deleteElement: function() {
         this.$.designer.deleteElement();
       },
-      bindProperty: function(event, detail) {
-        this.$.designer.bindProperty(detail.obj, detail.name, detail.path);  
+      applyPropertyBinding: function(event, detail) {
+        this.$.designer.applyPropertyBinding(detail.obj, detail.name, detail.path);  
       },
       sourceChanged: function(event, detail) {
         this.$.designer.applySource(detail.value);
@@ -148,4 +148,4 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>

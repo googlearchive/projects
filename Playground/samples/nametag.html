@@ -1,7 +1,7 @@
 <!-- Polymer supports declarative binding of events to methods in 
 the element. The polymer uses special on-event syntax to trigger 
 this binding behavior. -->
-<element name="x-nametag" on-click="makeLarge" attributes="name color">
+<polymer-element name="x-nametag" on-click="makeLarge" attributes="name color">
   <template>
     <style>
       @host {
@@ -19,7 +19,7 @@ this binding behavior. -->
     Hello! My name is <span style="color:{{color}}">{{name}}</span>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('x-nametag', {
       color: 'blue',
       makeLarge: function() {
         this.style.fontSize = '40px';
@@ -27,7 +27,7 @@ this binding behavior. -->
       }
     });
   </script>
-</element>
+</polymer-element>
 
 <x-nametag name="Joe"></x-nametag>
 <x-nametag name="Mary" color="tomato"></x-nametag>
