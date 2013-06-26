@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-toolbar" attributes="theme">
-  <link rel="stylesheet" href="css/tk-fakebar.css">
+<polymer-element name="tk-toolbar" attributes="theme">
   <template>
+    <link rel="stylesheet" href="css/tk-fakebar.css">
     <style>
       @host {
         * {
@@ -30,7 +30,7 @@ license that can be found in the LICENSE file.
     <div id='themeable' class='fit'><content></content></div>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-toolbar', {
       theme: '',
       themeChanged: function(old) {
         old && this.$.themeable.classList.remove(old);
@@ -38,4 +38,4 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>

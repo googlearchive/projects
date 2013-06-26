@@ -5,9 +5,9 @@ license that can be found in the LICENSE file.
 -->
 <script src="reflection.js"></script>
 
-<element name="tk-inspector" attributes="element">
-  <link rel="stylesheet" href="css/tk-inspector.css" />
+<polymer-element name="tk-inspector" attributes="sourceElement">
   <template>
+    <link rel="stylesheet" href="css/tk-inspector.css" />
     <div id="header">
       <div id="crumbList">
         <template repeat="{{crumbs}}">
@@ -21,19 +21,19 @@ license that can be found in the LICENSE file.
       <template repeat="{{properties}}">
         <tk-property-inspector property="{{}}" hidden="{{meta.hidden}}"></tk-property-inspector>
       </template>
-      <tk-style-inspector element="{{element}}"></tk-style-inspector>
+      <tk-style-inspector sourceElement="{{sourceElement}}"></tk-style-inspector>
     </div>
     <tk-meta id="meta"></tk-meta>
   </template>
   <script>
-    Polymer.register(this, {
-      element: null,
+    Polymer('tk-inspector', {
+      sourceElement: null,
       properties: null,
       crumbs: [],
-      elementChanged: function() {
+      sourceElementChanged: function() {
         // meta-data attached here
-        if (this.element) {
-          this.properties = Reflection.properties(this.element);
+        if (this.sourceElement) {
+          this.properties = Reflection.properties(this.sourceElement);
           this.crumbs = this.listCrumbs();
         } else {
           this.name = '';
@@ -47,7 +47,7 @@ license that can be found in the LICENSE file.
       },
       listCrumbs: function() {
         var crumbs = [];
-        var elt = this.element;
+        var elt = this.sourceElement;
         if (elt.id === 'designElement') {
           return [{
             name: 'component',
@@ -65,16 +65,16 @@ license that can be found in the LICENSE file.
         return crumbs;
       },
       deleteElement: function() {
-        this.send('delete-element');
+        this.fire('delete-element');
       },
       selectParentElement: function() {
-        this.send('parent-element');
+        this.fire('parent-element');
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-style-inspector" attributes="element">
+<polymer-element name="tk-style-inspector" attributes="sourceElement">
   <template>
     <template repeat="{{properties}}">
       <tk-property-inspector property="{{}}" nobind></tk-property-inspector>
@@ -89,11 +89,12 @@ license that can be found in the LICENSE file.
     </tk-meta>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-style-inspector', {
       properties: null,
-      elementChanged: function() {
-        this.properties = Reflection.styles(this.element, this.$.meta.properties);
+      sourceElementChanged: function() {
+        this.properties = Reflection.styles(this.sourceElement, 
+            this.$.meta.properties);
       }
     });
   </script>
-</element>
+</polymer-element>

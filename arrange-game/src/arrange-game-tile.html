@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="arrange-game-tile" attributes="tile">
+<polymer-element name="arrange-game-tile" attributes="tile">
   <template>
     <style id="style">
       div {
@@ -25,7 +25,6 @@
         right: 4px;
         bottom: 4px;
         left: 4px;
-        /*background: steelblue;*/
         background: -webkit-gradient(linear, left bottom, right top, from(skyblue), to(steelblue), color-stop(0.5, steelblue), color-stop(0.5, steelblue));
         border: 2px solid black;
         border-radius: 8px;
@@ -55,7 +54,8 @@
     </div>
   </template>
   <script>
-    Polymer.register(this, {
+  (function() { 
+    Polymer('arrange-game-tile', {
       tile: null,
       inserted: function() {
         var i = {};
@@ -103,5 +103,6 @@
       });
       return values;
     }
+  })();
   </script>
-</element>
+</polymer-element>

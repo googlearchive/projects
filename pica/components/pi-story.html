@@ -5,9 +5,9 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<element name="pi-story" attributes="story">
-  <link rel="stylesheet" href="css/pi-story.css" />
+<polymer-element name="pi-story" attributes="story">
   <template>
+    <link rel="stylesheet" href="css/pi-story.css" />
     <div class="main" touch-action="pan-y">
       <div class="body">
         <div class="title">{{story.title}}</div>
@@ -23,7 +23,7 @@
     </div>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pi-story', {
       content: '',
       ready: function() {
         if (!this.hasAttribute('tabindex')) {
@@ -50,4 +50,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

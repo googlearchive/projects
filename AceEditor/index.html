@@ -25,7 +25,7 @@ license that can be found in the LICENSE file.
  </ace-app>
     
     
-    <element name="ace-app" extends="g-app">
+    <polymer-element name="ace-app" extends="g-app">
       <template> 
         <style>
           ajaxorg-ace {
@@ -49,7 +49,7 @@ license that can be found in the LICENSE file.
         </g-panels>
       </template>
       <script>
-        Polymer.register(this, {
+        Polymer('ace-app', {
           ready: function() {
             this.super();
             this.$.ace.value = this.textContent;
@@ -59,6 +59,6 @@ license that can be found in the LICENSE file.
           }
         });
       </script>
-    </element>
+    </polymer-element>
   </body>
 </html>

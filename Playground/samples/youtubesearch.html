@@ -1,6 +1,6 @@
 <link rel="import" href="../../toolkit-ui/elements/g-ajax.html">
 <link rel="import" href="../../toolkit-ui/elements/g-selector.html">
-<element name="x-youtubesearch" attributes="query">
+<polymer-element name="x-youtubesearch" attributes="query">
   <template>
     <style>
       .item {
@@ -20,8 +20,8 @@
     </g-selector>
   </template>
   <script>
-    Polymer.register(this);
+    Polymer('x-youtubesearch');
   </script>
-</element>
+</polymer-element>
 
 <x-youtubesearch query="Chrome"></x-youtubesearch>

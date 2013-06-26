@@ -10,9 +10,9 @@
 <link rel="import" href="pi-feed-tracker.html"/>
 <link rel="import" href="pi-items-view.html"/>
 <link rel="import" href="pi-story.html"/>
-<element name="pi-feed-viewer" attributes="topics topic stories story layout topicsLayout panel loading disableTracking">
-  <link rel="stylesheet" href="css/pi-feed-viewer.css" />
+<polymer-element name="pi-feed-viewer" attributes="topics topic stories story layout topicsLayout panel loading disableTracking">
   <template>
+    <link rel="stylesheet" href="css/pi-feed-viewer.css" />
     <g-panels id="panels" class="feed-viewer-panels" autoselect selected="{{panel}}" transition="keyframe" 
         on-select="panelSelected" on-canselect="panelCanSelect">
       <pi-items-view id="topics" layout="{{topicsLayout}}" items="{{topics}}" view="topics" selected="{{topic}}"></pi-items-view>
@@ -25,156 +25,158 @@
     <pi-feed-tracker id="tracker"></pi-feed-tracker>
   </template>
   <script>
-    var RIGHT_ARROW_KEY = 39;
-    var LEFT_ARROW_KEY = 37;
-    
-    Polymer.register(this, {
-      loading: true,
-      disableTracking: false,
-      feedCount: 200,
-      ready: function() {
-        var mq = window.matchMedia('(max-width: 800px)');
-        mq.addListener(this.layoutChange.bind(this));
-        this.layoutChange(mq);
-        this.asyncMethod('loaded');
-      },
-      get canPrevious() {
-        return this.panel !== 'topics';
-      },
-      previous: function() {
-        if (this.canPrevious) {
-          this.$.panels.previous();
-          return true;
-        }
-      },
-      reload: function() {
-        if (this.panel === 'topics') {
-          this.topicsChanged();
-          this.$.feeds.resetCache();
-        } else if (this.panel === 'stories') {
-          this.$.feeds.reload();
-        }
-      },
-      loaded: function() {
-        this.loading = false;
-      },
-      layoutChange: function(inQuery) {
-        this.$.panels.classList.toggle('g-panels-fly-up-right', inQuery.matches);
-        this.$.panels.classList.toggle('g-panels-scale-slide', !inQuery.matches);
-      },
-      topicsChanged: function() {
-        if (this.topics) {
-          this.fetchImageForTopics();
-          this.updateReadCount();
-        }
-      },
-      storiesChanged: function() {
-        if (this.stories) {
-          if (!this.disableTracking) {
-            this.$.tracker.loadStories(this.stories);
-            this.updateReadCount(this.topic);
-          }
-          this.panel = 'stories';
-          this.$.stories.loaded = false;
-          this.asyncMethod('storiesLoaded');
-        }
-      },
-      storiesLoaded: function() {
-        this.$.stories.loaded = true;
-      },
-      storyChanged: function() {
-        if (this.story) {
-          if (!this.disableTracking) {
-            this.$.tracker.markRead(this.story);
-            this.updateReadCount(this.topic);
-          }
-          this.panel = 'story';
-        }
-      },
-      nextPrevStory: function(next, prev) {
-        if (prev || next) {
-          var i = this.stories.indexOf(this.story);
-          var s = this.stories[i + (prev ? -1 : 1)];
-          if (s) {
-            this.story = s;
+    (function() {
+      var RIGHT_ARROW_KEY = 39;
+      var LEFT_ARROW_KEY = 37;
+      
+      Polymer('pi-feed-viewer', {
+        loading: true,
+        disableTracking: false,
+        feedCount: 200,
+        ready: function() {
+          var mq = window.matchMedia('(max-width: 800px)');
+          mq.addListener(this.layoutChange.bind(this));
+          this.layoutChange(mq);
+          this.asyncMethod('loaded');
+        },
+        get canPrevious() {
+          return this.panel !== 'topics';
+        },
+        previous: function() {
+          if (this.canPrevious) {
+            this.$.panels.previous();
             return true;
           }
-        }
-      },
-      fetchImageForTopics: function() {
-        this.topics.forEach(function(t) {
-          t.imgSrc = '';
-          var fa = document.createElement('pi-feed-aggregator');
-          fa.cancelUnbindAll();
-          fa.count = 4;
-          fa.addEventListener('response', function(e) {
-            var ns = e.detail && e.detail.entries || [];
-            ns.forEach(function(n) {
-              if (n.imgSrc) {
-                var image = new Image();
-                image.onload = function(e) {
-                  var img = e.currentTarget;
-                  // use the image if the size > 10x10px
-                  if (img.width > 10 && img.height > 10 && !t.imgSrc) {
-                    t.imgSrc = img.src;
-                  }
-                }.bind(this);
-                image.src = n.imgSrc;
-              }
-              fa.unbindAll();
+        },
+        reload: function() {
+          if (this.panel === 'topics') {
+            this.topicsChanged();
+            this.$.feeds.resetCache();
+          } else if (this.panel === 'stories') {
+            this.$.feeds.reload();
+          }
+        },
+        loaded: function() {
+          this.loading = false;
+        },
+        layoutChange: function(inQuery) {
+          this.$.panels.classList.toggle('g-panels-fly-up-right', inQuery.matches);
+          this.$.panels.classList.toggle('g-panels-scale-slide', !inQuery.matches);
+        },
+        topicsChanged: function() {
+          if (this.topics) {
+            this.fetchImageForTopics();
+            this.updateReadCount();
+          }
+        },
+        storiesChanged: function() {
+          if (this.stories) {
+            if (!this.disableTracking) {
+              this.$.tracker.loadStories(this.stories);
+              this.updateReadCount(this.topic);
+            }
+            this.panel = 'stories';
+            this.$.stories.loaded = false;
+            this.asyncMethod('storiesLoaded');
+          }
+        },
+        storiesLoaded: function() {
+          this.$.stories.loaded = true;
+        },
+        storyChanged: function() {
+          if (this.story) {
+            if (!this.disableTracking) {
+              this.$.tracker.markRead(this.story);
+              this.updateReadCount(this.topic);
+            }
+            this.panel = 'story';
+          }
+        },
+        nextPrevStory: function(next, prev) {
+          if (prev || next) {
+            var i = this.stories.indexOf(this.story);
+            var s = this.stories[i + (prev ? -1 : 1)];
+            if (s) {
+              this.story = s;
+              return true;
+            }
+          }
+        },
+        fetchImageForTopics: function() {
+          this.topics.forEach(function(t) {
+            t.imgSrc = '';
+            var fa = document.createElement('pi-feed-aggregator');
+            fa.cancelUnbindAll();
+            fa.count = 4;
+            fa.addEventListener('response', function(e) {
+              var ns = e.detail && e.detail.entries || [];
+              ns.forEach(function(n) {
+                if (n.imgSrc) {
+                  var image = new Image();
+                  image.onload = function(e) {
+                    var img = e.currentTarget;
+                    // use the image if the size > 10x10px
+                    if (img.width > 10 && img.height > 10 && !t.imgSrc) {
+                      t.imgSrc = img.src;
+                    }
+                  }.bind(this);
+                  image.src = n.imgSrc;
+                }
+                fa.unbindAll();
+              });
             });
+            fa.feed = t.feed;
           });
-          fa.feed = t.feed;
-        });
-      },
-      updateReadCount: function(topic) {
-        if (!this.disableTracking) {
-          var topics = topic ? [topic] : this.topics;
-          topics.forEach(function(t) {
-            t.unread = this.feedCount - this.$.tracker.getReadCountForTopic(t);
-          }.bind(this));
-        }
-      },
-      // TODO(sorvell): handle selected event since this fires after the selection
-      // is complete and this is when we want to make the following changes.
-      // note, we want selected topic/story to become unset
-      // when the panel that shows them is not selected, this allows
-      // us to rely on topic/storyChanged to show the relevant
-      // panel.
-      panelSelected: function(e, detail, sender) {
-        if (e.target === this.$.panels) {
-          if (sender.selected === 'topics') {
-            this.topic = null;
-          } else if (sender.selected === 'stories') {
-            this.story = null;
+        },
+        updateReadCount: function(topic) {
+          if (!this.disableTracking) {
+            var topics = topic ? [topic] : this.topics;
+            topics.forEach(function(t) {
+              t.unread = this.feedCount - this.$.tracker.getReadCountForTopic(t);
+            }.bind(this));
           }
-          if (sender.selected === 'story') {
-            this.$.story.focus();
-          } else {
-            sender.focus();
+        },
+        // TODO(sorvell): handle selected event since this fires after the selection
+        // is complete and this is when we want to make the following changes.
+        // note, we want selected topic/story to become unset
+        // when the panel that shows them is not selected, this allows
+        // us to rely on topic/storyChanged to show the relevant
+        // panel.
+        panelSelected: function(e, detail, sender) {
+          if (e.target === this.$.panels) {
+            if (sender.selected === 'topics') {
+              this.topic = null;
+            } else if (sender.selected === 'stories') {
+              this.story = null;
+            }
+            if (sender.selected === 'story') {
+              this.$.story.focus();
+            } else {
+              sender.focus();
+            }
           }
-        }
-      },
-      panelCanSelect: function(e, detail) {
-        if ((detail.selected === 'stories' && (!this.stories && !this.$.feeds.loading)) || 
-           (detail.selected === 'story' && !this.story)) {
-          detail.preventSelect();
-        }
-      },
-      storyKeydownHandler: function(e) {
-        var n = e.keyCode === RIGHT_ARROW_KEY, p = e.keyCode === LEFT_ARROW_KEY;
-        if (this.nextPrevStory(n, p)) {
-          e.cancelBubble = true;
-        }
-      },
-      storyFlickHandler: function(e) {
-        if (e.majorAxis === 'x' && e.pointerType === 'touch') {
-          var n = e.xVelocity < 0, p = e.xVelocity > 0;
+        },
+        panelCanSelect: function(e, detail) {
+          if ((detail.selected === 'stories' && (!this.stories && !this.$.feeds.loading)) || 
+             (detail.selected === 'story' && !this.story)) {
+            detail.preventSelect();
+          }
+        },
+        storyKeydownHandler: function(e) {
+          var n = e.keyCode === RIGHT_ARROW_KEY, p = e.keyCode === LEFT_ARROW_KEY;
           if (this.nextPrevStory(n, p)) {
             e.cancelBubble = true;
           }
+        },
+        storyFlickHandler: function(e) {
+          if (e.majorAxis === 'x' && e.pointerType === 'touch') {
+            var n = e.xVelocity < 0, p = e.xVelocity > 0;
+            if (this.nextPrevStory(n, p)) {
+              e.cancelBubble = true;
+            }
+          }
         }
-      }
-    });
+      });
+    })();
   </script>
-</element>
+</polymer-element>
