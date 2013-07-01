@@ -14,10 +14,6 @@ polymer-ui-sidebar-menu#menu {
   width: 260px;
 }
 
-img[logo] {
-  display: block;
-}
-
 ajaxorg-ace#ace {
   position: relative !important;
   width: 540px;
