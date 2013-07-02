@@ -87,9 +87,20 @@ license that can be found in the LICENSE file.
         }
         subtree(this.sourceElement, 4);
       },
+      findDistributedTarget: function(target, nodes) {
+        // find first ancestor of target (including itself) that
+        // is in inNodes, if any
+        while (target && target != this) {
+          var i = Array.prototype.indexOf.call(nodes, target);
+          if (i >= 0) {
+            return i;
+          }
+          target = target.parentNode;
+        }
+      },
       tap: function(e) {
         var nodes = this.$.tree.children;
-        var selected = nodes[Polymer.findDistributedTarget(e.target, nodes)];
+        var selected = nodes[this.findDistributedTarget(e.target, nodes)];
         if (selected) {
           this.selected = selected.templateInstance.model.element;
         }
