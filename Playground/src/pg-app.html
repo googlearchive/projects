@@ -28,7 +28,7 @@
         <button class="toolbar-button" on-tap="run">Run</button>
         <div flex></div>
       </polymer-ui-toolbar>
-      <div class="flexbox" flex>
+      <div id="stage" class="flexbox" flex>
         <polymer-collapse targetId="ace" horizontal fixedSize closed="{{maximized}}"></polymer-collapse>
         <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2"></ajaxorg-ace>
         <polymer-ui-splitter direction="left" locked="{{maximized}}" on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" on-trackend="splitterDragEnd"></polymer-ui-splitter>
