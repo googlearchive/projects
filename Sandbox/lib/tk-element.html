@@ -13,7 +13,7 @@ license that can be found in the LICENSE file.
       },
       defaultSource: '<polymer-element name="' + DEFAULT_PUBLISH_NAME + '">' +
         '<template></template>' +
-        '<script>Polymer(' + DEFAULT_PUBLISH_NAME + ', {});' +
+        '<script>Polymer(\'' + DEFAULT_PUBLISH_NAME + '\', {});' +
         '</s' + 'cript>' +
       '</polymer-element>',
       update: function() {
@@ -41,6 +41,8 @@ license that can be found in the LICENSE file.
         this.elementAttributes = parseElementAttributes(source);
         var html = tagInnerHTMLFromSource(source, 'template');
         var script = tagInnerHTMLFromSource(source, 'script').trim();
+        script = script.replace(/Polymer\('(.*)'/, 'Polymer(\'' + this.localName
+            + '\'');
         // re-define design-element with user source
         registerFromScript(this.localName, script);
         var de = document.createElement(this.localName);
