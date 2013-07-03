@@ -15,7 +15,7 @@ polymer-ui-sidebar-menu#menu {
 }
 
 #stage {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 ajaxorg-ace#ace {

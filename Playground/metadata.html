@@ -182,32 +182,29 @@
   <template>
     <style>
       section {
-        padding: 5px 10px;
-        margin-bottom: 2px;
-        border: 1px solid #aaa;
+        padding: 5px;
+        margin: 5px;
+        border: 1px solid #ddd;
       }
       
       .box {
         height: 0;
-        overflow: hidden;
       }
     </style>
     
     <section>
-      <b>Section A</b>
-      <polymer-ui-icon-button icon="dropdown" onclick="toggle('collapse1')" theme="polymer-ui-light-theme"></polymer-ui-icon-button>
+      <button onclick="toggle('collapse1')">toggle collapse</button>
       <div id="box1" class="box">
         Forma temperiemque cornua sidera dissociata cornua recessit innabilis ligavit: solidumque coeptis nullus caelum sponte phoebe di regat mentisque tanta austro capacius amphitrite sui quin postquam semina fossae liquidum umor galeae coeptis caligine liberioris quin liquidum matutinis invasit posset: flexi glomeravit radiis certis invasit oppida postquam onerosior inclusum dominari opifex terris pace finxit quam aquae nunc sine altae auroram quam habentem homo totidemque scythiam in pondus ensis tegit caecoque poena lapidosos humanas coeperunt poena aetas totidem nec natura aethera locavit caelumque distinxit animalibus phoebe cingebant moderantum porrexerat terrae possedit sua sole diu summaque obliquis melioris orbem
+        <section>
+          <button onclick="toggle('collapse2')">toggle collapse</button>
+          <div id="box2" class="box">
+            Coercuit iunctarum vix sic aberant spisso imagine litem cetera nubes ambitae tanta usu circumfuso fulminibus umentia rectumque iuga pluviaque meis semina regat ne campoque meis coeperunt nix cura iunctarum ligavit: secant ventos seductaque permisit sic iunctarum locoque his coeptis tum terras animalia recepta aethera cornua invasit tollere videre tonitrua humanas otia tuba alta dissociata sanctius adsiduis inclusum caesa ita onus
+          </div>
+          <polymer-collapse id="collapse2" targetId="box2" closed></polymer-collapse>
+        </section>
       </div>
       <polymer-collapse id="collapse1" targetId="box1" closed></polymer-collapse>
-    </section>
-    <section>
-      <b>Section B</b>
-      <polymer-ui-icon-button icon="dropdown" onclick="toggle('collapse2')" theme="polymer-ui-light-theme"></polymer-ui-icon-button>
-      <div id="box2" class="box">
-        Coercuit iunctarum vix sic aberant spisso imagine litem cetera nubes ambitae tanta usu circumfuso fulminibus umentia rectumque iuga pluviaque meis semina regat ne campoque meis coeperunt nix cura iunctarum ligavit: secant ventos seductaque permisit sic iunctarum locoque his coeptis tum terras animalia recepta aethera cornua invasit tollere videre tonitrua humanas otia tuba alta dissociata sanctius adsiduis inclusum caesa ita onus
-      </div>
-      <polymer-collapse id="collapse2" targetId="box2" closed></polymer-collapse>
     </section>
     
     <script>
@@ -215,6 +212,55 @@
         document.querySelector('#' + id).toggle();
       }
     </script>
+  </template>
+</polymer-meta>
+
+<polymer-meta id="polymer-ui-accordion" label="Accordion">
+  <template>
+    <style>
+      body {
+        overflow: hidden;
+      }
+      polymer-ui-accordion-group {
+        margin-bottom: 2px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+      .polymer-ui-accordion-header {
+        padding: 10px;
+        border-bottom: 1px solid #bcbcbc;
+        cursor: pointer;
+        font-weight: bold;
+        color: #6699FF;
+      }
+      .polymer-selected .polymer-ui-accordion-header {
+        color: blue;
+      }
+      .content {
+        padding: 10px;
+      }
+    </style>
+    
+    <polymer-ui-accordion selected="0">
+      <polymer-ui-accordion-group>
+        <div class="polymer-ui-accordion-header">Header 1</div>
+        <div class="content">
+          Forma temperiemque cornua sidera dissociata cornua recessit innabilis ligavit: solidumque coeptis nullus caelum sponte phoebe di regat mentisque tanta austro capacius amphitrite sui quin postquam semina fossae liquidum umor galeae coeptis caligine liberioris quin liquidum matutinis invasit posset: flexi glomeravit radiis certis invasit oppida postquam onerosior inclusum dominari opifex terris pace finxit quam aquae nunc sine altae auroram quam habentem homo totidemque scythiam in pondus ensis tegit caecoque poena lapidosos humanas coeperunt poena aetas totidem nec natura aethera locavit caelumque distinxit animalibus phoebe cingebant moderantum porrexerat terrae possedit sua sole diu summaque obliquis melioris orbem
+        </div>
+      </polymer-ui-accordion-group>
+      <polymer-ui-accordion-group>
+        <div class="polymer-ui-accordion-header">Header 2</div>
+        <div class="content">
+          Coercuit iunctarum vix sic aberant spisso imagine litem cetera nubes ambitae tanta usu circumfuso fulminibus umentia rectumque iuga pluviaque meis semina regat ne campoque meis coeperunt nix cura iunctarum ligavit: secant ventos seductaque permisit sic iunctarum locoque his coeptis tum terras animalia recepta aethera cornua invasit tollere videre tonitrua humanas otia tuba alta dissociata sanctius adsiduis inclusum caesa ita onus sine pluviaque litem manebat fixo extendi ubi inposuit cum sublime membra undas orba forma deducite aethera turba coercuit retinebat obliquis bracchia nisi mentisque origine peregrinum manebat
+        </div>
+      </polymer-ui-accordion-group>
+      <polymer-ui-accordion-group>
+        <div class="polymer-ui-accordion-header">Header 3</div>
+        <div class="content">
+          Forma temperiemque cornua sidera dissociata cornua recessit innabilis ligavit: solidumque coeptis nullus caelum sponte phoebe di regat mentisque tanta austro capacius amphitrite sui quin postquam semina fossae liquidum umor galeae coeptis caligine liberioris quin liquidum matutinis invasit posset: flexi glomeravit radiis certis invasit oppida postquam onerosior inclusum dominari opifex terris pace finxit quam aquae nunc sine altae auroram quam habentem homo totidemque scythiam in pondus ensis tegit caecoque poena lapidosos humanas coeperunt poena aetas totidem nec natura aethera locavit caelumque
+        </div>
+      </polymer-ui-accordion-group>
+    </polymer-ui-accordion>
   </template>
 </polymer-meta>
 
