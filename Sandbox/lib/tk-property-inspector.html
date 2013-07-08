@@ -79,11 +79,11 @@ license that can be found in the LICENSE file.
       },
       propertyChanged: function() {
         // discover binding
-        this.binding = Polymer.getBinding(this.property.obj, 
+        this.binding = Bindings.getBinding(this.property.obj, 
             this.property.name);
         // special handling for textContent
         if (this.property.name == 'textContent') {
-          this.binding = Polymer.getBinding(this.property.obj.firstChild,
+          this.binding = Bindings.getBinding(this.property.obj.firstChild,
             this.property.name);
         }
         // discover editorTag
