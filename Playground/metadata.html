@@ -118,27 +118,20 @@
   <polymer-meta label="Nested">
     <template>
       <polymer-ui-menu selected="0" theme="polymer-ui-light-theme">
-        <polymer-ui-menu-item label="Topic 1" icon="dropdown" iconRightAligned>
-          <polymer-ui-menu-item label="Topics 1.1"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topics 1.2"></polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="settings" label="Topics">
+          <polymer-ui-menu-item label="Topic 1"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Topic 2"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Topic 3"></polymer-ui-menu-item>
         </polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Topic 2" icon="dropdown" iconRightAligned>
-          <polymer-ui-menu-item label="Topic 2.1"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topic 2.2" icon="dropdown" iconRightAligned>
-            <polymer-ui-menu-item label="Topic 2.2.1"></polymer-ui-menu-item>
-            <polymer-ui-menu-item label="Topic 2.2.2"></polymer-ui-menu-item>
-            <polymer-ui-menu-item label="Topic 2.2.3"></polymer-ui-menu-item>
-          </polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topic 2.3" icon="dropdown" iconRightAligned>
-            <polymer-ui-menu-item label="Topic 2.3.1"></polymer-ui-menu-item>
-            <polymer-ui-menu-item label="Topic 2.3.2"></polymer-ui-menu-item>
-          </polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="settings" label="Favorites">
+          <polymer-ui-menu-item label="Favorites 1"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Favorites 2"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Favorites 3"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Favorites 4"></polymer-ui-menu-item>
         </polymer-ui-menu-item>
-        <polymer-ui-menu-item label="Topic 3" icon="dropdown" iconRightAligned>
-          <polymer-ui-menu-item label="Topic 3.1"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topic 3.2"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topic 3.3"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topic 3.4"></polymer-ui-menu-item>
+        <polymer-ui-menu-item icon="settings" label="Explore">
+          <polymer-ui-menu-item label="Explore 1"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Explore 2"></polymer-ui-menu-item>
         </polymer-ui-menu-item>
       </polymer-ui-menu>
     </template>
@@ -178,7 +171,7 @@
   </polymer-meta>
 </polymer-meta>
 
-<polymer-meta id="polymer-collapse" label="Collapsible">
+<polymer-meta id="polymer-collapse" label="Collapse">
   <template>
     <style>
       section {
@@ -221,19 +214,19 @@
       body {
         overflow: hidden;
       }
-      polymer-ui-accordion-group {
+      polymer-ui-collapsible {
         margin-bottom: 2px;
         border: 1px solid #ddd;
         border-radius: 3px;
       }
-      .polymer-ui-accordion-header {
+      .polymer-ui-collapsible-header {
         padding: 10px;
         border-bottom: 1px solid #bcbcbc;
         cursor: pointer;
         font-weight: bold;
         color: #6699FF;
       }
-      .polymer-selected .polymer-ui-accordion-header {
+      .polymer-selected .polymer-ui-collapsible-header {
         color: blue;
       }
       .content {
@@ -242,24 +235,24 @@
     </style>
     
     <polymer-ui-accordion selected="0">
-      <polymer-ui-accordion-group>
-        <div class="polymer-ui-accordion-header">Header 1</div>
+      <polymer-ui-collapsible>
+        <div class="polymer-ui-collapsible-header">Header 1</div>
         <div class="content">
           Forma temperiemque cornua sidera dissociata cornua recessit innabilis ligavit: solidumque coeptis nullus caelum sponte phoebe di regat mentisque tanta austro capacius amphitrite sui quin postquam semina fossae liquidum umor galeae coeptis caligine liberioris quin liquidum matutinis invasit posset: flexi glomeravit radiis certis invasit oppida postquam onerosior inclusum dominari opifex terris pace finxit quam aquae nunc sine altae auroram quam habentem homo totidemque scythiam in pondus ensis tegit caecoque poena lapidosos humanas coeperunt poena aetas totidem nec natura aethera locavit caelumque distinxit animalibus phoebe cingebant moderantum porrexerat terrae possedit sua sole diu summaque obliquis melioris orbem
         </div>
-      </polymer-ui-accordion-group>
-      <polymer-ui-accordion-group>
-        <div class="polymer-ui-accordion-header">Header 2</div>
+      </polymer-ui-collapsible>
+      <polymer-ui-collapsible>
+        <div class="polymer-ui-collapsible-header">Header 2</div>
         <div class="content">
           Coercuit iunctarum vix sic aberant spisso imagine litem cetera nubes ambitae tanta usu circumfuso fulminibus umentia rectumque iuga pluviaque meis semina regat ne campoque meis coeperunt nix cura iunctarum ligavit: secant ventos seductaque permisit sic iunctarum locoque his coeptis tum terras animalia recepta aethera cornua invasit tollere videre tonitrua humanas otia tuba alta dissociata sanctius adsiduis inclusum caesa ita onus sine pluviaque litem manebat fixo extendi ubi inposuit cum sublime membra undas orba forma deducite aethera turba coercuit retinebat obliquis bracchia nisi mentisque origine peregrinum manebat
         </div>
-      </polymer-ui-accordion-group>
-      <polymer-ui-accordion-group>
-        <div class="polymer-ui-accordion-header">Header 3</div>
+      </polymer-ui-collapsible>
+      <polymer-ui-collapsible>
+        <div class="polymer-ui-collapsible-header">Header 3</div>
         <div class="content">
           Forma temperiemque cornua sidera dissociata cornua recessit innabilis ligavit: solidumque coeptis nullus caelum sponte phoebe di regat mentisque tanta austro capacius amphitrite sui quin postquam semina fossae liquidum umor galeae coeptis caligine liberioris quin liquidum matutinis invasit posset: flexi glomeravit radiis certis invasit oppida postquam onerosior inclusum dominari opifex terris pace finxit quam aquae nunc sine altae auroram quam habentem homo totidemque scythiam in pondus ensis tegit caecoque poena lapidosos humanas coeperunt poena aetas totidem nec natura aethera locavit caelumque
         </div>
-      </polymer-ui-accordion-group>
+      </polymer-ui-collapsible>
     </polymer-ui-accordion>
   </template>
 </polymer-meta>
