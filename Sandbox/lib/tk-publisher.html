@@ -3,10 +3,11 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-publisher" attributes="element">
+<polymer-element name="tk-publisher" attributes="sourceElement">
   <script>
-    Polymer.register(this, {
-      element: null,
+  (function() {
+    Polymer('tk-publisher', {
+      sourceElement: null,
       publishElement: function(source) {
         if (source) {
           this.register(source);
@@ -15,10 +16,20 @@ license that can be found in the LICENSE file.
       },
       register: function(source) {
         if (source) {
-          var elt = elementFromHTML(source, 'element');
-          var eltElt = new HTMLElementElement(elt);
-          this.elementName = eltElt.attributes.name.value;
-          return eltElt;
+          var elt = elementFromHTML(source, 'polymer-element');
+          var script = source.match(new RegExp('<script>([\\s\\S]*)</scr'
+              + 'ipt>', 'm'));
+          if (script) {
+            var s = document.createElement('script');
+            s.textContent = script[1];
+            document.head.appendChild(s);
+            document.head.removeChild(s);
+          }
+          document.head.appendChild(elt);
+          CustomElements.takeRecords();
+          document.head.removeChild(elt);
+          this.elementName = elt.getAttribute('name');
+          return elt;
         }
       },
       makeMeta: function() {
@@ -43,12 +54,14 @@ license that can be found in the LICENSE file.
             '</' + this.elementName + '>'
       },
       calcSize: function() {
-        this.element.style.right = this.element.style.bottom = 'auto';
+        this.sourceElement.style.right = 
+            this.sourceElement.style.bottom = 'auto';
         var size = {
-          width: this.element.scrollWidth,
-          height: this.element.scrollHeight
+          width: this.sourceElement.scrollWidth,
+          height: this.sourceElement.scrollHeight
         };
-        this.element.style.right = this.element.style.bottom = null;
+        this.sourceElement.style.right = 
+            this.sourceElement.style.bottom = null;
         return size;
       }
     });
@@ -58,5 +71,6 @@ license that can be found in the LICENSE file.
       d.innerHTML = html;
       return d.querySelector(selector);
     }
+  })();
   </script>  
-</element>
+</polymer-element>

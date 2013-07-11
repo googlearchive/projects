@@ -9,9 +9,9 @@
 <link rel="import" href="../../../more-elements/Speech/speech-mic.html"/>
 <link rel="import" href="pi-gfeeds.html"/>
 <link rel="import" href="pi-feed-viewer.html"/>
-<element name="pi-explore" attributes="panel topic">
-  <link rel="stylesheet" href="css/pi-explore.css" />
+<polymer-element name="pi-explore" attributes="panel topic">
   <template>
+    <link rel="stylesheet" href="css/pi-explore.css" />
     <div id="searchBox">
       <input id="searchInput" on-input="inputChange"/>
       <g-icon src="../images/search.png"></g-icon>
@@ -22,7 +22,7 @@
     <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pi-explore', {
       layout: 'list',
       ready: function() {
         this.contentNode = document.createElement('div');
@@ -59,4 +59,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

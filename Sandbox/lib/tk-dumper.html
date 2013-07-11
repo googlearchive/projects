@@ -3,9 +3,10 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-dumper">
+<script src="binding.js"></script>
+<polymer-element name="tk-dumper">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-dumper', {
       tab: '  ',
       dumpTag: function(node, indent) {
         if (node.dumpTag) {
@@ -47,7 +48,7 @@ license that can be found in the LICENSE file.
         var p$ = Reflection.properties(node);
         var attributes = {};
         p$.forEach(function(p) {
-          var v = p.value, n = p.name, binding = Polymer.getBinding(node, n);
+          var v = p.value, n = p.name, binding = Bindings.getBinding(node, n);
           if (n == 'textContent') {
             return;
           }
@@ -81,16 +82,16 @@ license that can be found in the LICENSE file.
         attributes['class'] = v || null;
       },
       dumpTextNode: function(node) {
-        var binding = Polymer.getBinding(node, 'textContent');
+        var binding = Bindings.getBinding(node, 'textContent');
         return binding ? '{{ ' + binding + ' }}' : node.textContent;
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-element-dumper" extends="tk-dumper">
+<polymer-element name="tk-element-dumper" extends="tk-dumper">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-element-dumper', {
       elementBlackList: ['style'],
       propertyBlackList: null,
       ready: function() {
@@ -100,8 +101,9 @@ license that can be found in the LICENSE file.
       dumpElement: function(node, indent) {
         // resolve properties to attributes before dumping
         var proto = this.dumpProto(node, indent + this.tab + this.tab);
-        var script = 'Polymer.register(this, ' + proto + ');';
-        var html = indent + '<element' + this.dumpElementAttributes(node) +
+        var name = node.elementAttributes.name || '';
+        var script = 'Polymer(\'' + name +'\', ' + proto + ');';
+        var html = indent + '<polymer-element' + this.dumpElementAttributes(node) +
           '>\n' + indent + this.tab + '<template>\n';
         html += indent + this.dumpStyle(node, indent + this.tab + this.tab);
         var children = '';
@@ -115,7 +117,7 @@ license that can be found in the LICENSE file.
           indent + this.tab +'<script>\n' +
           indent + this.tab + this.tab + script + '\n' +
           indent + this.tab +'</s' + 'cript>\n'+
-          indent + '</element>';
+          indent + '</polymer-element>';
         return html;
       },
       dumpElementAttributes: function(node) {
@@ -214,11 +216,11 @@ license that can be found in the LICENSE file.
       }
     });
   </script>  
-</element>
+</polymer-element>
 
-<element name="tk-dumper-blacklist">
+<polymer-element name="tk-dumper-blacklist">
   <script>
     // note: this element exists to generate a property black list for tk-element
-    Polymer.register(this);
+    Polymer('tk-dumper-blacklist');
   </script>
-</element>
+</polymer-element>

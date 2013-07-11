@@ -3,7 +3,7 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-palette" attributes="elements" on-mousedown="mousedown">
+<polymer-element name="tk-palette" attributes="elements" on-mousedown="mousedown">
   <template>
     <style>
       #title {
@@ -56,20 +56,20 @@ license that can be found in the LICENSE file.
    </div>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-palette', {
       trackStart: function(event) {
         var tag = event.target.getAttribute('tag');
         if (tag) {
-          this.send('palette-drag-start', tag);
+          this.fire('palette-drag-start', tag);
           event.stopPropagation();
         }
       },
       track: function(event) {
-        this.send('palette-drag', {x: event.pageX, y: event.pageY});
+        this.fire('palette-drag', {x: event.pageX, y: event.pageY});
         event.stopPropagation();
       },
       trackEnd: function(event) {
-        this.send('palette-drag-end');
+        this.fire('palette-drag-end');
         event.stopPropagation();
       },
       // TODO(sorvell): prevent text selection (file shadowDOM bug!)
@@ -78,4 +78,4 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>

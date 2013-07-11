@@ -5,104 +5,99 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-app.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-ajax.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-panels.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-ribbon.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html">
+
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
-<element name="pg-app" extends="g-app">
-  <link rel="stylesheet" href="css/pg-app.css" />
+<link rel="import" href="pg-output.html">
+
+<polymer-element name="pg-app">
   <template>
-    <g-panels id="panels" class="flex" index="1" transition="flow">
-      <g-ribbon id="menu" label="Playground" valueattr="label" on-activate="toggle"
-          selectedModel="{{selectedSample}}">
-        <template repeat="{{sampleData}}">
-          <g-menu-item src="images/sample.png" iconsize="32" label="{{name}}"></g-menu-item>
-        </template>
-      </g-ribbon>
-      <div id="main">
-        <g-toolbar>
-          <g-icon-button src="images/menu.png" on-tap="toggle"></g-icon-button>
-          <div>{{selectedSample.name}}</div>
-          <button class="toolbar-button" on-tap="run">Run</button>
-        </g-toolbar>
-        <div id="content">
-          <ajaxorg-ace id="ace" theme="github" mode="html"></ajaxorg-ace>
-          <div id="outputContainer">
-            <div class="titlebar">
-              <g-icon-button src="{{arrowImageSrc}}" touch-action="none" on-tap="toggleOutputFullScreen"></g-icon-button>
-              <span>Output</span>
-            </div>
-            <div class="outputFrameContainer">
-              <iframe id="output"></iframe>
-            </div>
-          </div>
+    <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
+    <link rel="stylesheet" href="css/pg-app.css">
+    <polymer-ui-sidebar-menu id="menu" label="Playground" valueattr="label" selectedModel="{{selectedElement}}">
+      <polymer-ui-icon logo src="images/toolkit.svg" size="32"></polymer-ui-icon>
+      <template repeat="{{elements}}">
+        <polymer-ui-menu-item label="{{label}}" src="images/code.png">
+          <template repeat="{{subElements}}">
+            <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
+          </template>
+        </polymer-ui-menu-item>
+      </template>
+    </polymer-ui-sidebar-menu>
+    <div class="flexbox column" flex>
+      <polymer-ui-toolbar>
+        <button class="toolbar-button" on-tap="run">Run</button>
+        <div flex></div>
+      </polymer-ui-toolbar>
+      <div id="stage" class="flexbox" flex>
+        <polymer-collapse targetId="ace" horizontal fixedSize closed="{{maximized}}"></polymer-collapse>
+        <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2"></ajaxorg-ace>
+        <polymer-ui-splitter direction="left" locked="{{maximized}}" on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" on-trackend="splitterDragEnd"></polymer-ui-splitter>
+        <div class="flexbox column" flex>
+          <polymer-ui-toolbar theme="polymer-ui-light-theme">
+            <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
+            <div>Output</div>
+          </polymer-ui-toolbar>
+          <pg-output id="output" flex html="{{source}}"></pg-output>
         </div>
       </div>
-    </g-panels>
-    <g-ajax auto on-response="fileResponse" url="{{selectedSample.file}}"></ajax>
+    </div>
+    <polymer-meta list="{{elements}}"></polymer-meta>
   </template>
   <script>
-    Polymer.register(this, {
-      sampleData: [
-        {name: 'NameTag', file: 'samples/nametag.html'},
-        {name: 'Echo', file: 'samples/echo.html'},
-        {name: 'Youtube Search', file: 'samples/youtubesearch.html'},
-        {name: 'Youtube App', file: 'samples/yt-app.html'},
-        {name: 'Pica', file: 'samples/pica.html'},
-        {name: 'Panels', file: 'samples/panels.html'},
-        //{name: 'Cats', file: 'samples/cats.html'},
-        {name: 'Playground', file: 'samples/pg-app-sample.html'}
-      ],
-      selectedSample: null,
-      isOutputFullScreen: false,
+    Polymer('pg-app', {
+      maximized: false,
+      selectedElement: null,
       ready: function() {
-        this.super();
-        this.$.ace.editor.getSession().setTabSize(2);
+        this.classList.add('flexbox');
         this.asyncMethod(function() {
-          this.$.menu.selected = this.sampleData[0].name;
+          this.$.menu.selected = this.elements[0].label;
         });
-        this.isOutputFullScreenChanged();
+        this.maximizedChanged();
       },
-      toggle: function() {
-        this.$.panels.toggleBetween('menu', 'main');
+      toggleMaximized: function() {
+        this.maximized = !this.maximized;
       },
-      toggleOutputFullScreen: function() {
-        this.isOutputFullScreen = !this.isOutputFullScreen;
+      maximizedChanged: function() {
+        this.arrowImageSrc = this.resolvePath('images/arrow_' + 
+            (this.maximized ? 'right' : 'left')  + '.png');
+        if (!this.maximized) {
+          // ace doesn't render its editor content if it's size 0
+          // so here we force ace to render after it's not collapsed
+          this.asyncMethod(function() {
+            this.$.ace.editor.renderer.updateText();
+          });
+        }
       },
-      isOutputFullScreenChanged: function() {
-        this.$.ace.style.width = this.isOutputFullScreen ? '0px' : '620px';
-        this.arrowImageSrc = this.resolvePath('images/arrow_' + (this.isOutputFullScreen ? 'right' : 'left')  + '.png');
+      splitterDragEnd: function() {
+        this.enableOutpuMouseEvents();
+        this.$.ace.editor.resize();
       },
-      fileResponse: function(e, inDetail) {
-        this.$.ace.value = this.makeOutputHTML('', inDetail.response);
-        dirtyCheck();
-        this.run();
+      disableOutputMouseEvents: function() {
+        this.$.output.classList.add('pointer-none');
+      },
+      enableOutpuMouseEvents: function() {
+        this.$.output.classList.remove('pointer-none');
+      },
+      selectedElementChanged: function() {
+        var s = this.selectedElement;
+        if (!s) {
+          return;
+        }
+        s.subElements = Array.prototype.slice.call(
+            s.querySelectorAll('polymer-meta'));
+        var s = this.selectedElement.archetype.innerHTML;
+        var n = s.match(/^\n([  \t]*)/)[1].length;
+        // remove extra spaces/indents at the beginning of each line
+        var regex = new RegExp('^[\\s]{0,' + n + '}', 'gm');
+        s = s.replace(regex, '').trim();
+        // remove emtpy string value e.g. vertical=""
+        s = s.replace(/=\"\"/g, '');
+        this.$.ace.value = s;
+        this.asyncMethod('run');
       },
       run: function() {
-        this.$.output.src = '';
-        this.asyncMethod(function() {
-          var doc = this.$.output.contentDocument;
-          doc.open('text/html', '');
-          doc.write(this.$.ace.editor.getValue());
-          doc.close();
-        });
-      },
-      makeOutputHTML: function(head, body) {
-        var html = '<!DOCTYPE html>\n';
-        html += '<head>\n';
-        html += head || '';
-        // include base scripts
-        html += '<script src="../../polymer/polymer.js"></s' + 'cript>\n';
-        html += '</head>\n<body>\n';
-        // include content
-        html += body || '';
-        html += '\n</body>\n</html>';
-        return html;
+        this.source = this.$.ace.editorValue;
       }
     });
   </script>
-</element>
+</polymer-element>

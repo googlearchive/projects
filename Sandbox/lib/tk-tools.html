@@ -3,7 +3,7 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-tools" attributes="selected element">
+<polymer-element name="tk-tools" attributes="selected sourceElement">
   <template>
     <style>
       tk-tree#tree {
@@ -21,14 +21,14 @@ license that can be found in the LICENSE file.
         left: 0;
       }
     </style>
-    <tk-tree id="tree" element="{{element}}" selected="{{selected}}"></tk-tree>
-    <tk-inspector id="inspector" touch-action="scroll" element="{{selected}}"></tk-inspector>
+    <tk-tree id="tree" sourceElement="{{sourceElement}}" selected="{{selected}}"></tk-tree>
+    <tk-inspector id="inspector" touch-action="auto" sourceElement="{{selected}}"></tk-inspector>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-tools', {
       update: function() {
         this.$.tree.update();
       }
     });
   </script>
-</element>
+</polymer-element>
