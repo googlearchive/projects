@@ -8,13 +8,13 @@ license that can be found in the LICENSE file.
   (function() {  
     var metaData = {}, metaArray = [];
     Polymer('tk-meta', {
-      id: '',
       isContainer: false,
       isHidden: false,
       properties: null,
       shouldPrepend: false,
       hideSubtree: false,
       ready: function() {
+        this.observeProperty('id');
         this.idChanged();
         this.updateProperties();
       },
