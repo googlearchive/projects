@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="ga-cards" attributes="items selected">
-  <link rel="stylesheet" href="css/ga-cards.css">
+<polymer-element name="ga-cards" attributes="items selected">
   <template>
+    <link rel="stylesheet" href="css/ga-cards.css">
     <template repeat="{{items}}">
       <div class="card">
         <div class="inner" touch-action="none" on-tap="selectCard">
@@ -17,11 +17,11 @@ license that can be found in the LICENSE file.
     </template>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('ga-cards', {
       selectCard: function(event, detail, sender) {
         this.selected = sender.templateInstance.model;
         this.fire('select-card');
       }
     });
   </script>
-</element>
+</polymer-element>

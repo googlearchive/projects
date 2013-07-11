@@ -7,9 +7,9 @@
 -->
 <link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html"/>
 <link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html"/>
-<element name="pi-toolbar" attributes="label nav hideActionbar">
-  <link rel="stylesheet" href="css/pi-toolbar.css" />
+<polymer-element name="pi-toolbar" attributes="label nav hideActionbar">
   <template>
+    <link rel="stylesheet" href="css/pi-toolbar.css" />
     <g-toolbar>
       <g-icon-button src="{{navIconSrc}}" on-tap="navAction"></g-icon-button>
       <div class="toolbar-label flex">{{label}}</div>
@@ -19,7 +19,7 @@
     </g-toolbar>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('pi-toolbar', {
       nav: 'menu',
       ready: function() {
         this.navChanged();
@@ -35,4 +35,4 @@
       }
     });
   </script>
-</element>
+</polymer-element>

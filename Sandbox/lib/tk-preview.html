@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-preview" attributes="htmlContent">
+<polymer-element name="tk-preview" attributes="htmlContent">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-preview', {
       htmlContent: '',
       writeToDoc: function(doc) {
         doc.open('text/html', '');
@@ -75,14 +75,14 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-preview-iframe" extends="tk-preview">
+<polymer-element name="tk-preview-iframe" extends="tk-preview">
   <template>
     <iframe id="output" style="width: 100%; height: 100%;"></iframe>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-preview-iframe', {
       htmlContentChanged: function() {
         this.$.output.src = '';
         this.asyncMethod(function() {
@@ -91,12 +91,13 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-preview-window" extends="tk-preview">
+<polymer-element name="tk-preview-window" extends="tk-preview">
   <script>
+  (function() {
     var previewWindow;
-    Polymer.register(this, {
+    Polymer('tk-preview-window', {
       prepareWindow: function() {
         if (previewWindow) {
           previewWindow.close();
@@ -114,5 +115,6 @@ license that can be found in the LICENSE file.
         this.writeSourceToDoc(previewWindow.document);
       }
     });
+  })();
   </script>
-</element>
+</polymer-element>

@@ -3,7 +3,7 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-canvas" on-pointerup="up" on-trackstart="trackStart" 
+<polymer-element name="tk-canvas" on-pointerup="up" on-trackstart="trackStart" 
          on-track="track" on-trackend="trackEnd" attributes="designElement">
   <template>
     <style>
@@ -26,7 +26,7 @@ license that can be found in the LICENSE file.
     </div>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-canvas', {
       grid: 10,
       designElement: null,
       snap: function(inX, inY) {
@@ -64,8 +64,8 @@ license that can be found in the LICENSE file.
       trackEnd: function(event) {
         this.tracking = null;
         event.stopPropagation();
-        this.send('design-changed');
+        this.fire('design-changed');
       }
     });
   </script>
-</element>
+</polymer-element>

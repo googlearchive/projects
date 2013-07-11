@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-abstract-editor" attributes="value">
+<polymer-element name="tk-abstract-editor" attributes="value">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-abstract-editor', {
       value: '',
       meta: null,
       workingValue: null,
@@ -17,16 +17,16 @@ license that can be found in the LICENSE file.
         // it's critical to have an event from the editor UI so we know when
         // a user has changed a value, vs some other form of alteration
         // for the same reason, we float our own changed event
-        this.send('editor-value-changed');
+        this.fire('editor-value-changed');
       },
       format: function(value) {
         return value;
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-string-editor" extends="tk-abstract-editor">
+<polymer-element name="tk-string-editor" extends="tk-abstract-editor">
   <template>
     <style>
       @host {
@@ -64,18 +64,18 @@ license that can be found in the LICENSE file.
       autocorrect="off" on-change="commit">
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-string-editor', {
       type: "text",
       focus: function() {
         this.$.input.focus();
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-color-editor" extends="tk-string-editor">
+<polymer-element name="tk-color-editor" extends="tk-string-editor">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-color-editor', {
       type: 'color',
       ready: function() {
         // TODO(sjmiles): box-sizing: border-box doesn't play nice with color inputs
@@ -109,9 +109,9 @@ license that can be found in the LICENSE file.
       );
     }
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-boolean-editor" extends="tk-abstract-editor">
+<polymer-element name="tk-boolean-editor" extends="tk-abstract-editor">
   <template>
     <style>
       input {
@@ -121,16 +121,16 @@ license that can be found in the LICENSE file.
     <input id="input" type="checkbox" checked="{{workingValue}}" on-change="inputChange">
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-boolean-editor', {
       inputChange: function(event) {
         this.workingValue = event.target.checked;
         this.commit();
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-select-editor" extends="tk-abstract-editor" attributes="options">
+<polymer-element name="tk-select-editor" extends="tk-abstract-editor" attributes="options">
   <template>
     <style>
       @host {
@@ -151,7 +151,6 @@ license that can be found in the LICENSE file.
       }
     </style>
     <select id="select" on-change="selectChange"></select>
-    
   </template>
   <script>
     // TODO(sorvell): Template repeat functions specially inside a select
@@ -159,7 +158,7 @@ license that can be found in the LICENSE file.
     // However, this creates an extra space in the select; see
     // due to https://github.com/toolkitchen/mdv/issues/56.
     // For that reason, we're manually iterating these nodes.
-    Polymer.register(this, {
+    Polymer('tk-select-editor', {
       metaChanged: function() {
         this.options = this.meta.options;
         // allow template to generate options before setting value
@@ -192,9 +191,9 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-text-editor" extends="tk-abstract-editor">
+<polymer-element name="tk-text-editor" extends="tk-abstract-editor">
   <template>
     <style>
       textarea {
@@ -211,7 +210,7 @@ license that can be found in the LICENSE file.
     <textarea id="input" on-change="commit" rows="10"></textarea>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-text-editor', {
       workingValueChanged: function() {
         this.$.input.textContent = this.workingValue;
       },
@@ -221,9 +220,9 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-range-editor" extends="tk-abstract-editor" attributes="min max step defaultValue">
+<polymer-element name="tk-range-editor" extends="tk-abstract-editor" attributes="min max step defaultValue">
   <template>
     <style>
       @host {
@@ -247,7 +246,7 @@ license that can be found in the LICENSE file.
     <input id="input" type="range" value="{{workingValue}}" min="{{min}}" max="{{max}}" step="{{step}}" on-change="commit">
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-range-editor', {
       min: 0,
       max: 0,
       step: 0,
@@ -267,28 +266,28 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-speech-editor" extends="tk-string-editor">
+<polymer-element name="tk-speech-editor" extends="tk-string-editor">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-speech-editor', {
       ready: function() {
         this.$.input.setAttribute('x-webkit-speech');
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-compound-editor" extends="tk-abstract-editor">
+<polymer-element name="tk-compound-editor" extends="tk-abstract-editor">
   <template>
     <tk-string-editor style="width: 90px;"></tk-string-editor>
     <tk-select-editor style="width: 70px;" options="{{options}}"></tk-select-editor>
     <tk-range-editor style="width: 100px;"></tk-range-editor>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-compound-editor', {
       options: ['px', 'pt', '%', 'em', 'rem', '']
     });
   </script>
-</element>
+</polymer-element>
 

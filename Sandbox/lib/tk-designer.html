@@ -3,9 +3,9 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-designer" on-source-applied="sourceApplied" attributes="element selected maximized">
-  <link rel="stylesheet" href="../../../more-elements/x-tags/x-tag/demo/x-tag-components.css">
+<polymer-element name="tk-designer" on-source-applied="sourceApplied" attributes="designElement selected maximized">
   <template>
+    <link rel="stylesheet" href="../../../more-elements/x-tags/x-tag/demo/x-tag-components.css">
     <style>
       @host {
         * {
@@ -69,16 +69,17 @@ license that can be found in the LICENSE file.
     ><design-element id="designElement"></design-element></tk-canvas>
     <tk-meta id="meta" list="{{elements}}"></tk-meta>
     <tk-preview-window id="preview"></tk-preview-window>
-    <tk-publisher id="publisher" element="{{$.designElement}}"></tk-publisher>
+    <tk-publisher id="publisher" sourceElement="{{$.designElement}}"></tk-publisher>
   </template>
   <script>
-    Polymer.register(this, {
-      element: null,
+  (function() {
+    Polymer('tk-designer', {
+      designElement: null,
       selected: null,
       selectedTab: 'design',
       maximized: false,
       ready: function() {
-        this.element = this.$.canvas;
+        this.designElement = this.$.canvas;
         this.$.meta.ensureMeta(this.$.designElement);
         this.selected = this.$.designElement;
       },
@@ -94,7 +95,7 @@ license that can be found in the LICENSE file.
         this.canvasChange();
       },
       canvasChange: function() {
-        this.send('design-changed');
+        this.fire('design-changed');
       },
       createNew: function(tag) {
         var meta = this.$.meta.byId(tag);
@@ -215,8 +216,8 @@ license that can be found in the LICENSE file.
           this.selected = e;
         }
       },
-      bindProperty: function(obj, name, path) {
-        this.$.designElement.bindProperty(obj, name, path);  
+      applyPropertyBinding: function(obj, name, path) {
+        this.$.designElement.applyPropertyBinding(obj, name, path);  
       },
       applySource: function(source) {
         this.$.designElement = this.$.designElement.applySource(source);
@@ -253,5 +254,6 @@ license that can be found in the LICENSE file.
     function nodeIsEditor(node) {
       return node.isEditor || (editorElements.indexOf(node.localName) >= 0);
     }
+  })();  
   </script>
-</element>
+</polymer-element>

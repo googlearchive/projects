@@ -11,7 +11,7 @@ license that can be found in the LICENSE file.
     <script src="../../polymer/polymer.js"></script>
     <script src="game.js"></script>
 
-    <element name="g-card" attributes="tile">
+    <polymer-element name="g-card" attributes="tile">
         <link rel="stylesheet" href="card.css">
       <template>
           <div class="card {{ flipped: tile.flipped }}">
@@ -20,12 +20,12 @@ license that can be found in the LICENSE file.
           </div>
       </template>
       <script>
-        Polymer.register(this, {
+        Polymer('g-card', {
         });
       </script>
-    </element>
+    </polymer-element>
 
-    <element name="match-game">
+    <polymer-element name="match-game">
       <template>
         <style>
           div {
@@ -44,7 +44,7 @@ license that can be found in the LICENSE file.
         <div class="message">{{ game.message }}</div>
       </template>
       <script>
-        Polymer.register(this, {
+        Polymer('match-game', {
           ready: function() {
             this.game = new Game(['8-ball', 'kronos', 'baked-potato',
                                   'dinosaur', 'rocket', 'skinny-unicorn',
@@ -55,7 +55,7 @@ license that can be found in the LICENSE file.
           }
         });
       </script>
-    </element>
+    </polymer-element>
 
   </head>
 

@@ -3,23 +3,25 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-element">
+<polymer-element name="tk-element">
   <script>
+  (function() {
     var DEFAULT_PUBLISH_NAME = 'my-element';
-    Polymer.register(this, {
+    Polymer('tk-element', {
       elementAttributes: {
         name: DEFAULT_PUBLISH_NAME
       },
-      defaultSource: '<element name="' + DEFAULT_PUBLISH_NAME + '">' +
+      defaultSource: '<polymer-element name="' + DEFAULT_PUBLISH_NAME + '">' +
         '<template></template>' +
-        '<script>Polymer.register(this, {});' +
+        '<script>Polymer(\'' + DEFAULT_PUBLISH_NAME + '\', {});' +
         '</s' + 'cript>' +
-      '</element>',
+      '</polymer-element>',
       update: function() {
-        Polymer.marshalNodeReferences.call(this, this);
-        // TODO(sorvell): events...
+        // TODO(sorvell): manage dynamic updates
+        // events, node references
+        this.marshalNodeReferences(this);
       },
-      bindProperty: function(target, name, path) {
+      applyPropertyBinding: function(target, name, path) {
         if (name === 'textContent') {
           if (path) {
             target.textContent = ' ';
@@ -39,6 +41,8 @@ license that can be found in the LICENSE file.
         this.elementAttributes = parseElementAttributes(source);
         var html = tagInnerHTMLFromSource(source, 'template');
         var script = tagInnerHTMLFromSource(source, 'script').trim();
+        script = script.replace(/Polymer\('(.*)'/, 'Polymer(\'' + this.localName
+            + '\'');
         // re-define design-element with user source
         registerFromScript(this.localName, script);
         var de = document.createElement(this.localName);
@@ -53,7 +57,7 @@ license that can be found in the LICENSE file.
         requestAnimationFrame(function() {
           applyStyle(de);
           de.childrenAdded();
-          de.send('source-applied', de);
+          de.fire('source-applied', de);
         }.bind(this));
         return de;
       },
@@ -80,9 +84,9 @@ license that can be found in the LICENSE file.
     });
     
     function registerFromScript(name, script) {
-      var eltSource = '<element name="' + name + 
+      var eltSource = '<polymer-element name="' + name + 
         '" extends="tk-element">' + '<script>' + script + '</s' + 
-        'cript></element>';
+        'cript></polymer-element>';
       publisher.register(eltSource);
     }
     
@@ -91,7 +95,7 @@ license that can be found in the LICENSE file.
       // let Template do make an instance so we get bindings  
       var template = document.createElement('template');
       template.innerHTML = html;
-      node.appendChild(template.createInstance(node, 'Polymer'));;
+      node.appendChild(template.createInstance(node));;
     }
     
     // make a uniqueId in a ShadowDOM polyfill safe way.
@@ -108,7 +112,7 @@ license that can be found in the LICENSE file.
     // round-tripping *from* source
     function parseElementAttributes(source) {
       var attributes = {};
-      var match = source.match('<element([^>]*)>');
+      var match = source.match('<polymer-element([^>]*)>');
       if (match) {
         var parts = match[1].split(' ');
         parts.forEach(function(p) {
@@ -159,11 +163,12 @@ license that can be found in the LICENSE file.
     function regExpForTag(tag) {
       return new RegExp('<' + tag + '>([\\S\\s]*)<\/' + tag + '>');
     }
+  })();
   </script>  
-</element>
+</polymer-element>
 
-<element name="design-element" extends="tk-element">
+<polymer-element name="design-element" extends="tk-element">
   <script>
-    Polymer.register(this);
+    Polymer('design-element');
   </script>
-</element>
+</polymer-element>

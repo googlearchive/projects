@@ -3,7 +3,7 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<element name="tk-property-inspector" attributes="property nobind" 
+<polymer-element name="tk-property-inspector" attributes="property nobind" 
     on-editor-value-changed="valueChangedEvent">
   <template>
     <style>
@@ -57,7 +57,7 @@ license that can be found in the LICENSE file.
     <g-flip-in id="animIn" targetSelector="#container"></g-flip-in>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-property-inspector', {
       property: null,
       editor: null,
       propertyValue: null,
@@ -79,11 +79,11 @@ license that can be found in the LICENSE file.
       },
       propertyChanged: function() {
         // discover binding
-        this.binding = Polymer.getBinding(this.property.obj, 
+        this.binding = Bindings.getBinding(this.property.obj, 
             this.property.name);
         // special handling for textContent
         if (this.property.name == 'textContent') {
-          this.binding = Polymer.getBinding(this.property.obj.firstChild,
+          this.binding = Bindings.getBinding(this.property.obj.firstChild,
             this.property.name);
         }
         // discover editorTag
@@ -119,7 +119,7 @@ license that can be found in the LICENSE file.
       // for the same reason, we float our own changed event
       valueChangedEvent: function(event) {
         event.stopPropagation();
-        this.send('property-changed');
+        this.fire('property-changed');
       },
       linkTap: function() {
         // start animation
@@ -131,15 +131,15 @@ license that can be found in the LICENSE file.
         this.$.container.selected = this.bindingMode ? 1 : 0;
         this.bindingMode = !this.bindingMode;
         // we are animating, flush now
-        dirtyCheck();
+        Platform.flush();
         // ending animation
         this.$.animIn.play();
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<!--<element name="g-flip-out" extends="g-animation">
+<!--<polymer-element name="g-flip-out" extends="g-animation">
   <template>
     <g-property name="transform">
       <g-keyframe value="perspective(400px) translateZ(0px) rotateX(0deg) scale(1)"></g-keyframe>
@@ -153,9 +153,9 @@ license that can be found in the LICENSE file.
       easing: 'ease-in'
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="g-flip-in" Xextends="g-animation" extends="g-flip-out">
+<polymer-element name="g-flip-in" Xextends="g-animation" extends="g-flip-out">
   <template>
     <g-property name="transform">
       <g-keyframe value="perspective(400px) translateZ(0px) rotateY(270deg) scale(1)"></g-keyframe>
@@ -167,11 +167,11 @@ license that can be found in the LICENSE file.
       easing: 'ease-out'
     });
   </script>
-</element>-->
+</polymer-element>-->
 
- <element name="g-flip-out" extends="g-animation">
+ <polymer-element name="g-flip-out" extends="g-animation">
   <script>
-    Polymer.register(this, {
+    Polymer('g-flip-out', {
       duration: 0.2,
       fillMode: 'none',
       properties: {
@@ -186,11 +186,11 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="g-flip-in" extends="g-flip-out">
+<polymer-element name="g-flip-in" extends="g-flip-out">
   <script>
-     Polymer.register(this, {
+     Polymer('g-flip-in', {
       properties: {
         transform: [{
           easing: 'ease-out',
@@ -203,9 +203,9 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element> 
+</polymer-element> 
 
-<element name="tk-property-editor" attributes="editorTag">
+<polymer-element name="tk-property-editor" attributes="editorTag">
   <template>
     <style>
       @host {
@@ -218,7 +218,7 @@ license that can be found in the LICENSE file.
     <content></content>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-property-editor', {
       meta: null,
       metaChanged: function(type) {
         // create polymorphic editor
@@ -226,10 +226,12 @@ license that can be found in the LICENSE file.
         this.appendChild(this.editor);
         // bind propertyValue to property
         var p = this.meta.property;
-        Polymer.bindProperties(this, 'propertyValue', p.obj, p.name);
+        //Polymer.bindProperties(this, 'propertyValue', p.obj, p.name);
+        this.bindProperty('propertyValue', p.obj, p.name);
         // bind this.editor.value to propertyValue
         // (imperative form of <editor value="{{editorValue}}">)
-        Polymer.bindProperties(this.editor, 'value', this, 'propertyValue');
+        //Polymer.bindProperties(this.editor, 'value', this, 'propertyValue');
+        this.editor.bindProperty('value', this, 'propertyValue');
         // update editor meta from property
         this.updateEditorMeta();
       },
@@ -241,9 +243,9 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-binding-editor" extends="tk-abstract-editor">
+<polymer-element name="tk-binding-editor" extends="tk-abstract-editor">
   <template>
     <style>
       @host {
@@ -258,7 +260,7 @@ license that can be found in the LICENSE file.
     <tk-string-editor style="width: 161px;" value="{{workingValue}}" on-editor-value-changed="editorValueChanged" ></tk-string-editor>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-binding-editor', {
       target: null,
       meta: null,
       metaChanged: function() {
@@ -296,7 +298,7 @@ license that can be found in the LICENSE file.
       commit: function() {
         this.super();
         //console.log('binding-editor.bind-property: %s - %s', this.meta.property.name, this.value);
-        this.send('bind-property', {
+        this.fire('bind-property', {
           obj: this.meta.property.obj,
           name: this.meta.property.name,
           path: this.value
@@ -304,14 +306,14 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-id-select-editor" extends="tk-select-editor">
+<polymer-element name="tk-id-select-editor" extends="tk-select-editor">
   <template>
     <shadow></shadow>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-id-select-editor', {
       root: null,
       idPrefix: '',
       metaChanged: function() {
@@ -344,22 +346,22 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-target-select-editor" extends="tk-id-select-editor">
+<polymer-element name="tk-target-select-editor" extends="tk-id-select-editor">
   <script>
-    Polymer.register(this, {
+    Polymer('tk-target-select-editor', {
       idPrefix: '#'
     });
   </script>
-</element>
+</polymer-element>
 
-<element name="tk-action-editor" extends="tk-abstract-editor">
+<polymer-element name="tk-action-editor" extends="tk-abstract-editor">
   <template>
     <button touch-action="none" on-pointerup="buttonClick">{{meta.label}}</button>
   </template>
   <script>
-    Polymer.register(this, {
+    Polymer('tk-action-editor', {
       buttonClick: function() {
         var action = this.meta.action;
         if (this.meta.obj[action]) {
@@ -368,4 +370,4 @@ license that can be found in the LICENSE file.
       }
     });
   </script>
-</element>
+</polymer-element>
