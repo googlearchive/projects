@@ -48,6 +48,11 @@
         opacity: 0;
       }
       
+      .tile {
+        width: 25%;
+        height: 25%;
+      }
+      
     </style>
     <div class="tile {{invisible: tile.invisible}}" style="-webkit-transform: translate3d({{position.left}}px, {{position.top}}px, 0);">
       <div id="inner" class="{{winner: tile.winner}}">{{tile.position + 1}}</div>
@@ -61,8 +66,10 @@
         var i = {};
         this.fire('request-tile-metrics', i);
         var m = this.metrics = i.metrics;
-        this.$.style.textContent += '.tile { width: ' + m.width + 
-            '%;\n height: ' + m.height + '%;\n}';
+        if (this.$.style) {
+          this.$.style.textContent += '.tile { width: ' + m.width + 
+              '%;\n height: ' + m.height + '%;\n}';
+        }
         this.binding = observePaths(this, 'tile.col tile.row',
             this.updatePosition.bind(this));
       },
@@ -81,25 +88,26 @@
       var observer = new CompoundBinding(function(values) {
         callback(values, calcOldValues(observer));
       });
-      var paths = pathsString.split(' ');
+      var paths = pathsString.split(' '), used = [];
       paths.forEach(function(path) {
-        observer.bind(nameForPath(observer, path), model, path);
+        observer.bind(nameForPath(used, path), model, path);
       });
       return observer;
     }
     
-    function nameForPath(binding, path) {
+    function nameForPath(usedPaths, path) {
       var pathName = path, k=0;
-      while (Object.keys(binding.bindings).indexOf(pathName) >= 0) {
+      while (usedPaths.indexOf(pathName) >= 0) {
         pathName = path + ++k;
       }
+      usedPaths.push(pathName);
       return pathName;
     }
     
     function calcOldValues(binding) {
       var values = {};
-      Object.keys(binding.bindings).forEach(function(k) {
-        values[k] = binding.bindings[k].oldValue;
+      Object.keys(binding.observers).forEach(function(k) {
+        values[k] = binding.observers[k].oldValue;
       });
       return values;
     }
