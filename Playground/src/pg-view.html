@@ -1,0 +1,88 @@
+<!--
+/*
+ * Copyright 2013 The Polymer Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+-->
+
+<link rel="import" href="../../../polymer-elements/polymer-collapse/polymer-collapse.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
+<link rel="import" href="../../../more-elements/Ace/Ace.html">
+<link rel="import" href="pg-output.html">
+
+<polymer-element name="pg-view" attributes="meta hideTitle">
+  <template>
+    <link rel="stylesheet" href="css/pg-view.css">
+    <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
+    <polymer-ui-toolbar>
+      <button class="toolbar-button" on-tap="run">Run</button>
+      <div hidden?="{{hideTitle}}">{{meta.label}}</div>
+    </polymer-ui-toolbar>
+    <div id="stage" class="flexbox" flex>
+      <polymer-collapse targetId="ace" horizontal fixedSize closed="{{maximized}}"></polymer-collapse>
+      <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2"></ajaxorg-ace>
+      <polymer-ui-splitter direction="left" locked="{{maximized}}" on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" on-trackend="splitterDragEnd"></polymer-ui-splitter>
+      <div class="flexbox column" flex>
+        <polymer-ui-toolbar theme="polymer-ui-light-theme">
+          <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
+          <div>Output</div>
+        </polymer-ui-toolbar>
+        <pg-output id="output" flex html="{{source}}"></pg-output>
+      </div>
+    </div>
+  </template>
+  <script>
+    Polymer('pg-view', {
+      hideTitle: false,
+      maximized: false,
+      ready: function() {
+        this.classList.add('flexbox', 'column');
+        this.maximizedChanged();
+      },
+      toggleMaximized: function() {
+        this.maximized = !this.maximized;
+      },
+      maximizedChanged: function() {
+        this.arrowImageSrc = this.resolvePath('images/arrow_' + 
+            (this.maximized ? 'right' : 'left')  + '.png');
+        if (!this.maximized) {
+          // ace doesn't render its editor content if it's size 0
+          // so here we force ace to render after it's not collapsed
+          this.asyncMethod(function() {
+            this.$.ace.editor.renderer.updateText();
+          });
+        }
+      },
+      splitterDragEnd: function() {
+        this.enableOutpuMouseEvents();
+        this.$.ace.editor.resize();
+      },
+      disableOutputMouseEvents: function() {
+        this.$.output.classList.add('pointer-none');
+      },
+      enableOutpuMouseEvents: function() {
+        this.$.output.classList.remove('pointer-none');
+      },
+      metaChanged: function() {
+        if (!this.meta) {
+          return;
+        }
+        var s = this.meta.archetype.innerHTML;
+        var n = s.match(/^\n([  \t]*)/)[1].length;
+        // remove extra spaces/indents at the beginning of each line
+        var regex = new RegExp('^[\\s]{0,' + n + '}', 'gm');
+        s = s.replace(regex, '').trim();
+        // remove emtpy string value e.g. vertical=""
+        s = s.replace(/=\"\"/g, '');
+        this.$.ace.value = s;
+        this.asyncMethod('run');
+      },
+      run: function() {
+        this.source = this.$.ace.editorValue;
+      }
+    });
+  </script>
+</polymer-element>

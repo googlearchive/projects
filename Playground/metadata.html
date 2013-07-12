@@ -410,6 +410,39 @@
   </polymer-meta>
 </polymer-meta>
 
+<polymer-meta id="pg-veiw" label="Playground Embed">
+  <template>
+    <link rel="import" href="src/pg-view.html">
+
+    <style>
+      pg-view {
+        height: 320px;
+        min-width: 800px;
+        margin-bottom: 20px;
+        border: 5px solid #4683ea;
+        border-radius: 3px;
+      }
+    </style>
+    
+    <polymer-meta id="custom">
+      <template>
+        <polymer-ui-ratings></polymer-ui-ratings>
+        <h2>Hello World</h2>
+        <polymer-ui-toggle-button></polymer-ui-toggle-button>
+      </template>
+    </polymer-meta>
+    
+    <pg-view id="custom"></pg-view>
+    
+    <script>
+      document.addEventListener('WebComponentsReady', function() {
+        var meta = document.querySelector('#custom');
+        document.querySelector('pg-view').meta = meta;
+      });
+    </script>
+  </template>
+</polymer-meta>
+
 <!-- <polymer-meta id="pg-misc" label="Misc">
   <polymer-meta label="Name Tag">
     <template>
