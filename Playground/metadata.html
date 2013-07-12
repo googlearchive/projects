@@ -424,7 +424,7 @@
       }
     </style>
     
-    <polymer-meta id="custom">
+    <polymer-meta>
       <template>
         <polymer-ui-ratings></polymer-ui-ratings>
         <h2>Hello World</h2>
@@ -432,11 +432,11 @@
       </template>
     </polymer-meta>
     
-    <pg-view id="custom"></pg-view>
+    <pg-view></pg-view>
     
     <script>
       document.addEventListener('WebComponentsReady', function() {
-        var meta = document.querySelector('#custom');
+        var meta = document.querySelector('polymer-meta');
         document.querySelector('pg-view').meta = meta;
       });
     </script>
