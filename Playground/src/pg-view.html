@@ -7,13 +7,14 @@
 -->
 
 <link rel="import" href="../../../polymer-elements/polymer-collapse/polymer-collapse.html">
+<link rel="import" href="../../../polymer-elements/polymer-media-query/polymer-media-query.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
 <link rel="import" href="pg-output.html">
 
-<polymer-element name="pg-view" attributes="meta hideTitle">
+<polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
@@ -21,10 +22,10 @@
       <button class="toolbar-button" on-tap="run">Run</button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
     </polymer-ui-toolbar>
-    <div id="stage" class="flexbox" flex>
-      <polymer-collapse targetId="ace" horizontal fixedSize closed="{{maximized}}"></polymer-collapse>
-      <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2"></ajaxorg-ace>
-      <polymer-ui-splitter direction="left" locked="{{maximized}}" on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" on-trackend="splitterDragEnd"></polymer-ui-splitter>
+    <div id="stage" class="flexbox {{vertical ? 'column' : ''}}" flex>
+      <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
+      <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}"></ajaxorg-ace>
+      <polymer-ui-splitter direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" on-trackend="splitterDragEnd"></polymer-ui-splitter>
       <div class="flexbox column" flex>
         <polymer-ui-toolbar theme="polymer-ui-light-theme">
           <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
@@ -33,21 +34,41 @@
         <pg-output id="output" flex html="{{source}}"></pg-output>
       </div>
     </div>
+    <polymer-media-query query="max-width: {{responsiveWidth}}" queryMatches="{{queryMatches}}"></polymer-media-query>
   </template>
   <script>
     Polymer('pg-view', {
+      vertical: false,
       hideTitle: false,
+      responsive: false,
+      responsiveWidth: '1000px',
+      queryMatches: false,
       maximized: false,
       ready: function() {
         this.classList.add('flexbox', 'column');
         this.maximizedChanged();
+        var meta = this.querySelector('polymer-meta');
+        if (meta) {
+          this.meta = meta;
+        }
       },
       toggleMaximized: function() {
         this.maximized = !this.maximized;
       },
+      verticalChanged: function() {
+        this.maximizedChanged();
+        this.asyncMethod(function() {
+          this.$.ace.editor.resize();
+        });
+      },
+      queryMatchesChanged: function() {
+        if (this.responsive) {
+          this.vertical = this.queryMatches;
+        }
+      },
       maximizedChanged: function() {
         this.arrowImageSrc = this.resolvePath('images/arrow_' + 
-            (this.maximized ? 'right' : 'left')  + '.png');
+            (this.maximized ? (this.vertical ? 'down' : 'right') : (this.vertical ? 'up' : 'left'))  + '.png');
         if (!this.maximized) {
           // ace doesn't render its editor content if it's size 0
           // so here we force ace to render after it's not collapsed
@@ -82,6 +103,9 @@
       },
       run: function() {
         this.source = this.$.ace.editorValue;
+        this.asyncMethod(function() {
+          this.$.ace.gotoLine(1);
+        });
       }
     });
   </script>

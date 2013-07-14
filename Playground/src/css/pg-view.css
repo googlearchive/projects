@@ -14,7 +14,16 @@ license that can be found in the LICENSE file.
 
 ajaxorg-ace#ace {
   position: relative !important;
-  width: 540px;
+}
+
+ajaxorg-ace#ace:not([vertical]) {
+	width: 540px;
+	height: auto !important;
+}
+
+ajaxorg-ace#ace[vertical] {
+	width: auto !important;
+	height: 200px;
 }
 
 pg-output {
