@@ -46,6 +46,7 @@
       maximized: false,
       ready: function() {
         this.classList.add('flexbox', 'column');
+        this.editor = this.$.ace;
         this.maximizedChanged();
         var meta = this.querySelector('polymer-meta');
         if (meta) {

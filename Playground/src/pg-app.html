@@ -6,38 +6,80 @@
  */
 -->
 
+<link rel="import" href="../../../polymer-elements/polymer-meta/polymer-meta.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon/polymer-ui-icon.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar/polymer-ui-sidebar.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu/polymer-ui-menu.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-nav-arrow/polymer-ui-nav-arrow.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
+<link rel="import" href="pg-element-meta.html">
 <link rel="import" href="pg-view.html">
 
 <polymer-element name="pg-app">
   <template>
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
     <link rel="stylesheet" href="css/pg-app.css">
-    <polymer-ui-sidebar-menu id="menu" label="Playground" selectedModel="{{selectedElement}}">
+    <polymer-ui-sidebar label="Playground">
       <polymer-ui-icon logo src="images/toolkit.svg" size="32"></polymer-ui-icon>
-      <template repeat="{{elements}}">
-        <polymer-ui-menu-item label="{{label}}" src="images/code.png">
-          <template repeat="{{subElements}}">
-            <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
+      <div id="sampleMenuContainer">
+        <polymer-ui-menu id="sampleMenu" selectedModel="{{selectedSample}}">
+          <template repeat="{{samples}}">
+            <polymer-ui-menu-item label="{{label}}" src="images/code.png">
+              <template repeat="{{samples}}">
+                <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
+              </template>
+            </polymer-ui-menu-item>
           </template>
-        </polymer-ui-menu-item>
-      </template>
-    </polymer-ui-sidebar-menu>
-    <pg-view class="flexbox column" flex hideTitle meta="{{selectedElement}}" responsive></pg-view>
-    <polymer-meta list="{{elements}}"></polymer-meta>
+        </polymer-ui-menu>
+        <polymer-ui-nav-arrow item="{{$.sampleMenu.selectedItem}}"></polymer-ui-nav-arrow>
+      </div>
+      <polymer-ui-splitter direction="up"></polymer-ui-splitter>
+      <div id="elementMenuContainer" class="flexbox column" flex>
+        <div class="element-menu-header">Imports</div>
+        <polymer-ui-menu id="elementMenu" flex selectedModel="{{selectedElement}}" on-polymer-activate="generateImport">
+          <template id="elementsTemplate" repeat="{{elements}}">
+            <polymer-ui-menu-item label="{{label}}" icon="settings">
+              <template repeat="{{elements}}">
+                <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
+              </template>
+            </polymer-ui-menu-item>
+          </template>
+        </polymer-ui-menu>
+      </div>
+    </polymer-ui-sidebar>
+    <pg-view id="view" class="flexbox column" flex hideTitle meta="{{selectedSample}}" responsive></pg-view>
+    <polymer-meta list="{{samples}}"></polymer-meta>
+    <pg-element-meta list="{{elements}}"></pg-element-meta>
   </template>
   <script>
     Polymer('pg-app', {
+      selectedSample: null,
       selectedElement: null,
       ready: function() {
         this.classList.add('flexbox');
         this.asyncMethod(function() {
-          this.$.menu.selected = 0;
+          this.$.sampleMenu.selected = 0;
         });
+      },
+      selectedSampleChanged: function() {
+        var s = this.selectedSample;
+        s.samples = Array.prototype.slice.call(s.childMetas);
       },
       selectedElementChanged: function() {
         var s = this.selectedElement;
-        s.subElements = Array.prototype.slice.call(
-            s.querySelectorAll('polymer-meta'));
+        s.elements = Array.prototype.slice.call(s.childMetas);
+        this.generateImport();
+      },
+      generateImport: function() {
+        var s = this.selectedElement;
+        var e = this.$.view.editor;
+        var t = s.importTag;
+        if (t && !e.find(t, {start: 0})) {
+          e.gotoLine(0);
+          e.editor.insert(t + '\n');
+          e.focus();
+        }
       }
     });
   </script>
