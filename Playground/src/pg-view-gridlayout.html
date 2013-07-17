@@ -13,29 +13,26 @@
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
 <link rel="import" href="pg-output.html">
+<link rel="import" href="../../../polymer-elements/polymer-grid-layout/polymer-grid-layout.html">
 
 <polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
-    <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
-    <polymer-ui-toolbar>
+    <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
+    <polymer-grid-layout id="layout" nodes="{{nodes}}" layout="{{layout}}"></polymer-grid-layout>
+    <polymer-ui-toolbar id="toolbar">
       <button class="toolbar-button" on-tap="run">Run</button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
     </polymer-ui-toolbar>
-    <div id="stage" class="flexbox {{column: vertical}}" flex>
-      <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
-      <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}"></ajaxorg-ace>
-      <polymer-ui-splitter direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 
-          on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" 
-          on-trackend="splitterDragEnd"></polymer-ui-splitter>
-      <div class="flexbox column" flex>
-        <polymer-ui-toolbar theme="polymer-ui-light-theme">
-          <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
-          <div>Output</div>
-        </polymer-ui-toolbar>
-        <pg-output id="output" flex html="{{source}}"></pg-output>
-      </div>
-    </div>
+    <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}" gridlayout></ajaxorg-ace>
+    <polymer-ui-splitter id="splitter" direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 
+        on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" 
+        on-track="splitterDrag" on-trackend="splitterDragEnd"></polymer-ui-splitter>
+    <polymer-ui-toolbar id="outputToolbar" theme="polymer-ui-light-theme">
+      <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
+      <div>Output</div>
+    </polymer-ui-toolbar>
+    <pg-output id="output" html="{{source}}"></pg-output>
     <polymer-media-query query="max-width: {{responsiveWidth}}" queryMatches="{{queryMatches}}"></polymer-media-query>
   </template>
   <script>
@@ -46,10 +43,21 @@
       responsiveWidth: '1000px',
       queryMatches: false,
       maximized: false,
+      arrangements: [[
+        [1, 1, 1],
+        [2, 3, 4],
+        [2, 3, 5]
+      ], [
+        [1],
+        [2],
+        [3],
+        [4],
+        [5]
+      ]],
       ready: function() {
-        this.classList.add('flexbox', 'column');
+        this.nodes = [this.$.toolbar, this.$.ace, this.$.splitter, this.$.outputToolbar, this.$.output];
+        this.verticalChanged();
         this.editor = this.$.ace;
-        this.maximizedChanged();
         var meta = this.querySelector('polymer-meta');
         if (meta) {
           this.meta = meta;
@@ -59,6 +67,7 @@
         this.maximized = !this.maximized;
       },
       verticalChanged: function() {
+        this.layout = this.arrangements[this.vertical ? 1 : 0];
         this.maximizedChanged();
         this.asyncMethod(function() {
           this.$.ace.editor.resize();
@@ -80,6 +89,14 @@
             this.$.ace.editor.renderer.updateText();
           });
         }
+        // relayout
+        setTimeout(function() {
+          this.$.layout.relayout();
+        }.bind(this), 400);
+      },
+      splitterDrag: function() {
+        // relayout
+        this.$.layout.relayout();
       },
       splitterDragEnd: function() {
         this.enableOutpuMouseEvents();
