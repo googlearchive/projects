@@ -18,11 +18,13 @@
 <polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
+    <link rel="stylesheet" href="css/pg-toolbar-button.css">
     <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
     <polymer-grid-layout id="layout" nodes="{{nodes}}" layout="{{layout}}"></polymer-grid-layout>
     <polymer-ui-toolbar id="toolbar">
       <button class="toolbar-button" on-tap="run">Run</button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
+      <content></content>
     </polymer-ui-toolbar>
     <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}" gridlayout></ajaxorg-ace>
     <polymer-ui-splitter id="splitter" direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 

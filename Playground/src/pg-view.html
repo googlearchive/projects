@@ -17,10 +17,12 @@
 <polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
+    <link rel="stylesheet" href="css/pg-toolbar-button.css">
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
     <polymer-ui-toolbar>
       <button class="toolbar-button" on-tap="run">Run</button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
+      <content></content>
     </polymer-ui-toolbar>
     <div id="stage" class="flexbox {{column: vertical}}" flex>
       <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>

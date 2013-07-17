@@ -14,3 +14,11 @@ license that can be found in the LICENSE file.
 pg-sidebar {
   width: 260px;
 }
+
+[hidden] {
+	display: none !important;
+}
+
+.action-title {
+	padding-left: 20px;
+}

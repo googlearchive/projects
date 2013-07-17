@@ -16,18 +16,26 @@
 <polymer-element name="pg-app">
   <template>
     <link rel="stylesheet" href="css/pg-app.css">
+    <link rel="stylesheet" href="css/pg-toolbar-button.css">
     <polymer-flex-layout></polymer-flex-layout>
     <pg-sidebar label="Playground" samples="{{samples}}" selectedSample="{{selectedSample}}" 
-        elements="{{elements}}" selectedElement="{{selectedElement}}" on-activate-element="generateImport"></pg-sidebar>
-    <pg-view id="view" flex hideTitle meta="{{selectedSample}}" responsive></pg-view>
+        elements="{{elements}}" selectedElement="{{selectedElement}}"></pg-sidebar>
+    <pg-view id="view" flex hideTitle meta="{{selectedSample}}" responsive>
+      <div hidden?="{{!selectedElement.name}}">
+        <button class="toolbar-button" on-tap="generateImport">Add Import</button>
+        <button class="toolbar-button">
+          <a target="_blank"  href="view-source:{{href}}/{{selectedElement.sourcePath}}">View Source</a>
+        </button>
+      </div>
+    </pg-view>
     <polymer-meta list="{{samples}}"></polymer-meta>
     <pg-element-meta list="{{elements}}"></pg-element-meta>
   </template>
   <script>
     Polymer('pg-app', {
       selectedElement: null,
-      selectedElementChanged: function() {
-        this.generateImport();
+      ready: function() {
+        this.href = location.href.substring(0, location.href.lastIndexOf('/'));
       },
       generateImport: function() {
         var t = this.selectedElement.importTag;
