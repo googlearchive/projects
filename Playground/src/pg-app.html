@@ -6,20 +6,21 @@
  */
 -->
 
-<link rel="import" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.html">
 <link rel="import" href="../../../polymer-elements/polymer-meta/polymer-meta.html">
 <link rel="import" href="pg-element-meta.html">
 <link rel="import" href="pg-sidebar.html">
 <link rel="import" href="pg-view.html">
 <!-- <link rel="import" href="pg-view-gridlayout.html"> -->
 
-<polymer-element name="pg-app">
+<polymer-element name="pg-app" h-flex>
   <template>
     <link rel="stylesheet" href="css/pg-app.css">
     <link rel="stylesheet" href="css/pg-toolbar-button.css">
-    <polymer-flex-layout></polymer-flex-layout>
+    <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
+    
     <pg-sidebar label="Playground" samples="{{samples}}" selectedSample="{{selectedSample}}" 
         elements="{{elements}}" selectedElement="{{selectedElement}}"></pg-sidebar>
+
     <pg-view id="view" flex hideTitle meta="{{selectedSample}}" responsive>
       <polymer-ui-toolbar hidden?="{{!selectedElement.name}}">
         <button class="toolbar-button" on-tap="generateImport">Add Import</button>
@@ -27,6 +28,7 @@
         <a class="toolbar-button" target="_blank"  href="view-source:{{href}}/{{selectedElement.sourcePath}}">View Source</a>
       </polymer-ui-toolbar>
     </pg-view>
+    
     <polymer-meta list="{{samples}}"></polymer-meta>
     <pg-element-meta list="{{elements}}"></pg-element-meta>
   </template>

@@ -14,23 +14,26 @@
 <link rel="import" href="../../../more-elements/Ace/Ace.html">
 <link rel="import" href="pg-output.html">
 
-<polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth">
+<polymer-element name="pg-view" v-flex attributes="meta vertical hideTitle responsive responsiveWidth">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
     <link rel="stylesheet" href="css/pg-toolbar-button.css">
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
+    
     <polymer-ui-toolbar>
       <button class="toolbar-button" on-tap="run">Run</button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
       <content></content>
     </polymer-ui-toolbar>
-    <div id="stage" class="flexbox {{column: vertical}}" flex>
-      <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
+    
+    <div id="stage" h-flex?="{{!vertical}}" v-flex?="{{vertical}}" flex>
       <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}"></ajaxorg-ace>
+      
       <polymer-ui-splitter direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 
           on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" 
           on-trackend="splitterDragEnd"></polymer-ui-splitter>
-      <div class="flexbox column" flex>
+          
+      <div v-flex flex>
         <polymer-ui-toolbar theme="polymer-ui-light-theme">
           <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
           <div>Output</div>
@@ -38,7 +41,9 @@
         <pg-output id="output" flex html="{{source}}"></pg-output>
       </div>
     </div>
+    
     <polymer-media-query query="max-width: {{responsiveWidth}}" queryMatches="{{queryMatches}}"></polymer-media-query>
+    <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
   </template>
   <script>
     Polymer('pg-view', {
@@ -49,7 +54,6 @@
       queryMatches: false,
       maximized: false,
       ready: function() {
-        this.classList.add('flexbox', 'column');
         this.editor = this.$.ace;
         this.maximizedChanged();
         var meta = this.querySelector('polymer-meta');

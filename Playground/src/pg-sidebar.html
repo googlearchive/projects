@@ -13,10 +13,11 @@
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-nav-arrow/polymer-ui-nav-arrow.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
 
-<polymer-element name="pg-sidebar" attributes="label samples selectedSample elements selectedElement">
+<polymer-element name="pg-sidebar" v-flex attributes="label samples selectedSample elements selectedElement">
   <template>
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
     <link rel="stylesheet" href="css/pg-sidebar.css">
+    
     <polymer-ui-sidebar label="{{label}}" flex>
       <polymer-ui-icon logo src="images/toolkit.svg" size="32"></polymer-ui-icon>
       <div id="sampleMenuContainer">
@@ -31,8 +32,10 @@
         </polymer-ui-menu>
         <polymer-ui-nav-arrow item="{{$.sampleMenu.selectedItem}}"></polymer-ui-nav-arrow>
       </div>
+      
       <polymer-ui-splitter direction="up"></polymer-ui-splitter>
-      <div id="elementMenuContainer" class="flexbox column" flex>
+      
+      <div id="elementMenuContainer" v-flex flex>
         <div class="element-menu-header">Elements</div>
         <polymer-ui-menu id="elementMenu" flex selectedModel="{{selectedElement}}" on-polymer-activate="activateElement">
           <template id="elementsTemplate" repeat="{{elements}}">
@@ -49,7 +52,6 @@
   <script>
     Polymer('pg-sidebar', {
       ready: function() {
-        this.classList.add('flexbox');
         this.asyncMethod(function() {
           this.$.sampleMenu.selected = 0;
         });

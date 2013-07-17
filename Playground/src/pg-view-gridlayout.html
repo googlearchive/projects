@@ -19,23 +19,30 @@
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
     <link rel="stylesheet" href="css/pg-toolbar-button.css">
-    <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
+    
     <polymer-grid-layout id="layout" nodes="{{nodes}}" layout="{{layout}}"></polymer-grid-layout>
+    
     <polymer-ui-toolbar id="toolbar">
       <button class="toolbar-button" on-tap="run">Run</button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
       <content></content>
     </polymer-ui-toolbar>
+    
     <ajaxorg-ace id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}" gridlayout></ajaxorg-ace>
+    
     <polymer-ui-splitter id="splitter" direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 
         on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" 
         on-track="splitterDrag" on-trackend="splitterDragEnd"></polymer-ui-splitter>
+        
     <polymer-ui-toolbar id="outputToolbar" theme="polymer-ui-light-theme">
       <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
       <div>Output</div>
     </polymer-ui-toolbar>
+    
     <pg-output id="output" html="{{source}}"></pg-output>
+    
     <polymer-media-query query="max-width: {{responsiveWidth}}" queryMatches="{{queryMatches}}"></polymer-media-query>
+    <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
   </template>
   <script>
     Polymer('pg-view', {
