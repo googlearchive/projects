@@ -100,6 +100,38 @@
   </polymer-meta>
 </polymer-meta>
 
+<polymer-meta id="polymer-grid-layout" label="Grid Layout">
+  <template>
+    <style>
+      div {
+        display: inline-block;
+        border: 3px solid lightblue;
+        padding: 20px;
+      }
+    </style>
+    
+    <polymer-grid-layout id="grid"></polymer-grid-layout>
+    
+    <div>Grid Item 1</div>
+    <div>Grid Item 2</div>
+    <div>Grid Item 3</div>
+    <div>Grid Item 4</div>
+    <div>Grid Item 5</div>
+    
+    <script>
+      document.addEventListener('WebComponentsReady', function() {
+        var grid = document.querySelector('#grid');
+        grid.nodes = document.querySelectorAll('div');
+        grid.layout = [
+          [1, 1, 1],
+          [2, 3, 4],
+          [2, 3, 5]
+        ];
+      });
+    </script>
+  </template>
+</polymer-meta>
+
 <polymer-meta id="polymer-ui-menu" label="Menu">
   <polymer-meta label="Basic">
     <template>
@@ -444,47 +476,3 @@
     </pg-view>
   </template>
 </polymer-meta>
-
-<!-- <polymer-meta id="pg-misc" label="Misc">
-  <polymer-meta label="Name Tag">
-    <template>
-      Polymer supports declarative binding of events to methods in the component.
-      It uses special on-event syntax to trigger this binding behavior.
-      <polymer-element name="x-nametag" on-click="toggleSize" attributes="name color">
-        <template>
-          <style>
-            @host {
-              * {
-                display: inline-block;
-                padding: 6px;
-                border: 1px solid #ccc;
-              }
-              
-              .large {
-                font-size: 40px;
-              }
-            }
-          </style>
-          
-          Published properties are data-bound inside of Polymer elements 
-          and accessible via MDV's {{}}. These bindings are by reference and 
-          are two-way.
-          
-          Hello! My name is <span style="color:{{color}}">{{name}}</span>
-        </template>
-        <script>
-          Polymer('x-nametag', {
-            // initial value of color is "blue"
-            color: 'blue',
-            toggleSize: function() {
-              this.classList.toggle('large');
-            }
-          });
-        </script>
-      </polymer-element>
-      
-      <x-nametag name="Joe"></x-nametag>
-      <x-nametag name="Mary" color="tomato"></x-nametag>
-    </template>
-  </polymer-meta>
-</polymer-meta> -->

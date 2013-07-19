@@ -72,15 +72,16 @@
           this.meta = meta;
         }
       },
+      resize: function() {
+        this.$.ace.editor.resize();
+      },
       toggleMaximized: function() {
         this.maximized = !this.maximized;
       },
       verticalChanged: function() {
         this.layout = this.arrangements[this.vertical ? 1 : 0];
         this.maximizedChanged();
-        this.asyncMethod(function() {
-          this.$.ace.editor.resize();
-        });
+        this.asyncMethod(this.resize);
       },
       queryMatchesChanged: function() {
         if (this.responsive) {
@@ -109,7 +110,7 @@
       },
       splitterDragEnd: function() {
         this.enableOutpuMouseEvents();
-        this.$.ace.editor.resize();
+        this.resize();
       },
       disableOutputMouseEvents: function() {
         this.$.output.classList.add('pointer-none');
@@ -129,13 +130,13 @@
         // remove emtpy string value e.g. vertical=""
         s = s.replace(/=\"\"/g, '');
         this.$.ace.value = s;
-        this.asyncMethod('run');
+        this.asyncMethod(function() {
+          this.run();
+          this.$.ace.gotoLine(1);
+        });
       },
       run: function() {
         this.source = this.$.ace.editorValue;
-        this.asyncMethod(function() {
-          this.$.ace.gotoLine(1);
-        });
       }
     });
   </script>
