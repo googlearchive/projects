@@ -5,8 +5,8 @@ license that can be found in the LICENSE file.
 -->
 <polymer-element name="tk-source" attributes="sourceElement fontSize">
   <template>
-    <ajaxorg-ace id="editor" mode="html" theme="chrome" tabSize="2"
-        fontSize="{{fontSize}}" on-editor-change="editorChange"></ajaxorg-ace>
+    <ace-element id="editor" mode="html" theme="chrome" tabSize="2"
+        fontSize="{{fontSize}}" on-editor-change="editorChange"></ace-element>
     <tk-element-dumper id="dumper"></tk-element-dumper>
   </template>
   <script>

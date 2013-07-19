@@ -13,16 +13,16 @@ license that can be found in the LICENSE file.
   }
 }
 
-ajaxorg-ace#ace:not([gridlayout]) {
+ace-element#ace:not([gridlayout]) {
   position: relative !important;
 }
 
-ajaxorg-ace#ace:not([vertical]) {
+ace-element#ace:not([vertical]) {
 	width: 540px;
 	height: auto !important;
 }
 
-ajaxorg-ace#ace[vertical] {
+ace-element#ace[vertical] {
 	width: auto !important;
 	height: 200px;
 }

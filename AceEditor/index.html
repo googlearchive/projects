@@ -15,7 +15,7 @@ license that can be found in the LICENSE file.
     <link rel="import" href="../../toolkit-ui/elements/g-menu-item.html">
     <link rel="import" href="../../toolkit-ui/elements/g-ribbon.html">
     <link rel="import" href="../../toolkit-ui/elements/g-icon-button.html">
-    <link rel="import" href="../../more-elements/Ace/Ace.html">
+    <link rel="import" href="../../more-elements/ace-element/ace-element.html">
   </head>
   <body>
     <ace-app>function foo(items) {
@@ -28,7 +28,7 @@ license that can be found in the LICENSE file.
     <polymer-element name="ace-app" extends="g-app">
       <template> 
         <style>
-          ajaxorg-ace {
+          ace-element {
             top: 60px !important;
           }
           g-panels > g-ribbon {
@@ -44,7 +44,7 @@ license that can be found in the LICENSE file.
               <g-icon-button src="images/menu.png" on-tap="toggle"></g-icon-button>
               ace.ajax.org
             </g-toolbar>
-            <ajaxorg-ace theme="github" id="ace"></ajaxorg-ace>
+            <ace-element theme="github" id="ace"></ace-element>
           </div>
         </g-panels>
       </template>
