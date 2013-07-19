@@ -6,13 +6,15 @@
  */
 -->
 
-<polymer-element name="pg-output" attributes="html launchWindow">
+<polymer-element name="pg-output" attributes="html launchWindow polymerBasePath importHref">
   <template>
     <link rel="stylesheet" href="css/pg-output.css">
   </template>
   <script>
     Polymer('pg-output', {
       launchWindow: false,
+      polymerBasePath: '../../',
+      importHref: 'elements.html',
       htmlChanged: function() {
         if (this.launchWindow) {
           this.outputToWindow();
@@ -51,10 +53,10 @@
         html += '<head>\n';
         html += head || '';
         // include base scripts and css
-        html += '<script src="../../polymer/polymer.js"></s' + 'cript>\n';
-        html += '<link rel="stylesheet" href="../../polymer-ui-elements/basic.css">\n';
+        html += '<script src="' + this.polymerBasePath + 'polymer/polymer.js"></s' + 'cript>\n';
+        html += '<link rel="stylesheet" href="' + this.polymerBasePath + 'polymer-ui-elements/basic.css">\n';
         // import elements
-        html += '<link rel="import" href="elements.html">\n';
+        html += '<link rel="import" href="' + this.importHref + '">\n';
         html += '</head>\n';
         // include content
         html += '<body class="polymer-ui-body-text">\n';

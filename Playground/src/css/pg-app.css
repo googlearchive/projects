@@ -17,6 +17,7 @@ pg-sidebar {
 
 [hidden] {
 	visibility: hidden;
+	width: 0;
 }
 
 .action-title {

@@ -11,19 +11,22 @@
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
 <link rel="import" href="../../../more-elements/ace-element/ace-element.html">
 <link rel="import" href="pg-output.html">
 <link rel="import" href="../../../polymer-elements/polymer-grid-layout/polymer-grid-layout.html">
 
-<polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth">
+<polymer-element name="pg-view" attributes="meta vertical hideTitle responsive responsiveWidth polymerBasePath importHref">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
     <link rel="stylesheet" href="css/pg-toolbar-button.css">
     
     <polymer-grid-layout id="layout" nodes="{{nodes}}" layout="{{layout}}"></polymer-grid-layout>
     
-    <polymer-ui-toolbar id="toolbar">
+    <polymer-ui-toolbar id="toolbar" class="action-bar">
       <button class="toolbar-button" on-tap="run">Run</button>
+      <div>Auto Run:</div>
+      <polymer-ui-toggle-button value="{{autoRun}}"></polymer-ui-toggle-button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
       <content></content>
     </polymer-ui-toolbar>
@@ -39,7 +42,7 @@
       <div>Output</div>
     </polymer-ui-toolbar>
     
-    <pg-output id="output" html="{{source}}"></pg-output>
+    <pg-output id="output" flex html="{{source}}" polymerBasePath="{{polymerBasePath}}" importHref="{{importHref}}"></pg-output>
     
     <polymer-media-query query="max-width: {{responsiveWidth}}" queryMatches="{{queryMatches}}"></polymer-media-query>
     <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
@@ -52,6 +55,7 @@
       responsiveWidth: '1000px',
       queryMatches: false,
       maximized: false,
+      autoRun: true,
       arrangements: [[
         [1, 1, 1],
         [2, 3, 4],
@@ -71,6 +75,7 @@
         if (meta) {
           this.meta = meta;
         }
+        this.editor.editor.on('change', this.editorChange.bind(this));
       },
       resize: function() {
         this.$.ace.editor.resize();
@@ -137,6 +142,11 @@
       },
       run: function() {
         this.source = this.$.ace.editorValue;
+      },
+      editorChange: function() {
+        if (this.autoRun) {
+          this.runJob = this.job(this.runJob, this.run.bind(this), 500);
+        }
       }
     });
   </script>

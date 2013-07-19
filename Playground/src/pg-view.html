@@ -11,17 +11,20 @@
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
 <link rel="import" href="../../../more-elements/ace-element/ace-element.html">
 <link rel="import" href="pg-output.html">
 
-<polymer-element name="pg-view" v-flex attributes="meta vertical hideTitle responsive responsiveWidth">
+<polymer-element name="pg-view" v-flex attributes="meta vertical hideTitle responsive responsiveWidth polymerBasePath importHref autoRun">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
     <link rel="stylesheet" href="css/pg-toolbar-button.css">
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
     
-    <polymer-ui-toolbar>
+    <polymer-ui-toolbar class="action-bar">
       <button class="toolbar-button" on-tap="run">Run</button>
+      <div>Auto Run:</div>
+      <polymer-ui-toggle-button value="{{autoRun}}"></polymer-ui-toggle-button>
       <div hidden?="{{hideTitle}}">{{meta.label}}</div>
       <content></content>
     </polymer-ui-toolbar>
@@ -38,7 +41,7 @@
           <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
           <div>Output</div>
         </polymer-ui-toolbar>
-        <pg-output id="output" flex html="{{source}}"></pg-output>
+        <pg-output id="output" flex html="{{source}}" polymerBasePath="{{polymerBasePath}}" importHref="{{importHref}}"></pg-output>
       </div>
     </div>
     
@@ -53,6 +56,7 @@
       responsiveWidth: '1000px',
       queryMatches: false,
       maximized: false,
+      autoRun: false,
       ready: function() {
         this.editor = this.$.ace;
         this.maximizedChanged();
@@ -60,6 +64,7 @@
         if (meta) {
           this.meta = meta;
         }
+        this.editor.editor.on('change', this.editorChange.bind(this));
       },
       resize: function() {
         this.$.ace.editor.resize();
@@ -117,6 +122,11 @@
       },
       run: function() {
         this.source = this.$.ace.editorValue;
+      },
+      editorChange: function() {
+        if (this.autoRun) {
+          this.runJob = this.job(this.runJob, this.run.bind(this), 500);
+        }
       }
     });
   </script>

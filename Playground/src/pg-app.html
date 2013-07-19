@@ -21,8 +21,8 @@
     <pg-sidebar label="Playground" samples="{{samples}}" selectedSample="{{selectedSample}}" 
         elements="{{elements}}" selectedElement="{{selectedElement}}"></pg-sidebar>
 
-    <pg-view id="view" flex hideTitle meta="{{selectedSample}}" responsive>
-      <polymer-ui-toolbar hidden?="{{!selectedElement.name}}">
+    <pg-view id="view" flex hideTitle meta="{{selectedSample}}" responsive autoRun>
+      <polymer-ui-toolbar id="actionbar" hidden?="{{!selectedElement.name}}">
         <button class="toolbar-button" on-tap="generateImport">Add Import</button>
         <button class="toolbar-button" on-tap="generateElement">Add Element</button>
         <a class="toolbar-button" target="_blank"  href="view-source:{{href}}/{{selectedElement.sourcePath}}">View Source</a>
