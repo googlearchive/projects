@@ -63,14 +63,14 @@ license that can be found in the LICENSE file.
       }
       .popup {
         padding: 20px;
-        border: 1px solid #000;
+        border: 2px solid #000;
         background: lightyellow;
         max-width: 800px;
         max-height: 800px;
       }
       blink {
         color: red;
-        font-size: 40px;
+        font-size: 30px;
       }
     </style>
   </head>
@@ -81,12 +81,11 @@ license that can be found in the LICENSE file.
     <table class="unsupported" height="100%" width="100%" border="1">
       <td align="center" valign="center">
         <div class="popup">
-          <blink>Uh Oh!</blink><br><br>
-          <span>Polymer is still in an experimental stage, and only supports <a href="http://tomdale.net/2013/05/evergreen-browsers/">modern browsers</a>.</span><br>
-          <span>We haven’t had a chance to test the Sandbox on your browser,</span><br>
-          <span>so certain things may not work!</span>
+          <blink>Just a heads up...</blink><br><br>
+          <span>Polymer is still in early days and only supports <a href="http://tomdale.net/2013/05/evergreen-browsers/">modern browsers</a>.</span><br>
+          <span>We haven’t really tested Sandbox on your browser yet, and some (or all) things may not work!</span>
           <br><br>
-          <button onclick="location.search += (location.search.length ? '&' : '') + 'force';">Proceed Anyways</button>
+          <button onclick="location.search += (location.search.length ? '&' : '') + 'force';">I'm Feeling Brave!</button>
         </div>
       </td>
     </table>
