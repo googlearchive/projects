@@ -23,9 +23,9 @@
     
     <polymer-ui-toolbar class="action-bar">
       <button class="toolbar-button" on-tap="run">Run</button>
-      <div>Auto Run:</div>
+      <div class="action-bar-label">Auto Run:</div>
       <polymer-ui-toggle-button value="{{autoRun}}"></polymer-ui-toggle-button>
-      <div hidden?="{{hideTitle}}">{{meta.label}}</div>
+      <div class="action-bar-label" hidden?="{{hideTitle}}">{{meta.label}}</div>
       <content></content>
     </polymer-ui-toolbar>
     

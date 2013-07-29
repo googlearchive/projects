@@ -13,8 +13,8 @@ license that can be found in the LICENSE file.
   }
 }
 
-.action-bar {
-	padding: 0 8px;
+.action-bar-label {
+	padding: 0 10px;
 }
 
 ace-element#ace:not([gridlayout]) {

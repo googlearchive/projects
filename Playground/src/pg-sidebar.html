@@ -56,13 +56,15 @@
           this.$.sampleMenu.selected = 0;
         });
       },
-      selectedSampleChanged: function() {
-        var s = this.selectedSample;
-        s.samples = Array.prototype.slice.call(s.childMetas);
+      samplesChanged: function() {
+        this.samples.forEach(function(s) {
+          s.samples = Array.prototype.slice.call(s.childMetas);
+        });
       },
-      selectedElementChanged: function() {
-        var s = this.selectedElement;
-        s.elements = Array.prototype.slice.call(s.childMetas);
+      elementsChanged: function() {
+        this.elements.forEach(function(s) {
+          s.elements = Array.prototype.slice.call(s.childMetas);
+        });
       },
       activateElement: function() {
         this.fire('activate-element')
