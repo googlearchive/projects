@@ -27,7 +27,8 @@ input[type=checkbox] {
 
 #main {
   position: absolute;
-  top: 101px;
+  /* top: 101px; */
+  top: 61px;
   right: 0;
   bottom: 0;
   left: 0;
