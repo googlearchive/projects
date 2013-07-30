@@ -10,10 +10,11 @@
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar/polymer-ui-sidebar.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu/polymer-ui-menu.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-submenu-item/polymer-ui-submenu-item.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-nav-arrow/polymer-ui-nav-arrow.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
 
-<polymer-element name="pg-sidebar" v-flex attributes="label samples selectedSample elements selectedElement">
+<polymer-element name="pg-sidebar" v-flexbox attributes="label samples selectedSample elements selectedElement">
   <template>
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
     <link rel="stylesheet" href="css/pg-sidebar.css">
@@ -23,11 +24,11 @@
       <div id="sampleMenuContainer">
         <polymer-ui-menu id="sampleMenu" selectedModel="{{selectedSample}}">
           <template repeat="{{samples}}">
-            <polymer-ui-menu-item label="{{label}}" src="images/code.png">
+            <polymer-ui-submenu-item label="{{label}}" src="images/code.png">
               <template repeat="{{samples}}">
                 <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
               </template>
-            </polymer-ui-menu-item>
+            </polymer-ui-submenu-item>
           </template>
         </polymer-ui-menu>
         <polymer-ui-nav-arrow item="{{$.sampleMenu.selectedItem}}"></polymer-ui-nav-arrow>
@@ -35,15 +36,15 @@
       
       <polymer-ui-splitter direction="up"></polymer-ui-splitter>
       
-      <div id="elementMenuContainer" v-flex flex>
+      <div id="elementMenuContainer" v-flexbox flex>
         <div class="element-menu-header">Elements</div>
         <polymer-ui-menu id="elementMenu" flex selectedModel="{{selectedElement}}" on-polymer-activate="activateElement">
           <template id="elementsTemplate" repeat="{{elements}}">
-            <polymer-ui-menu-item label="{{label}}" icon="settings">
+            <polymer-ui-submenu-item label="{{label}}" icon="settings">
               <template repeat="{{elements}}">
                 <polymer-ui-menu-item label="{{label}}"></polymer-ui-menu-item>
               </template>
-            </polymer-ui-menu-item>
+            </polymer-ui-submenu-item>
           </template>
         </polymer-ui-menu>
       </div>
