@@ -27,6 +27,7 @@ input[type=checkbox] {
 
 #main {
   position: absolute;
+  /* top: 101px; */
   top: 61px;
   right: 0;
   bottom: 0;
@@ -80,6 +81,16 @@ input[type=checkbox] {
   border-right: 1px solid rgba(0, 0, 0, 0.16);
   padding-right: 10px;
   margin: 0 10px;
+}
+
+#not-ide {
+  background: lightyellow;
+  box-sizing: border-box;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: center;
+  border-bottom: 1px solid lightgray;
 }
 
 #modeSelector > * {

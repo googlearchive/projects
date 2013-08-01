@@ -20,7 +20,7 @@
 <polymer-element name="pi-app" extends="g-app" on-keyup="keyupHandler">
   <template>
     <link rel="stylesheet" href="css/pi-app.css" />
-    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-select="panelSelectHandler">
+    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-g-panels-select="panelSelectHandler">
       <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" on-activate="showMain">
         <g-menu-item label="Home" src="../images/ribbon_home_lightreg.png" iconsize="32"></g-menu-item>
         <g-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="32"></g-menu-item>
