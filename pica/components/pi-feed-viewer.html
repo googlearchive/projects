@@ -14,7 +14,7 @@
   <template>
     <link rel="stylesheet" href="css/pi-feed-viewer.css" />
     <g-panels id="panels" class="feed-viewer-panels" autoselect selected="{{panel}}" transition="keyframe" 
-        on-select="panelSelected" on-canselect="panelCanSelect">
+        on-g-panels-select="panelSelected" on-g-panels-canselect="panelCanSelect">
       <pi-items-view id="topics" layout="{{topicsLayout}}" items="{{topics}}" view="topics" selected="{{topic}}"></pi-items-view>
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" view="flex" selected="{{story}}"></pi-items-view>
       <pi-story id="story" story="{{story}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
