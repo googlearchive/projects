@@ -9,8 +9,8 @@ license that can be found in the LICENSE file.
     <!-- <div id="not-ide"><b>Wait, is this an IDE or something?</b> Nope, Sandbox just makes it easy to get a feel for Polymer. It’s more of a convenience and not required to make apps using Polymer. <a href="http://polymer-project.org/faq.html" target="_blank">Read More</a></div> -->
     <g-toolbar>
       <g-selector id="modeSelector" selected="{{selectedMode}}">
-        <g-icon-button name="designer" src="assets/design.png"></g-icon-button>
-        <g-icon-button name="source" src="assets/code.png"></g-icon-button>
+        <g-icon-button id="designerIcon" name="designer"></g-icon-button>
+        <g-icon-button id="sourceIcon" name="source"></g-icon-button>
       </g-selector>
       <g-icon-button id="toggle" on-pointerdown="toggleSize" src="assets/fullscreen.png"></g-icon-button>
       <g-icon-button src="assets/ic_refresh_darkreg.png" on-tap="clearElement"></g-icon-button>
@@ -80,13 +80,10 @@ license that can be found in the LICENSE file.
             this.$[this.selectedMode].asyncMethod('shown');
           }
           // update mode icons
-          this.$.modeSelector.items.forEach(function(mode) {
-            mode.src = mode.getAttribute('src');
-          });
-          var s = this.$.modeSelector.selection;
-          var src = s.getAttribute('src');
-          var i = src.lastIndexOf('.');
-          s.src = src.substring(0, i) + '_selected' + src.substring(i);
+          this.$.designerIcon.src = this.resolvePath('assets/design' + 
+              (this.selectedMode == 'designer' ? '_selected' : '') + '.png');
+          this.$.sourceIcon.src = this.resolvePath('assets/code' + 
+            (this.selectedMode == 'source' ? '_selected' : '') + '.png');
         });
       },
       designChanged: function() {
