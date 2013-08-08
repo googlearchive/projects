@@ -1,8 +1,8 @@
-<tk-meta id="div" label="Caption" isContainer>
+<tk-meta id="g-icon-button" label="Icon Button">
   <template>
-    <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
+    <g-icon-button src="images/mail.png"></g-icon-button>
   </template>
-  <property name="textContent" kind="speech"></property>
+  <property name="src" kind="select" options="images/mail.png,images/add.png,images/comment.png,images/menu.png"></property>
 </tk-meta>
 
 <tk-meta id="g-toolbar" label="Toolbar" isContainer>
@@ -24,19 +24,23 @@
   </template>
 </tk-meta>
 
+<tk-meta id="div" label="Caption" isContainer>
+  <template>
+    <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
+  </template>
+  <property name="textContent" kind="speech"></property>
+</tk-meta>
+
+
+<!--
 <tk-meta id="tk-toolbar" label="Themed Toolbar" isContainer>
   <template>
     <tk-toolbar theme="toolbar-bg-0" style="height: 60px; right: 0px; left: 0px;"></tk-toolbar>
   </template>
   <property name="theme" kind="select" options=" ,toolbar-bg-0,toolbar-bg-1,toolbar-bg-2,toolbar-bg-3,toolbar-bg-4"></property>
 </tk-meta>
+-->
 
-<tk-meta id="g-icon-button" label="Icon Button">
-  <template>
-    <g-icon-button src="images/mail.png"></g-icon-button>
-  </template>
-  <property name="src" kind="select" options="images/mail.png,images/add.png,images/comment.png,images/menu.png"></property>
-</tk-meta>
 
 <tk-meta id="g-tabs" label="Tabs" isContainer>
   <template>
@@ -162,6 +166,15 @@
   </template>
 </tk-meta>
 
+<tk-meta id="humane-js" label="Notification">
+  <template>
+    <humane-js onclick="log()" style="border: 2px dotted gray; background-color: whitesmoke; padding: 12px;">Notification</humane-js>
+  </template>
+  <property name="theme" kind="select" options="jackedup,bigbox,boldlight,libnotify,original"></property>
+  <property name="textContent" kind="text"></property>
+</tk-meta>
+
+<!--
 <tk-meta id="ace-element" label="Ace Editor">
   <template>
     <ace-element style="border: 1px dotted silver; width: 300px; height: 200px;"></ace-element>
@@ -172,6 +185,13 @@
   <template>
     <section style="background-color: whitesmoke; border: 1px solid silver; min-width: 300px; min-height: 300px;"></section>
   </template>
+</tk-meta>
+-->
+<tk-meta id="marked-js" label="Markdown Renderer">
+  <template>
+    <marked-js text="## Markdown is Awesome\n\n* List\n* Of\n* Items\n\nExample:\n        exampleCode();\n\n__Nifty__ is a _word_."></marked-js>
+  </template>
+  <property name="text" kind="text"></property>
 </tk-meta>
 
 <tk-meta id="tk-color-editor" label="Color Editor">
@@ -193,6 +213,8 @@
   <property name="select"></property>
 </tk-meta> -->
 
+<tk-meta id="cool-clock" label="CoolClock"></tk-meta>
+
 <tk-meta id="polymer-stock" label="Stock">
   <template>
     <polymer-stock symbol="GOOG" style="background-color: #fff"></polymer-stock>
@@ -204,8 +226,6 @@
     <wu-weather style="background-color: #fff"></wu-weather>
   </template>
 </tk-meta>
-
-<tk-meta id="cool-clock" label="CoolClock"></tk-meta>
 
 <tk-meta id="g-ajax" label="Ajax">
   <template>
@@ -220,22 +240,9 @@
   </template>
 </tk-meta>
 
-<tk-meta id="humane-js" label="Notification">
-  <template>
-    <humane-js onclick="log()" style="border: 2px dotted gray; background-color: whitesmoke; padding: 12px;">Notification</humane-js>
-  </template>
-  <property name="theme" kind="select" options="jackedup,bigbox,boldlight,libnotify,original"></property>
-  <property name="textContent" kind="text"></property>
-</tk-meta>
 
+<!--
 <tk-meta id="smoothie-chart" label="Smoothie Chart"></tk-meta>
-
-<tk-meta id="marked-js" label="Markdown Renderer">
-  <template>
-    <marked-js text="## Markdown is Awesome\n\n* List\n* Of\n* Items\n\nExample:\n        exampleCode();\n\n__Nifty__ is a _word_."></marked-js>
-  </template>
-  <property name="text" kind="text"></property>
-</tk-meta>
 
 <tk-meta id="pixi-js" label="Pixi-js">
   <template>
@@ -248,7 +255,7 @@
     <iframe style="width: 400px; height: 300px;" src="http://www.goodboydigital.com/runpixierun/"></iframe>
   </template>
 </tk-meta>
-
+-->
 <!-- <tk-meta id="pi-app" label="Pica">
   <template>
     <pi-app></pi-app>
@@ -265,7 +272,7 @@
 </tk-meta>
 
 <!-- x-tags -->
-
+<!--
 <tk-meta id="x-switch" label="X-Switch" hideSubtree="true">
   <template>
     <x-switch onText="✔" offText=" "></x-switch>
@@ -309,7 +316,7 @@
   <property name="name"></property>
   <property name="label"></property>
 </tk-meta>
-
+-->
 <!-- 
 <tk-meta id="polymer-ui-icon" label="Polymer Icon">
   <template>
