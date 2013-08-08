@@ -84,13 +84,18 @@ input[type=checkbox] {
 }
 
 #not-ide {
-  background: lightyellow;
+  background: #333;
+  color: white;
   box-sizing: border-box;
   height: 40px;
   line-height: 40px;
   vertical-align: middle;
   text-align: center;
   border-bottom: 1px solid lightgray;
+}
+
+#not-ide a {
+  color: lightblue;
 }
 
 #modeSelector > * {
