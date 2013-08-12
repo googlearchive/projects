@@ -27,11 +27,14 @@ input[type=checkbox] {
 
 #main {
   position: absolute;
-  /* top: 101px; */
   top: 61px;
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+#main.banner {
+  top: 101px;
 }
 
 #designer, #source {
@@ -83,7 +86,7 @@ input[type=checkbox] {
   margin: 0 10px;
 }
 
-#not-ide {
+#notide {
   background: #333;
   color: white;
   box-sizing: border-box;
@@ -94,7 +97,11 @@ input[type=checkbox] {
   border-bottom: 1px solid lightgray;
 }
 
-#not-ide a {
+#dismiss {
+  cursor: pointer;
+}
+
+#notide a {
   color: lightblue;
 }
 
