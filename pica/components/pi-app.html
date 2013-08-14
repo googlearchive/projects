@@ -64,7 +64,7 @@
         selectedPanel: 'main',
         selectedViewPanel: '',
         selectedLayout: null,
-        ready: function() {
+        created: function() {
           this.super();
           // hydrate
           if (location.search.indexOf('hydrate') >= 0) {

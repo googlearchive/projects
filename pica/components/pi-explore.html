@@ -24,7 +24,7 @@
   <script>
     Polymer('pi-explore', {
       layout: 'list',
-      ready: function() {
+      created: function() {
         this.contentNode = document.createElement('div');
       },
       get canPrevious() {

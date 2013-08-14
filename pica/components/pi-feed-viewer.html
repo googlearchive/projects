@@ -33,7 +33,7 @@
         loading: true,
         disableTracking: false,
         feedCount: 200,
-        ready: function() {
+        created: function() {
           var mq = window.matchMedia('(max-width: 800px)');
           mq.addListener(this.layoutChange.bind(this));
           this.layoutChange(mq);
