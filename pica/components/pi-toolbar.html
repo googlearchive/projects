@@ -21,7 +21,7 @@
   <script>
     Polymer('pi-toolbar', {
       nav: 'menu',
-      ready: function() {
+      created: function() {
         this.navChanged();
       },
       navAction: function(event) {

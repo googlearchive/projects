@@ -52,10 +52,10 @@
       tiles: null,
       rows: 4,
       cols: 4,
-      ready: function() {
+      created: function() {
         this.setAttribute('touch-action', 'none');
       },
-      inserted: function() {
+      enteredDocument: function() {
         this.metrics = {
           left: this.$.board.clientWidth / this.cols,
           top: this.$.board.clientHeight / this.rows,

@@ -35,7 +35,7 @@
   <script>
     Polymer('pg-app', {
       selectedElement: null,
-      ready: function() {
+      created: function() {
         this.href = location.href.substring(0, location.href.lastIndexOf('/'));
       },
       generateImport: function() {

@@ -78,7 +78,7 @@ license that can be found in the LICENSE file.
       selected: null,
       selectedTab: 'design',
       maximized: false,
-      ready: function() {
+      created: function() {
         this.designElement = this.$.canvas;
         this.$.meta.ensureMeta(this.$.designElement);
         this.selected = this.$.designElement;

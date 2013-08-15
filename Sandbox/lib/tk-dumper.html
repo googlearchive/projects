@@ -94,7 +94,7 @@ license that can be found in the LICENSE file.
     Polymer('tk-element-dumper', {
       elementBlackList: ['style'],
       propertyBlackList: null,
-      ready: function() {
+      created: function() {
         var node = document.createElement('tk-dumper-blacklist');
         this.propertyBlackList = Object.keys(node.__proto__);
       },

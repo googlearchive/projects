@@ -13,12 +13,12 @@ license that can be found in the LICENSE file.
       properties: null,
       shouldPrepend: false,
       hideSubtree: false,
-      ready: function() {
+      created: function() {
         this.observeProperty('id');
         this.idChanged();
         this.updateProperties();
       },
-      inserted: function() {
+      enteredDocument: function() {
         this.updateProperties();
       },
       idChanged: function(inOld) {
