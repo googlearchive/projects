@@ -79,6 +79,9 @@
           this.selectedLayout = this.layout;
           this.selectedViewPanel = 'topics';
         },
+        enteredDocument: function() {
+          this.super();
+        },
         screenSizeChange: function(query) {
           if (query.matches && this.selectedLayout === 'quilt') {
             // use stream layout if user select quilt and screen size is small

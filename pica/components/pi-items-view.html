@@ -58,6 +58,8 @@
         pageSize: 24,
         created: function() {
           this.setAttribute('touch-action', 'scroll');
+        },
+        enteredDocument: function() {
           this.updateMoreShowing();
         },
         loadedChanged: function() {
