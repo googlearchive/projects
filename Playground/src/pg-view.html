@@ -46,7 +46,7 @@
     </div>
     
     <polymer-media-query query="max-width: {{responsiveWidth}}" queryMatches="{{queryMatches}}"></polymer-media-query>
-    <polymer-collapse targetId="ace" horizontal={{!vertical}} fixedSize closed="{{maximized}}"></polymer-collapse>
+    <polymer-collapse target="{{$.ace}}" horizontal={{!vertical}} fixedSize size="{{vertical ? '200px' : '540px'}}" closed="{{maximized}}"></polymer-collapse>
   </template>
   <script>
     Polymer('pg-view', {
