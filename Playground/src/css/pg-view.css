@@ -22,11 +22,13 @@ ace-element#ace:not([gridlayout]) {
 }
 
 ace-element#ace:not([vertical]) {
+	width: 540px;
 	height: auto !important;
 }
 
 ace-element#ace[vertical] {
 	width: auto !important;
+	height: 200px;
 }
 
 pg-output {
