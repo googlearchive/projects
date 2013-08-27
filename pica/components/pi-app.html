@@ -5,11 +5,9 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-app.html"/>
 <link rel="import" href="../../../toolkit-ui/elements/g-panels.html"/>
 <link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html"/>
 <link rel="import" href="../../../toolkit-ui/elements/g-ribbon.html"/>
-<link rel="import" href="../../../polymer-elements/polymer-animation/web-animations.html">
 <link rel="import" href="pi-toolbar.html"/>
 <link rel="import" href="pi-toolbar-buttons.html"/>
 <link rel="import" href="pi-feed-viewer.html"/>
@@ -17,7 +15,7 @@
 <link rel="import" href="pi-home.html"/>
 <link rel="import" href="pi-accounts.html"/>
 <link rel="import" href="pi-accounts-model.html"/>
-<polymer-element name="pi-app" extends="g-app" on-keyup="keyupHandler">
+<polymer-element name="pi-app" on-keyup="keyupHandler">
   <template>
     <link rel="stylesheet" href="css/pi-app.css" />
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-g-panels-select="panelSelectHandler">
