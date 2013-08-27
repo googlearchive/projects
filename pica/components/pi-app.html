@@ -18,12 +18,14 @@
 <polymer-element name="pi-app" on-keyup="keyupHandler">
   <template>
     <link rel="stylesheet" href="css/pi-app.css" />
-    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-g-panels-select="panelSelectHandler">
+    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-g-panels-select="panelSelectAction">
       <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" on-activate="showMain">
-        <g-menu-item label="Home" src="../images/ribbon_home_lightreg.png" iconsize="32"></g-menu-item>
-        <g-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="32"></g-menu-item>
-        <g-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png" iconsize="32"></g-menu-item>
-        <g-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png" iconsize="32"></g-menu-item>
+        <template if="{{activatedPanels.ribbon}}">
+          <g-menu-item label="Home" src="../images/ribbon_home_lightreg.png" iconsize="32"></g-menu-item>
+          <g-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="32"></g-menu-item>
+          <g-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png" iconsize="32"></g-menu-item>
+          <g-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png" iconsize="32"></g-menu-item>
+        </template>
       </g-ribbon>
       <div id="main" on-tap="showMain">
         <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideActionbar="{{hideActionbar}}" on-nav-action="navAction">
@@ -33,21 +35,17 @@
           <g-icon-button src="../images/refresh.png" on-tap="reloadAction"></g-icon-button>
         </pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" transition="none" hideActionbar="{{hideActionbar}}">
-          <div id="Home" on-ready="homeReadyHandler">
-            <div class="panel-loading"></div>
-            <template dehydrated>
+          <div id="Home"><template if="{{activatedPanels.Home}}">
               <pi-home stocks="{{$.accountsModel.stocks}}"></pi-home>
-            </template>
-          </div>
+          </template></div>
           <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedViewPanel}}" 
               layout="{{layout}}" topicsLayout="grid" story="{{story}}"></pi-feed-viewer>
-          <pi-explore id="Explore" panel="{{selectedViewPanel}}"></pi-explore>
-          <div id="Accounts" on-ready="accountsReadyHandler">
-            <div class="panel-loading"></div>
-            <template dehydrated>
+          <div id="Explore"><template if="{{activatedPanels.Explore}}">
+            <pi-explore panel="{{selectedViewPanel}}"></pi-explore>
+          </template></div>
+          <div id="Accounts"><template if="{{activatedPanels.Accounts}}">
               <pi-accounts accounts="{{$.accountsModel}}"></pi-accounts>
-            </template>
-          </div>
+          </template></div>
         </g-panels>
       </div>
     </g-panels>
@@ -63,12 +61,7 @@
         selectedViewPanel: '',
         selectedLayout: null,
         created: function() {
-          this.super();
-          // hydrate
-          if (location.search.indexOf('hydrate') >= 0) {
-            this.hydrate(this.$.Home);
-            this.hydrate(this.$.Accounts);
-          }
+          this.activatedPanels = {};
           // listen for screen size change
           var mq = window.matchMedia('(max-width: 800px)');
           mq.addListener(this.screenSizeChange.bind(this));
@@ -129,24 +122,11 @@
           }
         },
         // instantiate lazy content
-        panelSelectHandler: function(e) {
-          if (e.target === this.$.panels) {
-            this.hydrate(this.getSelectedContentPanel());
+        panelSelectAction: function(e) {
+          if (e.target.selected) {
+            this.activatedPanels[e.target.selected] = true;
           }
         },
-        // instantiate dehydrated templates inside this nodes
-        hydrate: function(node) {
-          if (!node.hydrated) {
-            node.hydrated = true;
-            var t = node.querySelector('[dehydrated]');
-            if (t) {
-               t.bind('bind', this);
-               dirtyCheck();
-            }
-          }
-        },
-        // TODO(sorvell): since we cannot do proper property bindings dynamically
-        // we assign data to dynamic components as they become ready.
         accountsReadyHandler: function(e) {
           this.$.Accounts.classList.add('ready');
         },

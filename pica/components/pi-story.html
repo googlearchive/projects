@@ -8,19 +8,21 @@
 <polymer-element name="pi-story" attributes="story">
   <template>
     <link rel="stylesheet" href="css/pi-story.css" />
-    <div class="main" touch-action="pan-y">
-      <div class="body">
-        <div class="title">{{story.title}}</div>
-        <div class="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
-        <div id="content" class="content"></div>
+    <template if="{{story}}">
+      <div class="main" touch-action="pan-y">
+        <div class="body">
+          <div class="title">{{story.title}}</div>
+          <div class="author">by {{story.author}} on {{story.publishedLocaleDate}}</div>
+          <div id="content" class="content"></div>
+        </div>
       </div>
-    </div>
-    <div class="source-bar">
-      <div class="source-icon" style="background-image: url({{story.sourceIcon}});"></div>
-      <div class="source-title">{{story.source}}
-        <span class="source-time">{{story.since}}</span>
+      <div class="source-bar">
+        <div class="source-icon" style="background-image: url({{story.sourceIcon}});"></div>
+        <div class="source-title">{{story.source}}
+          <span class="source-time">{{story.since}}</span>
+        </div>
       </div>
-    </div>
+    </template>
   </template>
   <script>
     Polymer('pi-story', {
