@@ -72,6 +72,7 @@
         }
         this.binding = observePaths(this, 'tile.col tile.row',
             this.updatePosition.bind(this));
+        this.updatePosition();
       },
       updatePosition: function() {
         this.position = {
@@ -85,32 +86,18 @@
       if (!callback) {
         return;
       }
-      var observer = new CompoundBinding(function(values) {
-        callback(values, calcOldValues(observer));
-      });
-      var paths = pathsString.split(' '), used = [];
+      var valueFn = function(values) {
+        return values[0] * model.tile.cols + values[1];
+      };
+      var observer = new CompoundPathObserver(callback, undefined, undefined, valueFn);
+      var paths = pathsString.split(' ');
       paths.forEach(function(path) {
-        observer.bind(nameForPath(used, path), model, path);
+        observer.addPath(model, path);
       });
+      observer.start();
       return observer;
     }
     
-    function nameForPath(usedPaths, path) {
-      var pathName = path, k=0;
-      while (usedPaths.indexOf(pathName) >= 0) {
-        pathName = path + ++k;
-      }
-      usedPaths.push(pathName);
-      return pathName;
-    }
-    
-    function calcOldValues(binding) {
-      var values = {};
-      Object.keys(binding.observers).forEach(function(k) {
-        values[k] = binding.observers[k].oldValue;
-      });
-      return values;
-    }
   })();
   </script>
 </polymer-element>
