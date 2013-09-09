@@ -18,7 +18,7 @@
         font-size: 100px;
         line-height: 200px;
       }
-      
+
       #inner {
         position: absolute;
         top: 4px;
@@ -32,7 +32,7 @@
         vertical-align: middle;
         opacity: 1;
       }
-      
+
       #inner.winner {
         top: 0;
         right: 0;
@@ -42,24 +42,24 @@
         border-radius: 0;
         background: lightseagreen;
       }
-      
+
       .invisible {
         visibility: hidden;
         opacity: 0;
       }
-      
+
       .tile {
         width: 25%;
         height: 25%;
       }
-      
+
     </style>
     <div class="tile {{invisible: tile.invisible}}" style="-webkit-transform: translate3d({{position.left}}px, {{position.top}}px, 0);">
       <div id="inner" class="{{winner: tile.winner}}">{{tile.position + 1}}</div>
     </div>
   </template>
   <script>
-  (function() { 
+  (function() {
     Polymer('arrange-game-tile', {
       tile: null,
       enteredDocument: function() {
@@ -67,12 +67,11 @@
         this.fire('request-tile-metrics', i);
         var m = this.metrics = i.metrics;
         if (this.$.style) {
-          this.$.style.textContent += '.tile { width: ' + m.width + 
+          this.$.style.textContent += '.tile { width: ' + m.width +
               '%;\n height: ' + m.height + '%;\n}';
         }
         this.binding = observePaths(this, 'tile.col tile.row',
             this.updatePosition.bind(this));
-        this.updatePosition();
       },
       updatePosition: function() {
         this.position = {
@@ -81,15 +80,13 @@
         }
       }
     });
-    
+
     function observePaths(model, pathsString, callback) {
       if (!callback) {
         return;
       }
-      var valueFn = function(values) {
-        return values[0] * model.tile.cols + values[1];
-      };
-      var observer = new CompoundPathObserver(callback, undefined, undefined, valueFn);
+      // abuse the [values] -> value reducer function to run the callback
+      var observer = new CompoundPathObserver(undefined, undefined, undefined, callback);
       var paths = pathsString.split(' ');
       paths.forEach(function(path) {
         observer.addPath(model, path);
@@ -97,7 +94,7 @@
       observer.start();
       return observer;
     }
-    
+
   })();
   </script>
 </polymer-element>
