@@ -8,7 +8,6 @@
 <polymer-element name="pi-story" attributes="story">
   <template>
     <link rel="stylesheet" href="css/pi-story.css" />
-    <template if="{{story}}">
       <div class="main" touch-action="pan-y">
         <div class="body">
           <div class="title">{{story.title}}</div>
@@ -22,7 +21,6 @@
           <span class="source-time">{{story.since}}</span>
         </div>
       </div>
-    </template>
   </template>
   <script>
     Polymer('pi-story', {
