@@ -14,10 +14,12 @@
     
       /* layout content using flexbox */
       display: -webkit-box;
+      display: -ms-flexbox;
       display: -webkit-flex;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-flex-flow: column;
+      -ms-flex-direction: column;
       flex-direction: column;
       
       /* convenient defaults */
@@ -29,6 +31,7 @@
 #panels, #contentPanels, #Topics {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
+  -ms-flex: 1;
   flex: 1;
   overflow: hidden;
 }
@@ -46,9 +49,11 @@
 #main {
   display: -webkit-box;
   display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-flex-flow: column;
+  -ms-flex-direction: column;
   flex-direction: column;
   background: white; 
 }
