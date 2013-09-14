@@ -30,7 +30,7 @@
     </polymer-ui-toolbar>
     
     <div id="stage" h-flexbox?="{{!vertical}}" v-flexbox?="{{vertical}}" flex>
-      <ace-element id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}"></ace-element>
+      <ace-element id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}" on-editor-input="editorChange"></ace-element>
       
       <polymer-ui-splitter direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 
           on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" 
@@ -64,7 +64,6 @@
         if (meta) {
           this.meta = meta;
         }
-        this.editor.editor.on('change', this.editorChange.bind(this));
       },
       resize: function() {
         this.$.ace.editor.resize();
