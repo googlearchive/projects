@@ -27,6 +27,7 @@
       navAction: function(event) {
         this.fire('nav-action');
         event.cancelBubble = true;
+        event.stopPropagation();
       },
       navChanged: function() {
         if (this.nav) {
