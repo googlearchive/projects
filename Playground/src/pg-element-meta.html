@@ -12,6 +12,7 @@
   <script>
     Polymer('pg-element-meta', {
       type: 'element',
+      alwaysPrepare: true,
       get sourcePath() {
         if (this.parentNode && this.parentNode.path) {
           return this.parentNode.path + this.path;
