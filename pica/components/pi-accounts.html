@@ -5,9 +5,9 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html"/>
-<link rel="import" href="../../../toolkit-ui/elements/g-menu-button.html"/>
-<link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-button/polymer-ui-menu-button.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html"/>
 <link rel="import" href="pi-gfeeds.html"/>
 <polymer-element name="pi-accounts" attributes="accounts">
   <template>
@@ -21,48 +21,48 @@
       <template repeat="{{accounts.stocks}}">
         <div class="item">
           <div class="flex">{{}}</div>
-          <g-icon-button src="../images/clear.png" on-tap="removeStock"></g-icon-button>
+          <polymer-ui-icon-button icon="close" on-tap="removeStock"></polymer-ui-icon-button>
         </div>
       </template>
     </div>
     <div class="item">
       <div class="item-input-label">Symbol: </div>
       <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.png" on-tap="addStock"></g-icon-button>
+      <polymer-ui-icon-button icon="plus" on-tap="addStock"></polymer-ui-icon-button>
     </div>
     <div class="header item">Topics</div>
     <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
       <div class="item-input-label">Url: </div>
       <input id="feed" type="url" class="flex" operation="addFeed" on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.png" on-tap="addFeed"></g-icon-button>
+      <polymer-ui-icon-button icon="plus" on-tap="addFeed"></polymer-ui-icon-button>
     </div>
     <div class="item">
       <div class="item-input-label">Category: </div>
       <span class="category-select-value">{{selectedCategory}}</span>
-      <g-menu-button id="categorySelect" selected="{{selectedCategory}}" src="../images/arrow_dropdown.png">
+      <polymer-ui-menu-button id="categorySelect" selected="{{selectedCategory}}" icon="dropdown">
         <template repeat="{{accounts.categories}}">
-          <g-menu-item name="{{}}">{{}}</g-menu-item>
+          <polymer-ui-menu-item name="{{}}">{{}}</polmer-ui-menu-item>
         </template>
-      </g-menu-button>
+      </polymer-ui-menu-button>
     </div>
     <div class="item accounts-title">Add New Category</div>
     <div class="item">
       <div class="item-input-label">Name: </div>
       <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
-      <g-icon-button src="../images/add.png" on-tap="addCategory"></g-icon-button>
+      <polymer-ui-icon-button icon="plus" on-tap="addCategory"></polymer-ui-icon-button>
     </div>
     <div>
       <template repeat="{{accounts.topics}}">
         <div class="item accounts-title">
-          <g-icon class="accounts-title-icon" src="../images/folder.png"></g-icon>
+          <polymer-ui-icon class="accounts-title-icon" icon="favorite"></polymer-ui-icon>
           <div class="flex">{{title}}</div>
-          <g-icon-button src="../images/clear.png" on-tap="removeTopic"></g-icon-button>
+          <polymer-ui-icon-button icon="close" on-tap="removeTopic"></polymer-ui-icon-button>
         </div>
         <template repeat="{{feed}}">
           <div class="item">
             <div class="flex accounts-feed-title">{{title}}</div>
-            <g-icon-button src="../images/clear.png" on-tap="removeFeed"></g-icon-button>
+            <polymer-ui-icon-button icon="close" on-tap="removeFeed"></polymer-ui-icon-button>
           </div>
         </template>
       </template>

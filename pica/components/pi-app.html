@@ -6,8 +6,8 @@
  */
 -->
 <link rel="import" href="../../../toolkit-ui/elements/g-panels.html"/>
-<link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html"/>
-<link rel="import" href="../../../toolkit-ui/elements/g-ribbon.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar-menu/polymer-ui-sidebar-menu.html"/>
 <link rel="import" href="pi-toolbar.html"/>
 <link rel="import" href="pi-toolbar-buttons.html"/>
 <link rel="import" href="pi-feed-viewer.html"/>
@@ -19,20 +19,21 @@
   <template>
     <link rel="stylesheet" href="css/pi-app.css" />
     <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-g-panels-select="panelSelectAction">
-      <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" on-activate="showMain">
+      <polymer-ui-sidebar-menu id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" 
+          on-polymer-activate="showMain" theme="polymer-ui-dark-theme">
         <template if="{{activatedPanels.ribbon}}">
-          <g-menu-item label="Home" src="../images/ribbon_home_lightreg.png" iconsize="32"></g-menu-item>
-          <g-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png" iconsize="32"></g-menu-item>
-          <g-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png" iconsize="32"></g-menu-item>
-          <g-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png" iconsize="32"></g-menu-item>
+          <polymer-ui-menu-item label="Home" src="../images/ribbon_home_lightreg.png"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png"></polymer-ui-menu-item>
+          <polymer-ui-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png"></polymer-ui-menu-item>
         </template>
-      </g-ribbon>
+      </polymer-ui-sidebar-menu>
       <div id="main" on-tap="showMain">
         <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideActionbar="{{hideActionbar}}" on-nav-action="navAction">
           <pi-link-button id="linkButton" link="{{story.link}}" hidden?="{{hideLinkButton}}"></pi-link-button>
-          <pi-view-button id="viewButton" layout="{{selectedLayout}}" hidden?="{{hideViewButton}}"></pi-view-button>
-          <pi-action-button></pi-action-button>
-          <g-icon-button src="../images/refresh.png" on-tap="reloadAction"></g-icon-button>
+          <pi-view-button id="viewButton" layout="{{selectedLayout}}" halign="right" hidden?="{{hideViewButton}}"></pi-view-button>
+          <pi-action-button halign="right"></pi-action-button>
+          <polymer-ui-icon-button icon="refresh" on-tap="reloadAction"></polymer-ui-icon-button>
         </pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" transition="none" hideActionbar="{{hideActionbar}}">
           <div id="Home"><template if="{{activatedPanels.Home}}">
@@ -111,7 +112,7 @@
           var p = this.getSelectedContentPanel();
           this.toolbarLabel = p && p.canPrevious && p.topic ?
               p.topic.title : this.ribbonSelected;
-          this.nav = p && p.canPrevious ? 'back' : 'menu';
+          this.nav = p && p.canPrevious ? 'left' : 'menu';
           this.hideActionbar = this.ribbonSelected !== 'Topics';
           this.hideViewButton = this.selectedViewPanel !== 'stories';
           this.hideLinkButton = this.selectedViewPanel !== 'story';

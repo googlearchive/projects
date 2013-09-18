@@ -41,7 +41,7 @@ pi-feed-viewer#viewer {
   right: 0;
 }
 
-#searchBox > g-icon {
+#searchBox > polymer-ui-icon {
   position: absolute;
   top: 13px;
   bottom: 0;

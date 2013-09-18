@@ -5,34 +5,26 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html"/>
-<link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html"/>
 <polymer-element name="pi-toolbar" attributes="label nav hideActionbar">
   <template>
     <link rel="stylesheet" href="css/pi-toolbar.css" />
-    <g-toolbar>
-      <g-icon-button src="{{navIconSrc}}" on-tap="navAction"></g-icon-button>
+    <polymer-ui-toolbar>
+      <polymer-ui-icon-button icon="{{nav}}" on-tap="navAction"></polymer-ui-icon-button>
       <div class="toolbar-label flex">{{label}}</div>
-      <g-toolbar id="actionbar" hidden?="{{hideActionbar}}" responsive="true">
+      <polymer-ui-toolbar id="actionbar" hidden?="{{hideActionbar}}" responsive>
         <content></content>
-      </g-toolbar>
-    </g-toolbar>
+      </polymer-ui-toolbar>
+    </polymer-ui-toolbar>
   </template>
   <script>
     Polymer('pi-toolbar', {
       nav: 'menu',
-      created: function() {
-        this.navChanged();
-      },
       navAction: function(event) {
         this.fire('nav-action');
         event.cancelBubble = true;
         event.stopPropagation();
-      },
-      navChanged: function() {
-        if (this.nav) {
-          this.navIconSrc = this.resolvePath('../images/' + this.nav + '.png');
-        }
       }
     });
   </script>

@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-icon.html"/>
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon/polymer-ui-icon.html"/>
 <polymer-element name="pi-items-view" attributes="layout view items selected">
   <template>
     <link rel="stylesheet" href="css/pi-items-view.css" />
@@ -33,7 +33,7 @@
         </div>
       </template>
       <div id="more" on-tap="loadMore">
-        <g-icon src="../images/refresh_lightreg.png"></g-icon>
+        <polymer-ui-icon icon="refresh" theme="polymer-ui-dark-theme"></polymer-ui-icon>
           Load more articles
       </div>
     </div>
@@ -82,7 +82,7 @@
         updateMoreShowing: function() {
           this.$.more.style.display = 
               (this.viewItems && this.viewItems.length < 
-                  (this.items && this.items.length)) ? null : 'none';
+                  (this.items && this.items.length)) ? '' : 'none';
         },
         loadMore: function() {
           var l = this.viewItems.length;

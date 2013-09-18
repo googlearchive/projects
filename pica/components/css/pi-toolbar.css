@@ -3,13 +3,18 @@
   margin: 0;
 }
 
+[hidden] {
+	visibility: hidden;
+}
+
+/*@polyfill polymer-ui-toolbar > *:not(#actionbar) */
+content::-webkit-distributed(> *) {
+  margin: 0px 8px 0 8px;
+}
+
 @media screen and (max-width: 800px) {
-  /*@polyfill #actionbar > .toolbar > *:not(:last-child):not([hidden]) */
+  /*@polyfill #actionbar > *:not(:last-child):not([hidden]) */
   #actionbar content::-webkit-distributed(*:not(:last-child):not([hidden])) {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
     -webkit-box-flex: 1;
     -webkit-flex: 1;
     -ms-flex: 1;
