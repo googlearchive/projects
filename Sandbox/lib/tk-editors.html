@@ -46,9 +46,9 @@ license that can be found in the LICENSE file.
         font: inherit;
         box-sizing: border-box;
         -moz-box-sizing: border-box;
-        -webkit-user-select: all;
+        /* -webkit-user-select: all;
         -moz-user-select: all;
-        user-select: all;
+        user-select: all; */
       }
       input:focus {
         outline: 1px solid #448afd;
@@ -200,9 +200,9 @@ license that can be found in the LICENSE file.
         padding: 6px;
         margin: 0;
         width: 95%; 
-        -webkit-user-select: all; 
+        /* -webkit-user-select: all; 
         -moz-user-select: all;
-        user-select: all;
+        user-select: all; */
         overflow: auto; 
         vertical-align: middle;
       }
@@ -217,6 +217,22 @@ license that can be found in the LICENSE file.
       commit: function() {
         this.workingValue = this.$.input.value;
         this.super();
+      }
+    });
+  </script>
+</polymer-element>
+
+<polymer-element name="tk-json-editor" extends="tk-text-editor">
+  <template>
+    <shadow></shadow>
+  </template>
+  <script>
+    Polymer('tk-json-editor', {
+      workingValueChanged: function() {
+        this.$.input.textContent = JSON.stringify(this.workingValue);
+      },
+      format: function(value) {
+        return JSON.parse(this.workingValue);
       }
     });
   </script>
