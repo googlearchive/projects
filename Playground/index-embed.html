@@ -33,7 +33,7 @@ license that can be found in the LICENSE file.
     <script>
       document.addEventListener('WebComponentsReady', function() {
         var meta = document.querySelector('#meta');
-        document.querySelectorAll('pg-view').forEach(function(view) {
+        document.querySelectorAll('pg-view').array().forEach(function(view) {
           view.meta = meta.byId(view.id);
         });
       });
