@@ -45,7 +45,7 @@
   
   function domDone() {
     //console.timeEnd('load event');
-    //console.profile('wc');
+    console.profile('wc');
     //console.timeEnd('scripts/dom');
     //console.timeEnd('dom');
     //console.time('polymer');
@@ -61,7 +61,7 @@
   
   function elementsDone() {
     //console.timeEnd('process elements');
-    //console.profileEnd('wc');
+    console.profileEnd('wc');
   }
 
   function bootDone() {
