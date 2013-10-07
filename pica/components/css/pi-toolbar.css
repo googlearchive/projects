@@ -8,8 +8,8 @@
 }
 
 /*@polyfill polymer-ui-toolbar > *:not(#actionbar) */
-content::-webkit-distributed(> *) {
-  margin: 0px 8px 0 8px;
+content::-webkit-distributed(> *), polymer-ui-toolbar > *:not(#actionbar) {
+  margin: 0px 8px 0 8px !important;
 }
 
 @media screen and (max-width: 800px) {

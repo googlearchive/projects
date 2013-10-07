@@ -6,6 +6,7 @@
     -webkit-box-orient: vertical;
     -webkit-flex-flow: column;
     flex-direction: column;
+    height: 100%;
   }
 }
 

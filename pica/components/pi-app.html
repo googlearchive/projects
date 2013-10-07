@@ -42,7 +42,7 @@
           <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedViewPanel}}" 
               layout="{{layout}}" topicsLayout="grid" story="{{story}}"></pi-feed-viewer>
           <div id="Explore"><template if="{{activatedPanels.Explore}}">
-            <pi-explore panel="{{selectedViewPanel}}"></pi-explore>
+            <pi-explore isContentPanel panel="{{selectedViewPanel}}"></pi-explore>
           </template></div>
           <div id="Accounts"><template if="{{activatedPanels.Accounts}}">
               <pi-accounts accounts="{{$.accountsModel}}"></pi-accounts>
@@ -87,7 +87,8 @@
           this.layout = this.selectedLayout;
         },
         getSelectedContentPanel: function() {
-          return this.$.contentPanels.getSelectedPanel();
+          var p = this.$.contentPanels.getSelectedPanel();
+          return p && p.querySelector('[isContentPanel]') || p;
         },
         navAction: function() {
           var p = this.getSelectedContentPanel();
