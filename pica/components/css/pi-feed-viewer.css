@@ -5,23 +5,22 @@
  */
 @host {
   * {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+    display: block;
+    position: relative;
+    height: 100%;
   }
 }
 
 .feed-viewer-panels {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  position: relative;
+  /* override polymer-ui-pages default styles */
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .feed-viewer-panels > * {
-  background: white;
   font-size: 15px;
 }
 
