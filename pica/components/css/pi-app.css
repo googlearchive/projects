@@ -27,9 +27,9 @@
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
  }
- 
+
 [hidden] {
-  display: none;
+  visibility: hidden;
 }
 
 #panels, #contentPanels, #Topics {
@@ -38,10 +38,12 @@
   -ms-flex: 1;
   flex: 1;
   overflow: hidden;
+  height: 100%;
 }
 
 #ribbon {
   width: 260px;
+  height: 100%;
 }
 
 #ribbon.narrow-layout {
@@ -51,15 +53,25 @@
 }
 
 #main {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-flex-flow: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+	position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background: white; 
+}
+
+[tool]:not(#actionbar), polymer-ui-toolbar > * {
+  margin: 0px 8px 0 8px !important;
+}
+
+@media screen and (max-width: 800px) {
+  #actionbar > *:not(:last-child):not([hidden]) {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+  }
 }
 
 #Accounts > .panel-loading, #Home > .panel-loading {

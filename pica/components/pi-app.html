@@ -5,51 +5,55 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-panels.html"/>
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html"/>
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar-menu/polymer-ui-sidebar-menu.html"/>
-<link rel="import" href="pi-toolbar.html"/>
-<link rel="import" href="pi-toolbar-buttons.html"/>
-<link rel="import" href="pi-feed-viewer.html"/>
-<link rel="import" href="pi-explore.html"/>
-<link rel="import" href="pi-home.html"/>
-<link rel="import" href="pi-accounts.html"/>
-<link rel="import" href="pi-accounts-model.html"/>
+<link rel="import" href="../../../toolkit-ui/elements/g-panels.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-basic-app/polymer-ui-basic-app.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar-menu/polymer-ui-sidebar-menu.html">
+<link rel="import" href="pi-toolbar.html">
+<link rel="import" href="pi-toolbar-buttons.html">
+<link rel="import" href="pi-feed-viewer.html">
+<link rel="import" href="pi-explore.html">
+<link rel="import" href="pi-home.html">
+<link rel="import" href="pi-accounts.html">
+<link rel="import" href="pi-accounts-model.html">
 <polymer-element name="pi-app" on-keyup="keyupHandler">
   <template>
     <link rel="stylesheet" href="css/pi-app.css" />
-    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect on-g-panels-select="panelSelectAction">
-      <polymer-ui-sidebar-menu id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" 
-          on-polymer-activate="showMain" theme="polymer-ui-dark-theme">
-        <template if="{{activatedPanels.ribbon}}">
-          <polymer-ui-menu-item label="Home" src="../images/ribbon_home_lightreg.png"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png"></polymer-ui-menu-item>
-          <polymer-ui-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png"></polymer-ui-menu-item>
-        </template>
+    
+    <polymer-ui-basic-app3 id="panels" hideMenuButton menuActive="{{menuActive}}">
+      <polymer-ui-sidebar-menu id="ribbon" navigation offscreen="basement" class="custom-panel" label="Pica" 
+          selected="{{ribbonSelected}}" valueattr="label" on-polymer-activate="showMain" theme="polymer-ui-dark-theme">
+        <polymer-ui-menu-item label="Home" src="../images/ribbon_home_lightreg.png"></polymer-ui-menu-item>
+        <polymer-ui-menu-item label="Topics" src="../images/ribbon_topics_lightreg.png"></polymer-ui-menu-item>
+        <polymer-ui-menu-item label="Explore" src="../images/ribbon_explore_lightreg.png"></polymer-ui-menu-item>
+        <polymer-ui-menu-item label="Accounts" src="../images/ribbon_accounts_lightreg.png"></polymer-ui-menu-item>
       </polymer-ui-sidebar-menu>
-      <div id="main" on-tap="showMain">
-        <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideActionbar="{{hideActionbar}}" on-nav-action="navAction">
-          <pi-link-button id="linkButton" link="{{story.link}}" hidden?="{{hideLinkButton}}"></pi-link-button>
-          <pi-view-button id="viewButton" layout="{{selectedLayout}}" halign="right" hidden?="{{hideViewButton}}"></pi-view-button>
-          <pi-action-button halign="right"></pi-action-button>
-          <polymer-ui-icon-button icon="refresh" on-tap="reloadAction"></polymer-ui-icon-button>
-        </pi-toolbar>
-        <g-panels id="contentPanels" selected="{{ribbonSelected}}" transition="none" hideActionbar="{{hideActionbar}}">
-          <div id="Home"><template if="{{activatedPanels.Home}}">
-              <pi-home stocks="{{$.accountsModel.stocks}}"></pi-home>
-          </template></div>
-          <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedViewPanel}}" 
-              layout="{{layout}}" topicsLayout="grid" story="{{story}}"></pi-feed-viewer>
-          <div id="Explore"><template if="{{activatedPanels.Explore}}">
-            <pi-explore isContentPanel panel="{{selectedViewPanel}}"></pi-explore>
-          </template></div>
-          <div id="Accounts"><template if="{{activatedPanels.Accounts}}">
-              <pi-accounts accounts="{{$.accountsModel}}"></pi-accounts>
-          </template></div>
-        </g-panels>
-      </div>
-    </g-panels>
+
+      <polymer-ui-icon-button tool icon="{{nav}}" on-tap="navAction"></polymer-ui-icon-button>
+      <div tool class="toolbar-label flex">{{toolbarLabel}}</div>
+      <polymer-ui-toolbar id="actionbar" tool hidden?="{{hideActionbar}}" responsive>
+        <pi-link-button id="linkButton" link="{{story.link}}" hidden?="{{hideLinkButton}}"></pi-link-button>
+        <pi-view-button id="viewButton" layout="{{selectedLayout}}" halign="right" hidden?="{{hideViewButton}}"></pi-view-button>
+        <pi-action-button halign="right"></pi-action-button>
+        <polymer-ui-icon-button icon="refresh" on-tap="reloadAction"></polymer-ui-icon-button>
+      </polymer-ui-toolbar>
+
+      <g-panels id="contentPanels" main selected="{{ribbonSelected}}" transition="none"
+          on-g-panels-select="panelSelectAction" on-tap="showMain">
+        <div id="Home"><template if="{{activatedPanels.Home}}">
+            <pi-home stocks="{{$.accountsModel.stocks}}"></pi-home>
+        </template></div>
+        <pi-feed-viewer id="Topics" topics="{{$.accountsModel.topics}}" panel="{{selectedViewPanel}}"
+            layout="{{layout}}" topicsLayout="grid" story="{{story}}"></pi-feed-viewer>
+        <div id="Explore"><template if="{{activatedPanels.Explore}}">
+          <pi-explore isContentPanel panel="{{selectedViewPanel}}"></pi-explore>
+        </template></div>
+        <div id="Accounts"><template if="{{activatedPanels.Accounts}}">
+            <pi-accounts accounts="{{$.accountsModel}}"></pi-accounts>
+        </template></div>
+      </g-panels>
+    </polymer-ui-basic-app3>
+    
     <pi-accounts-model id="accountsModel"></pi-accounts-model>
   </template>
   <script>
@@ -58,7 +62,7 @@
       
       Polymer('pi-app', {
         ribbonSelected: 'Topics',
-        selectedPanel: 'main',
+        menuActive: false,
         selectedViewPanel: '',
         selectedLayout: null,
         created: function() {
@@ -93,11 +97,11 @@
         navAction: function() {
           var p = this.getSelectedContentPanel();
           if (!(p.previous && p.previous())) {
-            this.$.panels.toggleBetween('ribbon', 'main');
+            this.$.panels.menuActionTap();
           }
         },
         showMain: function() {
-          this.selectedPanel = 'main';
+          this.menuActive = false;
         },
         reloadAction: function() {
           var p = this.getSelectedContentPanel();
