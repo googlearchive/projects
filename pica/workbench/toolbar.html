@@ -11,7 +11,7 @@
   <title>toolbar</title>
   <script src="../../../polymer/polymer.js"></script>
   <link rel="import" href="../components/pi-toolbar-buttons.html"/>
-  <link rel="import" href="../components/pi-toolbar.html"/>
+  <link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html"/>
   <style>
     html, body {
       height: 100%;
@@ -23,11 +23,15 @@
   </style>
 </head>
 <body>
-  <pi-toolbar label="Topics" theme="polymer-ui-light-theme">
-    <pi-link-button id="linkButton" link="http://www.google.com"></pi-link-button>
-    <pi-view-button id="viewButton" layout="grid" halign="right"></pi-view-button>
-    <pi-action-button halign="right"></pi-action-button>
-    <polymer-ui-icon-button icon="refresh"></polymer-ui-icon-button>
-  </pi-toolbar>
+  <polymer-ui-toolbar theme="polymer-ui-light-theme">
+    <polymer-ui-icon-button icon="menu"></polymer-ui-icon-button>
+    <div flex>Topics</div>
+    <polymer-ui-toolbar responsive>
+      <pi-link-button id="linkButton" link="http://www.google.com"></pi-link-button>
+      <pi-view-button id="viewButton" layout="grid" halign="right"></pi-view-button>
+      <pi-action-button halign="right"></pi-action-button>
+      <polymer-ui-icon-button icon="refresh"></polymer-ui-icon-button>
+    </polymer-ui-toolbar>
+  </polymer-ui-toolbar>
 </body>
 </html>
