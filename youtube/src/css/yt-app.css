@@ -3,26 +3,23 @@
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
-#panels {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  min-height: 0;
-  -webkit-user-select: none;
+@host {
+  :scope {
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'open sans', sans-serif;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
 }
 
-#panels > * {
+[main] {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: white;
+  overflow: hidden;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.5);
   background: white;
-}
-
-#videoPanel {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-flex-flow: column;
-  flex-direction: column;
 }
 
 #listPanel {
@@ -38,30 +35,11 @@
   color: white;
 }
 
-#listPanel.narrow-layout {
-  left: 0;
-  right: 60px;
-  width: auto;
-}
-
-#morePanel {
-  right: 0;
-  left: auto;
-  width: 200px;
-  padding: 20px;
-  color: #EBEBEB;
-  background: #333;
-}
-
-.list {
+#list {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
   display: block;
-  /*
-  TODO(sorvell): styling changes due to tabIndex=-1 on panels
-  must isolate. Use max-height to avoid scrolling being compeltely broken.
-  */
   max-height: 100%;
   min-height: 0;
   overflow: auto;
@@ -73,7 +51,8 @@ input {
   -webkit-flex: 1;
   flex: 1;
   -webkit-appearance: none;
-  background: whitesmoke;
+  color: white;
+  background-color: transparent;
   opacity: 0.8;
   font-size: 18px;
   padding: 0 16px;
@@ -95,6 +74,6 @@ input {
   cursor: pointer;
 }
 
-.item.selected {
-  background-color: #777;
+.item.polymer-selected {
+  background-color: #000;
 }

@@ -5,50 +5,47 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../toolkit-ui/elements/g-app.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-panels.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-ajax.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-selector.html">
-<link rel="import" href="../../../more-elements/Youtube/yt-search/yt-search.html"/>
-<link rel="import" href="../../../more-elements/speech-mic/speech-mic.html"/>
-<link rel="import" href="yt-videopanel.html">
-<polymer-element name="yt-app" extends="g-app">
+<link rel="import" href="elements.html">
+<polymer-element name="yt-app" theme="polymer-ui-light-theme">
   <template>
     <link rel="stylesheet" href="css/yt-app.css">
-    <yt-search id="search" query="{{query}}"
-         list="{{list}}">
-    </yt-search>
-    <g-panels id="panels" transition="flow">
-      <section id="listPanel">
-        <g-toolbar>
-          <input value="{{query}}" autofocus></input>
-          <speech-mic transcript="{{query}}"></speech-mic>
-        </g-toolbar>
-        <g-selector class="list" on-activate="listToggle" selectedModel="{{selectedModel}}">
+    <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
+    <polymer-ui-scaffold id="panels" class="polymer-ui-fit" menuActive="{{menuActive}}" on-polymer-grid-layout="autoFocus">
+      <div id="listPanel" navigation>
+        <yt-search id="search" query="{{query}}" list="{{list}}"></yt-search>
+        <polymer-ui-toolbar theme="polymer-ui-dark-theme">
+          <input value="{{query}}" x-webkit-speech autofocus></input>
+        </polymer-ui-toolbar>
+        <polymer-selector id="list" on-polymer-activate="listActivateAction">
           <template repeat="{{list}}">
             <div class="item">{{title.$t}}</div>
           </template>
-        </g-selector>
-      </section>
-      <yt-videopanel id="videoPanel" video="{{selectedModel}}">
-        <g-icon-button class="left" touch-action="none" src="images/menu.png" on-tap="listToggle"></g-icon-button>
-        <g-icon-button src="images/grid.png" touch-action="none" on-tap="moreToggle"></g-icon-button>
-      </yt-videopanel>
-      <section id="morePanel" class="right" touch-action="none" on-tap="moreToggle">
-        More Stuff!
-      </section>
-    </g-panels>
+        </polymer-selector>
+      </div>
+      <div tool>
+        <template if="{{video}}">
+          {{video.title.$t}}
+        </template>
+      </div>
+      <yt-video  id="videoPanel" main videoEntry="{{video}}"></yt-video>
+    </polymer-ui-scaffold>
   </template>
   <script>
     Polymer('yt-app', {
       query: 'chrome commercial',
-      listToggle: function() {
-        this.$.panels.toggleBetween('listPanel', 'videoPanel');
+      menuActive: true,
+      autoFocus: function() {
+        var node = this.shadowRoot.querySelector('[autofocus]');
+        if (node) {
+          node.focus();
+        }
       },
-      moreToggle: function() {
-        this.$.panels.toggleBetween('morePanel', 'videoPanel');
+      queryChanged: function() {
+        this.$.list.selected = null;
+      },
+      listActivateAction: function() {
+        this.video = this.$.list.selectedModel;
+        this.menuActive = false;
       }
     });
   </script>
