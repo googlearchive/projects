@@ -5,7 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-basic-app/polymer-ui-basic-app.html">
+<link rel="import" href="../../../polymer-ui-elements/polymer-ui-scaffold/polymer-ui-scaffold.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-pages/polymer-ui-pages.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html">
 <link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar-menu/polymer-ui-sidebar-menu.html">
@@ -21,7 +21,7 @@
   <template>
     <link rel="stylesheet" href="css/pi-app.css">
     
-    <polymer-ui-basic-app id="panels" hideMenuButton menuActive="{{menuActive}}">
+    <polymer-ui-scaffold id="panels" hideMenuButton menuActive="{{menuActive}}">
       <polymer-ui-sidebar-menu id="ribbon" navigation offscreen="basement" class="custom-panel" label="Pica" 
           selected="{{ribbonSelected}}" valueattr="label" on-polymer-activate="showMain" theme="polymer-ui-dark-theme">
         <polymer-ui-menu-item label="Home" src="../images/ribbon_home_lightreg.png"></polymer-ui-menu-item>
@@ -53,7 +53,7 @@
             <pi-accounts accounts="{{$.accountsModel}}"></pi-accounts>
         </template></div>
       </polymer-ui-pages>
-    </polymer-ui-basic-app>
+    </polymer-ui-scaffold>
     
     <pi-accounts-model id="accountsModel"></pi-accounts-model>
   </template>
