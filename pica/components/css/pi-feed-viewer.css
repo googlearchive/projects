@@ -22,6 +22,7 @@
 
 .feed-viewer-panels > * {
   font-size: 15px;
+  background: white;
 }
 
 .feed-viewer-panels pi-items-view {
