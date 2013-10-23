@@ -38,7 +38,7 @@
       
       <div id="elementMenuContainer" v-flexbox flex>
         <div class="element-menu-header">Elements</div>
-        <polymer-ui-menu id="elementMenu" flex selectedModel="{{selectedElement}}" on-polymer-activate="activateElement">
+        <polymer-ui-menu id="elementMenu" flex selectedModel="{{selectedElement}}" on-polymer-activate="{{activateElement}}">
           <template id="elementsTemplate" repeat="{{elements}}">
             <polymer-ui-submenu-item label="{{label}}" icon="settings">
               <template repeat="{{elements}}">

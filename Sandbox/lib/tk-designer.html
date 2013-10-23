@@ -3,7 +3,7 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<polymer-element name="tk-designer" on-source-applied="sourceApplied" attributes="designElement selected maximized">
+<polymer-element name="tk-designer" on-source-applied="{{sourceApplied}}" attributes="designElement selected maximized">
   <template>
     <link rel="stylesheet" href="../../../more-elements/x-tags/x-tag/demo/x-tag-components.css">
     <style>
@@ -57,14 +57,14 @@ license that can be found in the LICENSE file.
       }
     </style>
     <tk-palette id="palette" elements="{{elements}}"
-        on-palette-drag-start="paletteDragStart"
-        on-palette-drag="paletteDrag"
-        on-palette-drag-end="paletteDragEnd"
+        on-palette-drag-start="{{paletteDragStart}}"
+        on-palette-drag="{{paletteDrag}}"
+        on-palette-drag-end="{{paletteDragEnd}}"
     ></tk-palette>
     <tk-canvas id="canvas" tabIndex="-1"
-        on-tap="canvasTap"
-        on-pointerup="canvasDrop"
-        on-keydown="canvasKeydown"
+        on-tap="{{canvasTap}}"
+        on-pointerup="{{canvasDrop}}"
+        on-keydown="{{canvasKeydown}}"
         designElement="{{$.designElement}}"
     ><design-element id="designElement"></design-element></tk-canvas>
     <tk-meta id="meta" list="{{elements}}"></tk-meta>

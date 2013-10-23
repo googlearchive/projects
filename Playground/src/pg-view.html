@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
     
     <polymer-ui-toolbar class="action-bar">
-      <button class="toolbar-button" on-tap="run">Run</button>
+      <button class="toolbar-button" on-tap="{{run}}">Run</button>
       <div class="action-bar-label">Auto Run:</div>
       <polymer-ui-toggle-button value="{{autoRun}}"></polymer-ui-toggle-button>
       <div class="action-bar-label" hidden?="{{hideTitle}}">{{meta.label}}</div>
@@ -30,15 +30,15 @@
     </polymer-ui-toolbar>
     
     <div id="stage" h-flexbox?="{{!vertical}}" v-flexbox?="{{vertical}}" flex>
-      <ace-element id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}" on-editor-input="editorChange"></ace-element>
+      <ace-element id="ace" mode="html" theme="chrome" tabSize="2" vertical?="{{vertical}}" on-editor-input="{{editorChange}}"></ace-element>
       
       <polymer-ui-splitter direction="{{vertical ? 'up' : 'left'}}" locked="{{maximized}}" 
-          on-pointerdown="disableOutputMouseEvents" on-pointerup="enableOutputMouseEvents" 
-          on-trackend="splitterDragEnd"></polymer-ui-splitter>
+          on-pointerdown="{{disableOutputMouseEvents}}" on-pointerup="{{enableOutputMouseEvents}}" 
+          on-trackend="{{splitterDragEnd}}"></polymer-ui-splitter>
           
       <div v-flexbox flex>
         <polymer-ui-toolbar theme="polymer-ui-light-theme">
-          <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="toggleMaximized"></polymer-ui-icon-button>
+          <polymer-ui-icon-button src="{{arrowImageSrc}}" on-tap="{{toggleMaximized}}"></polymer-ui-icon-button>
           <div>Output</div>
         </polymer-ui-toolbar>
         <pg-output id="output" flex html="{{source}}" polymerBasePath="{{polymerBasePath}}" importHref="{{importHref}}"></pg-output>

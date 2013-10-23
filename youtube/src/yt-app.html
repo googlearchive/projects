@@ -10,13 +10,13 @@
   <template>
     <link rel="stylesheet" href="css/yt-app.css">
     <link rel="stylesheet" href="../../../polymer-ui-elements/basic.css">
-    <polymer-ui-scaffold id="panels" class="polymer-ui-fit" menuActive="{{menuActive}}" on-polymer-grid-layout="autoFocus">
+    <polymer-ui-scaffold id="panels" class="polymer-ui-fit" menuActive="{{menuActive}}" on-polymer-grid-layout="{{autoFocus}}">
       <div id="listPanel" navigation>
         <yt-search id="search" query="{{query}}" list="{{list}}"></yt-search>
         <polymer-ui-toolbar theme="polymer-ui-dark-theme">
           <input value="{{query}}" x-webkit-speech autofocus></input>
         </polymer-ui-toolbar>
-        <polymer-selector id="list" on-polymer-activate="listActivateAction">
+        <polymer-selector id="list" on-polymer-activate="{{listActivateAction}}">
           <template repeat="{{list}}">
             <div class="item">{{title.$t}}</div>
           </template>

@@ -41,10 +41,10 @@
       }
       
     </style>
-    <header>Arrange Game <button on-tap="startGame">Restart</button></header>
+    <header>Arrange Game <button on-tap="{{startGame}}">Restart</button></header>
     <section id="board">
       <template repeat="{{tiles}}"><arrange-game-tile tile="{{}}" 
-          on-pointerdown="tileDown" on-request-tile-metrics="requestTileMetrics"></arrange-game-tile></template>
+          on-pointerdown="{{tileDown}}" on-request-tile-metrics="{{requestTileMetrics}}"></arrange-game-tile></template>
     </section>
   </template>
   <script>

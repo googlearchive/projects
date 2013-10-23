@@ -561,7 +561,7 @@ license that can be found in the LICENSE file.
 
 
 
-<polymer-element name="g-panels" attributes="transition selected index autoselect" on-keydown="keydownHandler" assetpath="../../toolkit-ui/elements/">
+<polymer-element name="g-panels" attributes="transition selected index autoselect" on-keydown="{{keydownHandler}}" assetpath="../../toolkit-ui/elements/">
 <!-- chrome 30 needs g-panels-transitions.css in controller, not global scope -->
 <template>
   <style>/*
@@ -2273,7 +2273,7 @@ license that can be found in the LICENSE file.
  *
  * Example:
  *
- *     <g-selector selected="0" on-activate="activateHandler">
+ *     <g-selector selected="0" on-activate="{{activateHandler}}">
  *       <div>Item 1</div>
  *       <div>Item 2</div>
  *       <div>Item 3</div>
@@ -2305,9 +2305,9 @@ license that can be found in the LICENSE file.
  */
 -->
 
-<!--<polymer-element name="g-selector" on-tap="activateHandler" attributes="selected selectedClass selectedModel multi valueattr notap">
+<!--<polymer-element name="g-selector" on-tap="{{activateHandler}}" attributes="selected selectedClass selectedModel multi valueattr notap">
   <template>
-    <g-selection id="selection" multi="{{multi}}" on-select="selectionSelect"></g-selection>
+    <g-selection id="selection" multi="{{multi}}" on-select="{{selectionSelect}}"></g-selection>
     <content id="items" select="*"></content>
   </template>
   <script>
@@ -2438,7 +2438,7 @@ license that can be found in the LICENSE file.
 </polymer-element>-->
 <polymer-element name="g-selector" attributes="selected multi valueattr selectedClass selectedProperty selectedItem selectedModel notap target itemsSelector activateEvent" assetpath="../../toolkit-ui/elements/">
   <template>
-    <g-selection id="selection" multi="{{multi}}" on-select="selectionSelect"></g-selection>
+    <g-selection id="selection" multi="{{multi}}" on-select="{{selectionSelect}}"></g-selection>
     <content id="items" select="*"></content>
   </template>
   <script>
@@ -2824,9 +2824,9 @@ license that can be found in the LICENSE file.
  * Example:
  *
  *     <g-toolbar>
- *       <g-icon-button src="menu.png" on-click="menuAction"></g-icon-button>
+ *       <g-icon-button src="menu.png" on-click="{{menuAction}}"></g-icon-button>
  *       <div class="flex">Title</div>
- *       <g-icon-button src="more.png" on-click="moreAction"></g-icon-button>
+ *       <g-icon-button src="more.png" on-click="{{moreAction}}"></g-icon-button>
  *     </g-toolbar>
  *
  * @class g-toolbar
@@ -3013,7 +3013,7 @@ license that can be found in the LICENSE file.
   }
 }</style>
     <g-toolbar>
-      <g-icon-button src="{{navIconSrc}}" on-tap="navAction"></g-icon-button>
+      <g-icon-button src="{{navIconSrc}}" on-tap="{{navAction}}"></g-icon-button>
       <div class="toolbar-label flex">{{label}}</div>
       <g-toolbar id="actionbar" hidden?="{{hideActionbar}}" responsive="true">
         <content></content>
@@ -3101,7 +3101,7 @@ license that can be found in the LICENSE file.
  * @param {Object} inDetail.opened the opened state
  */
 -->
-<polymer-element name="g-overlay" attributes="opened autoCloseDisabled" on-webkitanimationstart="openedAnimationStart" on-animationstart="openedAnimationStart" on-webkitanimationend="openedAnimationEnd" on-animationend="openedAnimationEnd" on-webkittransitionend="openedTransitionEnd" on-transitionend="openedTransitionEnd" on-tap="tapHandler" on-keydown="keydownHandler" assetpath="../../toolkit-ui/elements/">
+<polymer-element name="g-overlay" attributes="opened autoCloseDisabled" on-webkitanimationstart="{{openedAnimationStart}}" on-animationstart="{{openedAnimationStart}}" on-webkitanimationend="{{openedAnimationEnd}}" on-animationend="{{openedAnimationEnd}}" on-webkittransitionend="{{openedTransitionEnd}}" on-transitionend="{{openedTransitionEnd}}" on-tap="{{tapHandler}}" on-keydown="{{keydownHandler}}" assetpath="../../toolkit-ui/elements/">
 
 <template>
   <style>/*
@@ -3719,12 +3719,12 @@ container */
     transform: translateY(0);
   }
 }</style>
-    <g-icon-button id="button" touch-action="none" on-tap="toggle" src="{{src}}" active="{{opened}}"></g-icon-button>
+    <g-icon-button id="button" touch-action="none" on-tap="{{toggle}}" src="{{src}}" active="{{opened}}"></g-icon-button>
     <div responsive="{{responsive}}" valign="{{valign}}">
       <g-overlay id="overlay" class="slideup" opened="{{opened}}" modal="">
         <div class="arrow"></div>
         <div class="arrow arrow-inner"></div>
-        <g-menu id="overlayMenu" selected="{{selected}}" selectedclass="{{selectedClass}}" on-activate="toggle">
+        <g-menu id="overlayMenu" selected="{{selected}}" selectedclass="{{selectedClass}}" on-activate="{{toggle}}">
           <content select="*"></content>
         </g-menu>
       </g-overlay>
@@ -4660,7 +4660,7 @@ container */
     <div id="container" loaded="{{loaded}}" class="{{layout}} {{view}}">
       <template repeat="{{viewItems}}">
         <div class="item">
-          <div class="card" on-tap="selectItem">
+          <div class="card" on-tap="{{selectItem}}">
             <div class="image" style="background-image: url({{imgSrc}});" showing="{{imageShowing}}"></div>
             <div class="info">
               <div class="title">{{title}}
@@ -4678,7 +4678,7 @@ container */
           </div>
         </div>
       </template>
-      <div id="more" on-tap="loadMore">
+      <div id="more" on-tap="{{loadMore}}">
         <g-icon src="images/refresh_lightreg.png"></g-icon>
           Load more articles
       </div>
@@ -4995,10 +4995,10 @@ container */
   display: block;
 }
 </style>
-    <g-panels id="panels" class="feed-viewer-panels" autoselect="" selected="{{panel}}" transition="keyframe" on-g-panels-select="panelSelected" on-g-panels-canselect="panelCanSelect">
+    <g-panels id="panels" class="feed-viewer-panels" autoselect="" selected="{{panel}}" transition="keyframe" on-g-panels-select="{{panelSelected}}" on-g-panels-canselect="{{panelCanSelect}}">
       <pi-items-view id="topics" layout="{{topicsLayout}}" items="{{topics}}" view="topics" selected="{{topic}}"></pi-items-view>
       <pi-items-view id="stories" layout="{{layout}}" items="{{stories}}" view="flex" selected="{{story}}"></pi-items-view>
-      <pi-story id="story" story="{{story}}" on-flick="storyFlickHandler" on-keydown="storyKeydownHandler"></pi-story>
+      <pi-story id="story" story="{{story}}" on-flick="{{storyFlickHandler}}" on-keydown="{{storyKeydownHandler}}"></pi-story>
     </g-panels>
     <div id="loading" loading="{{loading}}"></div>
     <pi-feed-aggregator id="feeds" feed="{{topic.feed}}" count="{{feedCount}}" entries="{{stories}}" loading="{{loading}}"></pi-feed-aggregator>
@@ -5195,7 +5195,7 @@ container */
         100% {-webkit-transform: scale(1);}
       }
     </style>
-    <div id="mic" recognizing="{{recognizing}}" on-click="toggleRecognition"></div>
+    <div id="mic" recognizing="{{recognizing}}" on-click="{{toggleRecognition}}"></div>
   </template>
   <script>
     Polymer('speech-mic', {
@@ -5316,12 +5316,12 @@ pi-feed-viewer#viewer {
   left: 10px;
 }</style>
     <div id="searchBox">
-      <input id="searchInput" on-input="inputChange">
+      <input id="searchInput" on-input="{{inputChange}}">
       <g-icon src="images/search.png"></g-icon>
-      <speech-mic id="speech" on-result="speechResult"></speech-mic>
+      <speech-mic id="speech" on-result="{{speechResult}}"></speech-mic>
     </div>
     <pi-feed-viewer id="viewer" topics="{{topics}}" topic="{{topic}}" panel="{{panel}}" layout="{{layout}}" topicslayout="{{layout}}" loading="{{loading}}" disabletracking=""></pi-feed-viewer>
-    <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
+    <pi-gfeeds query="{{query}}" on-queryresponse="{{queryResponse}}" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
     Polymer('pi-explore', {
@@ -6622,28 +6622,28 @@ wu-weather {
 }</style>
     <div class="item">
       <div class="flex"></div>
-      <button class="button" on-tap="reset">Restore Defaults</button>
+      <button class="button" on-tap="{{reset}}">Restore Defaults</button>
     </div>
     <div class="header item">Finance</div>
     <div>
       <template repeat="{{accounts.stocks}}">
         <div class="item">
           <div class="flex">{{}}</div>
-          <g-icon-button src="images/clear.png" on-tap="removeStock"></g-icon-button>
+          <g-icon-button src="images/clear.png" on-tap="{{removeStock}}"></g-icon-button>
         </div>
       </template>
     </div>
     <div class="item">
       <div class="item-input-label">Symbol: </div>
-      <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler">
-      <g-icon-button src="images/add.png" on-tap="addStock"></g-icon-button>
+      <input id="symbol" autocorrect="off" operation="addStock" on-keyup="{{keyupHandler}}">
+      <g-icon-button src="images/add.png" on-tap="{{addStock}}"></g-icon-button>
     </div>
     <div class="header item">Topics</div>
     <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
       <div class="item-input-label">Url: </div>
-      <input id="feed" type="url" class="flex" operation="addFeed" on-keyup="keyupHandler">
-      <g-icon-button src="images/add.png" on-tap="addFeed"></g-icon-button>
+      <input id="feed" type="url" class="flex" operation="addFeed" on-keyup="{{keyupHandler}}">
+      <g-icon-button src="images/add.png" on-tap="{{addFeed}}"></g-icon-button>
     </div>
     <div class="item">
       <div class="item-input-label">Category: </div>
@@ -6657,25 +6657,25 @@ wu-weather {
     <div class="item accounts-title">Add New Category</div>
     <div class="item">
       <div class="item-input-label">Name: </div>
-      <input id="category" class="flex" operation="addCategory" on-keyup="keyupHandler">
-      <g-icon-button src="images/add.png" on-tap="addCategory"></g-icon-button>
+      <input id="category" class="flex" operation="addCategory" on-keyup="{{keyupHandler}}">
+      <g-icon-button src="images/add.png" on-tap="{{addCategory}}"></g-icon-button>
     </div>
     <div>
       <template repeat="{{accounts.topics}}">
         <div class="item accounts-title">
           <g-icon class="accounts-title-icon" src="images/folder.png"></g-icon>
           <div class="flex">{{title}}</div>
-          <g-icon-button src="images/clear.png" on-tap="removeTopic"></g-icon-button>
+          <g-icon-button src="images/clear.png" on-tap="{{removeTopic}}"></g-icon-button>
         </div>
         <template repeat="{{feed}}">
           <div class="item">
             <div class="flex accounts-feed-title">{{title}}</div>
-            <g-icon-button src="images/clear.png" on-tap="removeFeed"></g-icon-button>
+            <g-icon-button src="images/clear.png" on-tap="{{removeFeed}}"></g-icon-button>
           </div>
         </template>
       </template>
     </div>
-    <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="feedResponse" on-error="feedResponse"></pi-gfeeds>
+    <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="{{feedResponse}}" on-error="{{feedResponse}}"></pi-gfeeds>
   </template>
   <script>
     (function() {
@@ -6893,7 +6893,7 @@ wu-weather {
 
 
 
-<polymer-element name="pi-app" on-keyup="keyupHandler" assetpath="components/">
+<polymer-element name="pi-app" on-keyup="{{keyupHandler}}" assetpath="components/">
   <template>
     <style>/*
  * Copyright 2013 The Polymer Authors. All rights reserved.
@@ -6982,8 +6982,8 @@ wu-weather {
   }
 }
 </style>
-    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect="" on-g-panels-select="panelSelectAction">
-      <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" on-activate="showMain">
+    <g-panels id="panels" selected="{{selectedPanel}}" transition="flow" autoselect="" on-g-panels-select="{{panelSelectAction}}">
+      <g-ribbon id="ribbon" class="custom-panel" label="Pica" selected="{{ribbonSelected}}" valueattr="label" on-activate="{{showMain}}">
         <template if="{{activatedPanels.ribbon}}">
           <g-menu-item label="Home" src="images/ribbon_home_lightreg.png" iconsize="32"></g-menu-item>
           <g-menu-item label="Topics" src="images/ribbon_topics_lightreg.png" iconsize="32"></g-menu-item>
@@ -6991,12 +6991,12 @@ wu-weather {
           <g-menu-item label="Accounts" src="images/ribbon_accounts_lightreg.png" iconsize="32"></g-menu-item>
         </template>
       </g-ribbon>
-      <div id="main" on-tap="showMain">
-        <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideactionbar="{{hideActionbar}}" on-nav-action="navAction">
+      <div id="main" on-tap="{{showMain}}">
+        <pi-toolbar label="{{toolbarLabel}}" nav="{{nav}}" hideactionbar="{{hideActionbar}}" on-nav-action="{{navAction}}">
           <pi-link-button id="linkButton" link="{{story.link}}" hidden?="{{hideLinkButton}}"></pi-link-button>
           <pi-view-button id="viewButton" layout="{{selectedLayout}}" hidden?="{{hideViewButton}}"></pi-view-button>
           <pi-action-button></pi-action-button>
-          <g-icon-button src="images/refresh.png" on-tap="reloadAction"></g-icon-button>
+          <g-icon-button src="images/refresh.png" on-tap="{{reloadAction}}"></g-icon-button>
         </pi-toolbar>
         <g-panels id="contentPanels" selected="{{ribbonSelected}}" transition="none" hideactionbar="{{hideActionbar}}">
           <div id="Home"><template if="{{activatedPanels.Home}}">

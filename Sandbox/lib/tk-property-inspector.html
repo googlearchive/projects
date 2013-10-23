@@ -4,7 +4,7 @@ Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
 <polymer-element name="tk-property-inspector" attributes="property nobind" 
-    on-editor-value-changed="valueChangedEvent">
+    on-editor-value-changed="{{valueChangedEvent}}">
   <template>
     <style>
       @host {
@@ -50,10 +50,10 @@ license that can be found in the LICENSE file.
     </style>
     <div class="property-name">{{property.name}}:</div>
     <span id="container"><content></content></span>
-    <div id="iconContainer" on-click="linkTap" nodisplay="{{nobind}}">
+    <div id="iconContainer" on-click="{{linkTap}}" nodisplay="{{nobind}}">
       <g-icon id="icon" src="assets/link_dark.png" size="16"></g-icon>
     </div>  
-    <g-flip-out id="animOut" targetSelector="#container" on-complete="animOutComplete"></g-flip-out>
+    <g-flip-out id="animOut" targetSelector="#container" on-complete="{{animOutComplete}}"></g-flip-out>
     <g-flip-in id="animIn" targetSelector="#container"></g-flip-in>
   </template>
   <script>
@@ -256,9 +256,9 @@ license that can be found in the LICENSE file.
         }
       }
     </style>
-    <tk-id-select-editor id="idSelect" style="width: 112px;" options="{{elements}}" value="{{target}}" on-editor-value-changed="editorValueChanged" ></tk-id-select-editor>
+    <tk-id-select-editor id="idSelect" style="width: 112px;" options="{{elements}}" value="{{target}}" on-editor-value-changed="{{editorValueChanged}}" ></tk-id-select-editor>
     <!-- <tk-select-editor style="width: 145px;" options="{{properties}}"></tk-select-editor> -->
-    <tk-string-editor style="width: 161px;" value="{{workingValue}}" on-editor-value-changed="editorValueChanged" ></tk-string-editor>
+    <tk-string-editor style="width: 161px;" value="{{workingValue}}" on-editor-value-changed="{{editorValueChanged}}" ></tk-string-editor>
   </template>
   <script>
     Polymer('tk-binding-editor', {
@@ -359,7 +359,7 @@ license that can be found in the LICENSE file.
 
 <polymer-element name="tk-action-editor" extends="tk-abstract-editor">
   <template>
-    <button touch-action="none" on-pointerup="buttonClick">{{meta.label}}</button>
+    <button touch-action="none" on-pointerup="{{buttonClick}}">{{meta.label}}</button>
   </template>
   <script>
     Polymer('tk-action-editor', {
