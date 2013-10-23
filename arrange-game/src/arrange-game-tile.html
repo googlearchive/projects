@@ -62,7 +62,7 @@
   (function() {
     Polymer('arrange-game-tile', {
       tile: null,
-      enteredDocument: function() {
+      enteredView: function() {
         var i = {};
         this.fire('request-tile-metrics', i);
         var m = this.metrics = i.metrics;
