@@ -42,7 +42,7 @@
       var ACCOUNTS_STORAGE_NAME = 'pica-accounts-model-1';
       
       Polymer('pi-accounts-model', {
-        created: function() {
+        ready: function() {
           this.load();
         },
         addTopic: function(topic) {

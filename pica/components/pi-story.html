@@ -25,7 +25,7 @@
   <script>
     Polymer('pi-story', {
       content: '',
-      created: function() {
+      ready: function() {
         if (!this.hasAttribute('tabindex')) {
           this.tabIndex = -1;
         }
