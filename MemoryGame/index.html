@@ -45,7 +45,7 @@ license that can be found in the LICENSE file.
       </template>
       <script>
         Polymer('match-game', {
-          created: function() {
+          ready: function() {
             this.game = new Game(['8-ball', 'kronos', 'baked-potato',
                                   'dinosaur', 'rocket', 'skinny-unicorn',
                                   'that-guy', 'zeppelin']);

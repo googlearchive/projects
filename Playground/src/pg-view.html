@@ -57,7 +57,7 @@
       queryMatches: false,
       maximized: false,
       autoRun: false,
-      created: function() {
+      ready: function() {
         this.editor = this.$.ace;
         this.maximizedChanged();
         var meta = this.querySelector('polymer-meta');

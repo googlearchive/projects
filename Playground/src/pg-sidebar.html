@@ -52,7 +52,7 @@
   </template>
   <script>
     Polymer('pg-sidebar', {
-      created: function() {
+      ready: function() {
         this.asyncMethod(function() {
           this.$.sampleMenu.selected = 0;
         });
