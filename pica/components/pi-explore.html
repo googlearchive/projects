@@ -13,18 +13,18 @@
   <template>
     <link rel="stylesheet" href="css/pi-explore.css" />
     <div id="searchBox">
-      <input id="searchInput" on-input="inputChange"/>
+      <input id="searchInput" on-input="{{inputChange}}"/>
       <polymer-ui-icon icon="search"></polymer-ui-icon>
-      <speech-mic id="speech" on-result="speechResult"></speech-mic>
+      <speech-mic id="speech" on-result="{{speechResult}}"></speech-mic>
     </div>
     <pi-feed-viewer id="viewer" topics="{{topics}}" topic="{{topic}}" panel="{{panel}}"
         layout="{{layout}}" topicsLayout="{{layout}}" loading="{{loading}}" disableTracking></pi-feed-viewer>
-    <pi-gfeeds query="{{query}}" on-queryresponse="queryResponse" loading="{{loading}}"></pi-gfeeds>
+    <pi-gfeeds query="{{query}}" on-queryresponse="{{queryResponse}}" loading="{{loading}}"></pi-gfeeds>
   </template>
   <script>
     Polymer('pi-explore', {
       layout: 'list',
-      created: function() {
+      ready: function() {
         this.contentNode = document.createElement('div');
       },
       get canPrevious() {

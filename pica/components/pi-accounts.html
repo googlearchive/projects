@@ -14,28 +14,28 @@
     <link rel="stylesheet" href="css/pi-accounts.css" />
     <div class="item">
       <div class="flex"></div>
-      <button class="button" on-tap="reset">Restore Defaults</button>
+      <button class="button" on-tap="{{reset}}">Restore Defaults</button>
     </div>
     <div class="header item">Finance</div>
     <div>
       <template repeat="{{accounts.stocks}}">
         <div class="item">
           <div class="flex">{{}}</div>
-          <polymer-ui-icon-button icon="close" on-tap="removeStock"></polymer-ui-icon-button>
+          <polymer-ui-icon-button icon="close" on-tap="{{removeStock}}"></polymer-ui-icon-button>
         </div>
       </template>
     </div>
     <div class="item">
       <div class="item-input-label">Symbol: </div>
-      <input id="symbol" autocorrect="off" operation="addStock" on-keyup="keyupHandler" />
-      <polymer-ui-icon-button icon="plus" on-tap="addStock"></polymer-ui-icon-button>
+      <input id="symbol" autocorrect="off" operation="addStock" on-keyup="{{keyupHandler}}" />
+      <polymer-ui-icon-button icon="plus" on-tap="{{addStock}}"></polymer-ui-icon-button>
     </div>
     <div class="header item">Topics</div>
     <div class="item accounts-title">Add New Feed</div>
     <div class="item no-border">
       <div class="item-input-label">Url: </div>
-      <input id="feed" type="url" class="flex" operation="addFeed" on-keyup="keyupHandler" />
-      <polymer-ui-icon-button icon="plus" on-tap="addFeed"></polymer-ui-icon-button>
+      <input id="feed" type="url" class="flex" operation="addFeed" on-keyup="{{keyupHandler}}" />
+      <polymer-ui-icon-button icon="plus" on-tap="{{addFeed}}"></polymer-ui-icon-button>
     </div>
     <div class="item">
       <div class="item-input-label">Category: </div>
@@ -49,32 +49,32 @@
     <div class="item accounts-title">Add New Category</div>
     <div class="item">
       <div class="item-input-label">Name: </div>
-      <input id="category" class="flex" operation='addCategory' on-keyup="keyupHandler" />
-      <polymer-ui-icon-button icon="plus" on-tap="addCategory"></polymer-ui-icon-button>
+      <input id="category" class="flex" operation='addCategory' on-keyup="{{keyupHandler}}" />
+      <polymer-ui-icon-button icon="plus" on-tap="{{addCategory}}"></polymer-ui-icon-button>
     </div>
     <div>
       <template repeat="{{accounts.topics}}">
         <div class="item accounts-title">
           <polymer-ui-icon class="accounts-title-icon" icon="favorite"></polymer-ui-icon>
           <div class="flex">{{title}}</div>
-          <polymer-ui-icon-button icon="close" on-tap="removeTopic"></polymer-ui-icon-button>
+          <polymer-ui-icon-button icon="close" on-tap="{{removeTopic}}"></polymer-ui-icon-button>
         </div>
         <template repeat="{{feed}}">
           <div class="item">
             <div class="flex accounts-feed-title">{{title}}</div>
-            <polymer-ui-icon-button icon="close" on-tap="removeFeed"></polymer-ui-icon-button>
+            <polymer-ui-icon-button icon="close" on-tap="{{removeFeed}}"></polymer-ui-icon-button>
           </div>
         </template>
       </template>
     </div>
-    <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="feedResponse" on-error="feedResponse"></pi-gfeeds>
+    <pi-gfeeds feed="{{feedUrl}}" count="0" on-response="{{feedResponse}}" on-error="{{feedResponse}}"></pi-gfeeds>
   </template>
   <script>
     (function() {
       var ENTER_KEY = 13;
       
       Polymer('pi-accounts', {
-        created: function() {
+        ready: function() {
           this.setAttribute('touch-action', 'scroll');
           this.asyncFire('ready');
         },

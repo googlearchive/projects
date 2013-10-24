@@ -14,11 +14,11 @@ license that can be found in the LICENSE file.
       properties: null,
       shouldPrepend: false,
       hideSubtree: false,
-      created: function() {
+      ready: function() {
         this.idChanged();
         this.updateProperties();
       },
-      enteredDocument: function() {
+      enteredView: function() {
         this.updateProperties();
       },
       idChanged: function(inOld) {

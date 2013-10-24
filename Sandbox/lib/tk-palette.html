@@ -3,7 +3,7 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<polymer-element name="tk-palette" attributes="elements" on-mousedown="mousedown">
+<polymer-element name="tk-palette" attributes="elements" on-mousedown="{{mousedown}}">
   <template>
     <style>
       #title {
@@ -47,9 +47,9 @@ license that can be found in the LICENSE file.
     <!--<div id="title">Palette</div>-->
     <div id="list"
         touch-action="pan-y"
-        on-trackstart="trackStart"
-        on-track="track"
-        on-trackend="trackEnd">
+        on-trackstart="{{trackStart}}"
+        on-track="{{track}}"
+        on-trackend="{{trackEnd}}">
       <template repeat="{{elements}}">
         <div class="item" tag="{{id}}" ishidden="{{isHidden}}">{{label}}</div>
       </template>

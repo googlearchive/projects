@@ -37,7 +37,7 @@ license that can be found in the LICENSE file.
           <table>
             <tr template repeat="{{ row in game.grid }}">
               <td template repeat="{{ tile in row }}">
-                <g-card on-click="flip" tile="{{ tile }}"></g-card>
+                <g-card on-click="{{flip}}" tile="{{ tile }}"></g-card>
               </td>
             </tr>
           </table>
@@ -45,7 +45,7 @@ license that can be found in the LICENSE file.
       </template>
       <script>
         Polymer('match-game', {
-          created: function() {
+          ready: function() {
             this.game = new Game(['8-ball', 'kronos', 'baked-potato',
                                   'dinosaur', 'rocket', 'skinny-unicorn',
                                   'that-guy', 'zeppelin']);

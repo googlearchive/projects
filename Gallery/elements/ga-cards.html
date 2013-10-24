@@ -8,7 +8,7 @@ license that can be found in the LICENSE file.
     <link rel="stylesheet" href="css/ga-cards.css">
     <template repeat="{{items}}">
       <div class="card">
-        <div class="inner" touch-action="none" on-tap="selectCard">
+        <div class="inner" touch-action="none" on-tap="{{selectCard}}">
           <div class="image" style="background-image: url({{imageUrl}});"></div>
           <div class="title">{{id}}</div>
           <div class="author">by {{author}}</div>

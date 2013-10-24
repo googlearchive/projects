@@ -11,7 +11,7 @@
       var FEED_TRACKER_STORAGE_NAME = 'pica-feed-tracker-1';
       
       Polymer('pi-feed-tracker', {
-        created: function() {
+        ready: function() {
           this.feeds = {};
           this.load();
         },
