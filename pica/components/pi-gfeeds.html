@@ -5,40 +5,53 @@
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="import" href="../../../polymer-elements/polymer-google-jsapi/polymer-google-jsapi.html">
+
 <polymer-element name="pi-gfeeds" attributes="feed query results loading count">
-  <script>
-    (function() {
-      var feedsAreReady = false;
-      var pendingFeeds = [];
-      
-      var feedsReady = function() {
-        feedsAreReady = true;
-        pendingFeeds.forEach(function(cb) {
-          cb();
-        });
-        pendingFeeds = null;
-      };
-      
-      var XGFeeds = {
-        require: function(inCb) {
-          if (feedsAreReady) {
-            inCb();
-          } else {
-            pendingFeeds.push(inCb);
-          }
+  <template>
+    <style>
+      @host {
+        * {
+          display: none;
         }
-      };
-      
-      google.load('feeds', '1', {callback: feedsReady.bind(this)});
-      
+      }
+    </style>
+    
+    <polymer-google-jsapi on-polymer-google-jsapi-loaded="{{jsapiLoaded}}"></polymer-google-jsapi>
+  </template>
+  <script>
       Polymer('pi-gfeeds', {
         count: 24,
+        created: function() {
+          this.pendingFeeds = [];
+        },
+        ready: function() {
+          if (window.google && window.google.loader) {
+            this.jsapiLoaded();
+          }
+        },
+        jsapiLoaded: function() {
+          google.load('feeds', '1', {callback: this.feedsLoaded.bind(this)});
+        },
+        feedsLoaded: function() {
+          this.pendingFeeds.forEach(function(callback) {
+            callback();
+          });
+          this.pendingFeeds = [];
+        },
+        feedsReady: function(callback) {
+          if (window.google && window.google.feeds) {
+            callback();
+          } else {
+            this.pendingFeeds.push(callback);
+          }
+        },
         feedChanged: function() {
           if (this.feed) {
             this.loading = true;
             // call fetchFeeds async to make sure any binding to count property is resolved
             // before fetchFeeds is called
-            XGFeeds.require(this.asyncMethod.bind(this, 'fetchFeeds'));
+            this.feedsReady(this.asyncMethod.bind(this, 'fetchFeeds'));
           } else {
             this.results = null;
           }
@@ -62,7 +75,7 @@
         queryChanged: function() {
           if (this.query) {
             this.loading = true;
-            XGFeeds.require(this.asyncMethod.bind(this, 'findFeeds'));
+            this.feedsReady(this.asyncMethod.bind(this, 'findFeeds'));
           }
         },
         findFeeds: function() {
@@ -77,6 +90,5 @@
           }
         }
       });
-    })();
   </script>
 </polymer-element>
