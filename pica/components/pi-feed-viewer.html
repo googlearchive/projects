@@ -58,7 +58,10 @@
         loading: true,
         disableTracking: false,
         feedCount: 200,
-        enteredView: function() {
+        created: function() {
+          this.topics = [];
+        },
+        ready: function() {
           var mq = window.matchMedia('(max-width: 800px)');
           mq.addListener(this.layoutChange.bind(this));
           this.layoutChange(mq);
