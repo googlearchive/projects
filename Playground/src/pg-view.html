@@ -5,21 +5,21 @@
  * license that can be found in the LICENSE file.
  */
 -->
-
-<link rel="import" href="../../../polymer-elements/polymer-collapse/polymer-collapse.html">
-<link rel="import" href="../../../polymer-elements/polymer-media-query/polymer-media-query.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
-<link rel="import" href="../../../more-elements/ace-element/ace-element.html">
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/polymer-collapse/polymer-collapse.html">
+<link rel="import" href="../components/polymer-media-query/polymer-media-query.html">
+<link rel="import" href="../components/polymer-ui-icon-button/polymer-ui-icon-button.html">
+<link rel="import" href="../components/polymer-ui-toolbar/polymer-ui-toolbar.html">
+<link rel="import" href="../components/polymer-ui-splitter/polymer-ui-splitter.html">
+<link rel="import" href="../components/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
+<link rel="import" href="../components/ace-element/ace-element.html">
 <link rel="import" href="pg-output.html">
 
 <polymer-element name="pg-view" v-flexbox attributes="meta vertical hideTitle responsive responsiveWidth polymerBasePath importHref autoRun">
   <template>
     <link rel="stylesheet" href="css/pg-view.css">
     <link rel="stylesheet" href="css/pg-toolbar-button.css">
-    <link rel="stylesheet" href="../../../polymer-elements/polymer-flex-layout/polymer-flex-layout.css">
+    <link rel="stylesheet" href="../components/polymer-flex-layout/polymer-flex-layout.css">
     
     <polymer-ui-toolbar class="action-bar">
       <button class="toolbar-button" on-tap="{{run}}">Run</button>

@@ -5,6 +5,7 @@
  * license that can be found in the LICENSE file.
  */
 -->
+<link rel="import" href="../components/polymer/polymer.html">
 
 <polymer-element name="pg-output" attributes="html launchWindow polymerBasePath importHref">
   <template>
@@ -53,8 +54,8 @@
         html += '<head>\n';
         html += head || '';
         // include base scripts and css
-        html += '<script src="' + this.polymerBasePath + 'polymer/polymer.js"></s' + 'cript>\n';
-        html += '<link rel="stylesheet" href="' + this.polymerBasePath + 'polymer-ui-elements/basic.css">\n';
+        html += '<script src="' + this.polymerBasePath + 'components/platform/platform.js"></s' + 'cript>\n';
+        html += '<link rel="stylesheet" href="' + this.polymerBasePath + 'components/polymer-ui-elements/basic.css">\n';
         // import elements
         html += '<link rel="import" href="' + this.importHref + '">\n';
         html += '</head>\n';
