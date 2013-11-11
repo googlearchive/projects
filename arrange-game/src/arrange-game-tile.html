@@ -59,9 +59,12 @@
     </div>
   </template>
   <script>
-  (function() {
     Polymer('arrange-game-tile', {
       tile: null,
+      observe: {
+        'tile.col': 'updatePosition',
+        'tile.row': 'updatePosition'
+      },
       enteredView: function() {
         var i = {};
         this.fire('request-tile-metrics', i);
@@ -70,8 +73,6 @@
           this.$.style.textContent += '.tile { width: ' + m.width +
               '%;\n height: ' + m.height + '%;\n}';
         }
-        this.binding = observePaths(this, 'tile.col tile.row',
-            this.updatePosition.bind(this));
       },
       updatePosition: function() {
         this.position = {
@@ -80,21 +81,5 @@
         }
       }
     });
-
-    function observePaths(model, pathsString, callback) {
-      if (!callback) {
-        return;
-      }
-      // abuse the [values] -> value reducer function to run the callback
-      var observer = new CompoundPathObserver(undefined, undefined, undefined, callback);
-      var paths = pathsString.split(' ');
-      paths.forEach(function(path) {
-        observer.addPath(model, path);
-      });
-      observer.start();
-      return observer;
-    }
-
-  })();
   </script>
 </polymer-element>
