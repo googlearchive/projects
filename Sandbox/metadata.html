@@ -5,76 +5,6 @@
   <property name="layout" kind="json"></property>
 </tk-meta>
 
-<tk-meta id="g-icon-button" label="Icon Button">
-  <template>
-    <g-icon-button src="images/mail.png"></g-icon-button>
-  </template>
-  <property name="src" kind="select" options="images/mail.png,images/add.png,images/comment.png,images/menu.png"></property>
-</tk-meta>
-
-<tk-meta id="g-toolbar" label="Toolbar" isContainer>
-  <template>
-    <g-toolbar style="right: 0px; left: 0px;">
-      <g-icon-button src="images/star_full.svg" active="true"></g-icon-button>
-      <div class="flex">Toolbar</div>
-      <g-toolbar responsive="true">
-        <g-menu-button responsive="true" src="images/add.png" selected="0">
-          <g-menu-item src="images/comment.png">Post a Comment</g-menu-item>
-          <g-menu-item src="images/hangout.png">Share Link</g-menu-item>
-          <g-menu-item src="images/mail.png">Email Link</g-menu-item>
-          <g-menu-item src="images/favorite.png">Add to Favorites</g-menu-item>
-        </g-menu-button>
-        <g-icon-button src="images/favorite.png"></g-icon-button>
-      </g-toolbar>
-      <g-icon-button src="images/hangout.png"></g-icon-button>
-    </g-toolbar>
-  </template>
-</tk-meta>
-
-<tk-meta id="div" label="Caption" isContainer>
-  <template>
-    <div style="border: 1px dotted silver; padding: 6px;">A Caption</div>
-  </template>
-  <property name="textContent" kind="speech"></property>
-</tk-meta>
-
-
-<!--
-<tk-meta id="tk-toolbar" label="Themed Toolbar" isContainer>
-  <template>
-    <tk-toolbar theme="toolbar-bg-0" style="height: 60px; right: 0px; left: 0px;"></tk-toolbar>
-  </template>
-  <property name="theme" kind="select" options=" ,toolbar-bg-0,toolbar-bg-1,toolbar-bg-2,toolbar-bg-3,toolbar-bg-4"></property>
-</tk-meta>
--->
-
-
-<tk-meta id="g-tabs" label="Tabs" isContainer>
-  <template>
-    <g-tabs selected="0">
-      <span>One</span>
-      <span>Two</span>
-      <span>Three</span>
-      <span>Four</span>
-    </g-tabs>
-  </template>
-</tk-meta>
-
-<tk-meta id="g-ratings" label="Ratings"></tk-meta>
-
-<tk-meta id="g-togglebutton" label="Toggle Button"></tk-meta>
-
-<tk-meta id="g-menu" label="Menu" isContainer>
-  <template>
-    <g-menu selected="0" style="background-color: #fff;">
-      <g-menu-item src="images/comment.png">Post a Comment</g-menu-item>
-      <g-menu-item src="images/hangout.png">Share Link</g-menu-item>
-      <g-menu-item src="images/mail.png">Email Link</g-menu-item>
-      <g-menu-item src="images/favorite.png">Add to Favorites</g-menu-item>
-    </g-menu>
-  </template>
-</tk-meta>
-
 <tk-meta id="tk-blink" label="Blink">
   <template>
     <tk-blink></tk-blink>
@@ -234,13 +164,6 @@
   </template>
 </tk-meta>
 
-<tk-meta id="g-ajax" label="Ajax">
-  <template>
-    <g-ajax style="border: 1px dotted silver; padding: 8px;">Ajax</g-ajax>
-  </template>
-  <property name="handleAs" kind="select" options="json,text,xml"></property>
-</tk-meta>
-
 <tk-meta id="tk-app" label="Sandbox App">
   <template>
     <tk-app style="width: 900px; height: 600px;" startMode="normal"></tk-app>
@@ -324,7 +247,7 @@
   <property name="label"></property>
 </tk-meta>
 -->
-<!-- 
+
 <tk-meta id="polymer-ui-icon" label="Polymer Icon">
   <template>
     <polymer-ui-icon icon="search" theme="polymer-ui-light-theme"></polymer-ui-icon>
@@ -407,4 +330,3 @@
     </polymer-ui-sidebar-menu>
   </template>
 </tk-meta>
- -->

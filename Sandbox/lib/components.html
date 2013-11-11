@@ -3,49 +3,52 @@ Copyright 2013 The Polymer Authors. All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.
 -->
-<link rel="import" href="../../../polymer-elements/polymer-cookie/polymer-cookie.html" />
+<link rel="import" href="../../../components/polymer-cookie/polymer-cookie.html" />
 <!-- -->
-<link rel="import" href="../../../toolkit-ui/elements/g-panels.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-tabs.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-ratings.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-togglebutton.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-toolbar.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-icon-button.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-menu-item.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-menu.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-menu-button.html">
-<link rel="import" href="../../../toolkit-ui/elements/g-ajax.html">
-<!-- -->
-<link rel="import" href="../../../toolkit-ui/elements/animation/all.html">
 <link rel="import" href="tk-fakebar.html">
 <!-- -->
-<link rel="import" href="../../../more-elements/polymer-more/polymer-ui-clock/polymer-ui-clock.html">
-<link rel="import" href="../../../more-elements/polymer-more/polymer-ui-weather/polymer-ui-weather.html">
-<link rel="import" href="../../../more-elements/polymer-more/polymer-ui-stock/polymer-ui-stock.html">
+<link rel="import" href="../../../components/polymer-ui-clock/polymer-ui-clock.html">
+<link rel="import" href="../../../components/polymer-ui-weather/polymer-ui-weather.html">
+<link rel="import" href="../../../components/polymer-ui-stock/polymer-ui-stock.html">
 <!-- -->
-<link rel="import" href="../../../more-elements/Animation/animation-group.html">
-<link rel="import" href="../../../more-elements/Animation/tk-blink.html">
-<link rel="import" href="../../../more-elements/Animation/tk-bounce.html">
-<link rel="import" href="../../../more-elements/Animation/tk-flip.html">
-<link rel="import" href="../../../more-elements/Animation/tk-shake.html">
+<link rel="import" href="../../../components/Animation/animation-group.html">
+<link rel="import" href="../../../components/Animation/tk-blink.html">
+<link rel="import" href="../../../components/Animation/tk-bounce.html">
+<link rel="import" href="../../../components/Animation/tk-flip.html">
+<link rel="import" href="../../../components/Animation/tk-shake.html">
 <!-- -->
-<link rel="import" href="../../../more-elements/chart-js/chart-js.html">
-<link rel="import" href="../../../more-elements/ace-element/ace-element.html">
-<link rel="import" href="../../../more-elements/cool-clock/cool-clock.html">
-<link rel="import" href="../../../more-elements/polymer-stock/polymer-stock.html">
-<link rel="import" href="../../../more-elements/wu-weather/wu-weather.html">
-<link rel="import" href="../../../more-elements/humane-js/humane-js.html">
-<link rel="import" href="../../../more-elements/smoothie-chart/smoothie-chart.html">
-<link rel="import" href="../../../more-elements/marked-js/marked-js.html">
-<link rel="import" href="../../../more-elements/pdf-js/pdf-js.html">
-<link rel="import" href="../../../more-elements/pixi-js/pixi-js.html">
-<link rel="import" href="../../../more-elements/Youtube/yt-search-video/yt-search-video.html">
-<link rel="import" href="../../../more-elements/speech-mic/speech-mic.html">
-<link rel="import" href="../../../more-elements/speech-transcript/speech-transcript.html">
-<!-- <link rel="import" href="../../../more-elements/js-beautify/js-beautify.html"> -->
-<link rel="import" href="../../../more-elements/x-tags/x-tags.html">
+<link rel="import" href="../../../components/chart-js/chart-js.html">
+<link rel="import" href="../../../components/ace-element/ace-element.html">
+<link rel="import" href="../../../components/cool-clock/cool-clock.html">
+<link rel="import" href="../../../components/polymer-stock/polymer-stock.html">
+<link rel="import" href="../../../components/wu-weather/wu-weather.html">
+<link rel="import" href="../../../components/humane-js/humane-js.html">
+<link rel="import" href="../../../components/smoothie-chart/smoothie-chart.html">
+<link rel="import" href="../../../components/marked-js/marked-js.html">
+<link rel="import" href="../../../components/pdf-js/pdf-js.html">
+<link rel="import" href="../../../components/pixi-js/pixi-js.html">
+<link rel="import" href="../../../components/Youtube/yt-search-video.html">
+<link rel="import" href="../../../components/speech-mic/speech-mic.html">
+<link rel="import" href="../../../components/speech-transcript/speech-transcript.html">
+<!-- <link rel="import" href="../../../components/js-beautify/js-beautify.html"> -->
+<link rel="import" href="../../../components/x-tags/x-tags.html">
 <!-- -->
 <link rel="import" href="tk-meta.html">
+<!-- -->
+<link rel="import" href="../../../components/polymer-selector/polymer-selector.html">
+<link rel="import" href="../../../components/polymer-grid-layout/polymer-grid-layout.html">
+<link rel="import" href="../../../components/polymer-ui-icon/polymer-ui-icon.html">
+<link rel="import" href="../../../components/polymer-ui-icon-button/polymer-ui-icon-button.html">
+<link rel="import" href="../../../components/polymer-ui-toolbar/polymer-ui-toolbar.html">
+<link rel="import" href="../../../components/polymer-ui-menu/polymer-ui-menu.html">
+<link rel="import" href="../../../components/polymer-ui-menu-item/polymer-ui-menu-item.html">
+<link rel="import" href="../../../components/polymer-ui-menu-button/polymer-ui-menu-button.html">
+<link rel="import" href="../../../components/polymer-ui-sidebar-menu/polymer-ui-sidebar-menu.html">
+<link rel="import" href="../../../components/polymer-ui-ratings/polymer-ui-ratings.html">
+<link rel="import" href="../../../components/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
+<link rel="import" href="../../../components/polymer-ui-tabs/polymer-ui-tabs.html">
+<link rel="import" href="../../../components/polymer-ui-splitter/polymer-ui-splitter.html">
+<link rel="import" href="../../../components/polymer-ui-accordion/polymer-ui-accordion.html">
 <!-- -->
 <link rel="import" href="tk-canvas.html">
 <link rel="import" href="tk-palette.html">
@@ -61,16 +64,3 @@ license that can be found in the LICENSE file.
 <link rel="import" href="tk-source.html">
 <link rel="import" href="tk-preview.html">
 <link rel="import" href="tk-app.html">
-<!-- -->
-<link rel="import" href="../../../polymer-elements/polymer-grid-layout/polymer-grid-layout.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon/polymer-ui-icon.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-icon-button/polymer-ui-icon-button.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toolbar/polymer-ui-toolbar.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu/polymer-ui-menu.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-menu-item/polymer-ui-menu-item.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-sidebar-menu/polymer-ui-sidebar-menu.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-ratings/polymer-ui-ratings.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-tabs/polymer-ui-tabs.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-splitter/polymer-ui-splitter.html">
-<link rel="import" href="../../../polymer-ui-elements/polymer-ui-accordion/polymer-ui-accordion.html">

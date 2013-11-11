@@ -10,23 +10,23 @@ license that can be found in the LICENSE file.
     <div id="notide" hidden?="{{ seen_banner }}"><b>Wait, is this an IDE or something?</b> Nope, Sandbox just makes it easy to get a feel for
       Polymer. It’s more of a convenience and not required to make apps using Polymer. <a
         href="http://polymer-project.org/faq.html#sandbox" target="_blank">Read More</a> | <span id="dismiss" on-tap="{{hideBanner}}">Dismiss</span></div>
-    <g-toolbar>
-      <g-selector id="modeSelector" selected="{{selectedMode}}">
-        <g-icon-button id="designerIcon" name="designer"></g-icon-button>
-        <g-icon-button id="sourceIcon" name="source"></g-icon-button>
-      </g-selector>
-      <g-icon-button id="toggle" on-pointerdown="{{toggleSize}}" src="assets/fullscreen.png"></g-icon-button>
-      <g-icon-button src="assets/ic_refresh_darkreg.png" on-tap="{{clearElement}}"></g-icon-button>
+    <polymer-ui-toolbar>
+      <polymer-selector id="modeSelector" selected="{{selectedMode}}">
+        <polymer-ui-icon-button id="designerIcon" name="designer"></polymer-ui-icon-button>
+        <polymer-ui-icon-button id="sourceIcon" name="source"></polymer-ui-icon-button>
+      </polymer-selector>
+      <polymer-ui-icon-button id="toggle" on-pointerdown="{{toggleSize}}" src="assets/fullscreen.png"></polymer-ui-icon-button>
+      <polymer-ui-icon-button src="assets/ic_refresh_darkreg.png" on-tap="{{clearElement}}"></polymer-ui-icon-button>
       <div class="flex"></div>
-      <g-toolbar id="innerToolbar" responsive="true">
-        <g-menu-button responsive="true" selectedClass="" src="assets/menu.png" valign="right" on-activate="{{menuActivate}}">
-          <g-menu-item src="assets/settings.png" on-click="{{previewElement}}">Preview</g-menu-item>
-          <g-menu-item src="assets/settings.png" on-click="{{previewElementSource}}">Preview Source</g-menu-item>
-          <g-menu-item src="assets/settings.png" on-tap="{{publishElement}}">Publish</g-menu-item>
-          <g-menu-item src="assets/ic_refresh_darkreg.png" on-tap="{{clearElement}}">Clear</g-menu-item>
-        </g-menu-button>
-      </g-toolbar>
-    </g-toolbar>
+      <polymer-ui-toolbar id="innerToolbar" responsive="true">
+        <polymer-ui-menu-button selectedClass="" halign="right" src="assets/menu.png" on-activate="{{menuActivate}}">
+          <polymer-ui-menu-item src="assets/settings.png" on-click="{{previewElement}}">Preview</polymer-ui-menu-item>
+          <polymer-ui-menu-item src="assets/settings.png" on-click="{{previewElementSource}}">Preview Source</polymer-ui-menu-item>
+          <polymer-ui-menu-item src="assets/settings.png" on-tap="{{publishElement}}">Publish</polymer-ui-menu-item>
+          <polymer-ui-menu-item src="assets/ic_refresh_darkreg.png" on-tap="{{clearElement}}">Clear</polymer-ui-menu-item>
+        </polymer-ui-menu-button>
+      </polymer-ui-toolbar>
+    </polymer-ui-toolbar>
     <div id="main" class="{{banner: !seen_banner}}">
       <tk-designer id="designer" selected="{{selected}}" designElement="{{designElement}}" maximized="{{maximized}}"></tk-designer>
       <tk-source id="source" fontSize="{{fontSize}}" sourceElement="{{designElement}}" on-source-changed="{{sourceChanged}}" on-keydown="{{sourceKeydown}}"></tk-source>
