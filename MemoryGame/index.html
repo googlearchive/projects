@@ -13,12 +13,12 @@ license that can be found in the LICENSE file.
     <link rel="import" href="components/polymer/polymer.html">
 
     <polymer-element name="g-card" attributes="tile">
-        <link rel="stylesheet" href="card.css">
       <template>
-          <div class="card {{ flipped: tile.flipped }}">
-            <img class="back" src="img/{{ tile.title }}.png">
-            <img class="front" src="img/back.png">
-          </div>
+        <link rel="stylesheet" href="card.css">
+        <div class="card {{ {flipped: tile.flipped} | tokenList }}">
+          <img class="back" src="img/{{ tile.title }}.png">
+          <img class="front" src="img/back.png">
+        </div>
       </template>
       <script>
         Polymer('g-card', {
